@@ -11,7 +11,7 @@
          <content>
             <ImageView fitHeight="6480.0" fitWidth="1920.0" pickOnBounds="true">
                <image>
-                  <Image url="@../../../../../../../Users/acer/Downloads/Dashboard Utama.png" />
+                  <Image url="@../Download/Dashboard Utama.png" />
                </image>
             </ImageView>
          </content></ScrollPane>
