@@ -6,4 +6,7 @@ module org.example.project_prg3 {
 
     opens org.example.project_prg3 to javafx.fxml;
     exports org.example.project_prg3;
+
+    opens Dashboard to javafx.fxml;
+    exports Dashboard;
 }
