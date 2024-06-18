@@ -9,4 +9,13 @@ module org.example.project_prg3 {
 
     opens Dashboard to javafx.fxml;
     exports Dashboard;
+
+    opens Sebagai to javafx.fxml;
+    exports Sebagai;
+
+    opens LoginTendik to javafx.fxml;
+    exports LoginTendik;
+
+    opens LoginMahasiswa to javafx.fxml;
+    exports LoginMahasiswa;
 }

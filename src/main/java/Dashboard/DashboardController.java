@@ -1,17 +1,11 @@
 package Dashboard;
 
 import javafx.application.Application;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 
-public class DashboardController extends Application {
+public class DashboardController {
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage primaryStage) {
-
-    }
 }
