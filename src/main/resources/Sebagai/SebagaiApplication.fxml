@@ -5,15 +5,15 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="AnchorSebagai" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Sebagai.SebagaiApplication">
+<AnchorPane fx:id="AnchorSebagai" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Sebagai.SebagaiController">
    <children>
       <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Download/Dashboard Sebagai.png" />
          </image>
       </ImageView>
-      <Button fx:id="btnTenagaKependidikan" layoutX="112.0" layoutY="454.0" mnemonicParsing="false" opacity="0.0" prefHeight="95.0" prefWidth="509.0" text="Tenaga Kependidikan" />
-      <Button fx:id="btnMahasiswa" layoutX="112.0" layoutY="610.0" mnemonicParsing="false" opacity="0.0" prefHeight="95.0" prefWidth="509.0" text="Mahasiswa" />
-      <Button fx:id="btnBatal" layoutX="112.0" layoutY="767.0" mnemonicParsing="false" opacity="0.0" prefHeight="95.0" prefWidth="509.0" text="Batal" />
+      <Button fx:id="btnTenagaKependidikan" layoutX="112.0" layoutY="454.0" mnemonicParsing="false" onAction="#onbtnTenagaKependidikanClick" opacity="0.0" prefHeight="95.0" prefWidth="509.0" text="Tenaga Kependidikan" />
+      <Button fx:id="btnMahasiswa" layoutX="112.0" layoutY="610.0" mnemonicParsing="false" onAction="#onbtnMahasiswaClick" opacity="0.0" prefHeight="95.0" prefWidth="509.0" text="Mahasiswa" />
+      <Button fx:id="btnBatal" layoutX="112.0" layoutY="767.0" mnemonicParsing="false" onAction="#onbtnBatalClick" opacity="0.0" prefHeight="95.0" prefWidth="509.0" text="Batal" />
    </children>
 </AnchorPane>
