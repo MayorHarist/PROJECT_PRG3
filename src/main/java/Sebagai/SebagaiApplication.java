@@ -8,18 +8,14 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SebagaiApplication extends Application {
+public class SebagaiApplication  {
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SebagaiApplication.class.getResource("SebagaiApplication.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);
-        stage.setTitle("Sebagai Find Smart");
-        stage.setScene(scene);
-        stage.show();
-    }
+//    @Override
+//    public void start(Stage stage) throws IOException {
+//        FXMLLoader fxmlLoader = new FXMLLoader(SebagaiApplication.class.getResource("SebagaiApplication.fxml"));
+//        Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);
+//        stage.setTitle("Sebagai Find Smart");
+//        stage.setScene(scene);
+//        stage.show();
+//    }
 }
