@@ -57,7 +57,7 @@ public class LoginTendikController {
                 alert.showAndWait();
             }
 
-            FXMLLoader loader = new FXMLLoader(LoginTendikController.class.getResource("UserMahasiswaApplication.fxml"));
+            FXMLLoader loader = new FXMLLoader(LoginTendikController.class.getResource("UserTendikApplication.fxml"));
             Parent root = loader.load();
 
             Stage stage = new Stage();

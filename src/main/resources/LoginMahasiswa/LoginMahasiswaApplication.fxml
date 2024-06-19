@@ -5,6 +5,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="AnchorMhs" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginMahasiswa.LoginMahasiswaController">
    <children>
@@ -15,7 +16,15 @@
       </ImageView>
       <Button fx:id="btnLogin" layoutX="111.0" layoutY="573.0" mnemonicParsing="false" onAction="#onbtnLoginClick" opacity="0.0" prefHeight="76.0" prefWidth="520.0" text="Login" />
       <Button fx:id="btnExit" layoutX="111.0" layoutY="668.0" mnemonicParsing="false" onAction="#onbtnExitClick" opacity="0.0" prefHeight="76.0" prefWidth="520.0" text="Exit" />
-      <TextField fx:id="txtUsername" layoutX="122.0" layoutY="390.0" prefHeight="48.0" prefWidth="499.0" />
-      <TextField fx:id="txtPassword" layoutX="122.0" layoutY="486.0" prefHeight="48.0" prefWidth="499.0" />
+      <TextField fx:id="txtUsername" layoutX="122.0" layoutY="390.0" prefHeight="48.0" prefWidth="499.0">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="txtPassword" layoutX="122.0" layoutY="486.0" prefHeight="48.0" prefWidth="499.0">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </TextField>
    </children>
 </AnchorPane>

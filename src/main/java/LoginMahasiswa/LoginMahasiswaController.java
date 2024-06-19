@@ -38,26 +38,35 @@ public class LoginMahasiswaController {
 
     @FXML
     protected void onbtnLoginClick(ActionEvent event) {
+        String username = txtUsername.getText();
+        String password = txtPassword.getText();
+
+        if (username.equals(useradmin) && password.equals(userpass)) {
+            // Login berhasil, tampilkan dialog pesan sukses
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Informasi");
+            alert.setHeaderText(null);
+            alert.setContentText("Login berhasil");
+            alert.showAndWait();
+
+            // Panggil method loadNextForm
+            loadNextForm();
+
+            // Tutup stage sebelumnya
+            Stage previousStage = (Stage) AnchorMhs.getScene().getWindow();
+            previousStage.close();
+        } else {
+            // Login gagal, tampilkan dialog pesan kesalahan
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Username atau password salah");
+            alert.showAndWait();
+        }
+    }
+
+    private void loadNextForm() {
         try {
-            String username = txtUsername.getText();
-            String password = txtPassword.getText();
-
-            if (username.equals(useradmin) && password.equals(userpass)) {
-                // Login berhasil, tampilkan dialog pesan sukses
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Informasi");
-                alert.setHeaderText(null);
-                alert.setContentText("Login berhasil");
-                alert.showAndWait();
-            } else {
-                // Login gagal, tampilkan dialog pesan kesalahan
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Username atau password salah");
-                alert.showAndWait();
-            }
-
             FXMLLoader loader = new FXMLLoader(LoginMahasiswaController.class.getResource("UserMahasiswaApplication.fxml"));
             Parent root = loader.load();
 
@@ -66,10 +75,6 @@ public class LoginMahasiswaController {
             stage.setFullScreen(true);
             stage.setFullScreenExitHint("");
             stage.show();
-
-            // Tutup stage sebelumnya
-            Stage previousStage = (Stage) AnchorMhs.getScene().getWindow();
-            previousStage.close();
 
         } catch (IOException e) {
             e.printStackTrace();
