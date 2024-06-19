@@ -9,7 +9,4 @@ module org.example.project_prg3 {
 
     opens Dashboard to javafx.fxml;
     exports Dashboard;
-    opens Login_User to javafx.fxml;
-    exports Login_User;
-
 }
