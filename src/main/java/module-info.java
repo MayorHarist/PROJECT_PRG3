@@ -18,4 +18,7 @@ module org.example.project_prg3 {
 
     opens LoginMahasiswa to javafx.fxml;
     exports LoginMahasiswa;
+
+    opens UserMahasiswa to javafx.fxml;
+    exports UserMahasiswa;
 }

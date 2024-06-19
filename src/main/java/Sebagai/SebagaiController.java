@@ -28,9 +28,9 @@ public class SebagaiController {
     private AnchorPane AnchorSebagai;
 
     @FXML
-    protected void onbtnTenagaKependidikanClick(ActionEvent event) throws IOException {
+    protected void onbtnTenagaKependidikanClick(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(LoginTendikController.class.getResource("LoginTendikController.fxml"));
+            FXMLLoader loader = new FXMLLoader(LoginTendikController.class.getResource("LoginTendikApplication.fxml"));
             Parent root = loader.load();
 
             Stage stage = new Stage();
@@ -45,13 +45,17 @@ public class SebagaiController {
 
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Failed to load LoginTendikController.fxml");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            System.out.println("Resource LoginTendikController.fxml not found");
         }
     }
 
     @FXML
-    protected void onbtnMahasiswaClick(ActionEvent event) throws IOException {
+    protected void onbtnMahasiswaClick(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(LoginMahasiswaController.class.getResource("LoginMahasiswaController.fxml"));
+            FXMLLoader loader = new FXMLLoader(LoginMahasiswaController.class.getResource("LoginMahasiswaApplication.fxml"));
             Parent root = loader.load();
 
             Stage stage = new Stage();
@@ -66,11 +70,15 @@ public class SebagaiController {
 
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Failed to load LoginMahasiswaController.fxml");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            System.out.println("Resource LoginMahasiswaController.fxml not found");
         }
     }
 
     @FXML
-    protected void onbtnBatalClick(ActionEvent event) throws IOException {
+    protected void onbtnBatalClick(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(DashboardApplication.class.getResource("DashboardApplication.fxml"));
             Parent root = loader.load();
@@ -87,6 +95,10 @@ public class SebagaiController {
 
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Failed to load DashboardApplication.fxml");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            System.out.println("Resource DashboardApplication.fxml not found");
         }
     }
 }
