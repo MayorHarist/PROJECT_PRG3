@@ -37,7 +37,7 @@ public class ViewDosenController implements Initializable {
     @FXML
     private TableColumn<Dosen, String> telepon;
     @FXML
-    private TableColumn<Dosen, String> Status;
+    private TableColumn<Dosen, String> status;
     private ObservableList<Dosen> oblist = FXCollections.observableArrayList();
 
     public class Dosen {
@@ -141,7 +141,7 @@ public class ViewDosenController implements Initializable {
         alamat.setCellValueFactory(new PropertyValueFactory<>("Alamat"));
         email.setCellValueFactory(new PropertyValueFactory<>("Email"));
         telepon.setCellValueFactory(new PropertyValueFactory<>("Telepon"));
-        Status.setCellValueFactory(new PropertyValueFactory<>("Status"));
+        status.setCellValueFactory(new PropertyValueFactory<>("Status"));
         tableDosen.setItems(oblist);
     }
 }
