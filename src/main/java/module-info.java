@@ -4,6 +4,7 @@ module org.example.project_prg3 {
 
     requires com.dlsc.formsfx;
     requires java.sql;
+    requires java.desktop;
 
     opens org.example.project_prg3 to javafx.fxml;
     exports org.example.project_prg3;
