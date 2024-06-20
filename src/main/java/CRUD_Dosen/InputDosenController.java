@@ -70,7 +70,7 @@ public class InputDosenController {
         Status = txtStatus.getText();
 
         try {
-            String query = "INSERT INTO Dosen (Pegawai, NIDN, Nama, Bidang, Pendidikan, TanggalLahir, JenisKelamin, Alamat, Email, Telepon, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO Dosen VALUES (?,?,?,?,?,?,?,?,?,?,?)";
             connection.pstat = connection.conn.prepareStatement(query);
             connection.pstat.setString(1, Pegawai);
             connection.pstat.setString(2, NIDN);
@@ -90,12 +90,6 @@ public class InputDosenController {
             autoid(); // Set kembali No Pegawai setelah menyimpan data
         } catch (SQLException ex) {
             System.out.println("Terjadi error saat insert data Dosen: " + ex);
-        } finally {
-            try {
-                if (connection.pstat != null) connection.pstat.close();
-            } catch (SQLException ex) {
-                System.out.println("Terjadi error saat menutup statement: " + ex);
-            }
         }
     }
 
@@ -137,12 +131,6 @@ public class InputDosenController {
             result.close();
         } catch (Exception ex) {
             System.out.println("Terjadi error pada No Pegawai: " + ex);
-        } finally {
-            try {
-                if (connection.pstat != null) connection.pstat.close();
-            } catch (SQLException ex) {
-                System.out.println("Terjadi error saat menutup statement: " + ex);
-            }
         }
     }
 }
