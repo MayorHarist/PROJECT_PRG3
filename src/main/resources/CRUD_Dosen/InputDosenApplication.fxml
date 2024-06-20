@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="AnchorInputDosen" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="646.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD_Dosen.InputDosenController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="646.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD_Dosen.InputDosenController">
    <children>
       <Label alignment="CENTER" layoutX="231.0" layoutY="49.0" prefHeight="17.0" prefWidth="157.0" text="Input Data Dosen">
          <font>
@@ -39,7 +39,7 @@
       <TextField fx:id="txtStatus" layoutX="272.0" layoutY="484.0" prefHeight="25.0" prefWidth="227.0" />
       <Label layoutX="135.0" layoutY="452.0" prefHeight="17.0" prefWidth="110.0" text="Telepon" />
       <Label layoutX="135.0" layoutY="488.0" prefHeight="17.0" prefWidth="110.0" text="Status" />
-      <Group layoutX="273.0" layoutY="318.0">
+      <Group fx:id="rbGroup" layoutX="273.0" layoutY="318.0">
          <children>
             <RadioButton fx:id="rbLaki" mnemonicParsing="false" text="Laki - laki" />
             <RadioButton fx:id="rbPerempuan" layoutX="138.0" mnemonicParsing="false" text="Perempuan" />

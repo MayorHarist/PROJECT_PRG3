@@ -9,6 +9,9 @@ module org.example.project_prg3 {
     opens org.example.project_prg3 to javafx.fxml;
     exports org.example.project_prg3;
 
+    opens DBConnect to javafx.fxml;
+    exports DBConnect;
+
     opens Dashboard to javafx.fxml;
     exports Dashboard;
 
@@ -23,4 +26,7 @@ module org.example.project_prg3 {
 
     opens UserMahasiswa to javafx.fxml;
     exports UserMahasiswa;
+
+    opens CRUD_Dosen to javafx.fxml;
+    exports CRUD_Dosen;
 }
