@@ -29,4 +29,7 @@ module org.example.project_prg3 {
 
     opens CRUD_Dosen to javafx.fxml;
     exports CRUD_Dosen;
+
+    opens CRUD_Matkul to javafx.fxml;
+    exports CRUD_Matkul;
 }

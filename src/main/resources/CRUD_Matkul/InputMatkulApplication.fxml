@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane fx:id="AnchorInputMatkul" prefHeight="548.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD_Matkul.InputMatkulController">
+   <children>
+      <Label alignment="CENTER" layoutX="205.0" layoutY="56.0" prefHeight="25.0" prefWidth="189.0" text="Input Data Mata Kuliah">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtIdMatkul" layoutX="266.0" layoutY="113.0" prefHeight="25.0" prefWidth="227.0" />
+      <TextField fx:id="txtNama" layoutX="266.0" layoutY="148.0" prefHeight="25.0" prefWidth="227.0" />
+      <TextField fx:id="txtSKS" layoutX="266.0" layoutY="183.0" prefHeight="25.0" prefWidth="227.0" />
+      <TextField fx:id="txtJenis" layoutX="265.0" layoutY="215.0" prefHeight="25.0" prefWidth="227.0" />
+      <TextField fx:id="txtSemester" layoutX="266.0" layoutY="250.0" prefHeight="25.0" prefWidth="227.0" />
+      <TextField fx:id="txtStatus" layoutX="266.0" layoutY="285.0" prefHeight="25.0" prefWidth="227.0" />
+      <Label layoutX="128.0" layoutY="363.0" prefHeight="17.0" prefWidth="110.0" text="Id Program Studi" />
+      <Label layoutX="128.0" layoutY="117.0" prefHeight="17.0" prefWidth="110.0" text="Id Mata Kuliah" />
+      <Label layoutX="128.0" layoutY="152.0" prefHeight="17.0" prefWidth="110.0" text="Nama" />
+      <Label layoutX="128.0" layoutY="187.0" prefHeight="17.0" prefWidth="110.0" text="Jumlah SKS" />
+      <Label layoutX="128.0" layoutY="219.0" prefHeight="17.0" prefWidth="110.0" text="Jenis" />
+      <Label layoutX="128.0" layoutY="254.0" prefHeight="17.0" prefWidth="110.0" text="Semester" />
+      <Label layoutX="128.0" layoutY="289.0" prefHeight="17.0" prefWidth="110.0" text="Status" />
+      <Label layoutX="128.0" layoutY="328.0" prefHeight="17.0" prefWidth="110.0" text="No Pegawai" />
+      <Button fx:id="btnBatal" layoutX="128.0" layoutY="448.0" mnemonicParsing="false" onAction="#onBtnBatalClick" prefHeight="39.0" prefWidth="123.0" text="Batal" />
+      <Button fx:id="btnSimpan" layoutX="369.0" layoutY="448.0" mnemonicParsing="false" onAction="#onBtnSimpanClick" prefHeight="39.0" prefWidth="123.0" text="Simpan" />
+      <Group fx:id="rbGroup" layoutX="283.0" layoutY="328.0" />
+      <ComboBox fx:id="cbProdi" layoutX="266.0" layoutY="359.0" prefHeight="25.0" prefWidth="227.0" />
+      <ComboBox fx:id="cbPegawai" layoutX="266.0" layoutY="319.0" prefHeight="25.0" prefWidth="227.0" />
+   </children>
+</AnchorPane>

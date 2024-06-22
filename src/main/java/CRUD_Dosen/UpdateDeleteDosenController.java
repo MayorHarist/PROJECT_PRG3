@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import DBConnect.DBConnect;
 
+import javax.swing.*;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -101,7 +102,7 @@ public class UpdateDeleteDosenController implements Initializable {
             return pegawai;
         }
 
-        public String getNidn() {
+        public String getNIDN() {
             return nidn;
         }
 
@@ -149,23 +150,24 @@ public class UpdateDeleteDosenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
+            DBConnect connection = new DBConnect();
             connection.stat = connection.conn.createStatement();
             String query = "SELECT * FROM Dosen";
             connection.result = connection.stat.executeQuery(query);
             while (connection.result.next()) {
-                LocalDate date = connection.result.getDate("tanggal").toLocalDate();
+                LocalDate date = connection.result.getDate("Tanggal_Lahir").toLocalDate();
                 oblist.add(new Dosen(
-                        connection.result.getString("pegawai"),
-                        connection.result.getString("nidn"),
-                        connection.result.getString("nama"),
-                        connection.result.getString("bidang"),
-                        connection.result.getString("pendidikan"),
+                        connection.result.getString("No_Pegawai"),
+                        connection.result.getString("NIDN"),
+                        connection.result.getString("Nama"),
+                        connection.result.getString("Bidang_Kompetensi"),
+                        connection.result.getString("Pendidikan_Terakhir"),
                         date,
-                        connection.result.getString("jenis"),
-                        connection.result.getString("alamat"),
-                        connection.result.getString("email"),
-                        connection.result.getString("telepon"),
-                        connection.result.getString("status")));
+                        connection.result.getString("Jenis_Kelamin"),
+                        connection.result.getString("Alamat"),
+                        connection.result.getString("Email"),
+                        connection.result.getString("Telepon"),
+                        connection.result.getString("Status")));
             }
             connection.stat.close();
             connection.result.close();
@@ -190,7 +192,8 @@ public class UpdateDeleteDosenController implements Initializable {
         tableDosen.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 txtPegawai.setText(newValue.getPegawai());
-                txtNIDN.setText(newValue.getNidn());
+                txtPegawai.setEditable(false); // Mengatur txtPegawai menjadi read-only
+                txtNIDN.setText(newValue.getNIDN());
                 txtNama.setText(newValue.getNama());
                 txtBidang.setText(newValue.getBidang());
                 txtPendidikan.setText(newValue.getPendidikan());
@@ -222,16 +225,17 @@ public class UpdateDeleteDosenController implements Initializable {
             if (selectedDosen != null) {
                 String jenisKelamin = rbLaki.isSelected() ? "Laki-Laki" : "Perempuan";
                 LocalDate tanggalLahir = Datelahir.getValue();
-                String query = "UPDATE Dosen SET nama = '" + txtNama.getText() +
-                        "', bidang = '" + txtBidang.getText() +
-                        "', pendidikan = '" + txtPendidikan.getText() +
-                        "', tanggal = '" + tanggalLahir.toString() +
-                        "', jenis = '" + jenisKelamin +
-                        "', alamat = '" + txtAlamat.getText() +
-                        "', email = '" + txtEmail.getText() +
-                        "', telepon = '" + txtTelepon.getText() +
-                        "', status = '" + txtStatus.getText() +
-                        "' WHERE pegawai = '" + selectedDosen.getPegawai() + "'";
+                String query = "UPDATE Dosen SET NIDN = " + txtNIDN.getText() +
+                        "Nama = '" + txtNama.getText() +
+                        "', Bidang_Kompetensi = '" + txtBidang.getText() +
+                        "', Pendidikan_Terakhir = '" + txtPendidikan.getText() +
+                        "', Tanggal_Lahir = '" + tanggalLahir.toString() +
+                        "', Jenis_Kelamin = '" + jenisKelamin +
+                        "', Alamat = '" + txtAlamat.getText() +
+                        "', Email = '" + txtEmail.getText() +
+                        "', Telepon = '" + txtTelepon.getText() +
+                        "', Status = '" + txtStatus.getText() +
+                        "' WHERE No_Pegawai = '" + selectedDosen.getPegawai() + "'";
                 connection.stat.executeUpdate(query);
 
                 // Update item di ObservableList
@@ -250,6 +254,7 @@ public class UpdateDeleteDosenController implements Initializable {
                         txtStatus.getText()));
 
                 tableDosen.refresh();
+                JOptionPane.showMessageDialog(null, "Update data Dosen berhasil!");
                 clearFields();
             }
         } catch (SQLException ex) {
@@ -263,7 +268,7 @@ public class UpdateDeleteDosenController implements Initializable {
             Dosen selectedDosen = tableDosen.getSelectionModel().getSelectedItem();
             if (selectedDosen != null) {
                 // Ubah status menjadi tidak aktif
-                String query = "UPDATE Dosen SET status = 'Tidak Aktif' WHERE pegawai = '" + selectedDosen.getPegawai() + "'";
+                String query = "UPDATE Dosen SET Status = 'Tidak Aktif' WHERE No_Pegawai = '" + selectedDosen.getPegawai() + "'";
                 connection.stat.executeUpdate(query);
 
                 // Update item di ObservableList
@@ -272,6 +277,7 @@ public class UpdateDeleteDosenController implements Initializable {
                 oblist.set(index, selectedDosen);
 
                 tableDosen.refresh();
+                JOptionPane.showMessageDialog(null, "Hapus data Dosen berhasil!");
                 clearFields();
             }
         } catch (SQLException ex) {

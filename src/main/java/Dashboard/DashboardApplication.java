@@ -1,7 +1,10 @@
 package Dashboard;
 
 import CRUD_Dosen.InputDosenController;
+import CRUD_Dosen.UpdateDeleteDosenController;
 import CRUD_Dosen.ViewDosenController;
+import CRUD_Matkul.InputMatkulController;
+import CRUD_Matkul.ViewMatkulController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,7 +20,7 @@ public class DashboardApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(ViewDosenController.class.getResource("ViewDosenApplication.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(ViewMatkulController.class.getResource("ViewMatkulApplication.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1280, 650);
         stage.setTitle("Dashboard Find Smart");
         stage.setScene(scene);
