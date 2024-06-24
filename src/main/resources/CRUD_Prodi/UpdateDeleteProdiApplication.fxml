@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD_Prodi.UpdateDeleteProdiController">
+    <Label layoutX="700.0" layoutY="135.0" text="Id Prodi:" />
+    <TextField fx:id="txtIdProdi" layoutX="811.0" layoutY="131.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+    <Label layoutX="705.0" layoutY="189.0" text="Nama:" GridPane.rowIndex="1" />
+    <TextField fx:id="txtNama" disable="true" layoutX="811.0" layoutY="185.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+    <Label layoutX="634.0" layoutY="241.0" text="Jenjang Pendidikan:" GridPane.rowIndex="2" />
+    <TextField fx:id="txtJenjangPendidikan" disable="true" layoutX="811.0" layoutY="237.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+    <Label layoutX="686.0" layoutY="296.0" text="Akreditasi:" GridPane.rowIndex="3" />
+    <TextField fx:id="txtAkreditasi" disable="true" layoutX="811.0" layoutY="292.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+    <Button fx:id="btnCari" layoutX="987.0" layoutY="131.0" onMouseClicked="#btnCari_Click" text="Cari" GridPane.rowIndex="4" />
+    <Button fx:id="btnUbah" layoutX="695.0" layoutY="372.0" onMouseClicked="#btnUbah_Click" text="Ubah" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+    <Button fx:id="btnHapus" layoutX="811.0" layoutY="372.0" onMouseClicked="#btnHapus_Click" text="Hapus" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+   <TableView layoutX="434.0" layoutY="484.0" prefHeight="200.0" prefWidth="200.0">
+     <columns>
+       <TableColumn prefWidth="75.0" text="C1" />
+       <TableColumn prefWidth="75.0" text="C2" />
+     </columns>
+   </TableView>
+   <Label layoutX="766.0" layoutY="59.0" text="Update &amp; Delete">
+      <font>
+         <Font name="System Bold" size="25.0" />
+      </font>
+   </Label>
+</AnchorPane>
