@@ -32,4 +32,10 @@ module org.example.project_prg3 {
 
     opens CRUD_Matkul to javafx.fxml;
     exports CRUD_Matkul;
+
+    opens Login_User to javafx.fxml;
+    exports Login_User;
+
+    opens CRUD_Prodi to javafx.fxml;
+    exports CRUD_Prodi;
 }
