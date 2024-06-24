@@ -105,7 +105,7 @@ public class InputMatkulController {
                 connection.pstat.setString(8, prodi);
 
                 connection.pstat.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Insert data Mata Kuliah berhasil!");
+                JOptionPane.showMessageDialog(null, "Input data Mata Kuliah berhasil!");
                 clear();
                 autoid(); // Set kembali Id Matkul setelah menyimpan data
             } catch (SQLException ex) {

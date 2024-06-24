@@ -4,12 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import DBConnect.DBConnect;
 
@@ -17,6 +12,7 @@ import javax.swing.*;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class UpdateDeleteDosenController implements Initializable {
@@ -225,8 +221,8 @@ public class UpdateDeleteDosenController implements Initializable {
             if (selectedDosen != null) {
                 String jenisKelamin = rbLaki.isSelected() ? "Laki-Laki" : "Perempuan";
                 LocalDate tanggalLahir = Datelahir.getValue();
-                String query = "UPDATE Dosen SET NIDN = " + txtNIDN.getText() +
-                        "Nama = '" + txtNama.getText() +
+                String query = "UPDATE Dosen SET NIDN = '"+ txtNIDN.getText() +
+                        "', Nama = '" + txtNama.getText() +
                         "', Bidang_Kompetensi = '" + txtBidang.getText() +
                         "', Pendidikan_Terakhir = '" + txtPendidikan.getText() +
                         "', Tanggal_Lahir = '" + tanggalLahir.toString() +
@@ -267,23 +263,34 @@ public class UpdateDeleteDosenController implements Initializable {
         try {
             Dosen selectedDosen = tableDosen.getSelectionModel().getSelectedItem();
             if (selectedDosen != null) {
-                // Ubah status menjadi tidak aktif
-                String query = "UPDATE Dosen SET Status = 'Tidak Aktif' WHERE No_Pegawai = '" + selectedDosen.getPegawai() + "'";
-                connection.stat.executeUpdate(query);
+                // Show a confirmation dialog
+                int response = JOptionPane.showConfirmDialog(null,
+                        "Apakah Anda yakin ingin menghapus data Dosen dengan No. Pegawai: " + selectedDosen.getPegawai() + "?",
+                        "Konfirmasi Penghapusan",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE);
 
-                // Update item di ObservableList
-                int index = oblist.indexOf(selectedDosen);
-                selectedDosen.setStatus("Tidak Aktif");
-                oblist.set(index, selectedDosen);
+                // Check user response
+                if (response == JOptionPane.YES_OPTION) {
+                    // User chose YES, proceed with deletion
+                    String query = "UPDATE Dosen SET Status = 'Tidak Aktif' WHERE No_Pegawai = '" + selectedDosen.getPegawai() + "'";
+                    connection.stat.executeUpdate(query);
 
-                tableDosen.refresh();
-                JOptionPane.showMessageDialog(null, "Hapus data Dosen berhasil!");
-                clearFields();
+                    // Update item in ObservableList
+                    int index = oblist.indexOf(selectedDosen);
+                    selectedDosen.setStatus("Tidak Aktif");
+                    oblist.set(index, selectedDosen);
+
+                    tableDosen.refresh();
+                    JOptionPane.showMessageDialog(null, "Hapus data Dosen berhasil!");
+                    clearFields();
+                }
             }
         } catch (SQLException ex) {
             System.out.println("Terjadi error saat mengubah status dosen " + ex);
         }
     }
+
 
     private void clearFields() {
         txtPegawai.clear();

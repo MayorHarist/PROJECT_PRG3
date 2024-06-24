@@ -85,7 +85,7 @@ public class InputDosenController {
             connection.pstat.setString(11, Status);
 
             connection.pstat.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Insert data Dosen berhasil!");
+            JOptionPane.showMessageDialog(null, "Input data Dosen berhasil!");
             clear();
             autoid(); // Set kembali No Pegawai setelah menyimpan data
         } catch (SQLException ex) {
