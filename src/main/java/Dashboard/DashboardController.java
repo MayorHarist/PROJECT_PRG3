@@ -22,6 +22,9 @@ public class DashboardController {
     private Button btnKeluar;
 
     @FXML
+    private Button btnProdi; // Add this line to reference the btnProdi button
+
+    @FXML
     private ScrollPane ScrollDash;
 
     @FXML
@@ -52,5 +55,23 @@ public class DashboardController {
     protected void onbtnKeluarClick(ActionEvent event) {
         Stage stage = (Stage) btnKeluar.getScene().getWindow();
         stage.close();
+    }
+
+    @FXML
+    protected void onbtnProdiClick() {
+        // Target height in pixels
+        double targetHeight = 6479;
+
+        // Get the total height of the content
+        double contentHeight = AnchorDash.getBoundsInLocal().getHeight();
+
+        // Calculate the vvalue to scroll to the target height
+        double vvalue = targetHeight / contentHeight;
+
+        // Ensure vvalue is between 0 and 1
+        vvalue = Math.min(Math.max(vvalue, 0), 1);
+
+        // Scroll to the calculated vvalue
+        ScrollDash.setVvalue(vvalue);
     }
 }
