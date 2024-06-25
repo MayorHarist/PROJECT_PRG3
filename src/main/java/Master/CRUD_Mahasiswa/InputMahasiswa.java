@@ -50,22 +50,24 @@ public class InputMahasiswa implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        autoid();
         genderGroup = new ToggleGroup();
         rbLaki.setToggleGroup(genderGroup);
         rbPerempuan.setToggleGroup(genderGroup);
         loadProdi();
     }
+
     private void showAlert(String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setContentText(message);
         alert.show();
     }
+
     private void loadProdi() {
         ObservableList<String> prodiList = FXCollections.observableArrayList();
         String query = "SELECT Nama FROM ProgramStudi WHERE Status='Aktif'";
 
-        try (Connection conn = connection.conn;
-             PreparedStatement stmt = conn.prepareStatement(query);
+        try (PreparedStatement stmt = connection.conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
@@ -79,19 +81,25 @@ public class InputMahasiswa implements Initializable {
 
     public void btnSimpan_Click(ActionEvent actionEvent) {
         String NIM = txtNIM.getText();
-        String idProdi = getIdProdiByName(cbProdi.getValue());
+        String selectedProdi = cbProdi.getValue();
+        if (selectedProdi == null) {
+            showAlert("Please select a Prodi!", Alert.AlertType.WARNING);
+            return;
+        }
+        String idProdi = getIdProdiByName(selectedProdi);
         String nama = txtNama.getText();
-        String tanggalLahir = dpTanggalLahir.getValue().toString();
+        String tanggalLahir = dpTanggalLahir.getValue() != null ? dpTanggalLahir.getValue().toString() : "";
         String jenisKelamin = ((RadioButton) genderGroup.getSelectedToggle()).getText();
         String alamat = txtAlamat.getText();
         String email = txtEmail.getText();
         String telepon = txtTelepon.getText();
-        int tahunMasuk = Integer.parseInt(txtTahunMasuk.getText());
+        String tahunMasukStr = txtTahunMasuk.getText();
+        int tahunMasuk = tahunMasukStr.isEmpty() ? -1 : Integer.parseInt(tahunMasukStr);
         String username = txtUsername.getText();
         String password = txtPassword.getText();
 
-        if (NIM.isEmpty() || idProdi.isEmpty() || nama.isEmpty() || tanggalLahir.isEmpty() || jenisKelamin.isEmpty() ||
-                alamat.isEmpty() || email.isEmpty() || telepon.isEmpty() || txtTahunMasuk.getText().isEmpty() ||
+        if (NIM.isEmpty() || idProdi == null || idProdi.isEmpty() || nama.isEmpty() || tanggalLahir.isEmpty() || jenisKelamin.isEmpty() ||
+                alamat.isEmpty() || email.isEmpty() || telepon.isEmpty() || tahunMasukStr.isEmpty() ||
                 username.isEmpty() || password.isEmpty()) {
             showAlert("All fields must be filled!", Alert.AlertType.WARNING);
         } else {
@@ -99,17 +107,18 @@ public class InputMahasiswa implements Initializable {
                 insertMahasiswa(NIM, idProdi, nama, tanggalLahir, jenisKelamin, alamat, email, telepon, tahunMasuk, username, password);
                 showAlert("Data berhasil disimpan", Alert.AlertType.INFORMATION);
                 clear();
+                autoid();
             } catch (SQLException e) {
                 showAlert("Unable to save: " + e.getMessage(), Alert.AlertType.ERROR);
             }
         }
     }
+
     private String getIdProdiByName(String prodiName) {
         String idProdi = null;
         String query = "SELECT Id_Prodi FROM ProgramStudi WHERE Nama = ?";
 
-        try (Connection conn = connection.conn;
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
             stmt.setString(1, prodiName);
             ResultSet rs = stmt.executeQuery();
 
@@ -119,12 +128,13 @@ public class InputMahasiswa implements Initializable {
         } catch (SQLException e) {
             showAlert("Error retrieving Prodi ID: " + e.getMessage(), Alert.AlertType.ERROR);
         }
-
         return idProdi;
     }
 
-    public void btnBatal_Click(ActionEvent actionEvent) {clear();
+    public void btnBatal_Click(ActionEvent actionEvent) {
+        clear();
     }
+
     private void clear() {
         txtNIM.clear();
         cbProdi.getSelectionModel().clearSelection();
@@ -138,12 +148,12 @@ public class InputMahasiswa implements Initializable {
         txtUsername.clear();
         txtPassword.clear();
     }
+
     private void insertMahasiswa(String NIM, String idProdi, String nama, String tanggalLahir, String jenisKelamin,
                                  String alamat, String email, String telepon, int tahunMasuk,
                                  String username, String password) throws SQLException {
         String query = "EXEC sp_InsertMahasiswa ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
-        try (Connection conn = connection.pstat.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
             stmt.setString(1, NIM);
             stmt.setString(2, idProdi);
             stmt.setString(3, nama);
@@ -157,6 +167,28 @@ public class InputMahasiswa implements Initializable {
             stmt.setString(11, password);
 
             stmt.executeUpdate();
+        }
+    }
+
+    private void autoid() {
+        try {
+            String sql = "SELECT MAX(NIM) FROM Mahasiswa";
+            connection.pstat = connection.conn.prepareStatement(sql);
+            ResultSet result = connection.pstat.executeQuery();
+
+            if (result.next()) {
+                String maxId = result.getString(1);
+                if (maxId != null) {
+                    int number = Integer.parseInt(maxId.substring(3)) + 1;
+                    String formattedNumber = String.format("%03d", number);
+                    txtNIM.setText("MHS" + formattedNumber);
+                } else {
+                    txtNIM.setText("MHS001");
+                }
+            }
+            result.close();
+        } catch (Exception ex) {
+            System.out.println("Terjadi error pada autoid: " + ex);
         }
     }
 }
