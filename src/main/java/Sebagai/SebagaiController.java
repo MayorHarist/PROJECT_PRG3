@@ -32,34 +32,35 @@ public class SebagaiController {
         try {
             FXMLLoader loader = new FXMLLoader(LoginTendikController.class.getResource("LoginTendikApplication.fxml"));
             Parent root = loader.load();
-
+            Scene scene = new Scene(root, 1280, 650);  // Use 'root' to create the Scene
             Stage stage = new Stage();
-            stage.setScene(new Scene(root));
+            stage.setScene(scene);
             stage.setFullScreen(true);
             stage.setFullScreenExitHint("");
             stage.show();
 
-            // Tutup stage sebelumnya
+            // Close previous stage
             Stage previousStage = (Stage) AnchorSebagai.getScene().getWindow();
             previousStage.close();
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Failed to load LoginTendikController.fxml");
+            System.out.println("Failed to load LoginTendikApplication.fxml");
         } catch (NullPointerException e) {
             e.printStackTrace();
-            System.out.println("Resource LoginTendikController.fxml not found");
+            System.out.println("Resource LoginTendikApplication.fxml not found");
         }
     }
+
 
     @FXML
     protected void onbtnMahasiswaClick(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(LoginMahasiswaController.class.getResource("LoginMahasiswaApplication.fxml"));
             Parent root = loader.load();
-
+            Scene scene = new Scene(root, 1280, 650);
             Stage stage = new Stage();
-            stage.setScene(new Scene(root));
+            stage.setScene(scene);
             stage.setFullScreen(true);
             stage.setFullScreenExitHint("");
             stage.show();
@@ -82,9 +83,9 @@ public class SebagaiController {
         try {
             FXMLLoader loader = new FXMLLoader(DashboardApplication.class.getResource("DashboardApplication.fxml"));
             Parent root = loader.load();
-
+            Scene scene = new Scene(root, 1280, 650);
             Stage stage = new Stage();
-            stage.setScene(new Scene(root));
+            stage.setScene(scene);
             stage.setFullScreen(true);
             stage.setFullScreenExitHint("");
             stage.show();

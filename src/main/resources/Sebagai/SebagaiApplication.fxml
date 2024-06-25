@@ -5,16 +5,16 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="AnchorSebagai" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Sebagai.SebagaiController">
+<AnchorPane fx:id="AnchorSebagai" prefHeight="650.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Sebagai.SebagaiController">
    <children>
-      <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="719.0" fitWidth="1358.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Download/Sebagai.png" />
          </image>
       </ImageView>
-      <Button fx:id="btnTenagaKependidikan" layoutX="112.0" layoutY="506.0" mnemonicParsing="false" onAction="#onbtnTenagaKependidikanClick" opacity="0.0" prefHeight="95.0" prefWidth="564.0" text="Tenaga Kependidikan" />
-      <Button fx:id="btnMahasiswa" layoutX="112.0" layoutY="620.0" mnemonicParsing="false" onAction="#onbtnMahasiswaClick" opacity="0.0" prefHeight="95.0" prefWidth="564.0" text="Mahasiswa" />
-      <Button fx:id="btnBatal" layoutX="112.0" layoutY="732.0" mnemonicParsing="false" onAction="#onbtnBatalClick" opacity="0.0" prefHeight="95.0" prefWidth="564.0" text="Batal" />
-      <Button fx:id="btnKepalaTendik" layoutX="112.0" layoutY="401.0" mnemonicParsing="false" onAction="#onbtnKepalaTendikClick" opacity="0.0" prefHeight="95.0" prefWidth="564.0" text="Kepala Tendik" />
+      <Button fx:id="btnTenagaKependidikan" layoutX="93.0" layoutY="346.0" mnemonicParsing="false" onAction="#onbtnTenagaKependidikanClick" opacity="0.0" prefHeight="47.0" prefWidth="338.0" text="Tenaga Kependidikan" />
+      <Button fx:id="btnMahasiswa" layoutX="91.0" layoutY="420.0" mnemonicParsing="false" onAction="#onbtnMahasiswaClick" opacity="0.0" prefHeight="47.0" prefWidth="338.0" text="Mahasiswa" />
+      <Button fx:id="btnBatal" layoutX="95.0" layoutY="494.0" mnemonicParsing="false" onAction="#onbtnBatalClick" opacity="0.0" prefHeight="47.0" prefWidth="338.0" text="Batal" />
+      <Button fx:id="btnKepalaTendik" layoutX="95.0" layoutY="272.0" mnemonicParsing="false" onAction="#onbtnKepalaTendikClick" opacity="0.0" prefHeight="47.0" prefWidth="338.0" text="Kepala Tendik" />
    </children>
 </AnchorPane>

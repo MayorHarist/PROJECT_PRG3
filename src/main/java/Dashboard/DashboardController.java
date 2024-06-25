@@ -35,9 +35,9 @@ public class DashboardController {
         try {
             FXMLLoader loader = new FXMLLoader(SebagaiController.class.getResource("SebagaiApplication.fxml"));
             Parent root = loader.load();
-
+            Scene scene = new Scene(root, 1280, 650);
             Stage stage = new Stage();
-            stage.setScene(new Scene(root));
+            stage.setScene(scene);
             stage.setFullScreen(true);
             stage.setFullScreenExitHint("");
             stage.show();

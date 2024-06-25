@@ -70,7 +70,7 @@ public class InputDosenController {
         Status = txtStatus.getText();
 
         try {
-            String query = "INSERT INTO Dosen VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+            String query = "{call sp_InsertDosen(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
             connection.pstat = connection.conn.prepareStatement(query);
             connection.pstat.setString(1, Pegawai);
             connection.pstat.setString(2, NIDN);
