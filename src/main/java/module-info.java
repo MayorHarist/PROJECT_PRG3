@@ -29,4 +29,7 @@ module org.example.project_prg3 {
 
     opens Master.CRUD_Prodi to javafx.fxml;
     exports Master.CRUD_Prodi;
+
+    opens Master.CRUD_Mahasiswa to javafx.fxml;
+    exports Master.CRUD_Mahasiswa;
 }
