@@ -134,7 +134,7 @@ public class UpdateDeleteDosenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         noPegawai.setCellValueFactory(new PropertyValueFactory<>("pegawai"));
-        Nidn.setCellValueFactory(new PropertyValueFactory<>("nidn"));
+        Nidn.setCellValueFactory(new PropertyValueFactory<>("NIDN"));
         nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
         bidang.setCellValueFactory(new PropertyValueFactory<>("bidang"));
         pendidikan.setCellValueFactory(new PropertyValueFactory<>("pendidikan"));
