@@ -101,4 +101,7 @@ public class SebagaiController {
             System.out.println("Resource DashboardApplication.fxml not found");
         }
     }
+
+    public void onbtnKepalaTendikClick(ActionEvent event) {
+    }
 }
