@@ -1,4 +1,4 @@
-package CRUD_Matkul;
+package Master.CRUD_Matkul;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
-import DBConnect.DBConnect;
+import Database.DBConnect;
 
 public class InputMatkulController {
     @FXML

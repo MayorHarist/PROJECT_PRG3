@@ -1,4 +1,4 @@
-package CRUD_Matkul;
+package Master.CRUD_Matkul;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,7 +9,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import DBConnect.DBConnect;
+import Database.DBConnect;
 
 import javax.swing.*;
 import java.net.URL;

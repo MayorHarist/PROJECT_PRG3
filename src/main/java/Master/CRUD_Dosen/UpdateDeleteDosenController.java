@@ -1,4 +1,4 @@
-package CRUD_Dosen;
+package Master.CRUD_Dosen;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -6,13 +6,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import DBConnect.DBConnect;
+import Database.DBConnect;
 
 import javax.swing.*;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class UpdateDeleteDosenController implements Initializable {

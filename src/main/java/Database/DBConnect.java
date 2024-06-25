@@ -1,4 +1,4 @@
-package DBConnect;
+package Database;
 
 import java.sql.*;
 

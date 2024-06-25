@@ -1,4 +1,4 @@
-package CRUD_Dosen;
+package Master.CRUD_Dosen;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
@@ -9,7 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import java.sql.*;
 import java.time.LocalDate;
 import javax.swing.JOptionPane;
-import DBConnect.DBConnect;
+import Database.DBConnect;
 
 public class InputDosenController {
     @FXML

@@ -6,11 +6,8 @@ module org.example.project_prg3 {
     requires java.sql;
     requires java.desktop;
 
-    opens org.example.project_prg3 to javafx.fxml;
-    exports org.example.project_prg3;
-
-    opens DBConnect to javafx.fxml;
-    exports DBConnect;
+    opens Database to javafx.fxml;
+    exports Database;
 
     opens Dashboard to javafx.fxml;
     exports Dashboard;
@@ -24,18 +21,12 @@ module org.example.project_prg3 {
     opens LoginMahasiswa to javafx.fxml;
     exports LoginMahasiswa;
 
-    opens UserMahasiswa to javafx.fxml;
-    exports UserMahasiswa;
+    opens Master.CRUD_Dosen to javafx.fxml;
+    exports Master.CRUD_Dosen;
 
-    opens CRUD_Dosen to javafx.fxml;
-    exports CRUD_Dosen;
+    opens Master.CRUD_Matkul to javafx.fxml;
+    exports Master.CRUD_Matkul;
 
-    opens CRUD_Matkul to javafx.fxml;
-    exports CRUD_Matkul;
-
-    opens Login_User to javafx.fxml;
-    exports Login_User;
-
-    opens CRUD_Prodi to javafx.fxml;
-    exports CRUD_Prodi;
+    opens Master.CRUD_Prodi to javafx.fxml;
+    exports Master.CRUD_Prodi;
 }

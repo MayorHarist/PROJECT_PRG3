@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CRUD_Prodi.InputProdiController">
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Prodi.InputProdiController">
     <Label layoutX="617.0" layoutY="430.0" text="Id Prodi:" />
     <TextField fx:id="txtIdProdi" editable="false" layoutX="752.0" layoutY="426.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 

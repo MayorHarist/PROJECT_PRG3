@@ -6,18 +6,17 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="AnchorDash" prefHeight="1157.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Dashboard.DashboardController">
+<AnchorPane fx:id="AnchorDash" prefHeight="840.0" prefWidth="1540.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Dashboard.DashboardController">
    <children>
       <ScrollPane fx:id="ScrollDash" layoutY="-1.0" prefHeight="6479.0" prefWidth="1920.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <content>
-            <ImageView fitHeight="6480.0" fitWidth="1280.0" pickOnBounds="true">
+            <ImageView fitHeight="6480.0" fitWidth="1540.0" pickOnBounds="true">
                <image>
                   <Image url="@../Download/Dashboard Utama Smart.png" />
                </image>
             </ImageView>
          </content></ScrollPane>
-      <Button fx:id="btnMasuk" layoutX="995.0" layoutY="36.0" mnemonicParsing="false" onAction="#onbtnMasukClick" opacity="0.0" prefHeight="57.0" prefWidth="122.0" text="Log in" />
-      <Button fx:id="btnKeluar" layoutX="1133.0" layoutY="36.0" mnemonicParsing="false" onAction="#onbtnKeluarClick" opacity="0.0" prefHeight="57.0" prefWidth="122.0" text="Log out" />
-      <Button fx:id="ProdiDisplay" layoutX="639.0" layoutY="53.0" mnemonicParsing="false" onAction="#onbtnProdiClick" prefHeight="25.0" prefWidth="130.0" text="Prodi" />
+      <Button fx:id="btnMasuk" layoutX="1485.0" layoutY="36.0" mnemonicParsing="false" onAction="#onbtnMasukClick" opacity="0.0" prefHeight="58.0" prefWidth="194.0" text="Log in" />
+      <Button fx:id="btnKeluar" layoutX="1693.0" layoutY="36.0" mnemonicParsing="false" onAction="#onbtnKeluarClick" opacity="0.0" prefHeight="58.0" prefWidth="194.0" text="Log out" />
    </children>
 </AnchorPane>

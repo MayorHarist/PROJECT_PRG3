@@ -1,4 +1,4 @@
-package CRUD_Dosen;
+package Master.CRUD_Dosen;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -7,7 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import DBConnect.DBConnect;
+import Database.DBConnect;
 import java.time.LocalDate;
 import java.net.URL;
 import java.util.ResourceBundle;

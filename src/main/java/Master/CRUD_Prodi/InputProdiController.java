@@ -1,6 +1,6 @@
-package CRUD_Prodi;
+package Master.CRUD_Prodi;
 
-import DBConnect.DBConnect;
+import Database.DBConnect;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
