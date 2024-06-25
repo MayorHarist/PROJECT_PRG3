@@ -10,6 +10,8 @@ import Database.DBConnect;
 
 import javax.swing.*;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
@@ -41,13 +43,11 @@ public class UpdateDeleteDosenController implements Initializable {
     @FXML
     private TextField txtTelepon;
     @FXML
-    private TextField txtStatus;
-    @FXML
     private TableView<Dosen> tableDosen;
     @FXML
     private TableColumn<Dosen, String> noPegawai;
     @FXML
-    private TableColumn<Dosen, String> nidn;
+    private TableColumn<Dosen, String> Nidn;
     @FXML
     private TableColumn<Dosen, String> nama;
     @FXML
@@ -65,8 +65,6 @@ public class UpdateDeleteDosenController implements Initializable {
     @FXML
     private TableColumn<Dosen, String> telepon;
     @FXML
-    private TableColumn<Dosen, String> status;
-    @FXML
     private Button btnBatal;
     @FXML
     private Button btnDelete;
@@ -76,12 +74,12 @@ public class UpdateDeleteDosenController implements Initializable {
     private ObservableList<Dosen> oblist = FXCollections.observableArrayList();
 
     public class Dosen {
-        String pegawai, nidn, nama, bidang, pendidikan, jenis, alamat, email, telepon, status;
+        String pegawai, Nidn, nama, bidang, pendidikan, jenis, alamat, email, telepon;
         LocalDate tanggal;
 
-        public Dosen(String pegawai, String nidn, String nama, String bidang, String pendidikan, LocalDate tanggal, String jenis, String alamat, String email, String telepon, String status) {
+        public Dosen(String pegawai, String nidn, String nama, String bidang, String pendidikan, LocalDate tanggal, String jenis, String alamat, String email, String telepon) {
             this.pegawai = pegawai;
-            this.nidn = nidn;
+            this.Nidn = nidn;
             this.nama = nama;
             this.bidang = bidang;
             this.pendidikan = pendidikan;
@@ -90,7 +88,6 @@ public class UpdateDeleteDosenController implements Initializable {
             this.alamat = alamat;
             this.email = email;
             this.telepon = telepon;
-            this.status = status;
         }
 
         public String getPegawai() {
@@ -98,7 +95,7 @@ public class UpdateDeleteDosenController implements Initializable {
         }
 
         public String getNIDN() {
-            return nidn;
+            return Nidn;
         }
 
         public String getNama() {
@@ -132,46 +129,12 @@ public class UpdateDeleteDosenController implements Initializable {
         public String getTelepon() {
             return telepon;
         }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            DBConnect connection = new DBConnect();
-            connection.stat = connection.conn.createStatement();
-            String query = "SELECT * FROM Dosen";
-            connection.result = connection.stat.executeQuery(query);
-            while (connection.result.next()) {
-                LocalDate date = connection.result.getDate("Tanggal_Lahir").toLocalDate();
-                oblist.add(new Dosen(
-                        connection.result.getString("No_Pegawai"),
-                        connection.result.getString("NIDN"),
-                        connection.result.getString("Nama"),
-                        connection.result.getString("Bidang_Kompetensi"),
-                        connection.result.getString("Pendidikan_Terakhir"),
-                        date,
-                        connection.result.getString("Jenis_Kelamin"),
-                        connection.result.getString("Alamat"),
-                        connection.result.getString("Email"),
-                        connection.result.getString("Telepon"),
-                        connection.result.getString("Status")));
-            }
-            connection.stat.close();
-            connection.result.close();
-        } catch (Exception ex) {
-            System.out.println("Terjadi error saat load data dosen" + ex);
-        }
-
         noPegawai.setCellValueFactory(new PropertyValueFactory<>("pegawai"));
-        nidn.setCellValueFactory(new PropertyValueFactory<>("nidn"));
+        Nidn.setCellValueFactory(new PropertyValueFactory<>("nidn"));
         nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
         bidang.setCellValueFactory(new PropertyValueFactory<>("bidang"));
         pendidikan.setCellValueFactory(new PropertyValueFactory<>("pendidikan"));
@@ -180,9 +143,8 @@ public class UpdateDeleteDosenController implements Initializable {
         alamat.setCellValueFactory(new PropertyValueFactory<>("alamat"));
         email.setCellValueFactory(new PropertyValueFactory<>("email"));
         telepon.setCellValueFactory(new PropertyValueFactory<>("telepon"));
-        status.setCellValueFactory(new PropertyValueFactory<>("status"));
-
         tableDosen.setItems(oblist);
+        loadTableData();
 
         tableDosen.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -203,7 +165,6 @@ public class UpdateDeleteDosenController implements Initializable {
                 txtAlamat.setText(newValue.getAlamat());
                 txtEmail.setText(newValue.getEmail());
                 txtTelepon.setText(newValue.getTelepon());
-                txtStatus.setText(newValue.getStatus());
             }
         });
     }
@@ -220,18 +181,20 @@ public class UpdateDeleteDosenController implements Initializable {
             if (selectedDosen != null) {
                 String jenisKelamin = rbLaki.isSelected() ? "Laki-Laki" : "Perempuan";
                 LocalDate tanggalLahir = Datelahir.getValue();
-                String query = "UPDATE Dosen SET NIDN = '"+ txtNIDN.getText() +
-                        "', Nama = '" + txtNama.getText() +
-                        "', Bidang_Kompetensi = '" + txtBidang.getText() +
-                        "', Pendidikan_Terakhir = '" + txtPendidikan.getText() +
-                        "', Tanggal_Lahir = '" + tanggalLahir.toString() +
-                        "', Jenis_Kelamin = '" + jenisKelamin +
-                        "', Alamat = '" + txtAlamat.getText() +
-                        "', Email = '" + txtEmail.getText() +
-                        "', Telepon = '" + txtTelepon.getText() +
-                        "', Status = '" + txtStatus.getText() +
-                        "' WHERE No_Pegawai = '" + selectedDosen.getPegawai() + "'";
-                connection.stat.executeUpdate(query);
+                String query = "EXEC sp_UpdateDosen ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
+                connection.pstat = connection.conn.prepareStatement(query);
+                connection.pstat.setString(1, (selectedDosen.getPegawai()));
+                connection.pstat.setString(2, txtNIDN.getText());
+                connection.pstat.setString(3, txtNama.getText());
+                connection.pstat.setString(4, txtBidang.getText());
+                connection.pstat.setString(5, txtPendidikan.getText());
+                connection.pstat.setDate(6, java.sql.Date.valueOf(tanggalLahir));
+                connection.pstat.setString(7, jenisKelamin);
+                connection.pstat.setString(8, txtAlamat.getText());
+                connection.pstat.setString(9, txtEmail.getText());
+                connection.pstat.setString(10, txtTelepon.getText());
+
+                connection.pstat.executeUpdate();
 
                 // Update item di ObservableList
                 int index = oblist.indexOf(selectedDosen);
@@ -245,9 +208,8 @@ public class UpdateDeleteDosenController implements Initializable {
                         jenisKelamin,
                         txtAlamat.getText(),
                         txtEmail.getText(),
-                        txtTelepon.getText(),
-                        txtStatus.getText()));
-
+                        txtTelepon.getText()
+                ));
                 tableDosen.refresh();
                 JOptionPane.showMessageDialog(null, "Update data Dosen berhasil!");
                 clearFields();
@@ -257,39 +219,24 @@ public class UpdateDeleteDosenController implements Initializable {
         }
     }
 
+
     @FXML
     protected void onBtnDelete() {
         try {
-            Dosen selectedDosen = tableDosen.getSelectionModel().getSelectedItem();
-            if (selectedDosen != null) {
-                // Show a confirmation dialog
-                int response = JOptionPane.showConfirmDialog(null,
-                        "Apakah Anda yakin ingin menghapus data Dosen dengan No. Pegawai: " + selectedDosen.getPegawai() + "?",
-                        "Konfirmasi Penghapusan",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE);
+            String query = "EXEC sp_DeleteDosen ?";
+            try (Connection conn = connection.conn;
+                 PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setString(1, txtPegawai.getText());
+                stmt.executeUpdate();
 
-                // Check user response
-                if (response == JOptionPane.YES_OPTION) {
-                    // User chose YES, proceed with deletion
-                    String query = "UPDATE Dosen SET Status = 'Tidak Aktif' WHERE No_Pegawai = '" + selectedDosen.getPegawai() + "'";
-                    connection.stat.executeUpdate(query);
-
-                    // Update item in ObservableList
-                    int index = oblist.indexOf(selectedDosen);
-                    selectedDosen.setStatus("Tidak Aktif");
-                    oblist.set(index, selectedDosen);
-
-                    tableDosen.refresh();
-                    JOptionPane.showMessageDialog(null, "Hapus data Dosen berhasil!");
-                    clearFields();
-                }
+                showAlert("Data berhasil dihapus", Alert.AlertType.INFORMATION);
+                clearFields();
+                loadTableData(); // Reload table data
             }
-        } catch (SQLException ex) {
-            System.out.println("Terjadi error saat mengubah status dosen " + ex);
+        } catch (SQLException e) {
+            showAlert("Error: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
-
 
     private void clearFields() {
         txtPegawai.clear();
@@ -303,6 +250,40 @@ public class UpdateDeleteDosenController implements Initializable {
         txtAlamat.clear();
         txtEmail.clear();
         txtTelepon.clear();
-        txtStatus.clear();
+    }
+
+    private void showAlert(String message, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setContentText(message);
+        alert.show();
+    }
+
+    private void loadTableData() {
+        try {
+            DBConnect connection = new DBConnect();
+            connection.stat = connection.conn.createStatement();
+            String query = "SELECT * FROM Dosen WHERE Status = 'Aktif'";
+            oblist.clear();
+            connection.result = connection.stat.executeQuery(query);
+            while (connection.result.next()) {
+                LocalDate date = connection.result.getDate("Tanggal_Lahir").toLocalDate();
+                oblist.add(new Dosen(
+                        connection.result.getString("No_Pegawai"),
+                        connection.result.getString("NIDN"),
+                        connection.result.getString("Nama"),
+                        connection.result.getString("Bidang_Kompetensi"),
+                        connection.result.getString("Pendidikan_Terakhir"),
+                        date,
+                        connection.result.getString("Jenis_Kelamin"),
+                        connection.result.getString("Alamat"),
+                        connection.result.getString("Email"),
+                        connection.result.getString("Telepon")
+                ));
+            }
+            connection.stat.close();
+            connection.result.close();
+        } catch (Exception ex) {
+            System.out.println("Terjadi error saat load data dosen" + ex);
+        }
     }
 }

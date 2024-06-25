@@ -22,7 +22,7 @@
         <TableView fx:id="tableDosen" layoutX="25.0" layoutY="100.0" prefHeight="550.0" prefWidth="600.0">
             <columns>
                 <TableColumn fx:id="noPegawai" prefWidth="75.0" text="No Pegawai" />
-                <TableColumn fx:id="nidn" prefWidth="120.0" text="NIDN" />
+                <TableColumn fx:id="Nidn" prefWidth="120.0" text="NIDN" />
                 <TableColumn fx:id="nama" prefWidth="90.0" text="Nama" />
                 <TableColumn fx:id="bidang" prefWidth="118.6666259765625" text="Bidang Kompetensi" />
                 <TableColumn fx:id="pendidikan" prefWidth="129.33334350585938" text="Pendidikan Terakhir" />
@@ -31,7 +31,6 @@
                 <TableColumn fx:id="alamat" prefWidth="81.3333740234375" text="Alamat" />
                 <TableColumn fx:id="email" prefWidth="93.33331298828125" text="Email" />
                 <TableColumn fx:id="telepon" prefWidth="90.0" text="Telepon" />
-                <TableColumn fx:id="status" prefWidth="90.0" text="Status" />
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -73,7 +72,6 @@
                         <HBox spacing="10.0">
                             <Label prefHeight="26.0" prefWidth="100.0" text="Telepon:" />
                         </HBox>
-                         <Label prefHeight="26.0" prefWidth="100.0" text="Status:" />
                     </children>
                 </VBox>
                 <HBox layoutX="70.0" layoutY="502.0" prefHeight="46.0" prefWidth="402.0" spacing="50.0">
@@ -94,7 +92,6 @@
                    <TextField fx:id="txtAlamat" layoutX="238.0" layoutY="286.0" prefHeight="55.0" prefWidth="250.0" />
                    <TextField fx:id="txtEmail" layoutX="237.0" layoutY="354.0" prefHeight="25.0" prefWidth="250.0" />
                    <TextField fx:id="txtTelepon" layoutX="237.0" layoutY="389.0" prefHeight="25.0" prefWidth="250.0" />
-                   <TextField fx:id="txtStatus" layoutX="236.0" layoutY="425.0" prefHeight="25.0" prefWidth="250.0" />
             </children>
         </AnchorPane>
     </children>
