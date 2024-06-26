@@ -1,0 +1,9 @@
+TableView {
+    -fx-background-color: WHITE;
+    -fx-alignment: LEFT;
+
+}
+
+Button {
+    -fx-border-style: ROUND;
+}
