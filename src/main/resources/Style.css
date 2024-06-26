@@ -1,9 +1,9 @@
-TableView {
-    -fx-background-color: WHITE;
-    -fx-alignment: LEFT;
-
-}
-
 Button {
-    -fx-border-style: ROUND;
+    -fx-background-radius: 30; /* Adjust the radius as needed */
+    -fx-min-width: 70px; /* Minimum width of the button */
+    -fx-min-height: 30px; /* Minimum height of the button */
+    -fx-max-width: 70px; /* Maximum width of the button */
+    -fx-max-height: 30px; /* Maximum height of the button */
+    -fx-background-color: #0096C9; /* Background color of the button */
+    -fx-text-fill: white; /* Text color */
 }

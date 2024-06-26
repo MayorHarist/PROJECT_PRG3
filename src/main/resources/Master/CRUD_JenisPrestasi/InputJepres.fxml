@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_JenisPrestasi.InputJepresController">
+<AnchorPane prefHeight="400.0" prefWidth="637.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_JenisPrestasi.InputJepresController">
    <children>
       <Label layoutX="224.0" layoutY="26.0" text="Form Jenis Prestasi">
          <font>
@@ -49,16 +49,16 @@
       </Label>
       <TextField fx:id="txtPoint" layoutX="265.0" layoutY="240.0" prefHeight="25.0" prefWidth="56.0" />
       <TextField fx:id="txtStatus" layoutX="265.0" layoutY="275.0" prefHeight="25.0" prefWidth="149.0" />
-      <Button fx:id="btnBatal" layoutX="192.0" layoutY="326.0" mnemonicParsing="false" onAction="#onbtnBatalClick" prefHeight="25.0" prefWidth="72.0" text="Batal">
+      <Button fx:id="btnBatal" layoutX="201.0" layoutY="326.0" mnemonicParsing="false" onAction="#onbtnBatalClick" prefHeight="25.0" prefWidth="72.0" stylesheets="@../../Style.css" text="Batal">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="btnSimpan" layoutX="332.0" layoutY="326.0" mnemonicParsing="false" onAction="#onbtnSimpanClick" prefHeight="25.0" prefWidth="72.0" text="Simpan">
+      <Button fx:id="btnSimpan" layoutX="341.0" layoutY="326.0" minHeight="30.0" mnemonicParsing="false" onAction="#onbtnSimpanClick" prefHeight="30.0" prefWidth="100.0" stylesheets="@../../Style.css" text="Simpan">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="btnKembali" layoutX="505.0" layoutY="28.0" mnemonicParsing="false" onAction="#onbtnKembaliClick" prefHeight="25.0" prefWidth="72.0" text="Kembali" />
+      <Button fx:id="btnKembali" layoutX="505.0" layoutY="28.0" mnemonicParsing="false" onAction="#onbtnKembaliClick" prefHeight="25.0" prefWidth="72.0" stylesheets="@../../Style.css" text="Kembali" />
    </children>
 </AnchorPane>
