@@ -98,7 +98,7 @@ public class InputJepresController {
         nama = txtNama.getText();
         peran = txtPeran.getText();
         penyelenggara = txtPenyelenggara.getText();
-        //point = Integer.parseInt(txtPoint.getText());
+        point = Integer.parseInt(txtPoint.getText());
         status = txtStatus.getText();
 
         // Menambahkan validasi untuk memastikan semua input telah diisi
@@ -107,6 +107,18 @@ public class InputJepresController {
             alert.setTitle("Error");
             alert.setHeaderText(null);
             alert.setContentText("Semua data harus diisi.");
+            alert.showAndWait();
+            return;
+        }
+
+        // Parsing nilai point dari teks
+        try {
+            point = Integer.parseInt(txtPoint.getText());
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Point harus berupa angka.");
             alert.showAndWait();
             return;
         }

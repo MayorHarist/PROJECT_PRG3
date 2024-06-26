@@ -21,7 +21,7 @@ public class DashboardApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(InputJepresController.class.getResource("InputJepres.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(InputPospresController.class.getResource("InputPospres.fxml"));
         //Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         stage.setTitle("Dashboard Find Smart");
