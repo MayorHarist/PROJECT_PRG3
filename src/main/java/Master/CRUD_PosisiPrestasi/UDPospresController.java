@@ -82,9 +82,9 @@ public class UDPospresController implements Initializable {
         poplist.clear();
         try {
             connection.stat = connection.conn.createStatement();
-            String query = "SELECT * FROM PosisiPrestasi";
+            String query = "SELECT * FROM PosisiPrestasi WHERE Status='Aktif'";
             if (searchQuery != null && !searchQuery.isEmpty()) {
-                query += " WHERE Id_PosisiPrestasi LIKE '%" + searchQuery + "%' OR Nama LIKE '%" + searchQuery + "%' OR Deskripsi LIKE '%" + searchQuery + "%' OR Status LIKE '%" + searchQuery + "%'";
+                query += " AND (Id_PosisiPrestasi LIKE '%" + searchQuery + "%' OR Nama LIKE '%" + searchQuery + "%' OR Deskripsi LIKE '%" + searchQuery + "%' OR Status LIKE '%" + searchQuery + "%')";
             }
             connection.result = connection.stat.executeQuery(query);
 
@@ -104,9 +104,9 @@ public class UDPospresController implements Initializable {
         idposisiprestasi.setCellValueFactory(new PropertyValueFactory<>("idposisiprestasi"));
         nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
         deskripsi.setCellValueFactory(new PropertyValueFactory<>("deskripsi"));
-        //status.setCellValueFactory(new PropertyValueFactory<>("status"));
         tableposisiprestasi.setItems(poplist);
     }
+
 
     private void clear(){
         txtIdPosisiPrestasi.setText("");
@@ -219,8 +219,8 @@ public class UDPospresController implements Initializable {
             alert.setContentText("Silakan pilih data posisi prestasi yang ingin dihapus!");
             alert.showAndWait();
         }
-
     }
+
 
     private void cariData(String keyword) {
         filteredList.clear(); // Bersihkan filteredList sebelum menambahkan hasil pencarian baru
