@@ -3,14 +3,44 @@ package Master.CRUD_PosisiPrestasi;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class pospres extends Application {
+public class pospres {
+    String idposisiprestasi, nama, deskripsi, status;
 
-    public static void main(String[] args) {
-        launch(args);
+    public pospres(String idposisiprestasi, String nama, String deskripsi, String status){
+        this.idposisiprestasi = idposisiprestasi;
+        this.nama = nama;
+        this.deskripsi = deskripsi;
+        this.status = status;
+    }
+    public String getIdposisiprestasi() {
+        return idposisiprestasi;
     }
 
-    @Override
-    public void start(Stage primaryStage) {
+    public void setIdposisiprestasi(String idposisiprestasi) {
+        this.idposisiprestasi = idposisiprestasi;
+    }
 
+    public String getNama() {
+        return nama;
+    }
+
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
+
+    public String getDeskripsi() {
+        return deskripsi;
+    }
+
+    public void setDeskripsi(String deskripsi) {
+        this.deskripsi = deskripsi;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
