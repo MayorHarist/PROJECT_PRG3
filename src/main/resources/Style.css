@@ -1,10 +1,134 @@
+/*Button {
+    -fx-background-radius: 30; !* Adjust the radius as needed *!
+    -fx-min-width: 70px; !* Minimum width of the button *!
+    -fx-min-height: 30px; !* Minimum height of the button *!
+    -fx-max-width: 70px; !* Maximum width of the button *!
+    -fx-max-height: 30px; !* Maximum height of the button *!
+    -fx-background-color: #0096C9; !* Background color of the button *!
+    -fx-text-fill: white; !* Text color *!*/
+/* Gaya umum untuk semua tombol */
 Button {
-    -fx-background-radius: 30; /* Adjust the radius as needed */
-    -fx-min-width: 70px; /* Minimum width of the button */
-    -fx-min-height: 30px; /* Minimum height of the button */
-    -fx-max-width: 70px; /* Maximum width of the button */
-    -fx-max-height: 30px; /* Maximum height of the button */
-    -fx-background-color: #0096C9; /* Background color of the button */
-    -fx-text-fill: white; /* Text color */
+    -fx-background-radius: 30; /* Radius umum untuk semua tombol */
+    -fx-text-fill: white; /* Warna teks umum untuk semua tombol */
 }
 
+/* Gaya khusus untuk tombol dengan ID "btnSimpan" */
+#btnSimpan {
+    -fx-min-width: 70px; /* Lebar minimum untuk btnSimpan */
+    -fx-min-height: 30px; /* Tinggi minimum untuk btnSimpan */
+    -fx-max-width: 70px; /* Lebar maksimum untuk btnSimpan */
+    -fx-max-height: 30px; /* Tinggi maksimum untuk btnSimpan */
+    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnSimpan */
+}
+
+/* Gaya khusus untuk tombol dengan ID "btnBatal" */
+#btnBatal {
+    -fx-min-width: 70px; /* Lebar minimum untuk btnBatal */
+    -fx-min-height: 30px; /* Tinggi minimum untuk btnBatal */
+    -fx-max-width: 70px; /* Lebar maksimum untuk btnBatal */
+    -fx-max-height: 30px; /* Tinggi maksimum untuk btnBatal */
+    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnBatal */
+}
+
+/* Gaya khusus untuk tombol dengan ID "btnKembali" */
+#btnKembali {
+    -fx-min-width: 70px; /* Lebar minimum untuk btnKembali */
+    -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
+    -fx-max-width: 70px; /* Lebar maksimum untuk btnKembali */
+    -fx-max-height: 30px; /* Tinggi maksimum untuk btnKembali */
+    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
+}
+
+/* Gaya khusus untuk tombol dengan ID "btnKembali" */
+#btnKembaliUD {
+    -fx-min-width: 300px; /* Lebar minimum untuk btnKembali */
+    -fx-min-height: 60px; /* Tinggi minimum untuk btnKembali */
+    -fx-max-width: 300px; /* Lebar maksimum untuk btnKembali */
+    -fx-max-height: 60px; /* Tinggi maksimum untuk btnKembali */
+    -fx-text-fill: black; /* Warna teks umum untuk semua tombol */
+    -fx-background-color: #FFFFFF; /* Warna latar belakang untuk btnKembaliUD */
+}
+
+/* Gaya khusus untuk tombol dengan ID "btnHapus" */
+#btnHapus {
+    -fx-min-width: 70px; /* Lebar minimum untuk btnKembali */
+    -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
+    -fx-max-width: 70px; /* Lebar maksimum untuk btnKembali */
+    -fx-max-height: 30px; /* Tinggi maksimum untuk btnKembali */
+    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
+}
+
+
+/* Gaya khusus untuk tombol dengan ID "btnPerbaharui" */
+#btnPerbaharui {
+    -fx-min-width: 100px; /* Lebar minimum untuk btnKembali */
+    -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
+    -fx-max-width: 100px; /* Lebar maksimum untuk btnKembali */
+    -fx-max-height: 30px; /* Tinggi maksimum untuk btnKembali */
+    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
+}
+
+/* Gaya khusus untuk tombol dengan ID "btnRefresh" */
+#btnRefresh {
+    -fx-min-width: 70px; /* Lebar minimum untuk btnKembali */
+    -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
+    -fx-max-width: 70px; /* Lebar maksimum untuk btnKembali */
+    -fx-max-height: 30px; /* Tinggi maksimum untuk btnKembali */
+    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
+}
+
+/* Gaya khusus untuk tombol dengan ID "btnTambah" */
+#btnTambah {
+    -fx-min-width: 70px; /* Lebar minimum untuk btnKembali */
+    -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
+    -fx-max-width: 70px; /* Lebar maksimum untuk btnKembali */
+    -fx-max-height: 30px; /* Tinggi maksimum untuk btnKembali */
+    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
+}
+
+/* Gaya umum untuk semua TextField */
+TextField {
+    -fx-background-radius: 30; /* Radius besar untuk membuat sudut melengkung */
+    -fx-border-radius: 30; /* Radius besar untuk membuat sudut melengkung */
+    -fx-padding: 10 20; /* Padding untuk memberi ruang pada teks di dalam TextField */
+    -fx-background-color: #FFFFFF; /* Warna latar belakang */
+    -fx-border-color: #0096C9; /* Warna border */
+    -fx-border-width: 2; /* Lebar border */
+    -fx-text-fill: #000000; /* Warna teks */
+    -fx-font-family: 'Poppins'; /* Menggunakan font Poppins */
+}
+
+/* Gaya khusus untuk TextField dengan ID "txtCari" */
+#txtCari {
+    -fx-background-radius: 30; /* Radius besar untuk membuat sudut melengkung */
+    -fx-border-radius: 30; /* Radius besar untuk membuat sudut melengkung */
+    -fx-padding: 10 20; /* Padding untuk memberi ruang pada teks di dalam TextField */
+    -fx-background-color: #FFFFFF; /* Warna latar belakang */
+    -fx-border-color: #0096C9; /* Warna border */
+    -fx-border-width: 2; /* Lebar border */
+    -fx-text-fill: #000000; /* Warna teks */
+}
+
+/* Gaya umum untuk semua TextArea */
+TextArea {
+    -fx-background-radius: 30; /* Radius besar untuk membuat sudut melengkung */
+    -fx-border-radius: 30; /* Radius besar untuk membuat sudut melengkung */
+    -fx-padding: 10 20; /* Padding untuk memberi ruang pada teks di dalam TextArea */
+    -fx-background-color: #FFFFFF; /* Warna latar belakang */
+    -fx-border-color: #0096C9; /* Warna border */
+    -fx-border-width: 2; /* Lebar border */
+    -fx-text-fill: #000000; /* Warna teks */
+    -fx-font-family: 'Poppins'; /* Menggunakan font Poppins */
+}
+
+/* Gaya umum untuk semua TextArea */
+#txtDeskripsi {
+    -fx-background-radius: 30; /* Radius besar untuk membuat sudut melengkung */
+    -fx-border-radius: 30; /* Radius besar untuk membuat sudut melengkung */
+    -fx-padding: 10 20; /* Padding untuk memberi ruang pada teks di dalam TextArea */
+    -fx-background-color: #FFFFFF; /* Warna latar belakang */
+    -fx-border-color: #0096C9; /* Warna border */
+    -fx-border-width: 2; /* Lebar border */
+    -fx-text-fill: #000000; /* Warna teks */
+    -fx-font-family: 'Poppins'; /* Menggunakan font Poppins */
+}
