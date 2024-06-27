@@ -6,16 +6,16 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="AnchorTendik" prefHeight="689.0" prefWidth="1221.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginTendik.LoginTendikController">
+<AnchorPane fx:id="AnchorTendik" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginTendik.LoginTendikController">
    <children>
-      <ImageView fitHeight="745.0" fitWidth="1332.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="1080.0" fitWidth="1920.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Download/Login Tendik.png" />
          </image>
       </ImageView>
       <Button fx:id="btnLogin" layoutX="117.0" layoutY="574.0" mnemonicParsing="false" onAction="#onbtnLoginClick" opacity="0.0" prefHeight="74.0" prefWidth="519.0" text="Login" />
       <Button fx:id="btnExit" layoutX="117.0" layoutY="670.0" mnemonicParsing="false" onAction="#onbtnExitClick" opacity="0.0" prefHeight="74.0" prefWidth="519.0" text="Exit" />
-      <TextField fx:id="txtUsername" layoutX="84.0" layoutY="274.0" prefHeight="28.0" prefWidth="341.0" />
-      <TextField fx:id="txtPassword" layoutX="84.0" layoutY="340.0" prefHeight="28.0" prefWidth="341.0" />
+      <TextField fx:id="txtUsername" layoutX="120.0" layoutY="390.0" prefHeight="48.0" prefWidth="499.0" />
+      <TextField fx:id="txtPassword" layoutX="122.0" layoutY="485.0" prefHeight="48.0" prefWidth="499.0" />
    </children>
 </AnchorPane>
