@@ -32,4 +32,10 @@ module org.example.project_prg3 {
 
     opens Master.CRUD_Mahasiswa to javafx.fxml;
     exports Master.CRUD_Mahasiswa;
+
+    opens Master.CRUD_JenisPrestasi to javafx.fxml;
+    exports Master.CRUD_JenisPrestasi;
+
+    opens Master.CRUD_PosisiPrestasi to javafx.fxml;
+    exports Master.CRUD_PosisiPrestasi;
 }

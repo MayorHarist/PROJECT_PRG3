@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../../Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_PosisiPrestasi.UDPospresController">
+   <children>
+      <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../Download/Posisi Prestasi.png" />
+         </image>
+      </ImageView>
+      <TableView fx:id="tableposisiprestasi" layoutX="648.0" layoutY="198.0" prefHeight="470.0" prefWidth="1136.0">
+         <columns>
+            <TableColumn fx:id="idposisiprestasi" prefWidth="292.33331298828125" text="ID Posisi Prestasi" />
+            <TableColumn fx:id="nama" prefWidth="418.66668701171875" text="Nama" />
+            <TableColumn fx:id="deskripsi" prefWidth="425.6666259765625" text="Deskripsi" />
+         </columns>
+      </TableView>
+      <TextField fx:id="txtIdPosisiPrestasi" editable="false" layoutX="913.0" layoutY="770.0" prefHeight="25.0" prefWidth="278.0" />
+      <TextField fx:id="txtCari" layoutX="971.0" layoutY="64.0" prefHeight="25.0" prefWidth="347.0" />
+      <Label layoutX="684.0" layoutY="758.0" text="ID Posisi Prestasi">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="688.0" layoutY="826.0" text="Nama">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="1273.0" layoutY="764.0" text="Deskripsi">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="1274.0" layoutY="897.0" text="Status">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtNama" layoutX="914.0" layoutY="835.0" prefHeight="25.0" prefWidth="278.0" />
+      <TextField fx:id="txtStatus" editable="false" layoutX="1408.0" layoutY="901.0" prefHeight="25.0" prefWidth="278.0" />
+      <Button fx:id="btnBatal" layoutX="1063.0" layoutY="988.0" mnemonicParsing="false" onAction="#onbtnBatalClick" prefHeight="25.0" prefWidth="63.0" text="Batal" />
+      <Button fx:id="btnPerbaharui" layoutX="1169.0" layoutY="989.0" mnemonicParsing="false" onAction="#onbtnPerbaharuiClick" prefHeight="25.0" prefWidth="95.0" text="Perbaharui" />
+      <Button fx:id="btnHapus" layoutX="1298.0" layoutY="989.0" mnemonicParsing="false" onAction="#onbtnHapusClick" prefHeight="25.0" prefWidth="65.0" text="Hapus" />
+      <Button fx:id="btnRefresh" layoutX="1702.0" layoutY="686.0" mnemonicParsing="false" onAction="#onbtnRefresh" prefHeight="25.0" prefWidth="86.0" text="Refresh" />
+      <Button fx:id="btnTambah" layoutX="653.0" layoutY="688.0" mnemonicParsing="false" onAction="#onbtnTambahClick" prefHeight="25.0" prefWidth="95.0" text="Tambah" />
+      <ImageView fitHeight="39.0" fitWidth="63.0" layoutX="918.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../../Users/acer/Downloads/magnifying-glass_10977492.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="txtDeskripsi" layoutX="1412.0" layoutY="764.0" prefHeight="114.0" prefWidth="275.0" />
+   </children>
+</AnchorPane>
