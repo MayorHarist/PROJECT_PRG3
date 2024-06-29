@@ -15,6 +15,9 @@ module org.example.project_prg3 {
     opens Sebagai to javafx.fxml;
     exports Sebagai;
 
+    opens LoginKepala to javafx.fxml;
+    exports LoginKepala;
+
     opens LoginTendik to javafx.fxml;
     exports LoginTendik;
 

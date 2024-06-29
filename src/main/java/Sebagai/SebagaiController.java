@@ -1,6 +1,7 @@
 package Sebagai;
 
 import Dashboard.DashboardApplication;
+import LoginKepala.LoginKepalaController;
 import LoginMahasiswa.LoginMahasiswaController;
 import LoginTendik.LoginTendikController;
 import javafx.application.Application;
@@ -18,10 +19,10 @@ import java.io.IOException;
 public class SebagaiController {
     @FXML
     private Button btnTenagaKependidikan;
-
     @FXML
     private Button btnMahasiswa;
-
+    @FXML
+    private Button btnKepala;
     @FXML
     private Button btnBatal;
     @FXML
@@ -103,6 +104,27 @@ public class SebagaiController {
         }
     }
 
-    public void onbtnKepalaTendikClick(ActionEvent event) {
+    public void onbtnKepalaClick(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(LoginKepalaController.class.getResource("LoginKepala.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root, 1280, 650);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setFullScreen(true);
+            stage.setFullScreenExitHint("");
+            stage.show();
+
+            // Tutup stage sebelumnya
+            Stage previousStage = (Stage) AnchorSebagai.getScene().getWindow();
+            previousStage.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed to load DashboardApplication.fxml");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            System.out.println("Resource DashboardApplication.fxml not found");
+        }
     }
 }
