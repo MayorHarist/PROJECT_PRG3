@@ -47,6 +47,7 @@ public class LoginTendikController {
                 alert.setTitle("Informasi");
                 alert.setHeaderText(null);
                 alert.setContentText("Login berhasil");
+                alert.initOwner(btnLogin.getScene().getWindow());
                 alert.showAndWait();
             } else {
                 // Login gagal, tampilkan dialog pesan kesalahan
@@ -54,6 +55,7 @@ public class LoginTendikController {
                 alert.setTitle("Error");
                 alert.setHeaderText(null);
                 alert.setContentText("Username atau password salah");
+                alert.initOwner(btnLogin.getScene().getWindow());
                 alert.showAndWait();
             }
 

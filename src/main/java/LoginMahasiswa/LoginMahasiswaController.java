@@ -47,6 +47,7 @@ public class LoginMahasiswaController {
             alert.setTitle("Informasi");
             alert.setHeaderText(null);
             alert.setContentText("Login berhasil");
+            alert.initOwner(btnLogin.getScene().getWindow());
             alert.showAndWait();
 
             // Panggil method loadNextForm
@@ -61,6 +62,7 @@ public class LoginMahasiswaController {
             alert.setTitle("Error");
             alert.setHeaderText(null);
             alert.setContentText("Username atau password salah");
+            alert.initOwner(btnLogin.getScene().getWindow());
             alert.showAndWait();
         }
     }
