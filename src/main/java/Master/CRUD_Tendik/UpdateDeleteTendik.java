@@ -1,17 +1,20 @@
 package Master.CRUD_Tendik;
 
 import Database.DBConnect;
+import Master.CRUD_JenisPrestasi.InputJepresController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -397,7 +400,7 @@ public class UpdateDeleteTendik implements Initializable {
     protected void onBtnTambahClick(){
         try {
             // Pastikan path ke file FXML sudah benar
-            FXMLLoader loader = new FXMLLoader(Master.CRUD_Tendik.InputTendik.class.getResource("/Master/InputTendik.fxml"));
+            FXMLLoader loader = new FXMLLoader(InputTendik.class.getResource("/Master/CRUD_Tendik/InputTendik.fxml"));
             Scene scene = new Scene(loader.load(), 1080, 740);
             Stage stage = new Stage();
             stage.setTitle("Tambah Data Tenaga Kependidikan!");

@@ -286,7 +286,7 @@ public class UpdateDelPengumuman implements Initializable {
     protected void onBtnTambahClick(){
         try {
             // Pastikan path ke file FXML sudah benar
-            FXMLLoader loader = new FXMLLoader(InputPengumuman.class.getResource("/Master/InputPengumuman.fxml"));
+            FXMLLoader loader = new FXMLLoader(InputPengumuman.class.getResource("/Master/CRUD_Pengumuman/InputPengumuman.fxml"));
             Scene scene = new Scene(loader.load(), 600, 475);
             Stage stage = new Stage();
             stage.setTitle("Tambah Data Pengumuman!");

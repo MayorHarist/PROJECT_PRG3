@@ -41,4 +41,10 @@ module org.example.project_prg3 {
 
     opens Master.CRUD_PosisiPrestasi to javafx.fxml;
     exports Master.CRUD_PosisiPrestasi;
+
+    opens Master.CRUD_Pengumuman to javafx.fxml;
+    exports Master.CRUD_Pengumuman;
+
+    opens Master.CRUD_Tendik to javafx.fxml;
+    exports Master.CRUD_Tendik;
 }
