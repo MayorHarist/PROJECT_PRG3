@@ -20,7 +20,6 @@
                   <Label text="Nama" />
                   <Label text="Tanggal " />
                   <Label text="Deskripsi" />
-                  <Label text="Status" />
                   <Label text="ID TKN" />
                </children>
             </VBox>
@@ -33,14 +32,13 @@
                </font>
             </Label>
             <TextField fx:id="txtDeskripsi" layoutX="217.0" layoutY="232.0" prefHeight="29.0" prefWidth="250.0" />
-            <TextField fx:id="txtStatusPengumuman" layoutX="217.0" layoutY="273.0" prefHeight="29.0" prefWidth="250.0" />
             <HBox layoutX="227.0" layoutY="358.0" prefHeight="52.0" prefWidth="226.0">
                <children>
                   <Button fx:id="btnSimpanPengumuman" mnemonicParsing="false" onAction="#onBtnSimpanClick" prefHeight="41.0" prefWidth="104.0" text="Simpan" />
                   <Button fx:id="btnBatalPengumuman" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#OnBtnBatalClick" prefHeight="41.0" prefWidth="105.0" text="Batal" />
                </children>
             </HBox>
-            <ComboBox fx:id="cbTKN" layoutX="217.0" layoutY="312.0" prefHeight="25.0" prefWidth="250.0" />
+            <ComboBox fx:id="cbTKN" layoutX="217.0" layoutY="272.0" prefHeight="25.0" prefWidth="250.0" />
             <Button fx:id="btnKembali" contentDisplay="RIGHT" layoutX="450.0" layoutY="37.0" mnemonicParsing="false" onAction="#OnBtnKembali" prefHeight="39.0" prefWidth="108.0" text="Kembali" />
          </children>
       </AnchorPane>
