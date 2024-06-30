@@ -18,7 +18,7 @@
                <children>
                   <Label text="ID Pengumuman" />
                   <Label text="Nama" />
-                  <Label text="Tanggal " />
+                  <Label text="Tanggal" />
                   <Label text="Deskripsi" />
                   <Label text="ID TKN" />
                </children>
