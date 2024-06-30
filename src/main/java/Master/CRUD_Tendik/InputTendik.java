@@ -20,7 +20,7 @@ import java.util.Optional;
 public class InputTendik {
     @FXML
     private TextField txtIDTKN;
-    @FXML
+    @FXML                                                 
     private TextField txtNamaTendik;
     @FXML
     private DatePicker tglTendik;
