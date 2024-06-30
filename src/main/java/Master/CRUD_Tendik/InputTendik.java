@@ -102,9 +102,14 @@ public class InputTendik {
         confirmationAlert.setTitle("Konfirmasi");
         confirmationAlert.setHeaderText(null);
         confirmationAlert.setContentText("Apakah data sudah diisi dengan benar?");
+        ButtonType buttonTypeYes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+        ButtonType buttonTypeNo = new ButtonType("No", ButtonBar.ButtonData.NO);
+
+        confirmationAlert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+
         Optional<ButtonType> result = confirmationAlert.showAndWait();
 
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+        if (result.isPresent() && result.get() == ButtonType.YES) {
             // Simpan data ke database
             try {
                 String query = "INSERT INTO TenagaKependidikan VALUES (?,?,?,?,?,?,?,?,?)";
