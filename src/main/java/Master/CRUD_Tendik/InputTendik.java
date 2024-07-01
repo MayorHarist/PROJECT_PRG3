@@ -42,10 +42,8 @@ public class InputTendik {
     private TextField passwordTendik;
     private ToggleGroup genderGroup;
     DBConnect connection = new DBConnect();
-
     @FXML
     String Id_TKN, Nama, JenisKelamin, Alamat, Email, Telepon, Username, Pasword;
-
     LocalDate TanggalLahir;
 
     public void initialize() {
@@ -72,8 +70,6 @@ public class InputTendik {
         if (Id_TKN.isEmpty() || Nama.isEmpty() || JenisKelamin.isEmpty() || Alamat.isEmpty()
                 || Email.isEmpty() || Telepon.isEmpty() || Username.isEmpty() || Pasword.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
             alert.setContentText("Harap lengkapi semua kolom.");
             alert.showAndWait();
             return; // Menghentikan eksekusi jika ada data yang kosong
@@ -82,8 +78,6 @@ public class InputTendik {
         // Validasi nama hanya huruf
         if (!Nama.matches("[a-zA-Z\\s]+")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
             alert.setContentText("Nama hanya boleh mengandung huruf dan spasi.");
             alert.showAndWait();
             return; // Menghentikan eksekusi jika format nama tidak valid
@@ -92,16 +86,12 @@ public class InputTendik {
         // Validasi nomor telepon hanya angka
         if (!Telepon.matches("[0-9]+")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
             alert.setContentText("Nomor telepon hanya boleh mengandung angka.");
             alert.showAndWait();
             return; // Menghentikan eksekusi jika format nomor telepon tidak valid
         }
         // Menampilkan konfirmasi sebelum menyimpan data
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationAlert.setTitle("Konfirmasi");
-        confirmationAlert.setHeaderText(null);
         confirmationAlert.setContentText("Apakah data sudah diisi dengan benar?");
         ButtonType buttonTypeYes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
         ButtonType buttonTypeNo = new ButtonType("No", ButtonBar.ButtonData.NO);
@@ -114,7 +104,7 @@ public class InputTendik {
             // Simpan data ke database
             try {
 
-                String query = "INSERT INTO TenagaKependidikan VALUES (?,?,?,?,?,?,?,?,?)";
+                String query = "Exec sp_TenagaKependidikan VALUES ?,?,?,?,?,?,?,?,?";
                 connection.pstat = connection.conn.prepareStatement(query);
                 connection.pstat.setString(1, Id_TKN);
                 connection.pstat.setString(2, Nama);
