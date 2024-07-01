@@ -80,11 +80,11 @@ public class InputJepresController {
             if (result.next()) {
                 String maxId = result.getString(1);
                 if (maxId != null) {
-                    int number = Integer.parseInt(maxId.substring(2)) + 1;
-                    String formattedNumber = String.format("%04d", number);
+                    int number = Integer.parseInt(maxId.substring(3)) + 1;
+                    String formattedNumber = String.format("%03d", number);
                     txtIdJenisPrestasi.setText("JP" + formattedNumber);
                 } else {
-                    txtIdJenisPrestasi.setText("JP0001");
+                    txtIdJenisPrestasi.setText("JP001");
                 }
             }
             result.close();

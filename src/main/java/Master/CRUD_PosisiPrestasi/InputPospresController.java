@@ -63,11 +63,11 @@ public class InputPospresController {
             if (result.next()) {
                 String maxId = result.getString(1);
                 if (maxId != null) {
-                    int number = Integer.parseInt(maxId.substring(2)) + 1;
-                    String formattedNumber = String.format("%04d", number);
+                    int number = Integer.parseInt(maxId.substring(3)) + 1;
+                    String formattedNumber = String.format("%03d", number);
                     txtIdPosisiPrestasi.setText("PP" + formattedNumber);
                 } else {
-                    txtIdPosisiPrestasi.setText("PP0001");
+                    txtIdPosisiPrestasi.setText("PP001");
                 }
             }
             result.close();

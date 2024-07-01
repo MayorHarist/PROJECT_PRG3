@@ -3,9 +3,11 @@ package Dashboard;
 import LoginMahasiswa.LoginMahasiswaController;
 import LoginTendik.LoginTendikController;
 import Master.CRUD_Dosen.InputDosenController;
+import Master.CRUD_Dosen.UpdateDeleteDosenController;
 import Master.CRUD_JenisPrestasi.InputJepresController;
 import Master.CRUD_JenisPrestasi.UDJepresController;
 import Master.CRUD_Mahasiswa.InputMahasiswa;
+import Master.CRUD_Mahasiswa.UpdateDeleteMahasiswa;
 import Master.CRUD_Pengumuman.InputPengumuman;
 import Master.CRUD_Pengumuman.UpdateDelPengumuman;
 import Master.CRUD_PosisiPrestasi.InputPospresController;
@@ -30,7 +32,7 @@ public class DashboardApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(InputTendik.class.getResource("InputTendik.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(UpdateDeleteMahasiswa.class.getResource("UpdateDeleteMahasiswa.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);
         //Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         stage.setTitle("Dashboard Find Smart");
