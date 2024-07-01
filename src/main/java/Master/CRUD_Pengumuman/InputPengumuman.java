@@ -57,11 +57,11 @@ public class InputPengumuman {
     protected void onBtnSimpanClick() {
         Id_Pengumuman = txtIDPengumuman.getText();
         Nama = txtnmPengumuman.getText();
-        tanggal = tglPengumuman.getValue();
+        LocalDate Tanggal = tglPengumuman.getValue();
         Deskripsi = txtDeskripsi.getText();
         Id_TKN = cbTKN.getValue(); // Mengambil nilai ID TKN dari ComboBox
         // Validasi data tidak boleh kosong
-        if (Id_Pengumuman.isEmpty() || Nama.isEmpty() || tanggal == null || Deskripsi.isEmpty() || Id_TKN == null) {
+        if (Id_Pengumuman.isEmpty() || Nama.isEmpty() || Tanggal == null || Deskripsi.isEmpty() || Id_TKN == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText(null);
@@ -91,11 +91,11 @@ public class InputPengumuman {
         if (result.isPresent() && result.get() == ButtonType.YES) {
             // Simpan data ke database
             try {
-                String query = "INSERT INTO Pengumuman VALUES (?,?,?,?,?)";
+                String query = "EXEC sp_Pengumuman VALUES ?,?,?,?,?";
                 connection.pstat = connection.conn.prepareStatement(query);
                 connection.pstat.setString(1, Id_Pengumuman);
                 connection.pstat.setString(2, Nama);
-                connection.pstat.setDate(3, java.sql.Date.valueOf(tanggal));
+                connection.pstat.setDate(3, java.sql.Date.valueOf(Tanggal));
                 connection.pstat.setString(4, Deskripsi);
                 connection.pstat.setString(5, Id_TKN);
 

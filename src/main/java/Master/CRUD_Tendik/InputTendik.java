@@ -19,6 +19,10 @@ import java.util.Optional;
 
 public class InputTendik {
     @FXML
+    private Button btnSimpanTendik;
+    @FXML
+    private Button btnBatalTendik;
+    @FXML
     private TextField txtIDTKN;
     @FXML                                                 
     private TextField txtNamaTendik;
@@ -41,10 +45,8 @@ public class InputTendik {
     private ToggleGroup genderGroup;
     DBConnect connection = new DBConnect();
 
-    @FXML
-    String Id_TKN, Nama, JenisKelamin, Alamat, Email, Telepon, Username, Pasword;
-
-    LocalDate TanggalLahir;
+    String Id_TKN, Nama, Jenis_Kelamin, Alamat, Email, Telepon, Username, Password;
+    LocalDate Tanggal_Lahir;
 
     @FXML
     public void initialize() {
@@ -59,17 +61,17 @@ public class InputTendik {
     protected void onBtnSimpanClick() {
         Id_TKN = txtIDTKN.getText();
         Nama = txtNamaTendik.getText();
-        TanggalLahir = tglTendik.getValue();
-        JenisKelamin = rbLaki.isSelected() ? "Laki-Laki" : rbPuan.isSelected() ? "Perempuan" : "";
+        Tanggal_Lahir = tglTendik.getValue();
+        Jenis_Kelamin = rbLaki.isSelected() ? "Laki-Laki" : rbPuan.isSelected() ? "Perempuan" : "";
         Alamat = txtAlamatTendik.getText();
         Email = txtEmailTendik.getText();
         Telepon = txtTelpTendik.getText();
         Username = usernameTendik.getText();
-        Pasword = passwordTendik.getText();
+        Password = passwordTendik.getText();
 
         // Validasi data tidak boleh kosong
-        if (Id_TKN.isEmpty() || Nama.isEmpty() || JenisKelamin.isEmpty() || Alamat.isEmpty()
-                || Email.isEmpty() || Telepon.isEmpty() || Username.isEmpty() || Pasword.isEmpty()) {
+        if (Id_TKN.isEmpty() || Nama.isEmpty() || Jenis_Kelamin.isEmpty() || Alamat.isEmpty()
+                || Email.isEmpty() || Telepon.isEmpty() || Username.isEmpty() || Password.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText(null);
@@ -97,46 +99,44 @@ public class InputTendik {
             alert.showAndWait();
             return; // Menghentikan eksekusi jika format nomor telepon tidak valid
         }
-        // Menampilkan konfirmasi sebelum menyimpan data
-        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationAlert.setTitle("Konfirmasi");
-        confirmationAlert.setHeaderText(null);
-        confirmationAlert.setContentText("Apakah data sudah diisi dengan benar?");
-        ButtonType buttonTypeYes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
-        ButtonType buttonTypeNo = new ButtonType("No", ButtonBar.ButtonData.NO);
 
-        confirmationAlert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+        // Simpan data ke database
+        try {
+            String query = "EXEC sp_InsertTendik ?, ?, ?, ?, ?, ?, ?, ?, ?";
+            connection.pstat = connection.conn.prepareStatement(query);
+            connection.pstat.setString(1, Id_TKN);
+            connection.pstat.setString(2, Nama);
+            connection.pstat.setDate(3, java.sql.Date.valueOf(Tanggal_Lahir));
+            connection.pstat.setString(4, Jenis_Kelamin);
+            connection.pstat.setString(5, Alamat);
+            connection.pstat.setString(6, Email);
+            connection.pstat.setString(7, Telepon);
+            connection.pstat.setString(8, Username);
+            connection.pstat.setString(9, Password);
 
-        Optional<ButtonType> result = confirmationAlert.showAndWait();
-
-        if (result.isPresent() && result.get() == ButtonType.YES) {
-            // Simpan data ke database
-            try {
-                String query = "INSERT INTO TenagaKependidikan VALUES (?,?,?,?,?,?,?,?,?)";
-                connection.pstat = connection.conn.prepareStatement(query);
-                connection.pstat.setString(1, Id_TKN);
-                connection.pstat.setString(2, Nama);
-                connection.pstat.setDate(3, java.sql.Date.valueOf(TanggalLahir));
-                connection.pstat.setString(4, JenisKelamin);
-                connection.pstat.setString(5, Alamat);
-                connection.pstat.setString(6, Email);
-                connection.pstat.setString(7, Telepon);
-                connection.pstat.setString(8, Username);
-                connection.pstat.setString(9, Pasword);
-
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Success");
-                alert.setHeaderText(null);
-                alert.setContentText("Data Tenaga Kependidikan berhasil ditambahkan!");
-                alert.showAndWait();
+            int rowsInserted = connection.pstat.executeUpdate();
+            connection.conn.commit();
+            if (rowsInserted > 0) {
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Success");
+                successAlert.setHeaderText(null);
+                successAlert.setContentText("Data Tenaga Kependidikan berhasil ditambahkan!");
+                successAlert.showAndWait();
 
                 clear();
                 autoid();
-            } catch (SQLException ex) {
-                System.out.println("Terjadi error saat menambahkan data Tenaga Kependidikan: " + ex);
             }
+        } catch (SQLException ex) {
+            System.out.println("Terjadi error saat menambahkan data Tenaga Kependidikan: " + ex);
+            ex.printStackTrace();
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error");
+            errorAlert.setHeaderText(null);
+            errorAlert.setContentText("Terjadi kesalahan saat menyimpan data. Silakan coba lagi.");
+            errorAlert.showAndWait();
         }
     }
+
     @FXML
     protected void OnBtnBatalClick() {
         clear();

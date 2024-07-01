@@ -35,13 +35,11 @@ public class InputDosenController {
     @FXML
     private TextField txtTelepon;
     @FXML
-    private TextField txtStatus;
-    @FXML
     private AnchorPane AnchorInputDosen;
 
     private ToggleGroup genderGroup;
 
-    String Pegawai, NIDN, Nama, Bidang, Pendidikan, JenisKelamin, Alamat, Email, Telepon, Status;
+    String Pegawai, NIDN, Nama, Bidang, Pendidikan, JenisKelamin, Alamat, Email, Telepon;
     LocalDate TanggalLahir;
     DBConnect connection = new DBConnect();
 
@@ -67,10 +65,9 @@ public class InputDosenController {
         Alamat = txtAlamat.getText();
         Email = txtEmail.getText();
         Telepon = txtTelepon.getText();
-        Status = txtStatus.getText();
 
         try {
-            String query = "{call sp_InsertDosen(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+            String query = "EXEC sp_InsertDosen ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
             connection.pstat = connection.conn.prepareStatement(query);
             connection.pstat.setString(1, Pegawai);
             connection.pstat.setString(2, NIDN);
@@ -82,7 +79,6 @@ public class InputDosenController {
             connection.pstat.setString(8, Alamat);
             connection.pstat.setString(9, Email);
             connection.pstat.setString(10, Telepon);
-            connection.pstat.setString(11, Status);
 
             connection.pstat.executeUpdate();
             JOptionPane.showMessageDialog(null, "Input data Dosen berhasil!");
@@ -109,7 +105,6 @@ public class InputDosenController {
         txtAlamat.clear();
         txtEmail.clear();
         txtTelepon.clear();
-        txtStatus.clear();
     }
 
     public void autoid() {
