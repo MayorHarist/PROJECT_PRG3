@@ -4,6 +4,7 @@ import Database.DBConnect;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -12,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
 import javax.swing.*;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -46,7 +48,6 @@ public class InputTendik {
 
     LocalDate TanggalLahir;
 
-    @FXML
     public void initialize() {
         autoid(); // Panggil autoid saat inisialisasi
 
@@ -55,8 +56,8 @@ public class InputTendik {
         rbLaki.setToggleGroup(genderGroup);
         rbPuan.setToggleGroup(genderGroup);
     }
-    @FXML
-    protected void onBtnSimpanClick() {
+
+    public void onBtnSimpanClick() {
         Id_TKN = txtIDTKN.getText();
         Nama = txtNamaTendik.getText();
         TanggalLahir = tglTendik.getValue();
@@ -112,6 +113,7 @@ public class InputTendik {
         if (result.isPresent() && result.get() == ButtonType.YES) {
             // Simpan data ke database
             try {
+
                 String query = "INSERT INTO TenagaKependidikan VALUES (?,?,?,?,?,?,?,?,?)";
                 connection.pstat = connection.conn.prepareStatement(query);
                 connection.pstat.setString(1, Id_TKN);
@@ -124,12 +126,15 @@ public class InputTendik {
                 connection.pstat.setString(8, Username);
                 connection.pstat.setString(9, Pasword);
 
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Success");
-                alert.setHeaderText(null);
-                alert.setContentText("Data Tenaga Kependidikan berhasil ditambahkan!");
-                alert.showAndWait();
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Sukses");
+                successAlert.setHeaderText(null);
+                successAlert.setContentText("Simpan data tenaga kependidikan berhasil!");
+                successAlert.showAndWait();
 
+                connection.pstat.executeUpdate();
+                connection.pstat.close();
+                connection.conn.close();
                 clear();
                 autoid();
             } catch (SQLException ex) {
