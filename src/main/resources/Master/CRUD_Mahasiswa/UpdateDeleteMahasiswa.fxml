@@ -18,30 +18,30 @@
     <ComboBox fx:id="cbProdi" layoutX="869.0" layoutY="111.0" prefHeight="25.0" prefWidth="151.0" />
 
     <Label layoutX="708.0" layoutY="155.0" text="Nama:" />
-    <TextField fx:id="txtNama" disable="true" layoutX="869.0" layoutY="151.0" />
+    <TextField fx:id="txtNama" layoutX="869.0" layoutY="151.0" />
 
     <Label layoutX="706.0" layoutY="195.0" text="Tanggal Lahir:" />
-    <TextField fx:id="txtTanggalLahir" disable="true" layoutX="869.0" layoutY="191.0" />
+    <TextField fx:id="txtTanggalLahir" layoutX="869.0" layoutY="191.0" />
 
     <Label layoutX="706.0" layoutY="235.0" text="Jenis Kelamin:" />
 
     <Label layoutX="706.0" layoutY="271.0" text="Alamat:" />
-    <TextField fx:id="txtAlamat" disable="true" layoutX="869.0" layoutY="271.0" />
+    <TextField fx:id="txtAlamat" layoutX="869.0" layoutY="271.0" />
 
     <Label layoutX="706.0" layoutY="311.0" text="Email:" />
-    <TextField fx:id="txtEmail" disable="true" layoutX="869.0" layoutY="311.0" />
+    <TextField fx:id="txtEmail" layoutX="869.0" layoutY="311.0" />
 
     <Label layoutX="706.0" layoutY="351.0" text="Telepon:" />
-    <TextField fx:id="txtTelepon" disable="true" layoutX="869.0" layoutY="351.0" />
+    <TextField fx:id="txtTelepon" layoutX="869.0" layoutY="351.0" />
 
     <Label layoutX="706.0" layoutY="391.0" text="Tahun Masuk:" />
-    <TextField fx:id="txtTahunMasuk" disable="true" layoutX="869.0" layoutY="391.0" />
+    <TextField fx:id="txtTahunMasuk" layoutX="869.0" layoutY="391.0" />
 
     <Label layoutX="706.0" layoutY="431.0" text="Username:" />
-    <TextField fx:id="txtUsername" disable="true" layoutX="869.0" layoutY="431.0" />
+    <TextField fx:id="txtUsername" layoutX="869.0" layoutY="431.0" />
 
     <Label layoutX="706.0" layoutY="471.0" text="Password:" />
-    <TextField fx:id="txtPassword" disable="true" layoutX="869.0" layoutY="471.0" />
+    <TextField fx:id="txtPassword" layoutX="869.0" layoutY="471.0" />
 
     <Button fx:id="btnCari" layoutX="1045.0" layoutY="71.0" onMouseClicked="#btnCari_Click" text="Cari" />
     <Button fx:id="btnUbah" layoutX="753.0" layoutY="515.0" onMouseClicked="#btnUbah_Click" text="Ubah" />
@@ -68,6 +68,6 @@
             <Font name="System Bold" size="25.0" />
         </font>
     </Label>
-    <RadioButton fx:id="rbLaki" disable="true" layoutX="869.0" layoutY="235.0" mnemonicParsing="false" text="Laki - laki" />
-    <RadioButton fx:id="rbPerempuan" disable="true" layoutX="975.0" layoutY="235.0" mnemonicParsing="false" text="Perempuan" />
+    <RadioButton fx:id="rbLaki" layoutX="869.0" layoutY="235.0" mnemonicParsing="false" text="Laki - laki" />
+    <RadioButton fx:id="rbPerempuan" layoutX="975.0" layoutY="235.0" mnemonicParsing="false" text="Perempuan" />
 </AnchorPane>

@@ -181,7 +181,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
         btnHapus.setDisable(!editable);
     }
     private String getProdiNameById(String idProdi) {
-        String query = "SELECT Nama FROM ProgramStudi WHERE Id = ?";
+        String query = "SELECT Nama FROM ProgramStudi WHERE Id_Prodi = ?";
         try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
             stmt.setString(1, idProdi);
             ResultSet rs = stmt.executeQuery();
@@ -230,7 +230,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
                     txtPassword.setText(password);
                     cbProdi.setValue(getProdiNameById(idProdi));
 
-                    setFieldsEditable(true);
+                    setFieldsEditable(true);  // Set all fields to editable
                     showMahasiswa(nim);
                 } else {
                     showAlert("Mahasiswa not found!", Alert.AlertType.ERROR);
@@ -243,6 +243,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
             }
         }
     }
+
     private void showAlert(String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setContentText(message);
@@ -252,34 +253,54 @@ public class UpdateDeleteMahasiswa implements Initializable {
     private void btnUbah_Click(MouseEvent event) {
         Connection con = connection.conn;
         if (con != null) {
-            String query = "EXEC sp_UpdateMahasiswa ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
-            try {
-                PreparedStatement preparedStatement = con.prepareStatement(query);
-                preparedStatement.setString(1, txtNIM.getText());
-                preparedStatement.setString(2, cbProdi.getValue());
-                preparedStatement.setString(3, txtNama.getText());
-                preparedStatement.setDate(4, Date.valueOf(txtTanggalLahir.getText()));
-                preparedStatement.setString(5, rbLaki.isSelected() ? "Laki-laki" : "Perempuan");
-                preparedStatement.setString(6, txtAlamat.getText());
-                preparedStatement.setString(7, txtEmail.getText());
-                preparedStatement.setString(8, txtTelepon.getText());
-                preparedStatement.setInt(9, Integer.parseInt(txtTahunMasuk.getText()));
-                preparedStatement.setString(10, txtUsername.getText());
-                preparedStatement.setString(11, txtPassword.getText());
+            String selectedProdi = cbProdi.getValue();
+            String queryProdi = "SELECT Id_Prodi FROM ProgramStudi WHERE Nama = ?";
+            String idProdi = null;
 
-                int affectedRows = preparedStatement.executeUpdate();
-                if (affectedRows > 0) {
-                    showAlert("Data mahasiswa berhasil diubah", Alert.AlertType.INFORMATION);
-                    showMahasiswa(txtNIM.getText());
+            try {
+                PreparedStatement preparedStatementProdi = con.prepareStatement(queryProdi);
+                preparedStatementProdi.setString(1, selectedProdi);
+                ResultSet resultSetProdi = preparedStatementProdi.executeQuery();
+                if (resultSetProdi.next()) {
+                    idProdi = resultSetProdi.getString("Id_Prodi");
                 } else {
-                    showAlert("Gagal mengubah data mahasiswa", Alert.AlertType.ERROR);
+                    showAlert("Program studi tidak ditemukan!", Alert.AlertType.ERROR);
+                    return;
                 }
-            } catch (SQLException throwables) {
-                showAlert("Error: " + throwables.getMessage(), Alert.AlertType.ERROR);
-                throwables.printStackTrace();
+
+                String query = "EXEC sp_UpdateMahasiswa ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
+                try {
+                    PreparedStatement preparedStatement = con.prepareStatement(query);
+                    preparedStatement.setString(1, txtNIM.getText());
+                    preparedStatement.setString(2, idProdi);  // Menggunakan Id_Prodi yang valid
+                    preparedStatement.setString(3, txtNama.getText());
+                    preparedStatement.setDate(4, Date.valueOf(txtTanggalLahir.getText()));
+                    preparedStatement.setString(5, rbLaki.isSelected() ? "Laki-laki" : "Perempuan");
+                    preparedStatement.setString(6, txtAlamat.getText());
+                    preparedStatement.setString(7, txtEmail.getText());
+                    preparedStatement.setString(8, txtTelepon.getText());
+                    preparedStatement.setInt(9, Integer.parseInt(txtTahunMasuk.getText()));
+                    preparedStatement.setString(10, txtUsername.getText());
+                    preparedStatement.setString(11, txtPassword.getText());
+
+                    int affectedRows = preparedStatement.executeUpdate();
+                    if (affectedRows > 0) {
+                        showAlert("Data mahasiswa berhasil diubah", Alert.AlertType.INFORMATION);
+                        showMahasiswa(txtNIM.getText());
+                    } else {
+                        showAlert("Gagal mengubah data mahasiswa", Alert.AlertType.ERROR);
+                    }
+                } catch (SQLException throwables) {
+                    showAlert("Error: " + throwables.getMessage(), Alert.AlertType.ERROR);
+                    throwables.printStackTrace();
+                }
+            } catch (SQLException e) {
+                showAlert("Error getting Id_Prodi: " + e.getMessage(), Alert.AlertType.ERROR);
+                e.printStackTrace();
             }
         }
     }
+
     @FXML
     private void btnHapus_Click(MouseEvent event) {
         Connection con = connection.conn;
