@@ -43,6 +43,8 @@ public class UpdateDeleteDosenController implements Initializable {
     @FXML
     private TextField txtTelepon;
     @FXML
+    private TextField txtCari;
+    @FXML
     private TableView<Dosen> tableDosen;
     @FXML
     private TableColumn<Dosen, String> noPegawai;
@@ -144,7 +146,7 @@ public class UpdateDeleteDosenController implements Initializable {
         email.setCellValueFactory(new PropertyValueFactory<>("email"));
         telepon.setCellValueFactory(new PropertyValueFactory<>("telepon"));
         tableDosen.setItems(oblist);
-        loadTableData();
+        loadTableData("");
 
         tableDosen.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -166,6 +168,7 @@ public class UpdateDeleteDosenController implements Initializable {
                 txtEmail.setText(newValue.getEmail());
                 txtTelepon.setText(newValue.getTelepon());
             }
+            txtCari.setOnKeyReleased(event -> onTxtCari());
         });
     }
 
@@ -231,11 +234,17 @@ public class UpdateDeleteDosenController implements Initializable {
 
                 showAlert("Data berhasil dihapus", Alert.AlertType.INFORMATION);
                 clearFields();
-                loadTableData(); // Reload table data
+                loadTableData(""); // Reload table data
             }
         } catch (SQLException e) {
             showAlert("Error: " + e.getMessage(), Alert.AlertType.ERROR);
         }
+    }
+
+    @FXML
+    private void onTxtCari() {
+        String keyword = txtCari.getText().toLowerCase();
+        loadTableData(keyword);
     }
 
     private void clearFields() {
@@ -258,13 +267,31 @@ public class UpdateDeleteDosenController implements Initializable {
         alert.show();
     }
 
-    private void loadTableData() {
+    private void loadTableData(String keyword) {
         try {
             DBConnect connection = new DBConnect();
             connection.stat = connection.conn.createStatement();
-            String query = "SELECT * FROM Dosen WHERE Status = 'Aktif'";
+
+            String query = "SELECT * FROM Dosen WHERE Status = 'Aktif' AND (" +
+                    "LOWER(No_Pegawai) LIKE ? OR " +
+                    "LOWER(NIDN) LIKE ? OR " +
+                    "LOWER(Nama) LIKE ? OR " +
+                    "LOWER(Bidang_Kompetensi) LIKE ? OR " +
+                    "LOWER(Pendidikan_Terakhir) LIKE ? OR " +
+                    "LOWER(Tanggal_Lahir) LIKE ? OR " +
+                    "LOWER(Jenis_Kelamin) LIKE ? OR " +
+                    "LOWER(Alamat) LIKE ? OR " +
+                    "LOWER(Email) LIKE ? OR " +
+                    "LOWER(Telepon) LIKE ?)";
+
+            PreparedStatement stmt = connection.conn.prepareStatement(query);
+            String wildcardKeyword = "%" + keyword + "%";
+            for (int i = 1; i <= 10; i++) {
+                stmt.setString(i, wildcardKeyword);
+            }
+
             oblist.clear();
-            connection.result = connection.stat.executeQuery(query);
+            connection.result = stmt.executeQuery();
             while (connection.result.next()) {
                 LocalDate date = connection.result.getDate("Tanggal_Lahir").toLocalDate();
                 oblist.add(new Dosen(
@@ -280,10 +307,12 @@ public class UpdateDeleteDosenController implements Initializable {
                         connection.result.getString("Telepon")
                 ));
             }
+            stmt.close();
             connection.stat.close();
             connection.result.close();
         } catch (Exception ex) {
             System.out.println("Terjadi error saat load data dosen" + ex);
         }
     }
+
 }
