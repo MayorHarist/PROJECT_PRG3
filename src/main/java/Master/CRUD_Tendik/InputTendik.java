@@ -102,7 +102,7 @@ public class InputTendik {
 
         // Simpan data ke database
         try {
-            String query = "INSERT INTO TenagaKependidikan VALUES (?,?,?,?,?,?,?,?,?)";
+            String query = "EXEC sp_InsertTendik ?, ?, ?, ?, ?, ?, ?, ?, ?";
             connection.pstat = connection.conn.prepareStatement(query);
             connection.pstat.setString(1, Id_TKN);
             connection.pstat.setString(2, Nama);
