@@ -42,7 +42,7 @@ public class InputTendik {
     DBConnect connection = new DBConnect();
 
     @FXML
-    String Id_TKN, Nama, JenisKelamin, Alamat, Email, Telepon, Username, Pasword;
+    String Id_TKN, Nama, JenisKelamin, Alamat, Email, Telepon, Username, Password;
 
     LocalDate TanggalLahir;
 
@@ -65,11 +65,11 @@ public class InputTendik {
         Email = txtEmailTendik.getText();
         Telepon = txtTelpTendik.getText();
         Username = usernameTendik.getText();
-        Pasword = passwordTendik.getText();
+        Password = passwordTendik.getText();
 
         // Validasi data tidak boleh kosong
         if (Id_TKN.isEmpty() || Nama.isEmpty() || JenisKelamin.isEmpty() || Alamat.isEmpty()
-                || Email.isEmpty() || Telepon.isEmpty() || Username.isEmpty() || Pasword.isEmpty()) {
+                || Email.isEmpty() || Telepon.isEmpty() || Username.isEmpty() || Password.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText(null);
@@ -108,7 +108,6 @@ public class InputTendik {
         confirmationAlert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
 
         Optional<ButtonType> result = confirmationAlert.showAndWait();
-
         if (result.isPresent() && result.get() == ButtonType.YES) {
             // Simpan data ke database
             try {
@@ -122,7 +121,7 @@ public class InputTendik {
                 connection.pstat.setString(6, Email);
                 connection.pstat.setString(7, Telepon);
                 connection.pstat.setString(8, Username);
-                connection.pstat.setString(9, Pasword);
+                connection.pstat.setString(9, Password);
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Success");
@@ -137,6 +136,7 @@ public class InputTendik {
             }
         }
     }
+
     @FXML
     protected void OnBtnBatalClick() {
         clear();
