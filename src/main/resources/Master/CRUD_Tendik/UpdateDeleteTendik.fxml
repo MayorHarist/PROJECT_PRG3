@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="1540.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Tendik.UpdateDeleteTendik">
+   <children>
+      <TableView fx:id="tabelViewTendik" layoutX="205.0" layoutY="255.0" prefHeight="322.0" prefWidth="682.0">
+         <columns>
+            <TableColumn fx:id="Id_TKN" prefWidth="75.0" text="ID TKN" />
+            <TableColumn fx:id="Nama" prefWidth="75.0" text="Nama" />
+            <TableColumn fx:id="Tanggal" prefWidth="75.0" text="Tanggal Lahir" />
+            <TableColumn fx:id="JenisKelamin" prefWidth="75.0" text="Jenis Kelamin" />
+            <TableColumn fx:id="Alamat" prefWidth="75.0" text="Alamat" />
+            <TableColumn fx:id="Email" prefWidth="75.0" text="Email" />
+            <TableColumn fx:id="Telepon" prefWidth="75.0" text="Telepon" />
+            <TableColumn fx:id="Username" prefWidth="75.0" text="Username" />
+            <TableColumn fx:id="Password" prefWidth="75.0" text="Password" />
+         </columns>
+      </TableView>
+      <AnchorPane layoutX="960.0" layoutY="109.0" prefHeight="600.0" prefWidth="540.0">
+         <children>
+            <VBox layoutX="46.0" layoutY="58.0" prefHeight="420.0" prefWidth="123.0" spacing="25.0">
+               <children>
+                  <Label text="ID TKN" />
+                  <Label graphicTextGap="3.0" text="Nama" />
+                  <Label text="Tanggal Lahir" />
+                  <Label graphicTextGap="3.0" text="Jenis Kelamin" />
+                  <Label graphicTextGap="3.0" text="Alamat" />
+                  <Label text="Email" />
+                  <Label text="No Telepon" />
+                  <Label text="Username" />
+                  <Label text="Password" />
+               </children>
+            </VBox>
+            <TextField fx:id="txtIDTKN" editable="false" layoutX="200.0" layoutY="56.0" prefHeight="25.0" prefWidth="250.0" />
+            <DatePicker fx:id="tglTendik" layoutX="199.0" layoutY="131.0" prefHeight="39.0" prefWidth="250.0" />
+            <Group fx:id="groupRBButtton" layoutX="205.0" layoutY="187.0">
+               <children>
+                  <RadioButton fx:id="rbLaki" layoutX="2.0" layoutY="1.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="111.0" text="Laki-Laki" />
+                  <RadioButton fx:id="rbPuan" layoutX="112.0" layoutY="-7.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="122.0" text="Perempuan" />
+               </children>
+            </Group>
+            <TextField fx:id="txtAlamatTendik" layoutX="198.0" layoutY="221.0" prefHeight="25.0" prefWidth="250.0" />
+            <TextField fx:id="txtEmailTendik" layoutX="202.0" layoutY="266.0" prefHeight="25.0" prefWidth="250.0" />
+            <TextField fx:id="txtTelpTendik" layoutX="200.0" layoutY="307.0" prefHeight="25.0" prefWidth="250.0" />
+            <TextField fx:id="usernameTendik" layoutX="200.0" layoutY="350.0" prefHeight="25.0" prefWidth="250.0" />
+            <TextField fx:id="passwordTendik" layoutX="200.0" layoutY="391.0" prefHeight="25.0" prefWidth="250.0" />
+            <Button fx:id="btnUbahTendik" layoutX="42.0" layoutY="497.0" mnemonicParsing="false" onAction="#onBtnUbahClick" prefHeight="38.0" prefWidth="129.0" text="Ubah" />
+            <Button fx:id="btnBatalTendik" layoutX="339.0" layoutY="497.0" mnemonicParsing="false" onAction="#OnBtnBatalClick" prefHeight="38.0" prefWidth="119.0" text="Batal" />
+            <Button fx:id="btnHapusTendik" layoutX="191.0" layoutY="497.0" mnemonicParsing="false" onAction="#OnBtnHapusClick" prefHeight="40.0" prefWidth="134.0" text="Hapus" />
+            <TextField fx:id="txtNamaTendik" layoutX="200.0" layoutY="95.0" prefHeight="25.0" prefWidth="250.0" />
+         </children>
+      </AnchorPane>
+      <Button fx:id="btnRefresh" layoutX="524.0" layoutY="607.0" mnemonicParsing="false" onAction="#onBtnRefreshClick" prefHeight="40.0" prefWidth="162.0" text="Refresh" />
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="574.0" layoutY="79.0" prefHeight="40.0" prefWidth="405.0" text="FORM TENAGA PENDIDIKAN">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnCari" layoutX="367.0" layoutY="213.0" mnemonicParsing="false" onAction="#onBtnCariClick" prefHeight="37.0" prefWidth="115.0" text="Cari" />
+      <TextField fx:id="txtCari" editable="false" layoutX="516.0" layoutY="219.0" prefHeight="30.0" prefWidth="202.0" />
+      <Button fx:id="btnTambah" layoutX="220.0" layoutY="215.0" mnemonicParsing="false" onAction="#onBtnTambahClick" prefHeight="37.0" prefWidth="115.0" text="Tambah" />
+      <ComboBox fx:id="cbFilter" layoutX="748.0" layoutY="218.0" prefHeight="30.0" prefWidth="207.0" />
+      <Label layoutX="522.0" layoutY="191.0" text="Cari Data" />
+      <Label layoutX="752.0" layoutY="191.0" text="Ururtkan:" />
+   </children>
+</AnchorPane>

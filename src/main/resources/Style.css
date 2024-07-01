@@ -18,7 +18,7 @@ Button {
     -fx-min-height: 30px; /* Tinggi minimum untuk btnSimpan */
     -fx-max-width: 70px; /* Lebar maksimum untuk btnSimpan */
     -fx-max-height: 30px; /* Tinggi maksimum untuk btnSimpan */
-    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnSimpan */
+    -fx-background-color: #004aad; /* Warna latar belakang untuk btnSimpan */
 }
 
 /* Gaya khusus untuk tombol dengan ID "btnBatal" */

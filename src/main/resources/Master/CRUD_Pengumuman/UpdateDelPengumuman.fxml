@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="840.0" prefWidth="1540.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Pengumuman.UpdateDelPengumuman">
+   <children>
+      <TableView fx:id="tblViewPengumuman" layoutX="222.0" layoutY="250.0" prefHeight="274.0" prefWidth="541.0">
+         <columns>
+            <TableColumn fx:id="Id_Pengumuman" prefWidth="111.0" text="ID Pengumuman" />
+            <TableColumn fx:id="nmPengumuman" prefWidth="85.0" text="Nama" />
+            <TableColumn fx:id="tanggalPM" prefWidth="120.33334350585938" text="Tanggal" />
+            <TableColumn fx:id="deskripsi" prefWidth="120.33334350585938" text="Deskripsi" />
+            <TableColumn fx:id="Id_TKN" prefWidth="105.0" text="ID TKN" />
+         </columns>
+      </TableView>
+      <AnchorPane layoutX="866.0" layoutY="173.0" prefHeight="427.0" prefWidth="500.0">
+         <children>
+            <VBox layoutX="75.0" layoutY="90.0" prefHeight="259.0" prefWidth="125.0" spacing="25.0">
+               <children>
+                  <Label text="ID Pengumuman" />
+                  <Label text="Nama" />
+                  <Label text="Tanggal " />
+                  <Label text="Deskripsi" />
+                  <Label text="ID TKN" />
+               </children>
+            </VBox>
+            <TextField fx:id="txtIDPengumuman" layoutX="200.0" layoutY="85.0" prefHeight="25.0" prefWidth="250.0" />
+            <DatePicker fx:id="tglPengumuman" layoutX="200.0" layoutY="168.0" prefHeight="30.0" prefWidth="250.0" />
+            <TextField fx:id="txtnmPengumuman" layoutX="200.0" layoutY="125.0" prefHeight="25.0" prefWidth="250.0" />
+            <TextField fx:id="txtDeskripsi" layoutX="200.0" layoutY="218.0" prefHeight="25.0" prefWidth="250.0" />
+            <HBox layoutX="36.0" layoutY="341.0" prefHeight="56.0" prefWidth="470.0" />
+            <ComboBox fx:id="cbTKN" layoutX="200.0" layoutY="255.0" prefHeight="25.0" prefWidth="250.0" />
+            <Button fx:id="btnUbahPengumuman" layoutX="41.0" layoutY="380.0" mnemonicParsing="false" onAction="#onBtnUbahClick" prefHeight="40.0" prefWidth="132.0" text="Ubah" />
+            <Button fx:id="btnBatal" layoutX="211.0" layoutY="380.0" mnemonicParsing="false" onAction="#onBtnBatalClick" prefHeight="40.0" prefWidth="125.0" text="Batal" />
+            <Button fx:id="btnHapus" layoutX="374.0" layoutY="378.0" mnemonicParsing="false" onAction="#onBtnHapusClick" prefHeight="40.0" prefWidth="126.0" text="Hapus" />
+         </children>
+      </AnchorPane>
+      <Button fx:id="btnRefresh" layoutX="489.0" layoutY="550.0" mnemonicParsing="false" onAction="#onBtnRefreshClick" prefHeight="42.0" prefWidth="141.0" text="Refresh" />
+      <Button fx:id="btnCari" layoutX="360.0" layoutY="195.0" mnemonicParsing="false" onAction="#onBtnCariClick" prefHeight="37.0" prefWidth="106.0" text="Cari" />
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="686.0" layoutY="84.0" prefHeight="17.0" prefWidth="333.0" text="FORM PENGUMUMAN">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnTambah" layoutX="221.0" layoutY="195.0" mnemonicParsing="false" onAction="#onBtnTambahClick" prefHeight="37.0" prefWidth="115.0" text="Tambah" />
+      <TextField fx:id="txtCari" editable="false" layoutX="501.0" layoutY="200.0" prefHeight="30.0" prefWidth="202.0" />
+      <Label layoutX="501.0" layoutY="170.0" text="Cari Data" />
+   </children>
+</AnchorPane>
