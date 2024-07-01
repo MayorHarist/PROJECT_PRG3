@@ -32,8 +32,8 @@ public class DashboardApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(UpdateDeleteMahasiswa.class.getResource("UpdateDeleteMahasiswa.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);
+        FXMLLoader fxmlLoader = new FXMLLoader(InputPengumuman.class.getResource("InputPengumuman.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         //Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         stage.setTitle("Dashboard Find Smart");
         stage.setScene(scene);

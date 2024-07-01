@@ -78,43 +78,41 @@ public class InputPengumuman {
             alert.showAndWait();
             return; // Menghentikan eksekusi jika format nama tidak valid
         }
-        // Menampilkan konfirmasi sebelum menyimpan data
-        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationAlert.setTitle("Konfirmasi");
-        confirmationAlert.setHeaderText(null);
-        confirmationAlert.setContentText("Apakah data sudah diisi dengan benar?");
-        ButtonType buttonTypeYes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
-        ButtonType buttonTypeNo = new ButtonType("No", ButtonBar.ButtonData.NO);
+//        // Menampilkan konfirmasi sebelum menyimpan data
+//        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+//        confirmationAlert.setTitle("Konfirmasi");
+//        confirmationAlert.setHeaderText(null);
+//        confirmationAlert.setContentText("Apakah data sudah diisi dengan benar?");
+//        ButtonType buttonTypeYes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+//        ButtonType buttonTypeNo = new ButtonType("No", ButtonBar.ButtonData.NO);
+//
+//        confirmationAlert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+//        Optional<ButtonType> result = confirmationAlert.showAndWait();
+//        if (result.isPresent() && result.get() == ButtonType.YES) {
+//        }
+        // Simpan data ke database
+        try {
+            String query = "EXEC sp_InsertPengumuman  ?,?,?,?,?";
+            connection.pstat = connection.conn.prepareStatement(query);
+            connection.pstat.setString(1, Id_Pengumuman);
+            connection.pstat.setString(2, Nama);
+            connection.pstat.setDate(3, java.sql.Date.valueOf(Tanggal));
+            connection.pstat.setString(4, Deskripsi);
+            connection.pstat.setString(5, Id_TKN);
 
-        confirmationAlert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
-        Optional<ButtonType> result = confirmationAlert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.YES) {
-            // Simpan data ke database
-            try {
-                String query = "EXEC sp_Pengumuman VALUES ?,?,?,?,?";
-                connection.pstat = connection.conn.prepareStatement(query);
-                connection.pstat.setString(1, Id_Pengumuman);
-                connection.pstat.setString(2, Nama);
-                connection.pstat.setDate(3, java.sql.Date.valueOf(Tanggal));
-                connection.pstat.setString(4, Deskripsi);
-                connection.pstat.setString(5, Id_TKN);
+            connection.pstat.executeUpdate();
+            connection.conn.commit();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Data Pengumuman berhasil ditambahkan!");
+            alert.showAndWait();
 
-                connection.pstat.executeUpdate();
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Success");
-                alert.setHeaderText(null);
-                alert.setContentText("Data Pengumuman berhasil ditambahkan!");
-                alert.showAndWait();
-
-                clear();
-                autoid();
-            } catch (SQLException ex) {
-                System.out.println("Terjadi error saat menambahkan data Pengumuman: " + ex);
-            }
+            clear();
+            autoid();
+        } catch (SQLException ex) {
+            System.out.println("Terjadi error saat menambahkan data Pengumuman: " + ex);
         }
     }
     public void clear() {
-        txtIDPengumuman.clear();
         txtnmPengumuman.clear();
         tglPengumuman.setValue(null);
         txtDeskripsi.clear();

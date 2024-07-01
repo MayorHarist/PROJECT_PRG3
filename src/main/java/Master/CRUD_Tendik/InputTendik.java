@@ -118,11 +118,10 @@ public class InputTendik {
             connection.conn.commit();
             if (rowsInserted > 0) {
                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                successAlert.setTitle("Success");
+                successAlert.setTitle("Sukses");
                 successAlert.setHeaderText(null);
                 successAlert.setContentText("Data Tenaga Kependidikan berhasil ditambahkan!");
                 successAlert.showAndWait();
-
                 clear();
                 autoid();
             }
@@ -130,8 +129,6 @@ public class InputTendik {
             System.out.println("Terjadi error saat menambahkan data Tenaga Kependidikan: " + ex);
             ex.printStackTrace();
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setTitle("Error");
-            errorAlert.setHeaderText(null);
             errorAlert.setContentText("Terjadi kesalahan saat menyimpan data. Silakan coba lagi.");
             errorAlert.showAndWait();
         }
@@ -143,7 +140,6 @@ public class InputTendik {
     }
 
     public void clear() {
-        txtIDTKN.clear();
         txtNamaTendik.clear();
         tglTendik.setValue(null);
         genderGroup.selectToggle(null); // Menghapus pilihan dari ToggleGroup
