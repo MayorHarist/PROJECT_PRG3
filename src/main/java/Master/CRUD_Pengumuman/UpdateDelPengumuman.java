@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.net.URL;
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -131,14 +132,13 @@ public class UpdateDelPengumuman implements Initializable {
                 LocalDate tanggal = tglPengumuman.getValue();
 
                 // Gunakan PreparedStatement untuk menghindari SQL injection dan memudahkan pengikatan parameter
-                String query = "UPDATE Pengumuman SET Id_Pengumuman = ?, Nama = ?, Tanggal = ?, Deskripsi = ?, Id_TKN = ? WHERE Id_Pengumuman = ?";
+                String query = "EXEC  sp_UpdatePengumuman ?, ?, ?, ?, ?";
                 PreparedStatement ps = connection.conn.prepareStatement(query);
                 ps.setString(1, txtIDPengumuman.getText());
                 ps.setString(2, txtnmPengumuman.getText());
                 ps.setDate(3, Date.valueOf(tanggal));
                 ps.setString(4, txtDeskripsi.getText());
                 ps.setString(5, cbTKN.getValue());
-                ps.setString(6, selectedPengumuman.getIdPM());
 
                 // Jalankan query
                 ps.executeUpdate();
@@ -170,56 +170,23 @@ public class UpdateDelPengumuman implements Initializable {
     @FXML
     protected void onBtnHapusClick() {
         try {
-            Pengumuman selectedPengumuman = tblViewPengumuman.getSelectionModel().getSelectedItem();
-            if (selectedPengumuman != null) {
-                // Ubah status menjadi tidak aktif
-                String query = "UPDATE Pengumuman SET Status = 'Tidak Aktif' WHERE Id_Pengumuman = ?";
-                PreparedStatement ps = connection.conn.prepareStatement(query);
-                ps.setString(1, selectedPengumuman.getIdPM());
-
-                int rowsAffected = ps.executeUpdate();
-                if (rowsAffected > 0) {
-                    // Update item di ObservableList
-                    int index = oblist.indexOf(selectedPengumuman);
-                    if (index != -1) {
-                        oblist.set(index, selectedPengumuman);
-                        tblViewPengumuman.refresh();
-
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Success");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Hapus data Pengumuman berhasil!");
-                        alert.showAndWait();
-                        clear();
-                    } else {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Gagal menemukan Pengumuman dalam list.");
-                        alert.showAndWait();
-                    }
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Gagal melakukan hapus data Pengumuman.");
-                    alert.showAndWait();
-                }
-
-                ps.close();
-            } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning");
-                alert.setHeaderText(null);
-                alert.setContentText("Tidak ada item yang dipilih.");
+            String query = "EXEC sp_DeletePengumuman ? ?";
+            try (Connection conn = connection.conn;
+                 PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setString(1, txtIDPengumuman.getText());
+                stmt.executeUpdate();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setContentText("Data Berhasil dihapus!");
                 alert.showAndWait();
+                clear();
+                loadData("");
             }
-        } catch (SQLException ex) {
-            System.out.println("Terjadi error saat mengubah status Pengumuman " + ex);
+        } catch (SQLException e) {
+            System.out.println("Data gagal dihapus " + e.getMessage());
+            e.printStackTrace();
         }
     }
     public void clear() {
-        txtIDPengumuman.clear();
         txtnmPengumuman.clear();
         tglPengumuman.setValue(null);
         txtDeskripsi.clear();
@@ -227,10 +194,27 @@ public class UpdateDelPengumuman implements Initializable {
     }
     @FXML
     protected void onBtnRefreshClick() {
+        loadData("");
+    }
+
+    private void loadData(String keyword){
         try {
-            oblist.clear(); // Bersihkan data yang ada sebelum memuat data baru
+            // Buka koneksi ke database FINDSMART
+            DBConnect connection = new DBConnect();
             connection.stat = connection.conn.createStatement();
-            String query = "SELECT * FROM Pengumuman";
+            String query = "SELECT * FROM Pengumuman WHERE Status = 'Aktif' AND (" +
+                    "LOWER(Id_Pengumuman) LIKE ? OR " +
+                    "LOWER(Nama) LIKE ? OR " +
+                    "LOWER(Tanggal) LIKE ? OR " +
+                    "LOWER(Deskripsi) LIKE ? OR " +
+                    "LOWER(Id_TKN) LIKE ?)";
+
+            PreparedStatement st = connection.conn.prepareStatement(query);
+            String wildcardKeyword = "%" + keyword + "%";
+            for (int i = 1; i <= 5; i++) {
+                st.setString(i, wildcardKeyword);
+            }
+            oblist.clear(); // Bersihkan data yang ada sebelum memuat data baru
             connection.result = connection.stat.executeQuery(query);
             while (connection.result.next()) {
                 LocalDate date = connection.result.getDate("Tanggal").toLocalDate();
@@ -245,8 +229,6 @@ public class UpdateDelPengumuman implements Initializable {
             connection.result.close();
             tblViewPengumuman.setItems(oblist);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setHeaderText(null);
             alert.setContentText("Refresh data Pengumuman berhasil!");
             alert.showAndWait();
         } catch (SQLException ex) {

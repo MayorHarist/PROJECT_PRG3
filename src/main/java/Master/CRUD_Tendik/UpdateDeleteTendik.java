@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -27,6 +28,8 @@ public class UpdateDeleteTendik implements Initializable {
     private TextField txtIDTKN;
     @FXML
     private TextField txtNamaTendik;
+    @FXML
+    private TextField txtCari;
     @FXML
     private DatePicker tglTendik;
     @FXML
@@ -208,23 +211,19 @@ public class UpdateDeleteTendik implements Initializable {
                 LocalDate tanggal = tglTendik.getValue();
                 String jenisKelamin = rbLaki.isSelected() ? "Laki-Laki" : "Perempuan";
 
-                String query = "UPDATE TenagaKependidikan SET Id_TKN = ?, Nama = ?, Tanggal_Lahir = ?, Jenis_Kelamin = ?, " +
-                        "Alamat = ?, Email = ?, Telepon = ?, Username = ?, Password = ?" +
-                        "WHERE Id_TKN = ?";
+                String query = "EXEC  sp_UpdateTendik ?, ?, ?, ?, ?, ?, ?, ?, ?";
+                connection.pstat = connection.conn.prepareStatement(query);
+                connection.pstat.setString(1, txtIDTKN.getText());
+                connection.pstat.setString(2, txtNamaTendik.getText());
+                connection.pstat.setDate(3, java.sql.Date.valueOf(tanggal));
+                connection.pstat.setString(4, jenisKelamin);
+                connection.pstat.setString(5, txtAlamatTendik.getText());
+                connection.pstat.setString(6, txtEmailTendik.getText());
+                connection.pstat.setString(7, txtTelpTendik.getText());
+                connection.pstat.setString(8, usernameTendik.getText());
+                connection.pstat.setString(9, passwordTendik.getText());
 
-                PreparedStatement ps = connection.conn.prepareStatement(query);
-                ps.setString(1, txtIDTKN.getText());
-                ps.setString(2, txtNamaTendik.getText());
-                ps.setDate(3, Date.valueOf(tanggal));
-                ps.setString(4, jenisKelamin);
-                ps.setString(5, txtAlamatTendik.getText());
-                ps.setString(6, txtEmailTendik.getText());
-                ps.setString(7, txtTelpTendik.getText());
-                ps.setString(8, usernameTendik.getText());
-                ps.setString(9, passwordTendik.getText());
-                ps.setString(10, selectedTendik.getId_TKN());
-
-                int rowsAffected = ps.executeUpdate();
+                int rowsAffected = connection.pstat.executeUpdate();
                 if (rowsAffected > 0) {
                     // Update item di ObservableList
                     int index = oblist.indexOf(selectedTendik);
@@ -255,7 +254,7 @@ public class UpdateDeleteTendik implements Initializable {
                     alert.setContentText("Gagal melakukan update data Tendik.");
                     alert.showAndWait();
                 }
-                ps.close();
+                connection.pstat.close();
             }
         } catch (SQLException ex) {
             System.out.println("Terjadi error saat mengupdate data Tendik" + ex);
@@ -265,53 +264,21 @@ public class UpdateDeleteTendik implements Initializable {
     @FXML
     protected void OnBtnHapusClick() {
         try {
-            Tendik selectedTendik = tabelViewTendik.getSelectionModel().getSelectedItem();
-            if (selectedTendik != null) {
-                // Ubah status menjadi tidak aktif
-                String query = "UPDATE TenagaKependidikan SET Status = 'Tidak Aktif' WHERE Id_TKN = ?";
-                PreparedStatement ps = connection.conn.prepareStatement(query);
-                ps.setString(1, selectedTendik.getId_TKN());
-
-                int rowsAffected = ps.executeUpdate();
-                if (rowsAffected > 0) {
-                    // Update item di ObservableList
-                    int index = oblist.indexOf(selectedTendik);
-                    if (index != -1) {
-                        selectedTendik.setStatus("Tidak Aktif");
-                        oblist.set(index, selectedTendik);
-                        tabelViewTendik.refresh();
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Success");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Hapus data Tenaga Kependidikan berhasil!");
-                        alert.showAndWait();
-                        clear();
-                    } else {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Error");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Gagal menemukan Tendik dalam list.");
-                        alert.showAndWait();
-                    }
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Error");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Gagal melakukan hapus data Tenaga Kependidikan.");
-                    alert.showAndWait();
-                }
-                ps.close();
-            } else {
+            String query = "EXEC sp_DeleteTendik ? ?";
+            try (Connection conn = connection.conn;
+                 PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setString(1, txtIDTKN.getText());
+                stmt.executeUpdate();
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Tidak ada item yang dipilih!");
+                alert.setContentText("Data Berhasil dihapus!");
                 alert.showAndWait();
+                clear();
+                loadData("");
             }
-        } catch (SQLException ex) {
-            System.out.println("Terjadi error saat mengubah status Tendik " + ex);
+        } catch (SQLException e) {
+            System.out.println("Data gagal dihapus " + e.getMessage());
+            e.printStackTrace();
         }
-
     }
 
     @FXML
@@ -321,15 +288,32 @@ public class UpdateDeleteTendik implements Initializable {
 
     @FXML
     protected void onBtnRefreshClick() {
-        try {
-            oblist.clear(); // Bersihkan data yang ada sebelum memuat data baru
+        loadData("");
+    }
 
+    private void loadData(String keyword) {
+        try {
             // Buka koneksi ke database FINDSMART
             DBConnect connection = new DBConnect();
-
             connection.stat = connection.conn.createStatement();
-            String query = "SELECT * FROM TenagaKependidikan WHERE Status = 'Aktif'";
-            connection.result = connection.stat.executeQuery(query);
+            String query = "SELECT * FROM TenagaKependidikan WHERE Status = 'Aktif' AND (" +
+                    "LOWER(Id_TKN) LIKE ? OR " +
+                    "LOWER(Nama) LIKE ? OR " +
+                    "LOWER(Tanggal_Lahir) LIKE ? OR " +
+                    "LOWER(Jenis_Kelamin) LIKE ? OR " +
+                    "LOWER(Alamat) LIKE ? OR " +
+                    "LOWER(Email) LIKE ? OR " +
+                    "LOWER(Telepon) LIKE ? OR " +
+                    "LOWER(Username) LIKE ? OR " +
+                    "LOWER(Password) LIKE ?)";
+
+            PreparedStatement st = connection.conn.prepareStatement(query);
+            String wildcardKeyword = "%" + keyword + "%";
+            for (int i = 1; i <= 9; i++) {
+                st.setString(i, wildcardKeyword);
+            }
+            oblist.clear();
+            connection.result = st.executeQuery();
             while (connection.result.next()) {
                 LocalDate date = connection.result.getDate("Tanggal_Lahir").toLocalDate();
                 oblist.add(new Tendik(
@@ -349,7 +333,6 @@ public class UpdateDeleteTendik implements Initializable {
             tabelViewTendik.setItems(oblist);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Success");
-            alert.setHeaderText(null);
             alert.setContentText("Refresh data Tenaga Kependidikan berhasil!");
             alert.showAndWait();
         } catch (SQLException ex) {
@@ -357,9 +340,15 @@ public class UpdateDeleteTendik implements Initializable {
             ex.printStackTrace();
         }
     }
+    @FXML
+    private void ontxtCari(){
+        String keyword = txtCari.getText().toLowerCase();
+        loadData(keyword);
+    }
 
     @FXML
     protected void onBtnCariClick() {
+        loadData("");
         try {
             String idToSearch = JOptionPane.showInputDialog("Masukkan ID Tendik yang akan dicari:");
             if (idToSearch != null && !idToSearch.isEmpty()) {
@@ -369,16 +358,14 @@ public class UpdateDeleteTendik implements Initializable {
                         tabelViewTendik.scrollTo(tendik);
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Success");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Data Tendik dengan ID \" + idToSearch + \" ditemukan!");
+                        alert.setContentText("Data Tendik ditemukan!");
                         alert.showAndWait();
                         return;
                     }
                 }
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Success");
-                alert.setHeaderText(null);
-                alert.setContentText("Data Tendik dengan ID \" + idToSearch + \" tidak ditemukan!");
+                alert.setContentText("Data Tendik tidak ditemukan!");
                 alert.showAndWait();
             }
         } catch (Exception ex) {
