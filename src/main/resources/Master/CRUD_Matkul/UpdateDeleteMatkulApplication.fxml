@@ -38,28 +38,52 @@
                 <VBox layoutX="60.0" layoutY="30.0" prefHeight="540.0" prefWidth="250.0" spacing="10.0">
                     <children>
                         <HBox spacing="10.0">
-                            <Label prefHeight="26.0" prefWidth="100.0" text="ID Matkul:" />
+                            <Label prefHeight="26.0" prefWidth="100.0" text="ID Matkul:">
+                        <font>
+                           <Font name="System Bold" size="18.0" />
+                        </font></Label>
                         </HBox>
                         <HBox spacing="10.0">
-                            <Label prefHeight="26.0" prefWidth="100.0" text="Nama:" />
+                            <Label prefHeight="26.0" prefWidth="100.0" text="Nama:">
+                        <font>
+                           <Font name="System Bold" size="18.0" />
+                        </font></Label>
                         </HBox>
                         <HBox spacing="10.0">
-                            <Label prefHeight="26.0" prefWidth="100.0" text="SKS:" />
+                            <Label prefHeight="26.0" prefWidth="100.0" text="SKS:">
+                        <font>
+                           <Font name="System Bold" size="18.0" />
+                        </font></Label>
                         </HBox>
                         <HBox spacing="10.0">
-                            <Label prefHeight="26.0" prefWidth="115.0" text="Jenis:" />
+                            <Label prefHeight="26.0" prefWidth="115.0" text="Jenis:">
+                        <font>
+                           <Font name="System Bold" size="18.0" />
+                        </font></Label>
                         </HBox>
                         <HBox spacing="10.0">
-                            <Label prefHeight="26.0" prefWidth="100.0" text="Semester:" />
+                            <Label prefHeight="26.0" prefWidth="100.0" text="Semester:">
+                        <font>
+                           <Font name="System Bold" size="18.0" />
+                        </font></Label>
                         </HBox>
                         <HBox spacing="10.0">
-                            <Label prefHeight="26.0" prefWidth="100.0" text="Status:" />
+                            <Label prefHeight="26.0" prefWidth="100.0" text="Status:">
+                        <font>
+                           <Font name="System Bold" size="18.0" />
+                        </font></Label>
                         </HBox>
                         <HBox spacing="10.0">
-                            <Label prefHeight="26.0" prefWidth="100.0" text="No Pegawai:" />
+                            <Label prefHeight="26.0" prefWidth="100.0" text="No Pegawai:">
+                        <font>
+                           <Font name="System Bold" size="18.0" />
+                        </font></Label>
                         </HBox>
                         <HBox spacing="10.0">
-                            <Label prefHeight="26.0" prefWidth="100.0" text="ID Prodi:" />
+                            <Label prefHeight="26.0" prefWidth="100.0" text="ID Prodi:">
+                        <font>
+                           <Font name="System Bold" size="18.0" />
+                        </font></Label>
                         </HBox>
                     </children>
                 </VBox>
