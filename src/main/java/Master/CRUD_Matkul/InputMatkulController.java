@@ -25,15 +25,13 @@ public class InputMatkulController {
     @FXML
     private TextField txtSemester;
     @FXML
-    private TextField txtStatus;
-    @FXML
     private ComboBox<String> cbPegawai;
     @FXML
     private ComboBox<String> cbProdi;
     @FXML
     private AnchorPane AnchorInputMatkul;
 
-    String IdMatkul, nama, sks, jenis, semester, status, pegawai, prodi;
+    String IdMatkul, nama, sks, jenis, semester, No_Pegawai, prodi;
     DBConnect connection = new DBConnect();
 
     @FXML
@@ -50,11 +48,11 @@ public class InputMatkulController {
 
     private ObservableList<String> loadDataForPegawaiComboBox() {
         ObservableList<String> dataList = FXCollections.observableArrayList();
-        String query = "SELECT No_Pegawai FROM Dosen";
+        String query = "SELECT Nama FROM Dosen";
 
         try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
             while (resultSet.next()) {
-                String noPegawai = resultSet.getString("No_Pegawai");
+                String noPegawai = resultSet.getString("Nama");
                 dataList.add(noPegawai);
             }
         } catch (SQLException ex) {
@@ -66,11 +64,11 @@ public class InputMatkulController {
 
     private ObservableList<String> loadDataForProdiComboBox() {
         ObservableList<String> dataList = FXCollections.observableArrayList();
-        String query = "SELECT Id_Prodi FROM ProgramStudi";
+        String query = "SELECT Nama FROM ProgramStudi";
 
         try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
             while (resultSet.next()) {
-                String idProdi = resultSet.getString("Id_Prodi");
+                String idProdi = resultSet.getString("Nama");
                 dataList.add(idProdi);
             }
         } catch (SQLException ex) {
@@ -87,22 +85,20 @@ public class InputMatkulController {
         sks = txtSKS.getText();
         jenis = txtJenis.getText();
         semester = txtSemester.getText();
-        status = txtStatus.getText();
-        pegawai = cbPegawai.getValue();
+        No_Pegawai = cbPegawai.getValue();
         prodi = cbProdi.getValue();
 
         if (validasi()) {
             try {
-                String query = "INSERT INTO MataKuliah VALUES (?,?,?,?,?,?,?,?)";
+                String query = "EXEC sp_InsertMatkul ? , ?, ?, ?, ?, ?, ?";
                 connection.pstat = connection.conn.prepareStatement(query);
                 connection.pstat.setString(1, IdMatkul);
                 connection.pstat.setString(2, nama);
                 connection.pstat.setString(3, sks);
                 connection.pstat.setString(4, jenis);
                 connection.pstat.setString(5, semester);
-                connection.pstat.setString(6, status);
-                connection.pstat.setString(7, pegawai);
-                connection.pstat.setString(8, prodi);
+                connection.pstat.setString(6, No_Pegawai);
+                connection.pstat.setString(7, prodi);
 
                 connection.pstat.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Input data Mata Kuliah berhasil!");
@@ -115,12 +111,12 @@ public class InputMatkulController {
     }
 
     private boolean validasi() {
-        if (IdMatkul.isEmpty() || nama.isEmpty() || sks.isEmpty() || jenis.isEmpty() || semester.isEmpty() || status.isEmpty() || pegawai == null || prodi == null) {
+        if (IdMatkul.isEmpty() || nama.isEmpty() || sks.isEmpty() || jenis.isEmpty() || semester.isEmpty() || No_Pegawai == null || prodi == null) {
             JOptionPane.showMessageDialog(null, "Semua data wajib diisi!");
             return false;
         }
-        if (!isAlpha(jenis) || !isAlpha(status)) {
-            JOptionPane.showMessageDialog(null, "Data Jenis dan Status harus berupa huruf saja!");
+        if (!isAlpha(jenis)) {
+            JOptionPane.showMessageDialog(null, "Data Jenis harus berupa huruf saja!");
             return false;
         }
         if (!isNumeric(semester)) {
@@ -149,7 +145,6 @@ public class InputMatkulController {
         txtSKS.clear();
         txtJenis.clear();
         txtSemester.clear();
-        txtStatus.clear();
         cbPegawai.setValue(null);
         cbProdi.setValue(null);
     }
