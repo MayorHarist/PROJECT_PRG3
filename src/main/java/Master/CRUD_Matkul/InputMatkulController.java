@@ -34,6 +34,53 @@ public class InputMatkulController {
     String IdMatkul, nama, sks, Jenis, semester, No_Pegawai, Id_Prodi;
     DBConnect connection = new DBConnect();
 
+
+    public class Pegawai {
+        private String id;
+        private String nama;
+
+        public Pegawai(String id, String nama) {
+            this.id = id;
+            this.nama = nama;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public String getNama() {
+            return nama;
+        }
+
+        @Override
+        public String toString() {
+            return nama;
+        }
+    }
+
+    public class Prodi {
+        private String id;
+        private String nama;
+
+        public Prodi(String id, String nama) {
+            this.id = id;
+            this.nama = nama;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public String getNama() {
+            return nama;
+        }
+
+        @Override
+        public String toString() {
+            return nama;
+        }
+    }
+
     @FXML
     public void initialize() {
         autoid(); // Panggil autoid saat inisialisasi
@@ -184,52 +231,6 @@ public class InputMatkulController {
             result.close();
         } catch (Exception ex) {
             System.out.println("Terjadi error pada Id Mata Kuliah: " + ex);
-        }
-    }
-
-    public class Pegawai {
-        private String id;
-        private String nama;
-
-        public Pegawai(String id, String nama) {
-            this.id = id;
-            this.nama = nama;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public String getNama() {
-            return nama;
-        }
-
-        @Override
-        public String toString() {
-            return nama;
-        }
-    }
-
-    public class Prodi {
-        private String id;
-        private String nama;
-
-        public Prodi(String id, String nama) {
-            this.id = id;
-            this.nama = nama;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public String getNama() {
-            return nama;
-        }
-
-        @Override
-        public String toString() {
-            return nama;
         }
     }
 }

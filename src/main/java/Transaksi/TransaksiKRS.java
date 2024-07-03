@@ -22,6 +22,8 @@ import java.util.regex.Pattern;
 import Database.DBConnect;
 import javafx.stage.Stage;
 
+import static java.lang.Float.parseFloat;
+
 public class TransaksiKRS {
     @FXML
     private DatePicker TglPengisian;
@@ -32,17 +34,13 @@ public class TransaksiKRS {
     @FXML
     private Button btnSimpan;
     @FXML
-    private ComboBox<String> cbMatkul;
+    private ComboBox<MataKuliah> cbMatkul;
     @FXML
-    private ComboBox<String> cbNIM;
+    private ComboBox<Mahasiswa> cbNIM;
     @FXML
-    private ComboBox<String> cbTendik;
-    @FXML
-    private TextField txtAkhir;
+    private ComboBox<Tendik> cbTendik;
     @FXML
     private TextField txtIdKRS;
-    @FXML
-    private TextField txtIndeks;
     @FXML
     private TextField txtProjek;
     @FXML
@@ -57,32 +55,102 @@ public class TransaksiKRS {
     private AnchorPane AnchorKRS;
 
     String IdKRS, matkul, nim, tendik, tglPengisian;
-    float akhir, indeks, projek, quiz, tugas, uas, uts;
+    float projek, quiz, tugas, uas, uts;
     DBConnect connection = new DBConnect();
+
+    public static class MataKuliah {
+        private String id;
+        private String nama;
+
+        public MataKuliah(String id, String nama) {
+            this.id = id;
+            this.nama = nama;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public String getNama() {
+            return nama;
+        }
+
+        @Override
+        public String toString() {
+            return nama;
+        }
+    }
+
+    public static class Mahasiswa {
+        private String nim;
+        private String nama;
+
+        public Mahasiswa(String nim, String nama) {
+            this.nim = nim;
+            this.nama = nama;
+        }
+
+        public String getNIM() {
+            return nim;
+        }
+
+        public String getNama() {
+            return nama;
+        }
+
+        @Override
+        public String toString() {
+            return nama;
+        }
+    }
+
+    public static class Tendik {
+        private String id;
+        private String nama;
+
+        public Tendik(String id, String nama) {
+            this.id = id;
+            this.nama = nama;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public String getNama() {
+            return nama;
+        }
+
+        @Override
+        public String toString() {
+            return nama;
+        }
+    }
 
     @FXML
     public void initialize() {
         autoid(); // Generate IdKRS when initializing
 
         // Load data for ComboBox fields
-        ObservableList<String> matkulData = loadDataForMatkulComboBox();
+        ObservableList<MataKuliah> matkulData = loadDataForMatkulComboBox();
         cbMatkul.setItems(matkulData);
 
-        ObservableList<String> nimData = loadDataForNIMComboBox();
+        ObservableList<Mahasiswa> nimData = loadDataForNIMComboBox();
         cbNIM.setItems(nimData);
 
-        ObservableList<String> tendikData = loadDataForTendikComboBox();
+        ObservableList<Tendik> tendikData = loadDataForTendikComboBox();
         cbTendik.setItems(tendikData);
     }
 
-    private ObservableList<String> loadDataForMatkulComboBox() {
-        ObservableList<String> dataList = FXCollections.observableArrayList();
-        String query = "SELECT Nama FROM MataKuliah";
+    private ObservableList<MataKuliah> loadDataForMatkulComboBox() {
+        ObservableList<MataKuliah> dataList = FXCollections.observableArrayList();
+        String query = "SELECT Id_Matkul, Nama FROM MataKuliah";
 
         try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
             while (resultSet.next()) {
-                String idMatkul = resultSet.getString("Nama");
-                dataList.add(idMatkul);
+                String idMatkul = resultSet.getString("Id_Matkul");
+                String nama = resultSet.getString("Nama");
+                dataList.add(new MataKuliah(idMatkul, nama));
             }
         } catch (SQLException ex) {
             System.out.println("Terjadi error saat mengambil data untuk ComboBox Mata Kuliah: " + ex.getMessage());
@@ -91,14 +159,15 @@ public class TransaksiKRS {
         return dataList;
     }
 
-    private ObservableList<String> loadDataForNIMComboBox() {
-        ObservableList<String> dataList = FXCollections.observableArrayList();
-        String query = "SELECT Nama FROM Mahasiswa";
+    private ObservableList<Mahasiswa> loadDataForNIMComboBox() {
+        ObservableList<Mahasiswa> dataList = FXCollections.observableArrayList();
+        String query = "SELECT NIM, Nama FROM Mahasiswa";
 
         try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
             while (resultSet.next()) {
-                String nim = resultSet.getString("Nama");
-                dataList.add(nim);
+                String nim = resultSet.getString("NIM");
+                String nama = resultSet.getString("Nama");
+                dataList.add(new Mahasiswa(nim, nama));
             }
         } catch (SQLException ex) {
             System.out.println("Terjadi error saat mengambil data untuk ComboBox NIM: " + ex.getMessage());
@@ -107,14 +176,15 @@ public class TransaksiKRS {
         return dataList;
     }
 
-    private ObservableList<String> loadDataForTendikComboBox() {
-        ObservableList<String> dataList = FXCollections.observableArrayList();
-        String query = "SELECT Nama FROM TenagaKependidikan";
+    private ObservableList<Tendik> loadDataForTendikComboBox() {
+        ObservableList<Tendik> dataList = FXCollections.observableArrayList();
+        String query = "SELECT Id_TKN, Nama FROM TenagaKependidikan";
 
         try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
             while (resultSet.next()) {
-                String idTendik = resultSet.getString("Nama");
-                dataList.add(idTendik);
+                String idTendik = resultSet.getString("Id_TKN");
+                String nama = resultSet.getString("Nama");
+                dataList.add(new Tendik(idTendik, nama));
             }
         } catch (SQLException ex) {
             System.out.println("Terjadi error saat mengambil data untuk ComboBox Tenaga Kependidikan: " + ex.getMessage());
@@ -126,34 +196,56 @@ public class TransaksiKRS {
     @FXML
     void onbtnSimpanClick(ActionEvent event) {
         IdKRS = txtIdKRS.getText();
-        matkul = cbMatkul.getValue();
-        nim = cbNIM.getValue();
-        tendik = cbTendik.getValue();
+        MataKuliah selectedMatkul = cbMatkul.getValue();
+        Mahasiswa selectedNIM = cbNIM.getValue();
+        Tendik selectedTendik = cbTendik.getValue();
         tglPengisian = TglPengisian.getValue().toString();
-        akhir = Float.parseFloat(txtAkhir.getText());
-        indeks = Float.parseFloat(txtIndeks.getText());
-        projek = Float.parseFloat(txtProjek.getText());
-        quiz = Float.parseFloat(txtQuiz.getText());
-        tugas = Float.parseFloat(txtTugas.getText());
-        uas = Float.parseFloat(txtUAS.getText());
-        uts = Float.parseFloat(txtUTS.getText());
 
-        if (validasi(akhir, indeks, projek, quiz, tugas, uas, uts)) {
+        // Validate and parse float values
+        try {
+            projek = parseFloat(txtProjek.getText());
+            quiz = parseFloat(txtQuiz.getText());
+            tugas = parseFloat(txtTugas.getText());
+            uas = parseFloat(txtUAS.getText());
+            uts = parseFloat(txtUTS.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Nilai harus berupa angka!");
+            return;
+        }
+
+        if (selectedMatkul != null) {
+            matkul = selectedMatkul.getId();
+        } else {
+            matkul = null;
+        }
+
+        if (selectedNIM != null) {
+            nim = selectedNIM.getNIM();
+        } else {
+            nim = null;
+        }
+
+        if (selectedTendik != null) {
+            tendik = selectedTendik.getId();
+        } else {
+            tendik = null;
+        }
+
+        if (validasi(projek, quiz, tugas, uas, uts)) {
             try {
-                String query = "EXEC sp_InsertTransaksiKRS ?,?,?,?,?,?,?,?,?,?,?,?";
+                String query = "EXEC sp_InsertTransaksiKRS ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
                 connection.pstat = connection.conn.prepareStatement(query);
                 connection.pstat.setString(1, IdKRS);
-                connection.pstat.setString(2, matkul);
-                connection.pstat.setString(3, nim);
-                connection.pstat.setString(4, tendik);
-                connection.pstat.setString(5, tglPengisian);
-                connection.pstat.setFloat(6, akhir);
-                connection.pstat.setFloat(7, indeks);
-                connection.pstat.setFloat(8, projek);
-                connection.pstat.setFloat(9, quiz);
-                connection.pstat.setFloat(10, tugas);
-                connection.pstat.setFloat(11, uas);
-                connection.pstat.setFloat(12, uts);
+                connection.pstat.setFloat(2, tugas);
+                connection.pstat.setFloat(3, quiz);
+                connection.pstat.setFloat(4, uts);
+                connection.pstat.setFloat(5, uas);
+                connection.pstat.setFloat(6, projek);
+                connection.pstat.setString(7, tglPengisian);
+                connection.pstat.setString(8, nim);
+                connection.pstat.setString(9, matkul);
+                connection.pstat.setString(10, tendik);
+
 
                 connection.pstat.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Input data KRS berhasil!");
@@ -164,6 +256,7 @@ public class TransaksiKRS {
             }
         }
     }
+
 
     private boolean validasi(float... values) {
         if (IdKRS.isEmpty() || matkul == null || nim == null || tendik == null || tglPengisian.isEmpty()) {
@@ -194,8 +287,6 @@ public class TransaksiKRS {
         cbNIM.setValue(null);
         cbTendik.setValue(null);
         TglPengisian.setValue(null);
-        txtAkhir.clear();
-        txtIndeks.clear();
         txtProjek.clear();
         txtQuiz.clear();
         txtTugas.clear();
