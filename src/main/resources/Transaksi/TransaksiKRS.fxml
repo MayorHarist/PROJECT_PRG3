@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="AnchorKRS" prefHeight="632.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Transaksi.TransaksiKRS">
+<AnchorPane fx:id="AnchorKRS" prefHeight="650.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Transaksi.TransaksiKRS">
    <children>
       <Label layoutX="562.0" layoutY="42.0" text="Form Transaksi KRS">
          <font>
@@ -44,35 +44,47 @@
       <TextField fx:id="txtQuiz" layoutX="601.0" layoutY="188.0" prefHeight="25.0" prefWidth="210.0" />
       <TextField fx:id="txtUTS" layoutX="601.0" layoutY="224.0" prefHeight="25.0" prefWidth="210.0" />
       <TextField fx:id="txtUAS" layoutX="602.0" layoutY="260.0" prefHeight="25.0" prefWidth="210.0" />
+      <Label layoutX="469.0" layoutY="333.0" text="Nilai Akhir">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
       <TextField fx:id="txtProjek" layoutX="603.0" layoutY="295.0" prefHeight="25.0" prefWidth="210.0" />
-      <Button fx:id="btnBatal" layoutX="537.0" layoutY="515.0" mnemonicParsing="false" onAction="#onbtnBatalClick" prefHeight="25.0" prefWidth="72.0" stylesheets="@../Style.css" text="Batal">
+      <TextField fx:id="txtAkhir" layoutX="603.0" layoutY="330.0" prefHeight="25.0" prefWidth="210.0" />
+      <Button fx:id="btnBatal" layoutX="537.0" layoutY="569.0" mnemonicParsing="false" onAction="#onbtnBatalClick" prefHeight="25.0" prefWidth="72.0" stylesheets="@../Style.css" text="Batal">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="btnSimpan" layoutX="677.0" layoutY="515.0" minHeight="30.0" mnemonicParsing="false" onAction="#onbtnSimpanClick" prefHeight="30.0" prefWidth="100.0" stylesheets="@../Style.css" text="Simpan">
+      <Button fx:id="btnSimpan" layoutX="677.0" layoutY="569.0" minHeight="30.0" mnemonicParsing="false" onAction="#onbtnSimpanClick" prefHeight="30.0" prefWidth="100.0" stylesheets="@../Style.css" text="Simpan">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
       <Button fx:id="btnKembali" layoutX="843.0" layoutY="44.0" mnemonicParsing="false" onAction="#onbtnKembaliClick" prefHeight="25.0" prefWidth="72.0" stylesheets="@../Style.css" text="Kembali" />
-      <DatePicker fx:id="TglPengisian" layoutX="603.0" layoutY="330.0" prefHeight="25.0" prefWidth="210.0" />
-      <Label layoutX="469.0" layoutY="333.0" text="Tanggal Pengisian">
+      <Label layoutX="469.0" layoutY="367.0" text="Indeks Nilai">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="468.0" layoutY="368.0" text="NIM">
+      <TextField fx:id="txtIndeks" layoutX="601.0" layoutY="364.0" prefHeight="25.0" prefWidth="210.0" />
+      <DatePicker fx:id="TglPengisian" layoutX="603.0" layoutY="398.0" prefHeight="25.0" prefWidth="210.0" />
+      <Label layoutX="469.0" layoutY="401.0" text="Tanggal Pengisian">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="468.0" layoutY="403.0" text="Mata Kuliah">
+      <Label layoutX="468.0" layoutY="436.0" text="NIM">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="468.0" layoutY="439.0" text="Tenaga Pendidik">
+      <Label layoutX="468.0" layoutY="471.0" text="Mata Kuliah">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="468.0" layoutY="507.0" text="Tenaga Pendidik">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
@@ -83,8 +95,8 @@
          </font>
       </Label>
       <TextField fx:id="txtTugas" layoutX="601.0" layoutY="150.0" prefHeight="25.0" prefWidth="210.0" />
-      <ComboBox fx:id="cbNIM" layoutX="602.0" layoutY="366.0" prefHeight="25.0" prefWidth="210.0" />
-      <ComboBox fx:id="cbMatkul" layoutX="603.0" layoutY="400.0" prefHeight="25.0" prefWidth="210.0" />
-      <ComboBox fx:id="cbTendik" layoutX="604.0" layoutY="436.0" prefHeight="25.0" prefWidth="210.0" />
+      <ComboBox fx:id="cbNIM" layoutX="602.0" layoutY="434.0" prefHeight="25.0" prefWidth="210.0" />
+      <ComboBox fx:id="cbMatkul" layoutX="603.0" layoutY="468.0" prefHeight="25.0" prefWidth="210.0" />
+      <ComboBox fx:id="cbTendik" layoutX="604.0" layoutY="504.0" prefHeight="25.0" prefWidth="210.0" />
    </children>
 </AnchorPane>

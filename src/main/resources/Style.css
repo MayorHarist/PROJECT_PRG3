@@ -1,12 +1,3 @@
-/*Button {
-    -fx-background-radius: 30; !* Adjust the radius as needed *!
-    -fx-min-width: 70px; !* Minimum width of the button *!
-    -fx-min-height: 30px; !* Minimum height of the button *!
-    -fx-max-width: 70px; !* Maximum width of the button *!
-    -fx-max-height: 30px; !* Maximum height of the button *!
-    -fx-background-color: #0096C9; !* Background color of the button *!
-    -fx-text-fill: white; !* Text color *!*/
-/* Gaya umum untuk semua tombol */
 Button {
     -fx-background-radius: 30; /* Radius umum untuk semua tombol */
     -fx-text-fill: white; /* Warna teks umum untuk semua tombol */
@@ -41,6 +32,15 @@ Button {
 
 /* Gaya khusus untuk tombol dengan ID "btnBatal" */
 #btnBatalTendik {
+    -fx-min-width: 70px; /* Lebar minimum untuk btnBatal */
+    -fx-min-height: 30px; /* Tinggi minimum untuk btnBatal */
+    -fx-max-width: 300px; /* Lebar maksimum untuk btnBatal */
+    -fx-max-height: 30px; /* Tinggi maksimum untuk btnBatal */
+    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnBatal */
+}
+
+/* Gaya khusus untuk tombol dengan ID "btnBatal" */
+#btnCari {
     -fx-min-width: 70px; /* Lebar minimum untuk btnBatal */
     -fx-min-height: 30px; /* Tinggi minimum untuk btnBatal */
     -fx-max-width: 300px; /* Lebar maksimum untuk btnBatal */
@@ -90,7 +90,7 @@ Button {
 #btnRefresh {
     -fx-min-width: 70px; /* Lebar minimum untuk btnKembali */
     -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
-    -fx-max-width: 70px; /* Lebar maksimum untuk btnKembali */
+    -fx-max-width: 300px; /* Lebar maksimum untuk btnKembali */
     -fx-max-height: 30px; /* Tinggi maksimum untuk btnKembali */
     -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
 }
@@ -99,7 +99,25 @@ Button {
 #btnTambah {
     -fx-min-width: 70px; /* Lebar minimum untuk btnKembali */
     -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
-    -fx-max-width: 70px; /* Lebar maksimum untuk btnKembali */
+    -fx-max-width: 300px; /* Lebar maksimum untuk btnKembali */
+    -fx-max-height: 30px; /* Tinggi maksimum untuk btnKembali */
+    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
+}
+
+/* Gaya khusus untuk tombol dengan ID "btnTambah" */
+#btnUbahTendik {
+    -fx-min-width: 70px; /* Lebar minimum untuk btnKembali */
+    -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
+    -fx-max-width: 300px; /* Lebar maksimum untuk btnKembali */
+    -fx-max-height: 30px; /* Tinggi maksimum untuk btnKembali */
+    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
+}
+
+/* Gaya khusus untuk tombol dengan ID "btnTambah" */
+#btnHapusTendik {
+    -fx-min-width: 70px; /* Lebar minimum untuk btnKembali */
+    -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
+    -fx-max-width: 300px; /* Lebar maksimum untuk btnKembali */
     -fx-max-height: 30px; /* Tinggi maksimum untuk btnKembali */
     -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
 }
@@ -157,10 +175,10 @@ TextArea {
 }
 
 .button:focused {
-    -fx-background-color: #0078D7; /* Warna saat dipilih/focused */
+    -fx-background-color: #D994ED; /* Warna saat dipilih/focused */
 }
 
 .button:pressed {
-    -fx-background-color: #0078D7; /* Warna saat diklik */
+    -fx-background-color: #D994ED; /* Warna saat diklik */
 }
 
