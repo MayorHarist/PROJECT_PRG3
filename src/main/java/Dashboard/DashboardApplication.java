@@ -35,9 +35,9 @@ public class DashboardApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HalamanKepalaController.class.getResource("HalamanKepala.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);
-        //Scene scene = new Scene(fxmlLoader.load(), 1280, 650);
+        FXMLLoader fxmlLoader = new FXMLLoader(TransaksiKRS .class.getResource("TransaksiKRS.fxml"));
+        //Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);
+        Scene scene = new Scene(fxmlLoader.load(), 1280, 650);
         stage.setTitle("Dashboard Find Smart");
         stage.setScene(scene);
         stage.show();

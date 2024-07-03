@@ -50,10 +50,6 @@ public class TransaksiKRS {
     @FXML
     private TextField txtUTS;
     @FXML
-    private TextField txtAkhir;
-    @FXML
-    private TextField txtIndeks;
-    @FXML
     private AnchorPane AnchorKRS;
     @FXML
     private TableView<KRSData> tabelKRS;
@@ -237,7 +233,6 @@ public class TransaksiKRS {
     @FXML
     public void initialize() {
         autoid(); // Generate IdKRS when initializing
-
         // Load data for ComboBox fields
         ObservableList<MataKuliah> matkulData = loadDataForMatkulComboBox();
         cbMatkul.setItems(matkulData);
@@ -252,13 +247,13 @@ public class TransaksiKRS {
         Id_KRS.setCellValueFactory(new PropertyValueFactory<>("idKRS"));
         Tugas.setCellValueFactory(new PropertyValueFactory<>("tugas"));
         Quiz.setCellValueFactory(new PropertyValueFactory<>("quiz"));
-        UTS.setCellValueFactory(new PropertyValueFactory<>("uts"));
-        UAS.setCellValueFactory(new PropertyValueFactory<>("uas"));
+        UTS.setCellValueFactory(new PropertyValueFactory<>("UTS"));
+        UAS.setCellValueFactory(new PropertyValueFactory<>("UAS"));
         Projek.setCellValueFactory(new PropertyValueFactory<>("projek"));
         Akhir.setCellValueFactory(new PropertyValueFactory<>("akhir"));
         Indeks.setCellValueFactory(new PropertyValueFactory<>("indeks"));
         Tgl_Pengisian.setCellValueFactory(new PropertyValueFactory<>("tglPengisian"));
-        NIM.setCellValueFactory(new PropertyValueFactory<>("nim"));
+        NIM.setCellValueFactory(new PropertyValueFactory<>("NIM"));
         Matkul.setCellValueFactory(new PropertyValueFactory<>("matkul"));
         Tendik.setCellValueFactory(new PropertyValueFactory<>("tendik"));
 
@@ -301,7 +296,7 @@ public class TransaksiKRS {
 
     private ObservableList<Tendik> loadDataForTendikComboBox() {
         ObservableList<Tendik> dataList = FXCollections.observableArrayList();
-        String query = "SELECT Id_TKN, Nama FROM Tendik";
+        String query = "SELECT Id_TKN, Nama FROM TenagaKependidikan";
 
         try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
             while (resultSet.next()) {
@@ -317,7 +312,7 @@ public class TransaksiKRS {
     }
 
     private void autoid() {
-        String query = "SELECT MAX(Id_KRS) FROM TransaksiKRS";
+        String query = "SELECT MAX(Id_TransKRS) FROM TransaksiKRS";
         try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
             if (resultSet.next()) {
                 String maxId = resultSet.getString(1);
@@ -389,8 +384,9 @@ public class TransaksiKRS {
 
                 connection.pstat.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Input data KRS berhasil!");
-                clear();
-                autoid(); // Generate new IdKRS after saving data
+                clear();            // membersihkan semua txt setelah menyimpan data
+                autoid();           // membuat id baru setelah menyimpan data
+                loadKRSData();      // merefresh tabel setelah menyimpan data
             } catch (SQLException ex) {
                 System.out.println("Terjadi error saat insert data Transaksi KRS: " + ex);
             }
@@ -423,15 +419,15 @@ public class TransaksiKRS {
         try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
             while (resultSet.next()) {
                 KRSData krsData = new KRSData(
-                        resultSet.getString("Id_KRS"),
-                        resultSet.getFloat("Tugas"),
-                        resultSet.getFloat("Quiz"),
-                        resultSet.getFloat("UTS"),
-                        resultSet.getFloat("UAS"),
-                        resultSet.getFloat("Projek"),
-                        resultSet.getFloat("NilaiAkhir"),
-                        resultSet.getString("Indeks"),
-                        resultSet.getString("Tgl_Pengisian"),
+                        resultSet.getString("Id_TransKRS"),
+                        resultSet.getFloat("Nilai_Tugas"),
+                        resultSet.getFloat("Nilai_Quiz"),
+                        resultSet.getFloat("Nilai_UTS"),
+                        resultSet.getFloat("Nilai_UAS"),
+                        resultSet.getFloat("Nilai_Projek"),
+                        resultSet.getFloat("Nilai_Akhir"),
+                        resultSet.getString("Indeks_Nilai"),
+                        resultSet.getString("Tanggal_Pengisian"),
                         resultSet.getString("NIM"),
                         resultSet.getString("Id_Matkul"),
                         resultSet.getString("Id_TKN")
@@ -446,15 +442,17 @@ public class TransaksiKRS {
     }
 
     @FXML
-    void clear() {
+    private void onbtnBatalClick(ActionEvent event) {
+        clear();
+    }
+
+    private void clear() {
         txtIdKRS.clear();
         txtProjek.clear();
         txtQuiz.clear();
         txtTugas.clear();
         txtUAS.clear();
         txtUTS.clear();
-        txtAkhir.clear();
-        txtIndeks.clear();
         cbMatkul.getSelectionModel().clearSelection();
         cbNIM.getSelectionModel().clearSelection();
         cbTendik.getSelectionModel().clearSelection();
@@ -462,7 +460,7 @@ public class TransaksiKRS {
     }
 
     @FXML
-    void kembali(ActionEvent event) {
+    void onbtnKembaliClick(ActionEvent event) {
         Stage stage = (Stage) btnKembali.getScene().getWindow();
         stage.close();
         try {
