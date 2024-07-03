@@ -37,13 +37,13 @@ public class InputPengumuman {
         try {
             // Koneksi ke database dan query untuk mengambil ID TKN
             connection.stat = connection.conn.createStatement();
-            String query = "SELECT Id_TKN FROM TenagaKependidikan";
+            String query = "SELECT Nama TenagaKependidikan";
             connection.result = connection.stat.executeQuery(query);
             // Membersihkan ComboBox sebelum menambahkan pilihan baru
             cbTKN.getItems().clear();
             // Menambahkan pilihan ID TKN ke dalam ComboBox
             while (connection.result.next()) {
-                cbTKN.getItems().add(connection.result.getString("Id_TKN"));
+                cbTKN.getItems().add(connection.result.getString("Nama"));
             }
             // Menutup statement dan result set
             connection.stat.close();
