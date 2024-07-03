@@ -47,4 +47,7 @@ module org.example.project_prg3 {
 
     opens Master.CRUD_Tendik to javafx.fxml;
     exports Master.CRUD_Tendik;
+
+    opens Transaksi to javafx.fxml;
+    exports Transaksi;
 }
