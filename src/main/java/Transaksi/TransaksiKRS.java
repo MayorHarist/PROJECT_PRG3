@@ -7,10 +7,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.event.ActionEvent;
 import javax.swing.JOptionPane;
@@ -52,7 +50,37 @@ public class TransaksiKRS {
     @FXML
     private TextField txtUTS;
     @FXML
+    private TextField txtAkhir;
+    @FXML
+    private TextField txtIndeks;
+    @FXML
     private AnchorPane AnchorKRS;
+    @FXML
+    private TableView<KRSData> tabelKRS;
+    @FXML
+    private TableColumn<KRSData, String> Id_KRS;
+    @FXML
+    private TableColumn<KRSData, Float> Tugas;
+    @FXML
+    private TableColumn<KRSData, Float> Quiz;
+    @FXML
+    private TableColumn<KRSData, Float> UTS;
+    @FXML
+    private TableColumn<KRSData, Float> UAS;
+    @FXML
+    private TableColumn<KRSData, Float> Projek;
+    @FXML
+    private TableColumn<KRSData, Float> Akhir;
+    @FXML
+    private TableColumn<KRSData, String> Indeks;
+    @FXML
+    private TableColumn<KRSData, String> Tgl_Pengisian;
+    @FXML
+    private TableColumn<KRSData, String> NIM;
+    @FXML
+    private TableColumn<KRSData, String> Matkul;
+    @FXML
+    private TableColumn<KRSData, String> Tendik;
 
     String IdKRS, matkul, nim, tendik, tglPengisian;
     float projek, quiz, tugas, uas, uts;
@@ -127,6 +155,85 @@ public class TransaksiKRS {
         }
     }
 
+    public static class KRSData {
+        private String idKRS;
+        private float tugas;
+        private float quiz;
+        private float uts;
+        private float uas;
+        private float projek;
+        private float akhir;
+        private String indeks;
+        private String tglPengisian;
+        private String nim;
+        private String matkul;
+        private String tendik;
+
+        public KRSData(String idKRS, float tugas, float quiz, float uts, float uas, float projek, float akhir, String indeks, String tglPengisian, String nim, String matkul, String tendik) {
+            this.idKRS = idKRS;
+            this.tugas = tugas;
+            this.quiz = quiz;
+            this.uts = uts;
+            this.uas = uas;
+            this.projek = projek;
+            this.akhir = akhir;
+            this.indeks = indeks;
+            this.tglPengisian = tglPengisian;
+            this.nim = nim;
+            this.matkul = matkul;
+            this.tendik = tendik;
+        }
+
+        // Getters and Setters
+        public String getIdKRS() {
+            return idKRS;
+        }
+
+        public float getTugas() {
+            return tugas;
+        }
+
+        public float getQuiz() {
+            return quiz;
+        }
+
+        public float getUTS() {
+            return uts;
+        }
+
+        public float getUAS() {
+            return uas;
+        }
+
+        public float getProjek() {
+            return projek;
+        }
+
+        public float getAkhir() {
+            return akhir;
+        }
+
+        public String getIndeks() {
+            return indeks;
+        }
+
+        public String getTglPengisian() {
+            return tglPengisian;
+        }
+
+        public String getNIM() {
+            return nim;
+        }
+
+        public String getMatkul() {
+            return matkul;
+        }
+
+        public String getTendik() {
+            return tendik;
+        }
+    }
+
     @FXML
     public void initialize() {
         autoid(); // Generate IdKRS when initializing
@@ -140,6 +247,22 @@ public class TransaksiKRS {
 
         ObservableList<Tendik> tendikData = loadDataForTendikComboBox();
         cbTendik.setItems(tendikData);
+
+        // Initialize table columns
+        Id_KRS.setCellValueFactory(new PropertyValueFactory<>("idKRS"));
+        Tugas.setCellValueFactory(new PropertyValueFactory<>("tugas"));
+        Quiz.setCellValueFactory(new PropertyValueFactory<>("quiz"));
+        UTS.setCellValueFactory(new PropertyValueFactory<>("uts"));
+        UAS.setCellValueFactory(new PropertyValueFactory<>("uas"));
+        Projek.setCellValueFactory(new PropertyValueFactory<>("projek"));
+        Akhir.setCellValueFactory(new PropertyValueFactory<>("akhir"));
+        Indeks.setCellValueFactory(new PropertyValueFactory<>("indeks"));
+        Tgl_Pengisian.setCellValueFactory(new PropertyValueFactory<>("tglPengisian"));
+        NIM.setCellValueFactory(new PropertyValueFactory<>("nim"));
+        Matkul.setCellValueFactory(new PropertyValueFactory<>("matkul"));
+        Tendik.setCellValueFactory(new PropertyValueFactory<>("tendik"));
+
+        loadKRSData();
     }
 
     private ObservableList<MataKuliah> loadDataForMatkulComboBox() {
@@ -178,19 +301,36 @@ public class TransaksiKRS {
 
     private ObservableList<Tendik> loadDataForTendikComboBox() {
         ObservableList<Tendik> dataList = FXCollections.observableArrayList();
-        String query = "SELECT Id_TKN, Nama FROM TenagaKependidikan";
+        String query = "SELECT Id_TKN, Nama FROM Tendik";
 
         try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
             while (resultSet.next()) {
-                String idTendik = resultSet.getString("Id_TKN");
+                String idTKN = resultSet.getString("Id_TKN");
                 String nama = resultSet.getString("Nama");
-                dataList.add(new Tendik(idTendik, nama));
+                dataList.add(new Tendik(idTKN, nama));
             }
         } catch (SQLException ex) {
-            System.out.println("Terjadi error saat mengambil data untuk ComboBox Tenaga Kependidikan: " + ex.getMessage());
+            System.out.println("Terjadi error saat mengambil data untuk ComboBox Tendik: " + ex.getMessage());
         }
 
         return dataList;
+    }
+
+    private void autoid() {
+        String query = "SELECT MAX(Id_KRS) FROM TransaksiKRS";
+        try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
+            if (resultSet.next()) {
+                String maxId = resultSet.getString(1);
+                if (maxId != null) {
+                    int nextId = Integer.parseInt(maxId.substring(3)) + 1;
+                    txtIdKRS.setText("KRS" + String.format("%03d", nextId));
+                } else {
+                    txtIdKRS.setText("KRS001");
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Terjadi error saat mengenerate ID KRS: " + ex.getMessage());
+        }
     }
 
     @FXML
@@ -257,7 +397,6 @@ public class TransaksiKRS {
         }
     }
 
-
     private boolean validasi(float... values) {
         if (IdKRS.isEmpty() || matkul == null || nim == null || tendik == null || tglPengisian.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Semua data wajib diisi!");
@@ -276,64 +415,66 @@ public class TransaksiKRS {
         return Pattern.matches("\\d+(\\.\\d+)?", str);
     }
 
-    @FXML
-    void onbtnBatalClick(ActionEvent event) {
-        clear();
+
+    private void loadKRSData() {
+        ObservableList<KRSData> krsDataList = FXCollections.observableArrayList();
+        String query = "SELECT * FROM TransaksiKRS";
+
+        try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
+            while (resultSet.next()) {
+                KRSData krsData = new KRSData(
+                        resultSet.getString("Id_KRS"),
+                        resultSet.getFloat("Tugas"),
+                        resultSet.getFloat("Quiz"),
+                        resultSet.getFloat("UTS"),
+                        resultSet.getFloat("UAS"),
+                        resultSet.getFloat("Projek"),
+                        resultSet.getFloat("NilaiAkhir"),
+                        resultSet.getString("Indeks"),
+                        resultSet.getString("Tgl_Pengisian"),
+                        resultSet.getString("NIM"),
+                        resultSet.getString("Id_Matkul"),
+                        resultSet.getString("Id_TKN")
+                );
+                krsDataList.add(krsData);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Terjadi error saat memuat data KRS: " + ex.getMessage());
+        }
+
+        tabelKRS.setItems(krsDataList);
     }
 
-    private void clear() {
+    @FXML
+    void clear() {
         txtIdKRS.clear();
-        cbMatkul.setValue(null);
-        cbNIM.setValue(null);
-        cbTendik.setValue(null);
-        TglPengisian.setValue(null);
         txtProjek.clear();
         txtQuiz.clear();
         txtTugas.clear();
         txtUAS.clear();
         txtUTS.clear();
-    }
-
-    private void autoid() {
-        try {
-            String sql = "SELECT MAX(Id_TransKRS) FROM TransaksiKRS";
-            connection.pstat = connection.conn.prepareStatement(sql);
-            ResultSet result = connection.pstat.executeQuery();
-
-            if (result.next()) {
-                String maxId = result.getString(1);
-                if (maxId != null) {
-                    int number = Integer.parseInt(maxId.substring(4)) + 1; // Assuming IdKRS starts with 'TKRS'
-                    String formattedNumber = String.format("%03d", number);
-                    txtIdKRS.setText("KRS" + formattedNumber);
-                } else {
-                    txtIdKRS.setText("KRS001");
-                }
-            }
-            result.close();
-        } catch (Exception ex) {
-            System.out.println("Terjadi error pada Id KRS: " + ex);
-        }
+        txtAkhir.clear();
+        txtIndeks.clear();
+        cbMatkul.getSelectionModel().clearSelection();
+        cbNIM.getSelectionModel().clearSelection();
+        cbTendik.getSelectionModel().clearSelection();
+        TglPengisian.setValue(null);
     }
 
     @FXML
-    void onbtnKembaliClick(ActionEvent event) {
+    void kembali(ActionEvent event) {
+        Stage stage = (Stage) btnKembali.getScene().getWindow();
+        stage.close();
         try {
-            FXMLLoader loader = new FXMLLoader(SebagaiController.class.getResource("SebagaiApplication.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Sebagai/Sebagai.fxml"));
             Parent root = loader.load();
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setFullScreen(true);
-            stage.setFullScreenExitHint("");
-            stage.show();
-
-            // Tutup stage sebelumnya
-            Stage previousStage = (Stage) AnchorKRS.getScene().getWindow();
-            previousStage.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            SebagaiController sebagaiController = loader.getController();
+            Scene scene = new Scene(root);
+            Stage kembaliStage = new Stage();
+            kembaliStage.setScene(scene);
+            kembaliStage.show();
+        } catch (IOException ex) {
+            System.out.println("Error loading Sebagai.fxml: " + ex.getMessage());
         }
     }
 }
