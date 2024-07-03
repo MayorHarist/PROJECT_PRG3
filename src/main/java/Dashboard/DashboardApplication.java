@@ -1,5 +1,6 @@
 package Dashboard;
 
+import LoginKepala.HalamanKepalaController;
 import LoginMahasiswa.LoginMahasiswaController;
 import LoginTendik.LoginTendikController;
 import Master.CRUD_Dosen.InputDosenController;
@@ -32,7 +33,7 @@ public class DashboardApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(UpdateDelPengumuman.class.getResource("UpdateDelPengumuman.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HalamanKepalaController.class.getResource("HalamanKepala.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);
         //Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         stage.setTitle("Dashboard Find Smart");

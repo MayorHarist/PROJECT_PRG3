@@ -21,6 +21,15 @@ Button {
     -fx-background-color: #004aad; /* Warna latar belakang untuk btnSimpan */
 }
 
+/* Gaya khusus untuk tombol dengan ID "btnSimpan" */
+#btnSimpanTendik {
+    -fx-min-width: 70px; /* Lebar minimum untuk btnSimpan */
+    -fx-min-height: 30px; /* Tinggi minimum untuk btnSimpan */
+    -fx-max-width: 300px; /* Lebar maksimum untuk btnSimpan */
+    -fx-max-height: 30px; /* Tinggi maksimum untuk btnSimpan */
+    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnSimpan */
+}
+
 /* Gaya khusus untuk tombol dengan ID "btnBatal" */
 #btnBatal {
     -fx-min-width: 70px; /* Lebar minimum untuk btnBatal */
@@ -30,11 +39,20 @@ Button {
     -fx-background-color: #0096C9; /* Warna latar belakang untuk btnBatal */
 }
 
+/* Gaya khusus untuk tombol dengan ID "btnBatal" */
+#btnBatalTendik {
+    -fx-min-width: 70px; /* Lebar minimum untuk btnBatal */
+    -fx-min-height: 30px; /* Tinggi minimum untuk btnBatal */
+    -fx-max-width: 300px; /* Lebar maksimum untuk btnBatal */
+    -fx-max-height: 30px; /* Tinggi maksimum untuk btnBatal */
+    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnBatal */
+}
+
 /* Gaya khusus untuk tombol dengan ID "btnKembali" */
 #btnKembali {
     -fx-min-width: 70px; /* Lebar minimum untuk btnKembali */
     -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
-    -fx-max-width: 70px; /* Lebar maksimum untuk btnKembali */
+    -fx-max-width: 300px; /* Lebar maksimum untuk btnKembali */
     -fx-max-height: 30px; /* Tinggi maksimum untuk btnKembali */
     -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
 }
@@ -92,7 +110,7 @@ TextField {
     -fx-border-radius: 30; /* Radius besar untuk membuat sudut melengkung */
     -fx-padding: 10 20; /* Padding untuk memberi ruang pada teks di dalam TextField */
     -fx-background-color: #FFFFFF; /* Warna latar belakang */
-    -fx-border-color: #0096C9; /* Warna border */
+    -fx-border-color: #BFBFBF; /* Warna border */
     -fx-border-width: 2; /* Lebar border */
     -fx-text-fill: #000000; /* Warna teks */
     -fx-font-family: 'Poppins'; /* Menggunakan font Poppins */
@@ -104,7 +122,7 @@ TextField {
     -fx-border-radius: 30; /* Radius besar untuk membuat sudut melengkung */
     -fx-padding: 10 20; /* Padding untuk memberi ruang pada teks di dalam TextField */
     -fx-background-color: #FFFFFF; /* Warna latar belakang */
-    -fx-border-color: #0096C9; /* Warna border */
+    -fx-border-color: #BFBFBF; /* Warna border */
     -fx-border-width: 2; /* Lebar border */
     -fx-text-fill: #000000; /* Warna teks */
 }
@@ -127,8 +145,22 @@ TextArea {
     -fx-border-radius: 30; /* Radius besar untuk membuat sudut melengkung */
     -fx-padding: 10 20; /* Padding untuk memberi ruang pada teks di dalam TextArea */
     -fx-background-color: #FFFFFF; /* Warna latar belakang */
-    -fx-border-color: #0096C9; /* Warna border */
+    -fx-border-color: #BFBFBF; /* Warna border */
     -fx-border-width: 2; /* Lebar border */
     -fx-text-fill: #000000; /* Warna teks */
     -fx-font-family: 'Poppins'; /* Menggunakan font Poppins */
 }
+
+.button {
+    -fx-background-color: transparant; /* Warna normal */
+    -fx-text-fill: white;
+}
+
+.button:focused {
+    -fx-background-color: #0078D7; /* Warna saat dipilih/focused */
+}
+
+.button:pressed {
+    -fx-background-color: #0078D7; /* Warna saat diklik */
+}
+
