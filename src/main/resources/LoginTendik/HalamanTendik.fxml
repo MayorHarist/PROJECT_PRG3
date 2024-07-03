@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="AnchorHalamanTendik" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginTendik.HalamanTendikController">
+   <children>
+      <ImageView pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../Users/acer/Downloads/DESIGN%20FINDSMART%20(41).png" />
+         </image>
+      </ImageView>
+      <Button fx:id="btnProdi" alignment="BASELINE_LEFT" layoutX="94.0" layoutY="224.0" mnemonicParsing="false" onAction="#onbtnProdiClick" prefHeight="37.0" prefWidth="359.0" stylesheets="@../Style.css" text="Program Studi">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnDosen" alignment="BASELINE_LEFT" layoutX="94.0" layoutY="272.0" mnemonicParsing="false" onAction="#onbtnDosenClick" prefHeight="37.0" prefWidth="359.0" stylesheets="@../Style.css" text="Dosen">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnMatkul" alignment="BASELINE_LEFT" layoutX="94.0" layoutY="321.0" mnemonicParsing="false" onAction="#onbtnMatkulClick" prefHeight="37.0" prefWidth="359.0" stylesheets="@../Style.css" text="Mata Kuliah">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnMahasiswa" alignment="BASELINE_LEFT" layoutX="95.0" layoutY="370.0" mnemonicParsing="false" onAction="#onbtnMahasiswaClick" prefHeight="37.0" prefWidth="359.0" stylesheets="@../Style.css" text="Mahasiswa">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnJepres" alignment="BASELINE_LEFT" layoutX="95.0" layoutY="418.0" mnemonicParsing="false" onAction="#onbtnJepresClick" prefHeight="37.0" prefWidth="359.0" stylesheets="@../Style.css" text="Jenis Prestasi">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnPospres" alignment="BASELINE_LEFT" layoutX="95.0" layoutY="466.0" mnemonicParsing="false" onAction="#onbtnPospresClick" prefHeight="37.0" prefWidth="359.0" stylesheets="@../Style.css" text="Posisi Prestasi">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnPengumuman" alignment="BASELINE_LEFT" layoutX="96.0" layoutY="514.0" mnemonicParsing="false" onAction="#onbtnPengumumanClick" prefHeight="37.0" prefWidth="359.0" stylesheets="@../Style.css" text="Pengumuman">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnKRS" alignment="BASELINE_LEFT" layoutX="95.0" layoutY="617.0" mnemonicParsing="false" onAction="#onbtnKRSClick" prefHeight="37.0" prefWidth="359.0" stylesheets="@../Style.css" text="Kartu Realisasi Studi">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnKRPP" alignment="BASELINE_LEFT" layoutX="95.0" layoutY="667.0" mnemonicParsing="false" onAction="#onbtnKRPPClick" prefHeight="44.0" prefWidth="359.0" stylesheets="@../Style.css" text="Kartu Realisasi Pencapaian Prestasi">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnLaporanKRS" alignment="BASELINE_LEFT" layoutX="95.0" layoutY="780.0" mnemonicParsing="false" onAction="#onbtnLaporanKRSClick" prefHeight="37.0" prefWidth="359.0" stylesheets="@../Style.css" text="Laporan KRS Mahasiswa">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnLaporanKRPP" alignment="BASELINE_LEFT" layoutX="95.0" layoutY="829.0" mnemonicParsing="false" onAction="#onbtnLaporanKRPPClick" prefHeight="37.0" prefWidth="359.0" stylesheets="@../Style.css" text="Laporan KRPP Mahasiswa">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnDashboardTendik" layoutX="23.0" layoutY="18.0" mnemonicParsing="false" onAction="#onbtnDashboardTendikClick" opacity="0.0" prefHeight="93.0" prefWidth="448.0" text="Button" />
+      <Button fx:id="btnKembali" layoutX="63.0" layoutY="967.0" mnemonicParsing="false" onAction="#onbtnKembaliClick" opacity="0.0" prefHeight="70.0" prefWidth="383.0" text="Button" />
+      <Label layoutX="1512.0" layoutY="44.0" prefHeight="44.0" prefWidth="364.0" text="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="816.0" layoutY="515.0" text="ID Tendik">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="817.0" layoutY="628.0" text="Nama">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="818.0" layoutY="742.0" text="Tanggal Lahir">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="823.0" layoutY="867.0" text="Jenis Kelamin">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="1315.0" layoutY="514.0" text="Alamat">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="1316.0" layoutY="672.0" text="Email">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="1316.0" layoutY="796.0" text="Telepon">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <TextField layoutX="818.0" layoutY="546.0" prefHeight="60.0" prefWidth="287.0" stylesheets="@../Style.css" />
+      <TextField layoutX="818.0" layoutY="660.0" prefHeight="60.0" prefWidth="395.0" stylesheets="@../Style.css" />
+      <TextField layoutX="818.0" layoutY="779.0" prefHeight="60.0" prefWidth="320.0" stylesheets="@../Style.css" />
+      <TextField layoutX="817.0" layoutY="900.0" prefHeight="60.0" prefWidth="287.0" stylesheets="@../Style.css" />
+      <TextField layoutX="1318.0" layoutY="543.0" prefHeight="102.0" prefWidth="355.0" stylesheets="@../Style.css" />
+      <TextField layoutX="1317.0" layoutY="707.0" prefHeight="60.0" prefWidth="359.0" stylesheets="@../Style.css" />
+      <TextField layoutX="1316.0" layoutY="831.0" prefHeight="60.0" prefWidth="269.0" stylesheets="@../Style.css" />
+      <Label alignment="CENTER_RIGHT" layoutX="1585.0" layoutY="67.0" prefHeight="44.0" prefWidth="275.0" text="XXXXXXXXXXXXXXXXXXXXX">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Pane fx:id="paneMain" layoutX="519.0" prefHeight="1080.0" prefWidth="1398.0" />
+   </children>
+</AnchorPane>

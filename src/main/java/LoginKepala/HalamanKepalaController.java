@@ -1,9 +1,11 @@
 package LoginKepala;
 
+import Dashboard.DashboardApplication;
 import Database.DBConnect;
 import Master.CRUD_JenisPrestasi.InputJepresController;
 import Master.CRUD_Pengumuman.UpdateDelPengumuman;
 import Master.CRUD_Tendik.UpdateDeleteTendik;
+import Sebagai.SebagaiController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -28,7 +31,35 @@ public class HalamanKepalaController {
     @FXML
     private Button btnKembali;
     @FXML
+    private Button btnDashboardKepala;
+    @FXML
+    private AnchorPane AnchorHalamanKepala;
+    @FXML
     private Pane paneMain;
+
+    public void onbtnDashboardKepalaClick(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(HalamanKepalaController.class.getResource("HalamanKepala.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root, 1280, 650);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setFullScreen(true);
+            stage.setFullScreenExitHint("");
+            stage.show();
+
+            // Tutup stage sebelumnya
+            Stage previousStage = (Stage) AnchorHalamanKepala.getScene().getWindow();
+            previousStage.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            System.out.println("Not found");
+        }
+    }
 
     public void onbtnTendikClick(ActionEvent event) {
         try {
@@ -41,14 +72,36 @@ public class HalamanKepalaController {
         }
     }
 
+
     public void onbtnLaporanKRSClick(ActionEvent event) {
+        //masukkan form
+    }
+
+    public void onbtnLaporanKRPPClick(ActionEvent event) {
+        //masukkan form
+    }
+
+    public void onbtnKembaliClick(ActionEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(UpdateDelPengumuman.class.getResource("/Master/CRUD_Pengumuman/UpdateDelPengumuman.fxml"));
-            Parent root = fxmlLoader.load();
-            paneMain.getChildren().clear(); // Clear previous content
-            paneMain.getChildren().add(root); // Add new content
+            FXMLLoader loader = new FXMLLoader(SebagaiController.class.getResource("SebagaiApplication.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root, 1280, 650);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setFullScreen(true);
+            stage.setFullScreenExitHint("");
+            stage.show();
+
+            // Tutup stage sebelumnya
+            Stage previousStage = (Stage) AnchorHalamanKepala.getScene().getWindow();
+            previousStage.close();
+
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Failed");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            System.out.println("Not found");
         }
     }
 }
