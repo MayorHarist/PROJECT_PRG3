@@ -4,8 +4,8 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
-
 
 <AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginKepala.HalamanKepalaController">
    <children>
@@ -30,5 +30,6 @@
          </font>
       </Button>
       <Button fx:id="btnKembali" layoutX="59.0" layoutY="958.0" mnemonicParsing="false" opacity="0.0" prefHeight="85.0" prefWidth="392.0" text="Kembali" />
+      <Pane fx:id="paneMain" layoutX="506.0" prefHeight="1080.0" prefWidth="1416.0" />
    </children>
 </AnchorPane>
