@@ -13,7 +13,7 @@
    <children>
       <ImageView pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../../../Users/acer/Downloads/DESIGN%20FINDSMART%20(41).png" />
+            <Image url="@../Download/Halaman Tendik.png" />
          </image>
       </ImageView>
       <Button fx:id="btnProdi" alignment="BASELINE_LEFT" layoutX="94.0" layoutY="224.0" mnemonicParsing="false" onAction="#onbtnProdiClick" prefHeight="37.0" prefWidth="359.0" stylesheets="@../Style.css" text="Program Studi">

@@ -11,7 +11,7 @@
    <children>
       <ImageView pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../../../Users/acer/Downloads/DESIGN%20FINDSMART%20(36).png" />
+            <Image url="@../Download/Halaman Kepala.png" />
          </image>
       </ImageView>
       <Button fx:id="btnTendik" alignment="BASELINE_LEFT" layoutX="78.0" layoutY="224.0" mnemonicParsing="false" onAction="#onbtnTendikClick" prefHeight="66.0" prefWidth="339.0" stylesheets="@../Style.css" text="Tenaga Kependidikan">
