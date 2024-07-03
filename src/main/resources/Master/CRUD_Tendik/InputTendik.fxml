@@ -7,110 +7,96 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="740.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Tendik.InputTendik">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Tendik.InputTendik">
    <children>
-      <AnchorPane prefHeight="603.0" prefWidth="1080.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../Style.css">
+      <Label layoutX="64.0" layoutY="156.0" text="ID Tendik">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="63.0" layoutY="212.0" text="Nama Tendik">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="62.0" layoutY="266.0" text="Tanggal Lahir">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="61.0" layoutY="317.0" text="Jenis Kelamin">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="62.0" layoutY="363.0" text="Alamat">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtIDTKN" editable="false" layoutX="182.0" layoutY="146.0" prefHeight="15.0" prefWidth="250.0" />
+      <DatePicker fx:id="tglTendik" layoutX="185.0" layoutY="257.0" prefHeight="39.0" prefWidth="250.0" />
+      <TextField fx:id="txtNamaTendik" layoutX="181.0" layoutY="202.0" prefHeight="39.0" prefWidth="250.0" />
+      <Group fx:id="groupRBButtton" layoutX="191.0" layoutY="315.0">
          <children>
-            <VBox layoutX="122.0" layoutY="207.0" prefHeight="227.0" prefWidth="146.0" spacing="25.0">
-               <children>
-                  <Label text="ID TKN">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label text="Nama">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label text="Tanggal Lahir">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label text="Jenis Kelamin">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label text="Alamat">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Label>
-               </children>
-            </VBox>
-            <TextField fx:id="txtIDTKN" editable="false" layoutX="266.0" layoutY="204.0" prefHeight="15.0" prefWidth="250.0" />
-            <DatePicker fx:id="tglTendik" layoutX="266.0" layoutY="297.0" prefHeight="39.0" prefWidth="250.0" />
-            <TextField fx:id="txtNamaTendik" layoutX="266.0" layoutY="251.0" prefHeight="39.0" prefWidth="250.0" />
-            <Group fx:id="groupRBButtton" layoutX="266.0" layoutY="343.0">
-               <children>
-                  <RadioButton fx:id="rbLaki" layoutX="2.0" layoutY="1.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="111.0" text="Laki-Laki">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </RadioButton>
-                  <RadioButton fx:id="rbPuan" layoutX="112.0" layoutY="-3.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="122.0" text="Perempuan">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </RadioButton>
-               </children>
-            </Group>
-            <TextField fx:id="txtAlamatTendik" layoutX="266.0" layoutY="382.0" prefHeight="29.0" prefWidth="250.0" />
-            <TextField fx:id="txtEmailTendik" layoutX="709.0" layoutY="193.0" prefHeight="29.0" prefWidth="250.0" />
-            <TextField fx:id="txtTelpTendik" layoutX="709.0" layoutY="245.0" prefHeight="29.0" prefWidth="250.0" />
-            <TextField fx:id="usernameTendik" layoutX="709.0" layoutY="294.0" prefHeight="29.0" prefWidth="250.0" />
-            <TextField fx:id="passwordTendik" layoutX="709.0" layoutY="344.0" prefHeight="27.0" prefWidth="250.0" />
-            <Button fx:id="btnSimpanTendik" layoutX="577.0" layoutY="489.0" maxWidth="122.0" mnemonicParsing="false" onAction="#onBtnSimpanClick" prefHeight="30.0" prefWidth="122.0" text="Simpan">
+            <RadioButton fx:id="rbLaki" layoutX="2.0" layoutY="1.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="111.0" text="Laki-Laki">
                <font>
                   <Font size="14.0" />
                </font>
-            </Button>
-            <Button fx:id="btnBatalTendik" layoutX="418.0" layoutY="489.0" maxWidth="122.0" mnemonicParsing="false" onAction="#OnBtnBatalClick" prefHeight="30.0" prefWidth="122.0" text="Batal">
+            </RadioButton>
+            <RadioButton fx:id="rbPuan" layoutX="112.0" layoutY="-3.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="122.0" text="Perempuan">
                <font>
                   <Font size="14.0" />
                </font>
-            </Button>
-            <VBox layoutX="577.0" layoutY="209.0" prefHeight="227.0" prefWidth="111.0" spacing="25.0">
-               <children>
-                  <Label text="Email">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label text="No Telepon">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label text="Username">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label text="Password">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Label>
-               </children>
-            </VBox>
-            <Label layoutX="393.0" layoutY="120.0" prefHeight="41.0" prefWidth="294.0" text="DATA TENAGA KEPENDIDIKAN">
-               <font>
-                  <Font name="System Bold" size="20.0" />
-               </font>
-            </Label>
-            <Button fx:id="btnKembali" layoutX="864.0" layoutY="125.0" mnemonicParsing="false" onAction="#onBtnKembali" prefHeight="14.0" prefWidth="152.0" text="Kembali">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
+            </RadioButton>
          </children>
-      </AnchorPane>
+      </Group>
+      <TextField fx:id="txtAlamatTendik" layoutX="181.0" layoutY="352.0" prefHeight="86.0" prefWidth="250.0" />
+      <TextField fx:id="txtEmailTendik" layoutX="589.0" layoutY="146.0" prefHeight="29.0" prefWidth="250.0" />
+      <TextField fx:id="txtTelpTendik" layoutX="590.0" layoutY="202.0" prefHeight="29.0" prefWidth="250.0" />
+      <TextField fx:id="usernameTendik" layoutX="590.0" layoutY="256.0" prefHeight="29.0" prefWidth="250.0" />
+      <TextField fx:id="passwordTendik" layoutX="589.0" layoutY="307.0" prefHeight="27.0" prefWidth="250.0" />
+      <Button fx:id="btnSimpanTendik" layoutX="491.0" layoutY="477.0" maxWidth="122.0" mnemonicParsing="false" onAction="#onBtnSimpanClick" prefHeight="30.0" prefWidth="122.0" text="Simpan">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnBatalTendik" layoutX="332.0" layoutY="477.0" maxWidth="122.0" mnemonicParsing="false" onAction="#OnBtnBatalClick" prefHeight="30.0" prefWidth="122.0" text="Batal">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Label layoutX="494.0" layoutY="156.0" text="Email">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="493.0" layoutY="212.0" text="No Telepon">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="494.0" layoutY="266.0" text="Username">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="496.0" layoutY="317.0" text="Password">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="323.0" layoutY="51.0" prefHeight="41.0" prefWidth="262.0" text="Form Tenaga Kependidikan">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnKembali" layoutX="680.0" layoutY="77.0" mnemonicParsing="false" onAction="#onBtnKembali" prefHeight="14.0" prefWidth="152.0" text="Kembali">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
    </children>
-</HBox>
+</AnchorPane>

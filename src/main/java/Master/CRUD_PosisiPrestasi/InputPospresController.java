@@ -23,7 +23,7 @@ public class InputPospresController {
     @FXML
     private TextField txtNama;
     @FXML
-    private TextArea txtDeskripsi;
+    private TextField txtDeskripsi;
     @FXML
     private TextField txtStatus;
 
@@ -46,11 +46,6 @@ public class InputPospresController {
                 alert.setContentText("Nama harus diisi dengan huruf.");
                 alert.showAndWait();
             }
-        });
-
-        // Menambahkan listener untuk menyesuaikan tinggi TextArea berdasarkan jumlah baris teks
-        txtDeskripsi.textProperty().addListener((observable, oldValue, newValue) -> {
-            txtDeskripsi.setPrefRowCount(txtDeskripsi.getText().split("\n").length);
         });
     }
 

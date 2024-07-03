@@ -388,7 +388,7 @@ public class UpdateDeleteTendik implements Initializable {
         try {
             // Pastikan path ke file FXML sudah benar
             FXMLLoader loader = new FXMLLoader(InputTendik.class.getResource("/Master/CRUD_Tendik/InputTendik.fxml"));
-            Scene scene = new Scene(loader.load(), 1080, 740);
+            Scene scene = new Scene(loader.load(), 900, 600);
             Stage stage = new Stage();
             stage.setTitle("Tambah Data Tenaga Kependidikan!");
             stage.setScene(scene);

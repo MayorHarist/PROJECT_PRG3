@@ -11,20 +11,20 @@
    <children>
       <ImageView pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../../../Users/acer/Downloads/Halaman%20Kepala.png" />
+            <Image url="@../../../../../../../Users/acer/Downloads/Halaman Kepala.png" />
          </image>
       </ImageView>
-      <Button fx:id="btnTendik" alignment="BASELINE_LEFT" layoutX="105.0" layoutY="229.0" mnemonicParsing="false" onAction="#onbtnTendikClick" prefHeight="52.0" prefWidth="347.0" stylesheets="@../Style.css" text="Tenaga Kependidikan">
+      <Button fx:id="btnTendik" alignment="BASELINE_LEFT" layoutX="78.0" layoutY="224.0" mnemonicParsing="false" onAction="#onbtnTendikClick" prefHeight="66.0" prefWidth="403.0" stylesheets="@../Style.css" text="Tenaga Kependidikan">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
       </Button>
-      <Button fx:id="btnLaporanKRS" alignment="BASELINE_LEFT" layoutX="102.0" layoutY="355.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="347.0" stylesheets="@../Style.css" text="Laporan KRS Mahasiswa">
+      <Button fx:id="btnLaporanKRS" alignment="BASELINE_LEFT" layoutX="78.0" layoutY="346.0" mnemonicParsing="false" onAction="#onbtnLaporanKRSClick" prefHeight="66.0" prefWidth="403.0" stylesheets="@../Style.css" text="Laporan KRS Mahasiswa">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
       </Button>
-      <Button fx:id="btnLaporanKRPP" alignment="BASELINE_LEFT" layoutX="100.0" layoutY="421.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="347.0" stylesheets="@../Style.css" text="Laporan KRPP Mahasiswa">
+      <Button fx:id="btnLaporanKRPP" alignment="BASELINE_LEFT" layoutX="78.0" layoutY="415.0" mnemonicParsing="false" prefHeight="66.0" prefWidth="403.0" stylesheets="@../Style.css" text="Laporan KRPP Mahasiswa">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
