@@ -1,14 +1,21 @@
 package Master.CRUD_Dosen;
 
+import Master.CRUD_JenisPrestasi.InputJepresController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import Database.DBConnect;
+import javafx.stage.Stage;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -72,6 +79,11 @@ public class UpdateDeleteDosenController implements Initializable {
     private Button btnDelete;
     @FXML
     private Button btnUbah;
+    @FXML
+    private Button btnTambah;
+    @FXML
+    private Button btnRefresh;
+
 
     private ObservableList<Dosen> oblist = FXCollections.observableArrayList();
 
@@ -315,4 +327,20 @@ public class UpdateDeleteDosenController implements Initializable {
         }
     }
 
+    public void onBtnRefreshClick(ActionEvent event) {
+        loadTableData("");
+    }
+
+    public void onBtnTambahClick(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(InputDosenController.class.getResource("InputDosenApplication.fxml"));
+            Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Buat Data Dosen");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

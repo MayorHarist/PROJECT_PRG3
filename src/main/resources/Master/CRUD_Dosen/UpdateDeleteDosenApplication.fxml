@@ -8,88 +8,47 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="626.0" prefWidth="1191.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Dosen.UpdateDeleteDosenController">
+<AnchorPane prefHeight="1080.0" prefWidth="1398.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Dosen.UpdateDeleteDosenController">
     <children>
-      <ImageView fitHeight="670.0" fitWidth="1294.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../Download/Dashboard Tendik.png" />
-         </image>
-      </ImageView>
-      <TextField fx:id="txtCari" layoutX="499.0" layoutY="36.0" onKeyReleased="#onTxtCari" prefHeight="37.0" prefWidth="328.0" />
-        <AnchorPane layoutX="33.0" layoutY="55.0" prefHeight="511.0" prefWidth="607.0">
-            <children>
-                <VBox layoutX="60.0" layoutY="30.0" prefHeight="540.0" prefWidth="250.0" spacing="10.0">
-                    <children>
-                        <HBox spacing="10.0">
-                            <Label prefHeight="26.0" prefWidth="100.0" text="No Pegawai:" />
-                        </HBox>
-                        <HBox spacing="10.0">
-                            <Label prefHeight="26.0" prefWidth="100.0" text="NIDN:" />
-                        </HBox>
-                        <HBox spacing="10.0">
-                            <Label prefHeight="26.0" prefWidth="100.0" text="Nama:" />
-                        </HBox>
-                        <HBox spacing="10.0">
-                            <Label prefHeight="26.0" prefWidth="115.0" text="Bidang Kompetensi:" />
-                        </HBox>
-                        <HBox spacing="10.0">
-                            <Label prefHeight="26.0" prefWidth="100.0" text="Pendidikan Terakhir:" />
-                        </HBox>
-                        <HBox spacing="10.0">
-                            <Label prefHeight="26.0" prefWidth="100.0" text="Tanggal Lahir:" />
-                        </HBox>
-                        <HBox spacing="10.0">
-                            <Label prefHeight="26.0" prefWidth="100.0" text="Jenis Kelamin:" />
-                            <VBox spacing="5.0" />
-                        </HBox>
-                        <HBox spacing="10.0">
-                            <Label prefHeight="26.0" prefWidth="100.0" text="Alamat:" />
-                        </HBox>
-                        <HBox spacing="10.0" />
-                        <HBox spacing="10.0">
-                            <Label prefHeight="26.0" prefWidth="100.0" text="Email:" />
-                        </HBox>
-                        <HBox spacing="10.0">
-                            <Label prefHeight="26.0" prefWidth="100.0" text="Telepon:" />
-                        </HBox>
-                    </children>
-                </VBox>
-                <HBox layoutX="70.0" layoutY="502.0" prefHeight="46.0" prefWidth="402.0" spacing="50.0" />
-                   <TextField fx:id="txtPegawai" layoutX="233.0" layoutY="30.0" prefHeight="25.0" prefWidth="250.0" />
-                   <TextField fx:id="txtNama" layoutX="233.0" layoutY="107.0" prefHeight="25.0" prefWidth="250.0" />
-                   <TextField fx:id="txtBidang" layoutX="235.0" layoutY="145.0" prefHeight="25.0" prefWidth="250.0" />
-                   <TextField fx:id="txtPendidikan" layoutX="236.0" layoutY="181.0" prefHeight="25.0" prefWidth="250.0" />
-                   <DatePicker fx:id="Datelahir" layoutX="237.0" layoutY="216.0" prefHeight="25.0" prefWidth="250.0" />
-                    <RadioButton fx:id="rbLaki" layoutX="276.0" layoutY="253.0" text="Laki-Laki" />
-                    <RadioButton fx:id="rbPerempuan" layoutX="401.0" layoutY="253.0" text="Perempuan" />
-                   <TextField fx:id="txtAlamat" layoutX="238.0" layoutY="286.0" prefHeight="55.0" prefWidth="250.0" />
-                   <TextField fx:id="txtEmail" layoutX="237.0" layoutY="354.0" prefHeight="25.0" prefWidth="250.0" />
-                   <TextField fx:id="txtTelepon" layoutX="237.0" layoutY="389.0" prefHeight="25.0" prefWidth="250.0" />
-            <TextField fx:id="txtNIDN" layoutX="235.0" layoutY="66.0" prefHeight="25.0" prefWidth="250.0" />
-            </children>
-        </AnchorPane>
-            <Button fx:id="btnDelete" layoutX="1024.0" layoutY="205.0" mnemonicParsing="false" onAction="#onBtnDelete" prefHeight="44.0" prefWidth="100.0" text="Delete" />
-            <Button fx:id="btnBatal" layoutX="911.0" layoutY="205.0" mnemonicParsing="false" onAction="#onBtnBatalClick" prefHeight="44.0" prefWidth="100.0" text="Batal" />
-            <Button fx:id="btnUbah" layoutX="797.0" layoutY="205.0" mnemonicParsing="false" onAction="#onBtnUbah" prefHeight="44.0" prefWidth="100.0" text="Ubah" />
-      <ScrollPane layoutX="377.0" layoutY="296.0" prefHeight="330.0" prefWidth="790.0" style="-fx-background-radius: 10; -fx-border-radius: 10;">
+      <TextField fx:id="txtCari" layoutX="553.0" layoutY="36.0" onKeyReleased="#onTxtCari" prefHeight="37.0" prefWidth="328.0" />
+             <TextField fx:id="txtPegawai" layoutX="287.0" layoutY="523.0" prefHeight="41.0" prefWidth="325.0" />
+             <TextField fx:id="txtNama" layoutX="289.0" layoutY="649.0" prefHeight="41.0" prefWidth="324.0" />
+             <TextField fx:id="txtBidang" layoutX="348.0" layoutY="712.0" prefHeight="41.0" prefWidth="263.0" />
+             <TextField fx:id="txtPendidikan" layoutX="941.0" layoutY="519.0" prefHeight="41.0" prefWidth="307.0" />
+             <DatePicker fx:id="Datelahir" layoutX="941.0" layoutY="577.0" prefHeight="41.0" prefWidth="301.0" />
+              <RadioButton fx:id="rbLaki" layoutX="943.0" layoutY="644.0" text="Laki-Laki">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </RadioButton>
+              <RadioButton fx:id="rbPerempuan" layoutX="1092.0" layoutY="646.0" text="Perempuan">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </RadioButton>
+             <TextField fx:id="txtAlamat" layoutX="943.0" layoutY="693.0" prefHeight="145.0" prefWidth="306.0" />
+             <TextField fx:id="txtEmail" layoutX="295.0" layoutY="771.0" prefHeight="41.0" prefWidth="316.0" />
+             <TextField fx:id="txtTelepon" layoutX="296.0" layoutY="836.0" prefHeight="41.0" prefWidth="317.0" />
+      <TextField fx:id="txtNIDN" layoutX="288.0" layoutY="585.0" prefHeight="41.0" prefWidth="325.0" />
+            <Button fx:id="btnDelete" layoutX="1134.0" layoutY="860.0" mnemonicParsing="false" onAction="#onBtnDelete" prefHeight="44.0" prefWidth="100.0" text="Hapus" />
+            <Button fx:id="btnBatal" layoutX="909.0" layoutY="861.0" mnemonicParsing="false" onAction="#onBtnBatalClick" prefHeight="44.0" prefWidth="100.0" text="Batal" />
+            <Button fx:id="btnUbah" layoutX="1022.0" layoutY="861.0" mnemonicParsing="false" onAction="#onBtnUbah" prefHeight="44.0" prefWidth="100.0" text="Perbaharui" />
+      <ScrollPane layoutX="121.0" layoutY="125.0" prefHeight="323.0" prefWidth="1195.0" style="-fx-background-radius: 10; -fx-border-radius: 10;">
          <content>
-              <TableView fx:id="tableDosen" onKeyReleased="#onTxtCari" prefHeight="1145.0" prefWidth="1129.0" style="-fx-background-radius: 30; -fx-border-radius: 30;">
+              <TableView fx:id="tableDosen" onKeyReleased="#onTxtCari" prefHeight="313.0" prefWidth="1196.0" style="-fx-background-radius: 30; -fx-border-radius: 30;">
                   <columns>
-                      <TableColumn fx:id="noPegawai" prefWidth="104.66668450832367" text="No Pegawai" />
-                      <TableColumn fx:id="Nidn" prefWidth="108.00000762939453" text="NIDN" />
-                      <TableColumn fx:id="nama" prefWidth="117.33335876464844" text="Nama" />
-                      <TableColumn fx:id="bidang" minWidth="0.0" prefWidth="136.6666259765625" text="Bidang Kompetensi" />
-                      <TableColumn fx:id="pendidikan" minWidth="0.0" prefWidth="134.44442749023438" text="Pendidikan Terakhir" />
-                      <TableColumn fx:id="tanggal" minWidth="0.0" prefWidth="98.4444580078125" text="Tanggal Lahir" />
-                      <TableColumn fx:id="jenis" minWidth="0.0" prefWidth="92.0001220703125" text="Jenis Kelamin" />
-                      <TableColumn fx:id="alamat" minWidth="0.0" prefWidth="150.0" text="Alamat" />
-                      <TableColumn fx:id="email" minWidth="0.0" prefWidth="134.66668701171875" text="Email" />
+                      <TableColumn fx:id="noPegawai" prefWidth="100.0" text="No Pegawai" />
+                      <TableColumn fx:id="Nidn" prefWidth="63.333343505859375" text="NIDN" />
+                      <TableColumn fx:id="nama" prefWidth="109.33331298828125" text="Nama" />
+                      <TableColumn fx:id="bidang" minWidth="0.0" prefWidth="133.66668701171875" text="Bidang Kompetensi" />
+                      <TableColumn fx:id="pendidikan" minWidth="0.0" prefWidth="144.3333740234375" text="Pendidikan Terakhir" />
+                      <TableColumn fx:id="tanggal" minWidth="0.0" prefWidth="112.66668701171875" text="Tanggal Lahir" />
+                      <TableColumn fx:id="jenis" minWidth="0.0" prefWidth="126.33331298828125" text="Jenis Kelamin" />
+                      <TableColumn fx:id="alamat" minWidth="0.0" prefWidth="139.66668701171875" text="Alamat" />
+                      <TableColumn fx:id="email" minWidth="0.0" prefWidth="133.333251953125" text="Email" />
                       <TableColumn fx:id="telepon" minWidth="0.0" prefWidth="97.333251953125" text="Telepon" />
                   </columns>
                   <columnResizePolicy>
@@ -98,5 +57,57 @@
               </TableView>
          </content>
       </ScrollPane>
+             <Label layoutX="148.0" layoutY="527.0" prefHeight="30.0" prefWidth="211.0" text="No Pegawai">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+             <Label layoutX="149.0" layoutY="589.0" prefHeight="26.0" prefWidth="100.0" text="NIDN">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+             <Label layoutX="149.0" layoutY="652.0" prefHeight="26.0" prefWidth="100.0" text="Nama">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+             <Label layoutX="150.0" layoutY="715.0" prefHeight="30.0" prefWidth="199.0" text="Bidang Kompetensi">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+             <Label layoutX="707.0" layoutY="526.0" prefHeight="30.0" prefWidth="204.0" text="Pendidikan Terakhir">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+             <Label layoutX="709.0" layoutY="587.0" prefHeight="30.0" prefWidth="197.0" text="Tanggal Lahir">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+             <Label layoutX="711.0" layoutY="649.0" prefHeight="30.0" prefWidth="153.0" text="Jenis Kelamin">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+             <Label layoutX="711.0" layoutY="709.0" prefHeight="26.0" prefWidth="100.0" text="Alamat">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+             <Label layoutX="153.0" layoutY="774.0" prefHeight="26.0" prefWidth="100.0" text="Email">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+             <Label layoutX="155.0" layoutY="838.0" prefHeight="26.0" prefWidth="100.0" text="Telepon">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnRefresh" layoutX="639.0" layoutY="460.0" mnemonicParsing="false" onAction="#onBtnRefreshClick" prefHeight="40.0" prefWidth="162.0" text="Refresh" />
+      <Button fx:id="btnTambah" layoutX="125.0" layoutY="83.0" mnemonicParsing="false" onAction="#onBtnTambahClick" prefHeight="37.0" prefWidth="115.0" text="Tambah" />
     </children>
 </AnchorPane>

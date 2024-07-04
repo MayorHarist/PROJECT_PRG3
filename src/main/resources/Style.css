@@ -7,9 +7,9 @@ Button {
 #btnSimpan {
     -fx-min-width: 70px; /* Lebar minimum untuk btnSimpan */
     -fx-min-height: 30px; /* Tinggi minimum untuk btnSimpan */
-    -fx-max-width: 70px; /* Lebar maksimum untuk btnSimpan */
+    -fx-max-width: 300px; /* Lebar maksimum untuk btnSimpan */
     -fx-max-height: 30px; /* Tinggi maksimum untuk btnSimpan */
-    -fx-background-color: #004aad; /* Warna latar belakang untuk btnSimpan */
+    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnSimpan */
 }
 
 /* Gaya khusus untuk tombol dengan ID "btnSimpan" */
@@ -23,11 +23,11 @@ Button {
 
 /* Gaya khusus untuk tombol dengan ID "btnBatal" */
 #btnBatal {
-    -fx-min-width: 70px; /* Lebar minimum untuk btnBatal */
-    -fx-min-height: 30px; /* Tinggi minimum untuk btnBatal */
-    -fx-max-width: 70px; /* Lebar maksimum untuk btnBatal */
-    -fx-max-height: 30px; /* Tinggi maksimum untuk btnBatal */
-    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnBatal */
+    -fx-min-width: 70px; /* Lebar minimum untuk btnSimpan */
+    -fx-min-height: 30px; /* Tinggi minimum untuk btnSimpan */
+    -fx-max-width: 300px; /* Lebar maksimum untuk btnSimpan */
+    -fx-max-height: 30px; /* Tinggi maksimum untuk btnSimpan */
+    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnSimpan */
 }
 
 /* Gaya khusus untuk tombol dengan ID "btnBatal" */
@@ -86,6 +86,15 @@ Button {
     -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
 }
 
+/* Gaya khusus untuk tombol dengan ID "btnPerbaharui" */
+#btnDelete {
+    -fx-min-width: 100px; /* Lebar minimum untuk btnKembali */
+    -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
+    -fx-max-width: 100px; /* Lebar maksimum untuk btnKembali */
+    -fx-max-height: 30px; /* Tinggi maksimum untuk btnKembali */
+    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
+}
+
 /* Gaya khusus untuk tombol dengan ID "btnRefresh" */
 #btnRefresh {
     -fx-min-width: 70px; /* Lebar minimum untuk btnKembali */
@@ -106,6 +115,15 @@ Button {
 
 /* Gaya khusus untuk tombol dengan ID "btnTambah" */
 #btnUbahTendik {
+    -fx-min-width: 70px; /* Lebar minimum untuk btnKembali */
+    -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
+    -fx-max-width: 300px; /* Lebar maksimum untuk btnKembali */
+    -fx-max-height: 30px; /* Tinggi maksimum untuk btnKembali */
+    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
+}
+
+/* Gaya khusus untuk tombol dengan ID "btnTambah" */
+#btnUbah {
     -fx-min-width: 70px; /* Lebar minimum untuk btnKembali */
     -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
     -fx-max-width: 300px; /* Lebar maksimum untuk btnKembali */

@@ -9,35 +9,35 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="726.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Dosen.InputDosenController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="677.0" prefWidth="726.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Dosen.InputDosenController">
    <children>
-      <Label alignment="CENTER" layoutX="281.0" layoutY="126.0" prefHeight="17.0" prefWidth="157.0" text="Input Data Dosen">
+      <Label alignment="CENTER" layoutX="277.0" layoutY="20.0" prefHeight="30.0" prefWidth="193.0" text="Input Data Dosen">
          <font>
-            <Font name="System Bold" size="16.0" />
+            <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="txtPegawai" editable="false" layoutX="323.0" layoutY="185.0" prefHeight="25.0" prefWidth="227.0" />
-      <TextField fx:id="txtNIDN" layoutX="323.0" layoutY="220.0" prefHeight="25.0" prefWidth="227.0" />
-      <TextField fx:id="txtNama" layoutX="323.0" layoutY="255.0" prefHeight="25.0" prefWidth="227.0" />
-      <TextField fx:id="txtBidang" layoutX="322.0" layoutY="287.0" prefHeight="25.0" prefWidth="227.0" />
-      <DatePicker fx:id="Datelahir" layoutX="322.0" layoutY="357.0" prefHeight="25.0" prefWidth="227.0" />
-      <TextField fx:id="txtPendidikan" layoutX="323.0" layoutY="322.0" prefHeight="25.0" prefWidth="227.0" />
-      <TextField fx:id="txtAlamat" layoutX="323.0" layoutY="426.0" prefHeight="55.0" prefWidth="227.0" />
-      <TextField fx:id="txtEmail" layoutX="323.0" layoutY="490.0" prefHeight="25.0" prefWidth="227.0" />
-      <Label layoutX="185.0" layoutY="430.0" prefHeight="17.0" prefWidth="110.0" text="Alamat" />
-      <Label layoutX="185.0" layoutY="189.0" prefHeight="17.0" prefWidth="110.0" text="No Pegawai" />
-      <Label layoutX="185.0" layoutY="224.0" prefHeight="17.0" prefWidth="110.0" text="NIDN" />
-      <Label layoutX="185.0" layoutY="259.0" prefHeight="17.0" prefWidth="110.0" text="Nama" />
-      <Label layoutX="185.0" layoutY="291.0" prefHeight="17.0" prefWidth="110.0" text="Bidang Kompetensi" />
-      <Label layoutX="185.0" layoutY="326.0" prefHeight="17.0" prefWidth="110.0" text="Pendidikan Terakhir" />
-      <Label layoutX="185.0" layoutY="361.0" prefHeight="17.0" prefWidth="110.0" text="Tanggal Lahir" />
-      <Label layoutX="185.0" layoutY="395.0" prefHeight="17.0" prefWidth="110.0" text="Jenis Kelamin" />
-      <Label layoutX="185.0" layoutY="494.0" prefHeight="17.0" prefWidth="110.0" text="Email" />
-      <Button fx:id="btnBatal" layoutX="185.0" layoutY="634.0" mnemonicParsing="false" onAction="#onBtnBatalClick" prefHeight="39.0" prefWidth="123.0" text="Batal" />
-      <Button fx:id="btnSimpan" layoutX="426.0" layoutY="634.0" mnemonicParsing="false" onAction="#onBtnSimpanClick" prefHeight="39.0" prefWidth="123.0" text="Simpan" />
-      <TextField fx:id="txtTelepon" layoutX="322.0" layoutY="525.0" prefHeight="25.0" prefWidth="227.0" />
-      <Label layoutX="185.0" layoutY="529.0" prefHeight="17.0" prefWidth="110.0" text="Telepon" />
-      <Group fx:id="rbGroup" layoutX="323.0" layoutY="395.0">
+      <TextField fx:id="txtPegawai" editable="false" layoutX="319.0" layoutY="79.0" prefHeight="25.0" prefWidth="227.0" />
+      <TextField fx:id="txtNIDN" layoutX="319.0" layoutY="130.0" prefHeight="25.0" prefWidth="227.0" />
+      <TextField fx:id="txtNama" layoutX="319.0" layoutY="181.0" prefHeight="41.0" prefWidth="266.0" />
+      <TextField fx:id="txtBidang" layoutX="318.0" layoutY="231.0" prefHeight="25.0" prefWidth="227.0" />
+      <DatePicker fx:id="Datelahir" layoutX="318.0" layoutY="331.0" prefHeight="25.0" prefWidth="227.0" />
+      <TextField fx:id="txtPendidikan" layoutX="319.0" layoutY="281.0" prefHeight="41.0" prefWidth="71.0" />
+      <TextField fx:id="txtAlamat" layoutX="319.0" layoutY="415.0" prefHeight="55.0" prefWidth="266.0" />
+      <TextField fx:id="txtEmail" layoutX="319.0" layoutY="481.0" prefHeight="25.0" prefWidth="227.0" />
+      <Label layoutX="181.0" layoutY="419.0" prefHeight="17.0" prefWidth="110.0" text="Alamat" />
+      <Label layoutX="181.0" layoutY="83.0" prefHeight="17.0" prefWidth="110.0" text="No Pegawai" />
+      <Label layoutX="181.0" layoutY="136.0" prefHeight="17.0" prefWidth="110.0" text="NIDN" />
+      <Label layoutX="181.0" layoutY="185.0" prefHeight="17.0" prefWidth="110.0" text="Nama" />
+      <Label layoutX="181.0" layoutY="235.0" prefHeight="17.0" prefWidth="110.0" text="Bidang Kompetensi" />
+      <Label layoutX="181.0" layoutY="285.0" prefHeight="17.0" prefWidth="110.0" text="Pendidikan Terakhir" />
+      <Label layoutX="181.0" layoutY="335.0" prefHeight="17.0" prefWidth="110.0" text="Tanggal Lahir" />
+      <Label layoutX="181.0" layoutY="375.0" prefHeight="17.0" prefWidth="110.0" text="Jenis Kelamin" />
+      <Label layoutX="181.0" layoutY="485.0" prefHeight="17.0" prefWidth="110.0" text="Email" />
+      <Button fx:id="btnBatal" layoutX="212.0" layoutY="618.0" mnemonicParsing="false" onAction="#onBtnBatalClick" prefHeight="39.0" prefWidth="123.0" text="Batal" />
+      <Button fx:id="btnSimpan" layoutX="391.0" layoutY="618.0" mnemonicParsing="false" onAction="#onBtnSimpanClick" prefHeight="39.0" prefWidth="123.0" text="Simpan" />
+      <TextField fx:id="txtTelepon" layoutX="318.0" layoutY="533.0" prefHeight="25.0" prefWidth="227.0" />
+      <Label layoutX="181.0" layoutY="534.0" prefHeight="17.0" prefWidth="110.0" text="Telepon" />
+      <Group fx:id="rbGroup" layoutX="319.0" layoutY="375.0">
          <children>
             <RadioButton fx:id="rbLaki" mnemonicParsing="false" text="Laki - laki" />
             <RadioButton fx:id="rbPerempuan" layoutX="138.0" mnemonicParsing="false" text="Perempuan" />
