@@ -10,83 +10,83 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="718.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Mahasiswa.InputMahasiswa">
-    <Label layoutX="210.0" layoutY="104.0" text="NIM">
+<AnchorPane prefHeight="757.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Mahasiswa.InputMahasiswa">
+    <Label alignment="CENTER" layoutX="153.0" layoutY="90.0" text="NIM">
       <font>
          <Font name="System Bold" size="14.0" />
       </font></Label>
-    <TextField fx:id="txtNIM" layoutX="285.0" layoutY="100.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+    <TextField fx:id="txtNIM" layoutX="261.0" layoutY="80.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-    <Label layoutX="195.0" layoutY="148.0" text="Id Prodi" GridPane.rowIndex="1">
-      <font>
-         <Font name="System Bold" size="14.0" />
-      </font></Label>
-
-    <Label layoutX="200.0" layoutY="194.0" text="Nama" GridPane.rowIndex="2">
-      <font>
-         <Font name="System Bold" size="14.0" />
-      </font></Label>
-    <TextField fx:id="txtNama" layoutX="285.0" layoutY="190.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-
-    <Label layoutX="158.0" layoutY="242.0" text="Tanggal Lahir" GridPane.rowIndex="3">
-      <font>
-         <Font name="System Bold" size="14.0" />
-      </font></Label>
-    <DatePicker fx:id="dpTanggalLahir" layoutX="283.0" layoutY="238.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-
-    <Label layoutX="158.0" layoutY="278.0" text="Jenis Kelamin" GridPane.rowIndex="4">
+    <Label alignment="CENTER" layoutX="154.0" layoutY="140.0" text="Id Prodi" GridPane.rowIndex="1">
       <font>
          <Font name="System Bold" size="14.0" />
       </font></Label>
 
-    <Label layoutX="187.0" layoutY="326.0" text="Alamat" GridPane.rowIndex="5">
+    <Label alignment="CENTER" layoutX="154.0" layoutY="190.0" text="Nama" GridPane.rowIndex="2">
       <font>
          <Font name="System Bold" size="14.0" />
       </font></Label>
-    <TextField fx:id="txtAlamat" layoutX="285.0" layoutY="322.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+    <TextField fx:id="txtNama" layoutX="261.0" layoutY="180.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-    <Label layoutX="191.0" layoutY="374.0" text="Email" GridPane.rowIndex="6">
+    <Label alignment="CENTER" layoutX="154.0" layoutY="241.0" text="Tanggal Lahir" GridPane.rowIndex="3">
       <font>
          <Font name="System Bold" size="14.0" />
       </font></Label>
-    <TextField fx:id="txtEmail" layoutX="285.0" layoutY="370.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+    <DatePicker fx:id="dpTanggalLahir" layoutX="264.0" layoutY="239.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-    <Label layoutX="172.0" layoutY="423.0" text="Telepon" GridPane.rowIndex="7">
+    <Label alignment="CENTER" layoutX="153.0" layoutY="287.0" text="Jenis Kelamin" GridPane.rowIndex="4">
       <font>
          <Font name="System Bold" size="14.0" />
       </font></Label>
-    <TextField fx:id="txtTelepon" layoutX="285.0" layoutY="419.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 
-    <Label layoutX="148.0" layoutY="473.0" text="Tahun Masuk" GridPane.rowIndex="8">
+    <Label alignment="CENTER" layoutX="154.0" layoutY="329.0" text="Alamat" GridPane.rowIndex="5">
       <font>
          <Font name="System Bold" size="14.0" />
       </font></Label>
-    <TextField fx:id="txtTahunMasuk" layoutX="285.0" layoutY="469.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+    <TextField fx:id="txtAlamat" layoutX="261.0" layoutY="319.0" prefHeight="86.0" prefWidth="179.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-    <Label layoutX="167.0" layoutY="522.0" text="Username" GridPane.rowIndex="9">
+    <Label alignment="CENTER" layoutX="156.0" layoutY="420.0" text="Email" GridPane.rowIndex="6">
       <font>
          <Font name="System Bold" size="14.0" />
       </font></Label>
-    <TextField fx:id="txtUsername" layoutX="285.0" layoutY="518.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+    <TextField fx:id="txtEmail" layoutX="263.0" layoutY="416.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
-    <Label layoutX="169.0" layoutY="573.0" text="Password" GridPane.rowIndex="10">
+    <Label alignment="CENTER" layoutX="156.0" layoutY="469.0" text="Telepon" GridPane.rowIndex="7">
       <font>
          <Font name="System Bold" size="14.0" />
       </font></Label>
-    <TextField fx:id="txtPassword" layoutX="285.0" layoutY="569.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+    <TextField fx:id="txtTelepon" layoutX="263.0" layoutY="465.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 
-    <Button fx:id="btnSimpan" layoutX="366.0" layoutY="636.0" onAction="#btnSimpan_Click" text="Simpan" GridPane.rowIndex="11" />
-    <Button fx:id="btnBatal" layoutX="261.0" layoutY="636.0" onAction="#btnBatal_Click" text="Batal" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-   <RadioButton fx:id="rbLaki" layoutX="283.0" layoutY="278.0" mnemonicParsing="false" text="Laki - laki">
+    <Label alignment="CENTER" layoutX="155.0" layoutY="519.0" text="Tahun Masuk" GridPane.rowIndex="8">
+      <font>
+         <Font name="System Bold" size="14.0" />
+      </font></Label>
+    <TextField fx:id="txtTahunMasuk" layoutX="265.0" layoutY="515.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+
+    <Label alignment="CENTER" layoutX="156.0" layoutY="568.0" text="Username" GridPane.rowIndex="9">
+      <font>
+         <Font name="System Bold" size="14.0" />
+      </font></Label>
+    <TextField fx:id="txtUsername" layoutX="266.0" layoutY="564.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+
+    <Label alignment="CENTER" layoutX="158.0" layoutY="619.0" text="Password" GridPane.rowIndex="10">
+      <font>
+         <Font name="System Bold" size="14.0" />
+      </font></Label>
+    <TextField fx:id="txtPassword" layoutX="267.0" layoutY="615.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+
+    <Button fx:id="btnSimpan" layoutX="331.0" layoutY="682.0" onAction="#btnSimpan_Click" text="Simpan" GridPane.rowIndex="11" />
+    <Button fx:id="btnBatal" layoutX="226.0" layoutY="682.0" onAction="#btnBatal_Click" text="Batal" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+   <RadioButton fx:id="rbLaki" layoutX="266.0" layoutY="286.0" mnemonicParsing="false" text="Laki - laki">
       <font>
          <Font name="System Bold" size="14.0" />
       </font></RadioButton>
-   <RadioButton fx:id="rbPerempuan" layoutX="365.0" layoutY="278.0" mnemonicParsing="false" text="Perempuan">
+   <RadioButton fx:id="rbPerempuan" layoutX="366.0" layoutY="286.0" mnemonicParsing="false" text="Perempuan">
       <font>
          <Font name="System Bold" size="14.0" />
       </font></RadioButton>
-   <ComboBox fx:id="cbProdi" layoutX="280.0" layoutY="144.0" prefHeight="25.0" prefWidth="227.0" />
-   <Label layoutX="223.0" layoutY="29.0" text="Form Program Studi">
+   <ComboBox fx:id="cbProdi" layoutX="261.0" layoutY="138.0" prefHeight="25.0" prefWidth="179.0" />
+   <Label layoutX="205.0" layoutY="26.0" text="Form Program Studi">
       <font>
          <Font name="System Bold" size="20.0" />
       </font>
