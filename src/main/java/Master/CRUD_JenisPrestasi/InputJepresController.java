@@ -33,17 +33,13 @@ public class InputJepresController {
     private TextField txtPenyelenggara;
     @FXML
     private TextField txtPoint;
-    @FXML
-    private TextField txtStatus;
 
-    String idjenisprestasi, nama, peran, penyelenggara, status;
+    String idjenisprestasi, nama, peran, penyelenggara;
     int point;
     DBConnect connection = new DBConnect();
 
     public void initialize() {
         autoid();
-        txtStatus.setText("Aktif");
-        txtStatus.setDisable(true); // Disable the status field
         txtIdJenisPrestasi.setEditable(false); // Disable editing the ID field
 
         // Menambahkan listener ke TextField txtPoint
@@ -73,19 +69,13 @@ public class InputJepresController {
 
     public void autoid() {
         try {
-            String sql = "SELECT MAX(Id_JenisPrestasi) FROM JenisPrestasi";
+            String sql = "SELECT dbo.autoIdJepres() AS newID";
             connection.pstat = connection.conn.prepareStatement(sql);
             ResultSet result = connection.pstat.executeQuery();
 
             if (result.next()) {
-                String maxId = result.getString(1);
-                if (maxId != null) {
-                    int number = Integer.parseInt(maxId.substring(3)) + 1;
-                    String formattedNumber = String.format("%03d", number);
-                    txtIdJenisPrestasi.setText("JP" + formattedNumber);
-                } else {
-                    txtIdJenisPrestasi.setText("JP001");
-                }
+                String newID = result.getString("newID");
+                txtIdJenisPrestasi.setText(newID);
             }
             result.close();
         } catch (Exception ex) {
@@ -99,7 +89,7 @@ public class InputJepresController {
         peran = txtPeran.getText();
         penyelenggara = txtPenyelenggara.getText();
         point = Integer.parseInt(txtPoint.getText());
-        status = txtStatus.getText();
+        //status = txtStatus.getText();
 
         // Menambahkan validasi untuk memastikan semua input telah diisi
         if (idjenisprestasi.isEmpty() || nama.isEmpty() || peran.isEmpty() || penyelenggara.isEmpty() || txtPoint.getText().isEmpty()) {
@@ -130,7 +120,6 @@ public class InputJepresController {
         message += "Peran: " + peran + "\n";
         message += "Penyelenggara: " + penyelenggara + "\n";
         message += "Point: " + point + "\n";
-        message += "Status: " + status + "\n\n";
         message += "Apakah Anda yakin ingin menyimpan data?";
 
         Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -141,14 +130,13 @@ public class InputJepresController {
         Optional<ButtonType> option = alert.showAndWait();
         if (option.isPresent() && option.get() == ButtonType.OK) {
             try {
-                String query = "INSERT INTO JenisPrestasi VALUES (?,?,?,?,?,?)";
+                String query = "EXEC sp_InsertJenisPrestasi ?, ?, ?, ?, ?";
                 connection.pstat = connection.conn.prepareStatement(query);
                 connection.pstat.setString(1, idjenisprestasi);
                 connection.pstat.setString(2, nama);
                 connection.pstat.setString(3, peran);
                 connection.pstat.setString(4, penyelenggara);
                 connection.pstat.setInt(5, point);
-                connection.pstat.setString(6, status);
 
                 connection.pstat.executeUpdate();
                 connection.pstat.close();
@@ -162,7 +150,6 @@ public class InputJepresController {
             successAlert.showAndWait();
             clear();
             autoid(); // Generate a new ID for the next entry
-            txtStatus.setText("Aktif"); // Reset the status to "aktif"
         } else {
             Alert cancelAlert = new Alert(AlertType.INFORMATION);
             cancelAlert.setTitle("Informasi");
@@ -173,12 +160,10 @@ public class InputJepresController {
     }
 
     public void clear() {
-        //txtIdJenisPrestasi.setText("");
         txtNama.setText("");
         txtPeran.setText("");
         txtPenyelenggara.setText("");
         txtPoint.setText("");
-        //txtStatus.setText("");
     }
 
     public void onbtnBatalClick(ActionEvent event) {
