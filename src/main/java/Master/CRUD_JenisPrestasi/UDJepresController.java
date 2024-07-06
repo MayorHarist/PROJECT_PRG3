@@ -20,7 +20,6 @@ import java.util.ResourceBundle;
 
 public class UDJepresController implements Initializable {
     DBConnect connection = new DBConnect();
-
     @FXML
     private TableView<jepres> tablejenisprestasi;
     @FXML
@@ -45,7 +44,6 @@ public class UDJepresController implements Initializable {
     private Button btnHapus;
     @FXML
     private TextField txtCari;
-
     @FXML
     private TextField txtIdJenisPrestasi;
     @FXML
