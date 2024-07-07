@@ -8,106 +8,150 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="AnchorKRS" prefHeight="650.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Transaksi.TransaksiKRS">
    <children>
-      <Label layoutX="541.0" layoutY="31.0" text="Form Transaksi KRS">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Label>
-      <Label layoutX="112.0" layoutY="118.0" text="Id Transaksi KRS">
+      <Label layoutX="113.0" layoutY="33.0" text="Id Transaksi KRS">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="114.0" layoutY="191.0" text="Nilai Quiz">
+      <Label layoutX="115.0" layoutY="401.0" text="Nilai Quiz">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="114.0" layoutY="227.0" text="Nilai UTS">
+      <Label layoutX="115.0" layoutY="437.0" text="Nilai UTS">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="114.0" layoutY="263.0" text="Nilai UAS">
+      <Label layoutX="115.0" layoutY="473.0" text="Nilai UAS">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="115.0" layoutY="298.0" text="Nilai Projek">
+      <Label layoutX="116.0" layoutY="508.0" text="Nilai Projek">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="txtIdKRS" editable="false" layoutX="247.0" layoutY="116.0" prefHeight="25.0" prefWidth="210.0" />
-      <TextField fx:id="txtQuiz" layoutX="247.0" layoutY="188.0" prefHeight="25.0" prefWidth="210.0" />
-      <TextField fx:id="txtUTS" layoutX="247.0" layoutY="224.0" prefHeight="25.0" prefWidth="210.0" />
-      <TextField fx:id="txtUAS" layoutX="248.0" layoutY="260.0" prefHeight="25.0" prefWidth="210.0" />
-      <TextField fx:id="txtProjek" layoutX="249.0" layoutY="295.0" prefHeight="25.0" prefWidth="210.0" />
-      <Button fx:id="btnBatal" layoutX="183.0" layoutY="501.0" mnemonicParsing="false" onAction="#onbtnBatalClick" prefHeight="25.0" prefWidth="72.0" stylesheets="@../Style.css" text="Batal">
+      <TextField fx:id="txtIdKRS" editable="false" layoutX="248.0" layoutY="31.0" prefHeight="25.0" prefWidth="210.0" />
+      <TextField fx:id="txtQuiz" layoutX="248.0" layoutY="398.0" prefHeight="25.0" prefWidth="210.0" />
+      <TextField fx:id="txtUTS" layoutX="248.0" layoutY="434.0" prefHeight="25.0" prefWidth="210.0" />
+      <TextField fx:id="txtUAS" layoutX="249.0" layoutY="470.0" prefHeight="25.0" prefWidth="210.0" />
+      <TextField fx:id="txtProjek" layoutX="250.0" layoutY="505.0" prefHeight="25.0" prefWidth="210.0" />
+      <Button fx:id="btnBatal" layoutX="550.0" layoutY="606.0" mnemonicParsing="false" onAction="#onbtnBatalClick" prefHeight="25.0" prefWidth="72.0" stylesheets="@../Style.css" text="Batal">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="btnSimpan" layoutX="323.0" layoutY="501.0" minHeight="30.0" mnemonicParsing="false" onAction="#onbtnSimpanClick" prefHeight="30.0" prefWidth="100.0" stylesheets="@../Style.css" text="Simpan">
+      <Button fx:id="btnSimpan" layoutX="690.0" layoutY="606.0" minHeight="30.0" mnemonicParsing="false" onAction="#onbtnSimpanClick" prefHeight="30.0" prefWidth="100.0" stylesheets="@../Style.css" text="Simpan">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="btnKembali" layoutX="33.0" layoutY="24.0" mnemonicParsing="false" onAction="#onbtnKembaliClick" prefHeight="25.0" prefWidth="72.0" stylesheets="@../Style.css" text="Kembali" />
-      <DatePicker fx:id="TglPengisian" layoutX="249.0" layoutY="330.0" prefHeight="25.0" prefWidth="210.0" />
-      <Label layoutX="115.0" layoutY="333.0" text="Tanggal Pengisian">
+      <Button fx:id="btnKembali" layoutX="14.0" layoutY="24.0" mnemonicParsing="false" onAction="#onbtnKembaliClick" prefHeight="25.0" prefWidth="72.0" stylesheets="@../Style.css" text="Kembali" />
+      <DatePicker fx:id="TglPengisian" layoutX="248.0" layoutY="101.0" prefHeight="25.0" prefWidth="210.0" />
+      <Label layoutX="114.0" layoutY="104.0" text="Tanggal Pengisian">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="114.0" layoutY="368.0" text="NIM">
+      <Label layoutX="114.0" layoutY="209.0" text="NIM">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="114.0" layoutY="403.0" text="Mata Kuliah">
+      <Label layoutX="113.0" layoutY="328.0" text="Mata Kuliah">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="114.0" layoutY="439.0" text="Tenaga Pendidik">
+      <Label layoutX="113.0" layoutY="245.0" text="Tenaga Pendidik">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="112.0" layoutY="153.0" text="Nilai Tugas">
+      <Label layoutX="113.0" layoutY="363.0" text="Nilai Tugas">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="txtTugas" layoutX="247.0" layoutY="150.0" prefHeight="25.0" prefWidth="210.0" />
-      <ComboBox fx:id="cbNIM" layoutX="248.0" layoutY="366.0" prefHeight="25.0" prefWidth="210.0" />
-      <ComboBox fx:id="cbMatkul" layoutX="249.0" layoutY="400.0" prefHeight="25.0" prefWidth="210.0" />
-      <ComboBox fx:id="cbTendik" layoutX="250.0" layoutY="436.0" prefHeight="25.0" prefWidth="210.0" />
-      <ScrollPane layoutX="541.0" layoutY="114.0" prefHeight="497.0" prefWidth="679.0">
+      <TextField fx:id="txtTugas" layoutX="248.0" layoutY="360.0" prefHeight="25.0" prefWidth="210.0" />
+      <ComboBox fx:id="cbNIM" layoutX="248.0" layoutY="207.0" prefHeight="25.0" prefWidth="210.0" />
+      <ComboBox fx:id="cbMatkul" layoutX="248.0" layoutY="325.0" prefHeight="25.0" prefWidth="210.0" />
+      <ComboBox fx:id="cbTendik" layoutX="249.0" layoutY="242.0" prefHeight="25.0" prefWidth="210.0" />
+      <ScrollPane layoutX="548.0" layoutY="27.0" prefHeight="251.0" prefWidth="679.0">
          <content>
-            <TableView fx:id="tabelKRS" prefHeight="534.0" prefWidth="1069.0">
-              <columns>
-                <TableColumn fx:id="Id_KRS" prefWidth="106.00011956691742" text="Id Transaksi KRS" />
-                <TableColumn fx:id="Tugas" prefWidth="74.66675567626953" text="Nilai Tugas" />
-                  <TableColumn fx:id="Quiz" prefWidth="66.0" text="Nilai Quiz" />
-                  <TableColumn fx:id="UTS" prefWidth="66.66661071777344" text="Nilai UTS" />
-                 <TableColumn fx:id="UAS" prefWidth="66.66661071777344" text="Nilai UAS" />
-                  <TableColumn fx:id="Projek" prefWidth="75.0" text="Nilai Projek" />
-                  <TableColumn fx:id="Akhir" prefWidth="75.0" text="Nilai Akhir" />
-                  <TableColumn fx:id="Indeks" prefWidth="75.0" text="Indeks Nilai" />
+            <TableView fx:id="tabelKRS" prefHeight="429.0" prefWidth="792.0">
+               <columns>
+                  <TableColumn fx:id="Id_KRS" prefWidth="106.00011956691742" text="Id Transaksi KRS" />
+                  <TableColumn fx:id="Semester" prefWidth="75.0" text="Semester" />
                   <TableColumn fx:id="Tgl_Pengisian" prefWidth="112.6666259765625" text="Tanggal Pengisian" />
-                  <TableColumn fx:id="NIM" maxWidth="1.7976931348623157E308" prefWidth="120.0" text="NIM" />
-                  <TableColumn fx:id="Matkul" prefWidth="100.0" text="Mata Kuliah" />
-                  <TableColumn fx:id="Tendik" prefWidth="135.0" text="Tenaga Pendidik" />
-              </columns>
+                  <TableColumn fx:id="IP" prefWidth="100.0" text="Indeks Prestasi" />
+                  <TableColumn fx:id="Prodi" prefWidth="100.0" text="Program Studi" />
+                  <TableColumn fx:id="NIM" maxWidth="1.7976931348623157E308" prefWidth="150.0" text="NIM" />
+                  <TableColumn fx:id="Tendik" prefWidth="150.0" text="Tenaga Pendidik" />
+               </columns>
             </TableView>
          </content>
       </ScrollPane>
+      <Label layoutX="114.0" layoutY="173.0" text="Program Studi">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="cbProdi" layoutX="248.0" layoutY="171.0" prefHeight="25.0" prefWidth="210.0" />
+      <Label layoutX="113.0" layoutY="68.0" text="Semester">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="114.0" layoutY="138.0" text="Indeks Prestasi">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtIP" editable="false" layoutX="249.0" layoutY="136.0" prefHeight="25.0" prefWidth="210.0" />
+      <ComboBox fx:id="cbSemester" layoutX="248.0" layoutY="66.0" prefHeight="25.0" prefWidth="210.0" />
+      <ScrollPane layoutX="548.0" layoutY="324.0" prefHeight="268.0" prefWidth="679.0">
+         <content>
+            <TableView fx:id="tabelDetaiIKRS" prefHeight="271.0" prefWidth="708.0">
+               <columns>
+                  <TableColumn fx:id="Matkul" prefWidth="150.0" text="Mata Kuliah" />
+                  <TableColumn fx:id="Tugas" minWidth="0.0" text="Nilai Tugas" />
+                  <TableColumn fx:id="Quiz" text="Nilai Quiz" />
+                  <TableColumn fx:id="UTS" text="Nilai UTS" />
+                  <TableColumn fx:id="UAS" text="Nilai UAS" />
+                  <TableColumn fx:id="Projek" text="Nilai Projek" />
+                  <TableColumn fx:id="Akhir" text="Nilai Akhir" />
+                  <TableColumn fx:id="Indeks" text="Indeks Nilai" />
+               </columns>
+            </TableView>
+         </content>
+      </ScrollPane>
+      <ImageView fx:id="gambarTambah" fitHeight="34.0" fitWidth="39.0" layoutX="487.0" layoutY="328.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Download/add_10023509.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="115.0" layoutY="546.0" text="Nilai Akhir">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtAkhir" layoutX="249.0" layoutY="543.0" prefHeight="25.0" prefWidth="210.0" />
+      <Label layoutX="116.0" layoutY="585.0" text="Indeks Nilai">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtIndeksNilai" layoutX="250.0" layoutY="582.0" prefHeight="25.0" prefWidth="210.0" />
+      <Button fx:id="btnTambah" layoutX="478.0" layoutY="323.0" mnemonicParsing="false" onAction="#onbtnTambahClick" opacity="0.0" prefHeight="44.0" prefWidth="52.0" text="Button" />
    </children>
 </AnchorPane>

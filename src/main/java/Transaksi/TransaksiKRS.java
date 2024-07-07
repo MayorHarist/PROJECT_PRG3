@@ -13,6 +13,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.event.ActionEvent;
 import javax.swing.JOptionPane;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
@@ -38,7 +41,13 @@ public class TransaksiKRS {
     @FXML
     private ComboBox<Tendik> cbTendik;
     @FXML
+    private ComboBox<String> cbSemester;
+    @FXML
+    private ComboBox<Prodi> cbProdi;
+    @FXML
     private TextField txtIdKRS;
+    @FXML
+    private TextField txtIP;
     @FXML
     private TextField txtProjek;
     @FXML
@@ -81,6 +90,30 @@ public class TransaksiKRS {
     String IdKRS, matkul, nim, tendik, tglPengisian;
     float projek, quiz, tugas, uas, uts;
     DBConnect connection = new DBConnect();
+    private String selectedSemester;
+
+    public static class Prodi {
+        private String id;
+        private String nama;
+
+        public Prodi(String id, String nama) {
+            this.id = id;
+            this.nama = nama;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public String getNama() {
+            return nama;
+        }
+
+        @Override
+        public String toString() {
+            return nama;
+        }
+    }
 
     public static class MataKuliah {
         private String id;
@@ -234,14 +267,35 @@ public class TransaksiKRS {
     public void initialize() {
         autoid(); // Generate IdKRS when initializing
         // Load data for ComboBox fields
-        ObservableList<MataKuliah> matkulData = loadDataForMatkulComboBox();
-        cbMatkul.setItems(matkulData);
+        ObservableList<Prodi> prodiData = loadDataForProdiComboBox();
+        cbProdi.setItems(prodiData);
 
-        ObservableList<Mahasiswa> nimData = loadDataForNIMComboBox();
-        cbNIM.setItems(nimData);
+        cbProdi.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && cbSemester.getValue() != null) {
+                ObservableList<MataKuliah> matkulData = loadDataForMatkulComboBox(newValue.getId(), cbSemester.getValue());
+                cbMatkul.setItems(matkulData);
+            }
+        });
+
+        ObservableList<String> semesterList = loadSemesterDataForComboBox();
+        cbSemester.setItems(semesterList);
+
+        cbSemester.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && cbProdi.getValue() != null) {
+                ObservableList<MataKuliah> matkulData = loadDataForMatkulComboBox(cbProdi.getValue().getId(), newValue);
+                cbMatkul.setItems(matkulData);
+            }
+        });
 
         ObservableList<Tendik> tendikData = loadDataForTendikComboBox();
         cbTendik.setItems(tendikData);
+
+        cbProdi.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                ObservableList<Mahasiswa> nimData = loadDataForNIMComboBox(newValue.getId());
+                cbNIM.setItems(nimData);
+            }
+        });
 
         // Initialize table columns
         Id_KRS.setCellValueFactory(new PropertyValueFactory<>("idKRS"));
@@ -260,11 +314,17 @@ public class TransaksiKRS {
         loadKRSData();
     }
 
-    private ObservableList<MataKuliah> loadDataForMatkulComboBox() {
+    private ObservableList<MataKuliah> loadDataForMatkulComboBox(String idProdi, String selectedSemester) {
         ObservableList<MataKuliah> dataList = FXCollections.observableArrayList();
-        String query = "SELECT Id_Matkul, Nama FROM MataKuliah";
+        String query = "SELECT m.Id_Matkul, m.Nama FROM MataKuliah m " +
+                "JOIN MataKuliah mp ON m.Id_Matkul = mp.Id_Matkul " +
+                "WHERE mp.Id_Prodi = ? AND m.Semester = ?";
 
-        try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
+        try (PreparedStatement preparedStatement = connection.conn.prepareStatement(query)) {
+            preparedStatement.setString(1, idProdi);
+            preparedStatement.setString(2, selectedSemester);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
             while (resultSet.next()) {
                 String idMatkul = resultSet.getString("Id_Matkul");
                 String nama = resultSet.getString("Nama");
@@ -277,11 +337,16 @@ public class TransaksiKRS {
         return dataList;
     }
 
-    private ObservableList<Mahasiswa> loadDataForNIMComboBox() {
-        ObservableList<Mahasiswa> dataList = FXCollections.observableArrayList();
-        String query = "SELECT NIM, Nama FROM Mahasiswa";
 
-        try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
+
+    private ObservableList<Mahasiswa> loadDataForNIMComboBox(String idProdi) {
+        ObservableList<Mahasiswa> dataList = FXCollections.observableArrayList();
+        String query = "SELECT NIM, Nama FROM Mahasiswa WHERE Id_Prodi = ?";
+
+        try (PreparedStatement preparedStatement = connection.conn.prepareStatement(query)) {
+            preparedStatement.setString(1, idProdi);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
             while (resultSet.next()) {
                 String nim = resultSet.getString("NIM");
                 String nama = resultSet.getString("Nama");
@@ -293,6 +358,7 @@ public class TransaksiKRS {
 
         return dataList;
     }
+
 
     private ObservableList<Tendik> loadDataForTendikComboBox() {
         ObservableList<Tendik> dataList = FXCollections.observableArrayList();
@@ -311,8 +377,42 @@ public class TransaksiKRS {
         return dataList;
     }
 
+    private ObservableList<Prodi> loadDataForProdiComboBox() {
+        ObservableList<Prodi> dataList = FXCollections.observableArrayList();
+        String query = "SELECT Id_Prodi, Nama FROM ProgramStudi";
+
+        try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
+            while (resultSet.next()) {
+                String idProdi = resultSet.getString("Id_Prodi");
+                String nama = resultSet.getString("Nama");
+                dataList.add(new Prodi(idProdi, nama));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Terjadi error saat mengambil data untuk ComboBox Tendik: " + ex.getMessage());
+        }
+
+        return dataList;
+    }
+
+    private ObservableList<String> loadSemesterDataForComboBox() {
+        ObservableList<String> semesterList = FXCollections.observableArrayList();
+        String query = "SELECT DISTINCT Semester FROM MataKuliah";
+
+        try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
+            while (resultSet.next()) {
+                String semester = resultSet.getString("Semester");
+                semesterList.add(semester);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Terjadi error saat mengambil data Semester: " + ex.getMessage());
+        }
+
+        return semesterList;
+    }
+
+
     private void autoid() {
-        String query = "SELECT MAX(Id_TransKRS) FROM TransaksiKRS";
+        String query = "SELECT MAX(Id_TrsKRS) FROM TransaksiKRS";
         try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
             if (resultSet.next()) {
                 String maxId = resultSet.getString(1);
@@ -419,7 +519,7 @@ public class TransaksiKRS {
         try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
             while (resultSet.next()) {
                 KRSData krsData = new KRSData(
-                        resultSet.getString("Id_TransKRS"),
+                        resultSet.getString("Id_TrsKRS"),
                         resultSet.getFloat("Nilai_Tugas"),
                         resultSet.getFloat("Nilai_Quiz"),
                         resultSet.getFloat("Nilai_UTS"),
@@ -456,6 +556,8 @@ public class TransaksiKRS {
         cbMatkul.getSelectionModel().clearSelection();
         cbNIM.getSelectionModel().clearSelection();
         cbTendik.getSelectionModel().clearSelection();
+        cbSemester.getSelectionModel().clearSelection();
+        cbProdi.getSelectionModel().clearSelection();
         TglPengisian.setValue(null);
     }
 
@@ -473,6 +575,118 @@ public class TransaksiKRS {
             kembaliStage.show();
         } catch (IOException ex) {
             System.out.println("Error loading Sebagai.fxml: " + ex.getMessage());
+        }
+    }
+
+    @FXML
+    private void onbtnTambahClick(ActionEvent event) {
+        clear();
+    }
+
+    private boolean validateInput() {
+        String errorMessage = "";
+
+        if (cbNIM.getSelectionModel().isEmpty()) {
+            errorMessage += "NIM harus dipilih.\n";
+        }
+        if (cbMatkul.getSelectionModel().isEmpty()) {
+            errorMessage += "Mata Kuliah harus dipilih.\n";
+        }
+        if (cbTendik.getSelectionModel().isEmpty()) {
+            errorMessage += "Tendik harus dipilih.\n";
+        }
+        if (TglPengisian.getValue() == null) {
+            errorMessage += "Tanggal Pengisian harus dipilih.\n";
+        }
+        if (txtTugas.getText().isEmpty() || !isNumeric(txtTugas.getText())) {
+            errorMessage += "Nilai Tugas harus diisi dengan angka.\n";
+        }
+        if (txtQuiz.getText().isEmpty() || !isNumeric(txtQuiz.getText())) {
+            errorMessage += "Nilai Quiz harus diisi dengan angka.\n";
+        }
+        if (txtUTS.getText().isEmpty() || !isNumeric(txtUTS.getText())) {
+            errorMessage += "Nilai UTS harus diisi dengan angka.\n";
+        }
+        if (txtUAS.getText().isEmpty() || !isNumeric(txtUAS.getText())) {
+            errorMessage += "Nilai UAS harus diisi dengan angka.\n";
+        }
+        if (txtProjek.getText().isEmpty() || !isNumeric(txtProjek.getText())) {
+            errorMessage += "Nilai Projek harus diisi dengan angka.\n";
+        }
+
+        if (!errorMessage.isEmpty()) {
+            showErrorAlert("Error", errorMessage);
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isNumeric(String str) {
+        try {
+            Float.parseFloat(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private void showErrorAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    private void calculateAndDisplayIP() {
+        String nim = cbNIM.getSelectionModel().getSelectedItem().getNIM();
+        String semester = cbSemester.getSelectionModel().getSelectedItem();
+
+        if (nim == null || semester == null) {
+            return;
+        }
+
+        String query = "SELECT mk.Jumlah_SKS, dk.Akhir FROM DetailKRS dk JOIN MataKuliah mk ON dk.Id_Matkul = mk.Id_Matkul WHERE dk.NIM = ? AND mk.Id_Semester = (SELECT Id_Semester FROM Semester WHERE Semester = ?)";
+
+        try (PreparedStatement statement = connection.conn.prepareStatement(query)) {
+            statement.setString(1, nim);
+            statement.setString(2, semester);
+            ResultSet resultSet = statement.executeQuery();
+
+            float totalSKS = 0;
+            float totalPoints = 0;
+
+            while (resultSet.next()) {
+                int jumlahSKS = resultSet.getInt("Jumlah_SKS");
+                float nilaiAkhir = resultSet.getFloat("Akhir");
+                float nilaiAngka;
+
+                if (nilaiAkhir >= 85) {
+                    nilaiAngka = 4.0f;
+                } else if (nilaiAkhir >= 70) {
+                    nilaiAngka = 3.0f;
+                } else if (nilaiAkhir >= 55) {
+                    nilaiAngka = 2.0f;
+                } else if (nilaiAkhir >= 40) {
+                    nilaiAngka = 1.0f;
+                } else {
+                    nilaiAngka = 0.0f;
+                }
+
+                totalSKS += jumlahSKS;
+                totalPoints += nilaiAngka * jumlahSKS;
+            }
+
+            if (totalSKS > 0) {
+                float ip = totalPoints / totalSKS;
+                BigDecimal bd = new BigDecimal(Float.toString(ip));
+                bd = bd.setScale(2, RoundingMode.HALF_UP);
+                txtIP.setText(bd.toString());
+            } else {
+                txtIP.setText("0.00");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
