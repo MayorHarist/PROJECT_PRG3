@@ -1,5 +1,6 @@
 package LoginKepala;
 
+import Database.DBConnect;
 import LoginTendik.LoginTendikController;
 import Sebagai.SebagaiController;
 import javafx.event.ActionEvent;
@@ -27,6 +28,7 @@ public class LoginKepalaController {
     @FXML
     private TextField txtPassword;
 
+    DBConnect connection = new DBConnect();
     private final String useradmin = "dean";
     private final String userpass = "dean";
 
@@ -46,7 +48,7 @@ public class LoginKepalaController {
 
             // Load and show the next scene
             try {
-                FXMLLoader loader = new FXMLLoader(LoginTendikController.class.getResource("UserTendikApplication.fxml"));
+                FXMLLoader loader = new FXMLLoader(HalamanKepalaController.class.getResource("HalamanKepala.fxml"));
                 Parent root = loader.load();
 
                 Stage stage = new Stage();
@@ -61,10 +63,10 @@ public class LoginKepalaController {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("Failed to load UserTendikApplication.fxml");
+                System.out.println("Failed to load UserKepalaApplication.fxml");
             } catch (NullPointerException e) {
                 e.printStackTrace();
-                System.out.println("Resource UserTendikApplication.fxml not found");
+                System.out.println("Resource UserKepalaApplication.fxml not found");
             }
 
         } else {

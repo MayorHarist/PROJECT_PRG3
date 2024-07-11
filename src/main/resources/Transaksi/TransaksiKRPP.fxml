@@ -99,8 +99,8 @@
       <TextField layoutX="324.0" layoutY="214.0" prefHeight="30.0" prefWidth="261.0" />
       <ComboBox layoutX="74.0" layoutY="402.0" prefHeight="25.0" prefWidth="220.0" />
       <TextField layoutX="422.0" layoutY="317.0" prefHeight="40.0" prefWidth="51.0" />
-      <Button layoutX="260.0" layoutY="594.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="59.0" text="Batal" />
-      <Button layoutX="341.0" layoutY="594.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="59.0" text="Kirim" />
-      <Button layoutX="583.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="59.0" text="Kembali" />
+      <Button layoutX="295.0" layoutY="594.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="59.0" text="Batal" />
+      <Button layoutX="374.0" layoutY="594.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="59.0" text="Simpan" />
+      <Button layoutX="219.0" layoutY="594.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="59.0" text="Kembali" />
    </children>
 </AnchorPane>

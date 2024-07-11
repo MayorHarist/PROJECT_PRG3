@@ -1,5 +1,6 @@
 package LoginTendik;
 
+import Database.DBConnect;
 import Sebagai.SebagaiController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -31,7 +32,7 @@ public class LoginTendikController {
     @FXML
     private TextField txtPassword;
 
-
+    DBConnect connection = new DBConnect();
     private final String useradmin = "nida";
     private final String userpass = "nida";
 
@@ -49,6 +50,21 @@ public class LoginTendikController {
                 alert.setContentText("Login berhasil");
                 alert.initOwner(btnLogin.getScene().getWindow());
                 alert.showAndWait();
+
+                // Pindah ke form selanjutnya
+                FXMLLoader loader = new FXMLLoader(HalamanTendikController.class.getResource("HalamanTendik.fxml"));
+                Parent root = loader.load();
+
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.setFullScreen(true);
+                stage.setFullScreenExitHint("");
+                stage.show();
+
+                // Tutup stage sebelumnya
+                Stage previousStage = (Stage) AnchorTendik.getScene().getWindow();
+                previousStage.close();
+
             } else {
                 // Login gagal, tampilkan dialog pesan kesalahan
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -58,20 +74,6 @@ public class LoginTendikController {
                 alert.initOwner(btnLogin.getScene().getWindow());
                 alert.showAndWait();
             }
-
-            FXMLLoader loader = new FXMLLoader(LoginTendikController.class.getResource("UserTendikApplication.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setFullScreen(true);
-            stage.setFullScreenExitHint("");
-            stage.show();
-
-            // Tutup stage sebelumnya
-            Stage previousStage = (Stage) AnchorTendik.getScene().getWindow();
-            previousStage.close();
-
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Failed to load Login Tendik");
