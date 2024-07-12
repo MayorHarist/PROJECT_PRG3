@@ -37,13 +37,7 @@ public class InputTendik {
     @FXML
     private TextField usernameTendik;
     @FXML
-    private PasswordField passwordTendik;
-    @FXML
-    private Label lblNamaError;
-    @FXML
-    private Label lblEmailError;
-    @FXML
-    private Label lblUsernameError;
+    private TextField passwordTendik;
 
     private ToggleGroup genderGroup;
     private DBConnect connection = new DBConnect();
@@ -81,7 +75,7 @@ public class InputTendik {
         }
 
         if (isUsernameDuplicate(usernameTendik.getText())) {
-            errorMsg.append("Username sudah terdaftar.\n");
+            errorMsg.append("Username dan password sudah terdaftar.\n");
         }
 
         if (txtNamaTendik.getText().isEmpty() || tglTendik.getValue() == null || genderGroup.getSelectedToggle() == null ||
@@ -117,12 +111,25 @@ public class InputTendik {
         Username = usernameTendik.getText();
         Password = passwordTendik.getText();
 
-        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationAlert.setTitle("Konfirmasi");
-        confirmationAlert.setHeaderText(null);
-        confirmationAlert.setContentText("Apakah Anda yakin ingin menyimpan data ini?");
-        Optional<ButtonType> result = confirmationAlert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+        // Menampilkan dialog konfirmasi dengan data yang akan disimpan
+        String message = "Data yang akan disimpan:\n";
+        message += "ID Tendik: " + Id_TKN + "\n";
+        message += "Nama: " + Nama + "\n";
+        message += "Tanggal Lahir: " + Tanggal_Lahir + "\n";
+        message += "Jenis Kelamin: " + Jenis_Kelamin + "\n";
+        message += "Alamat: " + Alamat + "\n";
+        message += "Email: " + Email + "\n";
+        message += "Telepon: " + Telepon + "\n";
+        message += "Username: " + Username + "\n";
+        message += "Apakah Anda yakin ingin menyimpan data?";
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Konfirmasi");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+
+        Optional<ButtonType> option = alert.showAndWait();
+        if (option.isPresent() && option.get() == ButtonType.OK) {
             try {
                 String query = "EXEC sp_InsertTendik ?, ?, ?, ?, ?, ?, ?, ?, ?";
                 connection.pstat = connection.conn.prepareStatement(query);
@@ -154,8 +161,15 @@ public class InputTendik {
                 errorAlert.setContentText("Terjadi kesalahan saat menyimpan data. Silakan coba lagi.");
                 errorAlert.showAndWait();
             }
+        } else {
+            Alert cancelAlert = new Alert(Alert.AlertType.INFORMATION);
+            cancelAlert.setTitle("Informasi");
+            cancelAlert.setHeaderText(null);
+            cancelAlert.setContentText("Data Tenaga Kependidikan tidak disimpan.");
+            cancelAlert.showAndWait();
         }
     }
+
 
 
     @FXML
@@ -172,30 +186,21 @@ public class InputTendik {
         txtTelpTendik.clear();
         usernameTendik.clear();
         passwordTendik.clear();
-        lblNamaError.setText("");
-        lblEmailError.setText("");
-        lblUsernameError.setText("");
     }
 
     public void autoid() {
         try {
-            String sql = "SELECT MAX(Id_TKN) FROM TenagaKependidikan";
+            String sql = "SELECT dbo.autoIdTendik() AS newID";
             connection.pstat = connection.conn.prepareStatement(sql);
             ResultSet result = connection.pstat.executeQuery();
 
             if (result.next()) {
-                String maxId = result.getString(1);
-                if (maxId != null) {
-                    int number = Integer.parseInt(maxId.substring(3)) + 1;
-                    String formattedNumber = String.format("%03d", number);
-                    txtIDTKN.setText("TKN" + formattedNumber);
-                } else {
-                    txtIDTKN.setText("TKN001");
-                }
+                String newID = result.getString("newID");
+                txtIDTKN.setText(newID);
             }
             result.close();
         } catch (Exception ex) {
-            System.out.println("Terjadi error pada ID Tenaga Kependidikan: " + ex);
+            System.out.println("Terjadi error pada tenaga kependidikan: " + ex);
         }
     }
 

@@ -47,8 +47,6 @@ public class UpdateDelPengumuman implements Initializable {
     private DBConnect connection = new DBConnect();
     private ObservableList<Pengumuman> oblist = FXCollections.observableArrayList();
 
-
-
     public class Pengumuman {
         private String IdPM, namaPengumuman, Deskripsi,IdTKN;
         private LocalDate Tanggal;
@@ -123,6 +121,7 @@ public class UpdateDelPengumuman implements Initializable {
                 Id_TKN.setText(newValue.getIdTKN());
             }
         });
+        loadData("");
     }
     @FXML
     protected void onBtnUbahClick() {
@@ -169,37 +168,59 @@ public class UpdateDelPengumuman implements Initializable {
 
     @FXML
     protected void onBtnHapusClick() {
-        // Menampilkan dialog konfirmasi
-        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationAlert.setTitle("Konfirmasi Penghapusan");
-        confirmationAlert.setHeaderText(null);
-        confirmationAlert.setContentText("Apakah Anda yakin ingin menghapus data ini?");
+        // Ambil pengumuman yang dipilih dari TableView
+        Pengumuman selectedPengumuman = tblViewPengumuman.getSelectionModel().getSelectedItem(); // CHANGED: Added selection logic
 
-        // Menunggu respons pengguna
-        confirmationAlert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                // Jika pengguna menekan OK, lanjutkan penghapusan data
-                try {
-                    String query = "EXEC sp_DeletePengumuman ?";
-                    try (Connection conn = connection.conn;
-                         PreparedStatement stmt = conn.prepareStatement(query)) {
-                        stmt.setString(1, txtIDPengumuman.getText());
-                        stmt.executeUpdate();
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setContentText("Data Berhasil dihapus!");
-                        alert.showAndWait();
+        if (selectedPengumuman != null) { // CHANGED: Added null check for selectedPengumuman
+            // Tampilkan pesan konfirmasi
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Konfirmasi Penghapusan Data");
+            alert.setHeaderText(null);
+            alert.setContentText("Apakah Anda yakin ingin menghapus data ini?");
+
+            // Tambahkan opsi Ya dan Tidak
+            ButtonType buttonTypeYes = new ButtonType("Ya");
+            ButtonType buttonTypeNo = new ButtonType("Tidak");
+            alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+
+            // Tampilkan dialog dan tunggu respon pengguna
+            alert.showAndWait().ifPresent(response -> {
+                if (response == buttonTypeYes) {
+                    // Jika pengguna memilih Ya, lakukan penghapusan data
+                    try {
+                        String query = "DELETE FROM Pengumuman WHERE Id_Pengumuman = ?";
+                        PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
+                        preparedStatement.setString(1, selectedPengumuman.getIdPM()); // CHANGED: Use selectedPengumuman.getId_Pengumuman() instead of txtIDPengumuman.getText()
+                        preparedStatement.executeUpdate();
+
+                        loadData(""); // Panggil loadData() untuk menyegarkan tampilan TableView
                         clear();
-                        loadData("");
+
+                        Alert alertSuccess = new Alert(Alert.AlertType.INFORMATION);
+                        alertSuccess.setTitle("Sukses");
+                        alertSuccess.setHeaderText(null);
+                        alertSuccess.setContentText("Data pengumuman berhasil dihapus!");
+                        alertSuccess.showAndWait();
+                    } catch (SQLException ex) {
+                        System.out.println("Terjadi error saat menghapus data pengumuman: " + ex.getMessage());
                     }
-                } catch (SQLException e) {
-                    System.out.println("Data gagal dihapus " + e.getMessage());
-                    e.printStackTrace();
+                } else {
+                    // Jika pengguna memilih Tidak, data tidak dihapus
+                    alert.close();
                 }
-            }
-        });
+            });
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Peringatan");
+            alert.setHeaderText(null);
+            alert.setContentText("Silakan pilih data pengumuman yang ingin dihapus.");
+            alert.showAndWait();
+        }
     }
 
+
     public void clear() {
+        txtIDPengumuman.clear();
         txtnmPengumuman.clear();
         tglPengumuman.setValue(null);
         txtDeskripsi.clear();
@@ -210,11 +231,10 @@ public class UpdateDelPengumuman implements Initializable {
         loadData("");
     }
 
-    private void loadData(String keyword){
+    private void loadData(String keyword) {
         try {
-            // Buka koneksi ke database FINDSMART
+            // Buat koneksi dan pernyataan SQL
             DBConnect connection = new DBConnect();
-            connection.stat = connection.conn.createStatement();
             String query = "SELECT * FROM Pengumuman WHERE Status = 'Aktif' AND (" +
                     "LOWER(Id_Pengumuman) LIKE ? OR " +
                     "LOWER(Nama) LIKE ? OR " +
@@ -223,12 +243,14 @@ public class UpdateDelPengumuman implements Initializable {
                     "LOWER(Id_TKN) LIKE ?)";
 
             PreparedStatement st = connection.conn.prepareStatement(query);
-            String wildcardKeyword = "%" + keyword + "%";
+            String wildcardKeyword = "%" + keyword.toLowerCase() + "%";
             for (int i = 1; i <= 5; i++) {
                 st.setString(i, wildcardKeyword);
             }
+
+            // Eksekusi query dan proses hasil
             oblist.clear(); // Bersihkan data yang ada sebelum memuat data baru
-            connection.result = connection.stat.executeQuery(query);
+            connection.result = st.executeQuery();
             while (connection.result.next()) {
                 LocalDate date = connection.result.getDate("Tanggal").toLocalDate();
                 oblist.add(new Pengumuman(
@@ -238,16 +260,18 @@ public class UpdateDelPengumuman implements Initializable {
                         connection.result.getString("Deskripsi"),
                         connection.result.getString("Id_TKN")));
             }
+
+            // Tutup koneksi dan pernyataan
             connection.stat.close();
             connection.result.close();
+
+            // Set data ke TableView
             tblViewPengumuman.setItems(oblist);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText("Refresh data Pengumuman berhasil!");
-            alert.showAndWait();
         } catch (SQLException ex) {
-            System.out.println("Terjadi error saat refresh data Pengumuman" + ex);
+            System.out.println("Terjadi error saat refresh data Pengumuman: " + ex);
         }
     }
+
 
     @FXML
     protected void onBtnCariClick() {
