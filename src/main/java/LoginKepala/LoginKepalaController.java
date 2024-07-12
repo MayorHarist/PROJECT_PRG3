@@ -1,5 +1,6 @@
 package LoginKepala;
 
+import Database.DBConnect;
 import LoginTendik.LoginTendikController;
 import Sebagai.SebagaiController;
 import javafx.event.ActionEvent;
@@ -27,8 +28,9 @@ public class LoginKepalaController {
     @FXML
     private TextField txtPassword;
 
-    private final String useradmin = "Kepalatendik";
-    private final String userpass = "Kepalatendik";
+    DBConnect connection = new DBConnect();
+    private final String useradmin = "dean";
+    private final String userpass = "dean";
 
     @FXML
     public void onbtnLoginClick(ActionEvent event) {
@@ -61,10 +63,10 @@ public class LoginKepalaController {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("Failed to load HalamanKepala.fxml");
+                System.out.println("Failed to load UserKepalaApplication.fxml");
             } catch (NullPointerException e) {
                 e.printStackTrace();
-                System.out.println("Resource HalamanKepala.fxml not found");
+                System.out.println("Resource UserKepalaApplication.fxml not found");
             }
 
         } else {

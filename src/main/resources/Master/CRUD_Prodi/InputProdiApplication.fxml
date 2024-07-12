@@ -7,22 +7,22 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Prodi.InputProdiController">
-    <Label layoutX="617.0" layoutY="430.0" text="Id Prodi:" />
-    <TextField fx:id="txtIdProdi" editable="false" layoutX="752.0" layoutY="426.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Prodi.InputProdiController">
+    <Label layoutX="127.0" layoutY="86.0" text="Id Prodi" />
+    <TextField fx:id="txtIdProdi" editable="false" layoutX="262.0" layoutY="82.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-    <Label layoutX="618.0" layoutY="474.0" text="Nama:" GridPane.rowIndex="1" />
-    <TextField fx:id="txtNama" layoutX="752.0" layoutY="470.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+    <Label layoutX="128.0" layoutY="130.0" text="Nama" GridPane.rowIndex="1" />
+    <TextField fx:id="txtNama" layoutX="262.0" layoutY="126.0" prefHeight="25.0" prefWidth="189.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-    <Label layoutX="618.0" layoutY="522.0" text="Jenjang Pendidikan:" GridPane.rowIndex="2" />
-    <TextField fx:id="txtJenjangPendidikan" layoutX="752.0" layoutY="518.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+    <Label layoutX="128.0" layoutY="178.0" text="Jenjang Pendidikan" GridPane.rowIndex="2" />
+    <TextField fx:id="txtJenjangPendidikan" layoutX="262.0" layoutY="174.0" prefHeight="25.0" prefWidth="189.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-    <Label layoutX="618.0" layoutY="570.0" text="Akreditasi:" GridPane.rowIndex="3" />
-    <TextField fx:id="txtAkreditasi" layoutX="752.0" layoutY="566.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+    <Label layoutX="128.0" layoutY="226.0" text="Akreditasi" GridPane.rowIndex="3" />
+    <TextField fx:id="txtAkreditasi" layoutX="262.0" layoutY="222.0" prefHeight="25.0" prefWidth="53.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-    <Button fx:id="btnSimpan" layoutX="866.0" layoutY="696.0" onAction="#btnSimpan_Click" text="Simpan" GridPane.rowIndex="5" />
-    <Button fx:id="btnBatal" layoutX="704.0" layoutY="696.0" onAction="#btnBatal_Click" prefHeight="26.0" prefWidth="55.0" text="Batal" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-    <Label alignment="CENTER" layoutX="695.0" layoutY="369.0" prefHeight="26.0" prefWidth="213.0" text="Input Data Program Studi">
+    <Button fx:id="btnSimpan" layoutX="347.0" layoutY="297.0" onAction="#btnSimpan_Click" text="Simpan" GridPane.rowIndex="5" />
+    <Button fx:id="btnBatal" layoutX="217.0" layoutY="296.0" onAction="#btnBatal_Click" prefHeight="26.0" prefWidth="55.0" text="Batal" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+    <Label alignment="CENTER" layoutX="205.0" layoutY="25.0" prefHeight="26.0" prefWidth="213.0" text="Input Data Program Studi">
         <font>
             <Font name="System Bold" size="16.0" />
         </font>

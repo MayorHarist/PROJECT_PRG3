@@ -14,15 +14,15 @@
             <Image url="@../Download/Login Kepala.png" />
          </image>
       </ImageView>
-      <TextField fx:id="txtUsername" layoutX="121.0" layoutY="396.0" prefHeight="42.0" prefWidth="500.0" promptText="Masukkan Nama Pengguna" style="-fx-background-color: #004AAD; -fx-text-fill: White;">
+      <TextField fx:id="txtUsername" layoutX="122.0" layoutY="397.0" prefHeight="41.0" prefWidth="499.0">
          <font>
-            <Font size="18.0" />
+            <Font name="System Bold" size="18.0" />
          </font></TextField>
-      <TextField fx:id="txtPassword" layoutX="121.0" layoutY="487.0" prefHeight="47.0" prefWidth="500.0" promptText="Masukkan Kata Sandi" style="-fx-background-color: #004AAD; -fx-text-fill: White;">
+      <TextField fx:id="txtPassword" layoutX="123.0" layoutY="489.0" prefHeight="41.0" prefWidth="499.0">
          <font>
-            <Font size="18.0" />
+            <Font name="System Bold" size="18.0" />
          </font></TextField>
-      <Button fx:id="btnLogin" layoutX="112.0" layoutY="580.0" mnemonicParsing="false" onAction="#onbtnLoginClick" prefHeight="66.0" prefWidth="518.0" style="-fx-opacity: 0;" stylesheets="@../Style.css" />
-      <Button fx:id="btnExit" layoutX="111.0" layoutY="672.0" mnemonicParsing="false" onAction="#onbtnExitClick" opacity="0.0" prefHeight="66.0" prefWidth="518.0" text="Batal" />
+      <Button fx:id="btnLogin" layoutX="96.0" layoutY="571.0" mnemonicParsing="false" onAction="#onbtnLoginClick" opacity="0.0" prefHeight="83.0" prefWidth="539.0" text="Masuk" />
+      <Button fx:id="btnExit" layoutX="97.0" layoutY="664.0" mnemonicParsing="false" onAction="#onbtnExitClick" opacity="0.0" prefHeight="83.0" prefWidth="539.0" text="Batal" />
    </children>
 </AnchorPane>
