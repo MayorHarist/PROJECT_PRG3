@@ -9,16 +9,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1398.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Matkul.UpdateDeleteMatkulController">
+<AnchorPane prefHeight="1080.0" prefWidth="1816.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Matkul.UpdateDeleteMatkulController">
     <children>
-        <TableView fx:id="tableMatkul" layoutX="25.0" layoutY="149.0" prefHeight="406.0" prefWidth="1343.0">
+        <TableView fx:id="tableMatkul" layoutX="250.0" layoutY="152.0" prefHeight="406.0" prefWidth="1343.0">
             <columns>
                 <TableColumn fx:id="idMatkul" prefWidth="84.66665649414062" text="ID Matkul" />
                 <TableColumn fx:id="namaMatkul" prefWidth="70.66665649414062" text="Nama" />
                 <TableColumn fx:id="sks" prefWidth="60.666656494140625" text="SKS" />
                 <TableColumn fx:id="jenis" prefWidth="78.66668701171875" text="Jenis" />
                 <TableColumn fx:id="semester" prefWidth="99.3333740234375" text="Semester" />
-                <TableColumn fx:id="status" prefWidth="103.33331298828125" text="Status" />
+            <TableColumn fx:id="kelas" prefWidth="75.0" text="Kelas" />
                 <TableColumn fx:id="pegawai" prefWidth="81.3333740234375" text="No Pegawai" />
                 <TableColumn fx:id="prodi" prefWidth="93.33331298828125" text="ID Prodi" />
             </columns>
@@ -26,53 +26,58 @@
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
             </columnResizePolicy>
         </TableView>
-            <Button fx:id="btnDelete" layoutX="817.0" layoutY="861.0" mnemonicParsing="false" onAction="#onBtnDelete" prefHeight="44.0" prefWidth="100.0" text="Delete" />
-            <Button fx:id="btnUbah" layoutX="967.0" layoutY="861.0" mnemonicParsing="false" onAction="#onBtnUbah" prefHeight="44.0" prefWidth="100.0" text="Ubah" />
-            <Button fx:id="btnBatal" layoutX="1117.0" layoutY="861.0" mnemonicParsing="false" onAction="#onBtnBatalClick" prefHeight="44.0" prefWidth="100.0" text="Batal" />
-          <TextField fx:id="txtIdMatkul" layoutX="325.0" layoutY="636.0" prefHeight="25.0" prefWidth="250.0" />
-          <TextField fx:id="txtNamaMatkul" layoutX="924.0" layoutY="635.0" prefHeight="25.0" prefWidth="250.0" />
-          <TextField fx:id="txtSKS" layoutX="924.0" layoutY="684.0" prefHeight="25.0" prefWidth="250.0" />
-          <TextField fx:id="txtJenis" layoutX="924.0" layoutY="740.0" prefHeight="25.0" prefWidth="250.0" />
-          <TextField fx:id="txtSemester" layoutX="924.0" layoutY="796.0" prefHeight="25.0" prefWidth="250.0" />
-          <TextField fx:id="txtStatus" layoutX="322.0" layoutY="791.0" prefHeight="25.0" prefWidth="250.0" />
-          <ComboBox fx:id="cbPegawai" layoutX="325.0" layoutY="743.0" prefHeight="25.0" prefWidth="250.0" />
-          <ComboBox fx:id="cbProdi" layoutX="325.0" layoutY="691.0" prefHeight="25.0" prefWidth="250.0" />
-             <Label layoutX="181.0" layoutY="635.0" prefHeight="26.0" prefWidth="100.0" text="ID Matkul">
+            <Button fx:id="btnHapus" layoutX="774.0" layoutY="890.0" mnemonicParsing="false" onAction="#onBtnHapus" prefHeight="44.0" prefWidth="100.0" text="Hapus" />
+            <Button fx:id="btnUbah" layoutX="924.0" layoutY="890.0" mnemonicParsing="false" onAction="#onBtnUbah" prefHeight="44.0" prefWidth="100.0" text="Ubah" />
+            <Button fx:id="btnBatal" layoutX="1074.0" layoutY="890.0" mnemonicParsing="false" onAction="#onBtnBatalClick" prefHeight="44.0" prefWidth="100.0" text="Batal" />
+          <TextField fx:id="txtIdMatkul" layoutX="550.0" layoutY="639.0" prefHeight="25.0" prefWidth="250.0" />
+          <TextField fx:id="txtNamaMatkul" layoutX="1149.0" layoutY="638.0" prefHeight="25.0" prefWidth="250.0" />
+          <TextField fx:id="txtSKS" layoutX="1149.0" layoutY="687.0" prefHeight="25.0" prefWidth="250.0" />
+          <TextField fx:id="txtJenis" layoutX="1149.0" layoutY="743.0" prefHeight="25.0" prefWidth="250.0" />
+          <TextField fx:id="txtSemester" layoutX="1149.0" layoutY="799.0" prefHeight="25.0" prefWidth="250.0" />
+          <ComboBox fx:id="cbPegawai" layoutX="550.0" layoutY="746.0" prefHeight="25.0" prefWidth="250.0" />
+          <ComboBox fx:id="cbProdi" layoutX="550.0" layoutY="694.0" prefHeight="25.0" prefWidth="250.0" />
+             <Label layoutX="406.0" layoutY="638.0" prefHeight="26.0" prefWidth="100.0" text="ID Matkul">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-             <Label layoutX="181.0" layoutY="688.0" prefHeight="26.0" prefWidth="100.0" text="ID Prodi">
+             <Label layoutX="406.0" layoutY="691.0" prefHeight="28.0" prefWidth="129.0" text="Program Studi">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-             <Label layoutX="180.0" layoutY="744.0" prefHeight="27.0" prefWidth="115.0" text="No Pegawai">
+             <Label layoutX="405.0" layoutY="747.0" prefHeight="27.0" prefWidth="115.0" text="Dosen">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-             <Label layoutX="794.0" layoutY="634.0" prefHeight="26.0" prefWidth="100.0" text="Nama">
+             <Label layoutX="1019.0" layoutY="637.0" prefHeight="26.0" prefWidth="100.0" text="Nama">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-             <Label layoutX="795.0" layoutY="686.0" prefHeight="26.0" prefWidth="100.0" text="SKS">
+             <Label layoutX="1020.0" layoutY="689.0" prefHeight="26.0" prefWidth="100.0" text="SKS">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-             <Label layoutX="795.0" layoutY="739.0" prefHeight="26.0" prefWidth="115.0" text="Jenis">
+             <Label layoutX="1020.0" layoutY="742.0" prefHeight="26.0" prefWidth="115.0" text="Jenis">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-             <Label layoutX="795.0" layoutY="792.0" prefHeight="26.0" prefWidth="100.0" text="Semester">
+             <Label layoutX="1020.0" layoutY="795.0" prefHeight="26.0" prefWidth="100.0" text="Semester">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="btnDelete1" layoutX="29.0" layoutY="102.0" mnemonicParsing="false" onAction="#onBtnDelete" prefHeight="33.0" prefWidth="117.0" text="Tambah" />
-      <Button fx:id="btnDelete11" layoutX="524.0" layoutY="63.0" mnemonicParsing="false" onAction="#onBtnDelete" prefHeight="33.0" prefWidth="75.0" text="Cari" />
+      <Button fx:id="btnTambah" layoutX="254.0" layoutY="105.0" mnemonicParsing="false" onAction="#onBtnTambah" prefHeight="33.0" prefWidth="117.0" text="Tambah" />
+      <TextField fx:id="txtKelas" layoutX="551.0" layoutY="795.0" prefHeight="25.0" prefWidth="250.0" />
+      <Label layoutX="406.0" layoutY="798.0" prefHeight="26.0" prefWidth="100.0" text="Kelas">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtCari" layoutX="791.0" layoutY="38.0" onKeyReleased="#onTxtCari" prefHeight="37.0" prefWidth="328.0" />
     </children>
 </AnchorPane>

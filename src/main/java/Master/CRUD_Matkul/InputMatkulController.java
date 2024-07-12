@@ -3,12 +3,16 @@ package Master.CRUD_Matkul;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javax.swing.JOptionPane;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import Database.DBConnect;
@@ -25,15 +29,16 @@ public class InputMatkulController {
     @FXML
     private TextField txtSemester;
     @FXML
+    private TextField txtKelas;
+    @FXML
     private ComboBox<Pegawai> cbPegawai;
     @FXML
     private ComboBox<Prodi> cbProdi;
     @FXML
     private AnchorPane AnchorInputMatkul;
 
-    String IdMatkul, nama, sks, Jenis, semester, No_Pegawai, Id_Prodi;
+    String IdMatkul, nama, sks, Jenis, semester, kelas, No_Pegawai, Id_Prodi;
     DBConnect connection = new DBConnect();
-
 
     public class Pegawai {
         private String id;
@@ -91,11 +96,37 @@ public class InputMatkulController {
 
         ObservableList<Prodi> prodiData = loadDataForProdiComboBox();
         cbProdi.setItems(prodiData);
+
+        // Adding real-time validation listeners
+        addValidationListeners();
+    }
+
+    private void addValidationListeners() {
+        txtSKS.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!isNumeric(newValue) || !isSKSValid(newValue.isEmpty() ? 0 : Integer.parseInt(newValue))) {
+                showAlert(AlertType.WARNING, "Peringatan", "Data SKS harus berupa angka dan dalam rentang 1-6!");
+                txtSKS.clear();
+            }
+        });
+
+        txtJenis.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!isAlpha(newValue)) {
+                showAlert(AlertType.WARNING, "Peringatan", "Data Jenis harus berupa huruf saja!");
+                txtJenis.clear();
+            }
+        });
+
+        txtSemester.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!isNumeric(newValue)) {
+                showAlert(AlertType.WARNING, "Peringatan", "Data Semester harus berupa angka!");
+                txtSemester.clear();
+            }
+        });
     }
 
     private ObservableList<Pegawai> loadDataForPegawaiComboBox() {
         ObservableList<Pegawai> dataList = FXCollections.observableArrayList();
-        String query = "SELECT No_Pegawai, Nama FROM Dosen";
+        String query = "SELECT No_Pegawai, Nama FROM Dosen WHERE Status='Aktif'";
 
         try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
             while (resultSet.next()) {
@@ -112,7 +143,7 @@ public class InputMatkulController {
 
     private ObservableList<Prodi> loadDataForProdiComboBox() {
         ObservableList<Prodi> dataList = FXCollections.observableArrayList();
-        String query = "SELECT Id_Prodi, Nama FROM ProgramStudi";
+        String query = "SELECT Id_Prodi, Nama FROM ProgramStudi WHERE Status='Aktif'";
 
         try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
             while (resultSet.next()) {
@@ -127,7 +158,6 @@ public class InputMatkulController {
         return dataList;
     }
 
-
     @FXML
     protected void onBtnSimpanClick() {
         IdMatkul = txtIdMatkul.getText();
@@ -135,6 +165,7 @@ public class InputMatkulController {
         sks = txtSKS.getText();
         Jenis = txtJenis.getText();
         semester = txtSemester.getText();
+        kelas = txtKelas.getText();
 
         Pegawai selectedPegawai = cbPegawai.getValue();
         Prodi selectedProdi = cbProdi.getValue();
@@ -152,41 +183,88 @@ public class InputMatkulController {
         }
 
         if (validasi()) {
-            try {
-                String query = "EXEC sp_InsertMatkul ? , ?, ?, ?, ?, ?, ?";
-                connection.pstat = connection.conn.prepareStatement(query);
-                connection.pstat.setString(1, IdMatkul);
-                connection.pstat.setString(2, nama);
-                connection.pstat.setString(3, sks);
-                connection.pstat.setString(4, Jenis);
-                connection.pstat.setString(5, semester);
-                connection.pstat.setString(6, No_Pegawai);
-                connection.pstat.setString(7, Id_Prodi);
+            // Menampilkan message box konfirmasi dengan data yang akan disimpan
+            StringBuilder confirmationMessage = new StringBuilder();
+            confirmationMessage.append("Apakah Anda yakin ingin menyimpan data mata kuliah ini?\n\n");
+            confirmationMessage.append("ID Mata Kuliah: ").append(IdMatkul).append("\n");
+            confirmationMessage.append("Nama: ").append(nama).append("\n");
+            confirmationMessage.append("SKS: ").append(sks).append("\n");
+            confirmationMessage.append("Jenis: ").append(Jenis).append("\n");
+            confirmationMessage.append("Semester: ").append(semester).append("\n");
+            confirmationMessage.append("Kelas: ").append(kelas).append("\n");
+            confirmationMessage.append("Dosen: ").append(selectedPegawai != null ? selectedPegawai.getNama() : "Tidak ada").append("\n");
+            confirmationMessage.append("Program Studi: ").append(selectedProdi != null ? selectedProdi.getNama() : "Tidak ada").append("\n");
 
-                connection.pstat.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Input data Mata Kuliah berhasil!");
-                clear();
-                autoid(); // Set kembali Id Matkul setelah menyimpan data
-            } catch (SQLException ex) {
-                System.out.println("Terjadi error saat insert data Mata Kuliah: " + ex);
+            Alert confirmationAlert = new Alert(AlertType.CONFIRMATION);
+            confirmationAlert.setTitle("Konfirmasi");
+            confirmationAlert.setHeaderText(null);
+            confirmationAlert.setContentText(confirmationMessage.toString());
+
+            Optional<ButtonType> result = confirmationAlert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                try {
+                    String query = "EXEC sp_InsertMatkul ?, ?, ?, ?, ?, ?, ?, ?";
+                    connection.pstat = connection.conn.prepareStatement(query);
+                    connection.pstat.setString(1, IdMatkul);
+                    connection.pstat.setString(2, nama);
+                    connection.pstat.setString(3, sks);
+                    connection.pstat.setString(4, Jenis);
+                    connection.pstat.setString(5, semester);
+                    connection.pstat.setString(6, kelas);
+                    connection.pstat.setString(7, No_Pegawai);
+                    connection.pstat.setString(8, Id_Prodi);
+
+                    connection.pstat.executeUpdate();
+                    showAlert(AlertType.INFORMATION, "Sukses", "Input data Mata Kuliah berhasil!");
+                    clear();
+                    autoid(); // Set kembali Id Matkul setelah menyimpan data
+                } catch (SQLException ex) {
+                    System.out.println("Terjadi error saat insert data Mata Kuliah: " + ex);
+                }
             }
         }
     }
 
     private boolean validasi() {
-        if (IdMatkul.isEmpty() || nama.isEmpty() || sks.isEmpty() || Jenis.isEmpty() || semester.isEmpty() || No_Pegawai == null || Id_Prodi == null) {
-            JOptionPane.showMessageDialog(null, "Semua data wajib diisi!");
+        if (IdMatkul.isEmpty() || nama.isEmpty() || sks.isEmpty() || Jenis.isEmpty() || semester.isEmpty() || kelas.isEmpty() || No_Pegawai == null || Id_Prodi == null) {
+            showAlert(AlertType.WARNING, "Peringatan", "Semua data wajib diisi!");
+            clear();
             return false;
         }
         if (!isAlpha(Jenis)) {
-            JOptionPane.showMessageDialog(null, "Data Jenis harus berupa huruf saja!");
+            showAlert(AlertType.WARNING, "Peringatan", "Data Jenis harus berupa huruf saja!");
+            txtJenis.clear();
             return false;
         }
         if (!isNumeric(semester)) {
-            JOptionPane.showMessageDialog(null, "Data Semester harus berupa angka!");
+            showAlert(AlertType.WARNING, "Peringatan", "Data Semester harus berupa angka!");
+            txtSemester.clear();
+            return false;
+        }
+        if (!isNumeric(sks) || !isSKSValid(Integer.parseInt(sks))) {
+            showAlert(AlertType.WARNING, "Peringatan", "Data SKS harus berupa angka dan dalam rentang 1-6!");
+            txtSKS.clear();
+            return false;
+        }
+        if (!isPegawaiAvailable(No_Pegawai, kelas, Id_Prodi)) {
+            showAlert(AlertType.WARNING, "Peringatan", "Dosen tersebut tidak dapat mengajar lebih dari satu mata kuliah di kelas yang sama!");
+            cbPegawai.setValue(null);
+            return false;
+        }
+        if (!isProdiExist(Id_Prodi)) {
+            showAlert(AlertType.WARNING, "Peringatan", "Id Prodi tidak ditemukan!");
+            cbProdi.setValue(null);
             return false;
         }
         return true;
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private boolean isAlpha(String str) {
@@ -197,36 +275,69 @@ public class InputMatkulController {
         return Pattern.matches("\\d+", str);
     }
 
+    private boolean isSKSValid(int sks) {
+        return sks >= 1 && sks <= 6;
+    }
+
+    private boolean isPegawaiAvailable(String noPegawai, String kelas, String idProdi) {
+        String query = "SELECT 1 FROM MataKuliah WHERE No_Pegawai = ? AND Kelas = ? AND Id_Prodi = ?";
+        try {
+            connection.pstat = connection.conn.prepareStatement(query);
+            connection.pstat.setString(1, noPegawai);
+            connection.pstat.setString(2, kelas);
+            connection.pstat.setString(3, idProdi);
+            ResultSet resultSet = connection.pstat.executeQuery();
+            boolean exists = resultSet.next();
+            resultSet.close();
+            return !exists;
+        } catch (SQLException ex) {
+            System.out.println("Terjadi error saat memeriksa keberadaan No Pegawai di kelas: " + ex.getMessage());
+            return false;
+        }
+    }
+
+    private boolean isProdiExist(String idProdi) {
+        String query = "SELECT 1 FROM ProgramStudi WHERE Id_Prodi = ?";
+        try {
+            connection.pstat = connection.conn.prepareStatement(query);
+            connection.pstat.setString(1, idProdi);
+            ResultSet resultSet = connection.pstat.executeQuery();
+            boolean exists = resultSet.next();
+            resultSet.close();
+            return exists;
+        } catch (SQLException ex) {
+            System.out.println("Terjadi error saat memeriksa keberadaan Id Prodi: " + ex.getMessage());
+            return false;
+        }
+    }
+
     @FXML
     protected void onBtnBatalClick() {
         clear();
     }
 
     public void clear() {
-        txtIdMatkul.clear();
         txtNama.clear();
         txtSKS.clear();
         txtJenis.clear();
         txtSemester.clear();
+        txtKelas.clear();
         cbPegawai.setValue(null);
         cbProdi.setValue(null);
     }
 
     public void autoid() {
         try {
-            String sql = "SELECT MAX(Id_Matkul) FROM MataKuliah";
+            // Call the SQL function to get the new ID
+            String sql = "SELECT dbo.autoIdMatkul()";
             connection.pstat = connection.conn.prepareStatement(sql);
             ResultSet result = connection.pstat.executeQuery();
 
             if (result.next()) {
-                String maxId = result.getString(1);
-                if (maxId != null) {
-                    int number = Integer.parseInt(maxId.substring(1)) + 1;
-                    String formattedNumber = String.format("%03d", number);
-                    txtIdMatkul.setText("M" + formattedNumber);
-                } else {
-                    txtIdMatkul.setText("M001");
-                }
+                String newId = result.getString(1);
+                txtIdMatkul.setText(newId);
+            } else {
+                txtIdMatkul.setText("MTL001");
             }
             result.close();
         } catch (Exception ex) {
