@@ -53,52 +53,60 @@ public class InputTendik {
 
     @FXML
     public void initialize() {
-        autoid(); // Panggil autoid saat inisialisasi
+        autoid();
 
-        // Inisialisasi ToggleGroup untuk RadioButton
         genderGroup = new ToggleGroup();
         rbLaki.setToggleGroup(genderGroup);
         rbPuan.setToggleGroup(genderGroup);
-
-        // Validasi input langsung di initialize
-        txtNamaTendik.textProperty().addListener((obs, oldVal, newVal) -> validateNama());
-        txtEmailTendik.textProperty().addListener((obs, oldVal, newVal) -> validateEmail());
-        usernameTendik.textProperty().addListener((obs, oldVal, newVal) -> validateUsername());
     }
 
-    private boolean validateNama() {
-        boolean isValid = txtNamaTendik.getText().matches("[a-zA-Z\\s]+");
-        if (!isValid) {
-            lblNamaError.setText("Nama hanya boleh mengandung huruf dan spasi.");
-            lblNamaError.setText("");
+    private boolean validateInput() {
+        StringBuilder errorMsg = new StringBuilder();
+
+        if (!txtNamaTendik.getText().matches("[a-zA-Z\\s]+")) {
+            errorMsg.append("Nama hanya boleh mengandung huruf dan spasi.\n");
         }
-        return isValid;
-    }
 
-    private boolean validateEmail() {
         String emailPattern = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        boolean isValid = Pattern.matches(emailPattern, txtEmailTendik.getText());
-        if (!isValid) {
-            lblEmailError.setText("Format email tidak valid.");
-        } else {
-            lblEmailError.setText("");
+        if (!Pattern.matches(emailPattern, txtEmailTendik.getText())) {
+            errorMsg.append("Format email tidak valid.\n");
         }
-        return isValid;
-    }
 
-    private boolean validateUsername() {
-        boolean isValid = !isUsernameDuplicate(usernameTendik.getText());
-        if (!isValid) {
-            lblUsernameError.setText("Username sudah terdaftar.");
-        } else {
-            lblUsernameError.setText("");
+        if (!txtTelpTendik.getText().matches("\\d+")) {
+            errorMsg.append("Nomor telepon hanya boleh mengandung angka.\n");
         }
-        return isValid;
+
+        if (isEmailDuplicate(txtEmailTendik.getText())) {
+            errorMsg.append("Email sudah terdaftar.\n");
+        }
+
+        if (isUsernameDuplicate(usernameTendik.getText())) {
+            errorMsg.append("Username sudah terdaftar.\n");
+        }
+
+        if (txtNamaTendik.getText().isEmpty() || tglTendik.getValue() == null || genderGroup.getSelectedToggle() == null ||
+                txtAlamatTendik.getText().isEmpty() || txtEmailTendik.getText().isEmpty() || txtTelpTendik.getText().isEmpty() ||
+                usernameTendik.getText().isEmpty() || passwordTendik.getText().isEmpty()) {
+            errorMsg.append("Harap lengkapi semua kolom.\n");
+        }
+
+        if (errorMsg.length() > 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText(errorMsg.toString());
+            alert.showAndWait();
+            return false;
+        }
+        return true;
     }
 
     @FXML
     protected void onBtnSimpanClick() {
-        // Ambil data dari form
+        if (!validateInput()) {
+            return;
+        }
+
         Id_TKN = txtIDTKN.getText();
         Nama = txtNamaTendik.getText();
         Tanggal_Lahir = tglTendik.getValue();
@@ -109,59 +117,12 @@ public class InputTendik {
         Username = usernameTendik.getText();
         Password = passwordTendik.getText();
 
-        // Validasi data tidak boleh kosong
-        if (Id_TKN.isEmpty() || Nama.isEmpty() || Jenis_Kelamin.isEmpty() || Alamat.isEmpty()
-                || Email.isEmpty() || Telepon.isEmpty() || Username.isEmpty() || Password.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Harap lengkapi semua kolom.");
-            alert.showAndWait();
-            return; // Menghentikan eksekusi jika ada data yang kosong
-        }
-
-        // Jalankan validasi kolom sebelum menyimpan
-        boolean isNamaValid = validateNama();
-        boolean isEmailValid = validateEmail();
-        boolean isUsernameValid = validateUsername();
-
-        if (!isNamaValid || !isEmailValid || !isUsernameValid) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Periksa kembali format kolom yang diisi.");
-            alert.showAndWait();
-            return; // Menghentikan eksekusi jika validasi gagal
-        }
-
-        // Check for duplicate email
-        if (isEmailDuplicate(Email)) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Email sudah terdaftar!");
-            alert.showAndWait();
-            return; // Menghentikan eksekusi jika email sudah terdaftar
-        }
-
-        // Check for duplicate username
-        if (isUsernameDuplicate(Username)) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Username sudah terdaftar!");
-            alert.showAndWait();
-            return; // Menghentikan eksekusi jika username sudah terdaftar
-        }
-
-        // Konfirmasi sebelum menyimpan data
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Konfirmasi");
         confirmationAlert.setHeaderText(null);
         confirmationAlert.setContentText("Apakah Anda yakin ingin menyimpan data ini?");
         Optional<ButtonType> result = confirmationAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            // Simpan data ke database
             try {
                 String query = "EXEC sp_InsertTendik ?, ?, ?, ?, ?, ?, ?, ?, ?";
                 connection.pstat = connection.conn.prepareStatement(query);
@@ -195,6 +156,7 @@ public class InputTendik {
             }
         }
     }
+
 
     @FXML
     protected void OnBtnBatalClick() {
@@ -238,36 +200,37 @@ public class InputTendik {
     }
 
     private boolean isEmailDuplicate(String email) {
-        boolean isDuplicate = false;
         try {
             String sql = "SELECT COUNT(*) FROM TenagaKependidikan WHERE Email = ?";
             connection.pstat = connection.conn.prepareStatement(sql);
             connection.pstat.setString(1, email);
             ResultSet result = connection.pstat.executeQuery();
             if (result.next() && result.getInt(1) > 0) {
-                isDuplicate = true;
+                result.close();
+                return true;
             }
             result.close();
         } catch (SQLException ex) {
             System.out.println("Terjadi error saat memeriksa email duplikat: " + ex);
         }
-        return isDuplicate;
+        return false;
     }
 
     private boolean isUsernameDuplicate(String username) {
-        boolean isDuplicate = false;
         try {
             String sql = "SELECT COUNT(*) FROM TenagaKependidikan WHERE Username = ?";
             connection.pstat = connection.conn.prepareStatement(sql);
             connection.pstat.setString(1, username);
             ResultSet result = connection.pstat.executeQuery();
             if (result.next() && result.getInt(1) > 0) {
-                isDuplicate = true;
+                result.close();
+                return true;
             }
             result.close();
         } catch (SQLException ex) {
             System.out.println("Terjadi error saat memeriksa username duplikat: " + ex);
-        }return isDuplicate;
+        }
+        return false;
     }
 
     @FXML
