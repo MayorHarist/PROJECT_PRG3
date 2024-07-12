@@ -3,16 +3,16 @@ package Master.CRUD_Pengumuman;
 import Database.DBConnect;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
 
-import javax.swing.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.regex.Pattern;
 
 public class InputPengumuman {
     @FXML
@@ -60,6 +60,12 @@ public class InputPengumuman {
         // Memuat data untuk ComboBox
         ObservableList<TenagaKependidikan> tknData = loadDataForTKNComboBox();
         cbTKN.setItems(tknData);
+
+        // Validasi input langsung di initialize
+        txtnmPengumuman.textProperty().addListener((obs, oldVal, newVal) -> validateNama());
+        tglPengumuman.valueProperty().addListener((obs, oldVal, newVal) -> validateTanggal());
+        txtDeskripsi.textProperty().addListener((obs, oldVal, newVal) -> validateDeskripsi());
+        cbTKN.valueProperty().addListener((obs, oldVal, newVal) -> validateTKN());
     }
 
     private ObservableList<TenagaKependidikan> loadDataForTKNComboBox() {
@@ -79,39 +85,63 @@ public class InputPengumuman {
         return dataList;
     }
 
+    private boolean validateNama() {
+        boolean isValid = txtnmPengumuman.getText().matches("[a-zA-Z\\s]+");
+        if (!isValid) {
+            showAlert("Error", "Nama hanya boleh mengandung huruf dan spasi.");
+        }
+        return isValid;
+    }
+
+    private boolean validateTanggal() {
+        boolean isValid = tglPengumuman.getValue() != null;
+        if (!isValid) {
+            showAlert("Error", "Tanggal pengumuman harus diisi.");
+        }
+        return isValid;
+    }
+
+    private boolean validateDeskripsi() {
+        boolean isValid = !txtDeskripsi.getText().isEmpty();
+        if (!isValid) {
+            showAlert("Error", "Deskripsi tidak boleh kosong.");
+        }
+        return isValid;
+    }
+
+    private boolean validateTKN() {
+        boolean isValid = cbTKN.getValue() != null;
+        if (!isValid) {
+            showAlert("Error", "Tenaga Kependidikan harus dipilih.");
+        }
+        return isValid;
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
     @FXML
     protected void onBtnSimpanClick() {
         Id_Pengumuman = txtIDPengumuman.getText();
         Nama = txtnmPengumuman.getText();
-        LocalDate Tanggal = tglPengumuman.getValue();
+        tanggal = tglPengumuman.getValue();
         Deskripsi = txtDeskripsi.getText();
-
         TenagaKependidikan selectedTKN = cbTKN.getValue();
 
         if (selectedTKN != null) {
-            Id_TKN = selectedTKN.getId(); // Ambil Id_TKN dari objek TenagaKependidikan
+            Id_TKN = selectedTKN.getId();
         } else {
             Id_TKN = null;
         }
 
         // Validasi data tidak boleh kosong
-        if (Id_Pengumuman.isEmpty() || Nama.isEmpty() || Tanggal == null || Deskripsi.isEmpty() || Id_TKN == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Harap lengkapi dulu semua kolom.");
-            alert.showAndWait();
+        if (!validateNama() || !validateTanggal() || !validateDeskripsi() || !validateTKN()) {
             return; // Menghentikan eksekusi jika ada data yang kosong
-        }
-
-        // Validasi nama hanya huruf
-        if (!Nama.matches("[a-zA-Z\\s]+")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Nama hanya boleh mengandung huruf dan spasi.");
-            alert.showAndWait();
-            return; // Menghentikan eksekusi jika format nama tidak valid
         }
 
         // Simpan data ke database
@@ -120,7 +150,7 @@ public class InputPengumuman {
             connection.pstat = connection.conn.prepareStatement(query);
             connection.pstat.setString(1, Id_Pengumuman);
             connection.pstat.setString(2, Nama);
-            connection.pstat.setDate(3, java.sql.Date.valueOf(Tanggal));
+            connection.pstat.setDate(3, java.sql.Date.valueOf(tanggal));
             connection.pstat.setString(4, Deskripsi);
             connection.pstat.setString(5, Id_TKN);
 
