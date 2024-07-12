@@ -454,6 +454,7 @@ public class UpdateDeleteTendik implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 /*        try {
             FXMLLoader fxmlLoader = new FXMLLoader(InputTendik.class.getResource("/Master/CRUD_Tendik/InputTendik.fxml"));
             Parent root = fxmlLoader.load();

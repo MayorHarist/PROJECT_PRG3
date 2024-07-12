@@ -37,9 +37,16 @@ public class InputTendik {
     @FXML
     private TextField usernameTendik;
     @FXML
-    private TextField passwordTendik;
+    private PasswordField passwordTendik;
+    @FXML
+    private Label lblNamaError;
+    @FXML
+    private Label lblEmailError;
+    @FXML
+    private Label lblUsernameError;
+
     private ToggleGroup genderGroup;
-    DBConnect connection = new DBConnect();
+    private DBConnect connection = new DBConnect();
 
     String Id_TKN, Nama, Jenis_Kelamin, Alamat, Email, Telepon, Username, Password;
     LocalDate Tanggal_Lahir;
@@ -52,10 +59,46 @@ public class InputTendik {
         genderGroup = new ToggleGroup();
         rbLaki.setToggleGroup(genderGroup);
         rbPuan.setToggleGroup(genderGroup);
+
+        // Validasi input langsung di initialize
+        txtNamaTendik.textProperty().addListener((obs, oldVal, newVal) -> validateNama());
+        txtEmailTendik.textProperty().addListener((obs, oldVal, newVal) -> validateEmail());
+        usernameTendik.textProperty().addListener((obs, oldVal, newVal) -> validateUsername());
+    }
+
+    private boolean validateNama() {
+        boolean isValid = txtNamaTendik.getText().matches("[a-zA-Z\\s]+");
+        if (!isValid) {
+            lblNamaError.setText("Nama hanya boleh mengandung huruf dan spasi.");
+            lblNamaError.setText("");
+        }
+        return isValid;
+    }
+
+    private boolean validateEmail() {
+        String emailPattern = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        boolean isValid = Pattern.matches(emailPattern, txtEmailTendik.getText());
+        if (!isValid) {
+            lblEmailError.setText("Format email tidak valid.");
+        } else {
+            lblEmailError.setText("");
+        }
+        return isValid;
+    }
+
+    private boolean validateUsername() {
+        boolean isValid = !isUsernameDuplicate(usernameTendik.getText());
+        if (!isValid) {
+            lblUsernameError.setText("Username sudah terdaftar.");
+        } else {
+            lblUsernameError.setText("");
+        }
+        return isValid;
     }
 
     @FXML
     protected void onBtnSimpanClick() {
+        // Ambil data dari form
         Id_TKN = txtIDTKN.getText();
         Nama = txtNamaTendik.getText();
         Tanggal_Lahir = tglTendik.getValue();
@@ -77,35 +120,18 @@ public class InputTendik {
             return; // Menghentikan eksekusi jika ada data yang kosong
         }
 
-        // Validasi nama hanya huruf
-        if (!Nama.matches("[a-zA-Z\\s]+")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Nama hanya boleh mengandung huruf dan spasi.");
-            alert.showAndWait();
-            return; // Menghentikan eksekusi jika format nama tidak valid
-        }
+        // Jalankan validasi kolom sebelum menyimpan
+        boolean isNamaValid = validateNama();
+        boolean isEmailValid = validateEmail();
+        boolean isUsernameValid = validateUsername();
 
-        // Validasi nomor telepon hanya angka
-        if (!Telepon.matches("[0-9]+")) {
+        if (!isNamaValid || !isEmailValid || !isUsernameValid) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText(null);
-            alert.setContentText("Nomor telepon hanya boleh mengandung angka.");
+            alert.setContentText("Periksa kembali format kolom yang diisi.");
             alert.showAndWait();
-            return; // Menghentikan eksekusi jika format nomor telepon tidak valid
-        }
-
-        // Validasi email format
-        String emailPattern = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        if (!Pattern.matches(emailPattern, Email)) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Format email tidak valid!");
-            alert.showAndWait();
-            return; // Menghentikan eksekusi jika format email tidak valid
+            return; // Menghentikan eksekusi jika validasi gagal
         }
 
         // Check for duplicate email
@@ -184,6 +210,9 @@ public class InputTendik {
         txtTelpTendik.clear();
         usernameTendik.clear();
         passwordTendik.clear();
+        lblNamaError.setText("");
+        lblEmailError.setText("");
+        lblUsernameError.setText("");
     }
 
     public void autoid() {
@@ -238,14 +267,13 @@ public class InputTendik {
             result.close();
         } catch (SQLException ex) {
             System.out.println("Terjadi error saat memeriksa username duplikat: " + ex);
-        }
-        return isDuplicate;
+        }return isDuplicate;
     }
 
     @FXML
     protected void onBtnKembali(ActionEvent event) {
         Node source = (Node) event.getSource();
-        Stage stage = (Stage)source.getScene().getWindow();
+        Stage stage = (Stage) source.getScene().getWindow();
         stage.close(); //menutup form saat ini
     }
 }
