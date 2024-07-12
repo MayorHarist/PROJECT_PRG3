@@ -5,6 +5,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="AnchorTendik" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginTendik.LoginTendikController">
    <children>
@@ -15,7 +16,13 @@
       </ImageView>
       <Button fx:id="btnLogin" layoutX="117.0" layoutY="574.0" mnemonicParsing="false" onAction="#onbtnLoginClick" opacity="0.0" prefHeight="74.0" prefWidth="519.0" text="Login" />
       <Button fx:id="btnExit" layoutX="117.0" layoutY="670.0" mnemonicParsing="false" onAction="#onbtnExitClick" opacity="0.0" prefHeight="74.0" prefWidth="519.0" text="Exit" />
-      <TextField fx:id="txtUsername" layoutX="120.0" layoutY="390.0" prefHeight="48.0" prefWidth="499.0" />
-      <TextField fx:id="txtPassword" layoutX="122.0" layoutY="485.0" prefHeight="48.0" prefWidth="499.0" />
+      <TextField fx:id="txtUsername" layoutX="120.0" layoutY="396.0" prefHeight="42.0" prefWidth="500.0" promptText="Masukkan Nama Pengguna" style="-fx-background-color: #004AAD; -fx-text-fill: White;">
+         <font>
+            <Font size="18.0" />
+         </font></TextField>
+      <TextField fx:id="txtPassword" layoutX="120.0" layoutY="486.0" prefHeight="47.0" prefWidth="500.0" promptText="Masukkan Kata Sandi" style="-fx-background-color: #004AAD; -fx-text-fill: White;">
+         <font>
+            <Font size="18.0" />
+         </font></TextField>
    </children>
 </AnchorPane>

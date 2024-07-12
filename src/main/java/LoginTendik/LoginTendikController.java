@@ -59,7 +59,7 @@ public class LoginTendikController {
                 alert.showAndWait();
             }
 
-            FXMLLoader loader = new FXMLLoader(LoginTendikController.class.getResource("UserTendikApplication.fxml"));
+            FXMLLoader loader = new FXMLLoader(HalamanTendikController.class.getResource("HalamanTendik.fxml"));
             Parent root = loader.load();
 
             Stage stage = new Stage();
@@ -74,10 +74,10 @@ public class LoginTendikController {
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Failed to load Login Tendik");
+            System.out.println("Failed to load HalamanTendik");
         } catch (NullPointerException e) {
             e.printStackTrace();
-            System.out.println("Resource Login Tendik not found");
+            System.out.println("Resource HalamanTendik not found");
         }
     }
 
