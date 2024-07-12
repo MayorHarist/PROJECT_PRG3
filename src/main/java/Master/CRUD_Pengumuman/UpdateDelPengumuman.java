@@ -169,23 +169,36 @@ public class UpdateDelPengumuman implements Initializable {
 
     @FXML
     protected void onBtnHapusClick() {
-        try {
-            String query = "EXEC sp_DeletePengumuman ? ?";
-            try (Connection conn = connection.conn;
-                 PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setString(1, txtIDPengumuman.getText());
-                stmt.executeUpdate();
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("Data Berhasil dihapus!");
-                alert.showAndWait();
-                clear();
-                loadData("");
+        // Menampilkan dialog konfirmasi
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Konfirmasi Penghapusan");
+        confirmationAlert.setHeaderText(null);
+        confirmationAlert.setContentText("Apakah Anda yakin ingin menghapus data ini?");
+
+        // Menunggu respons pengguna
+        confirmationAlert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                // Jika pengguna menekan OK, lanjutkan penghapusan data
+                try {
+                    String query = "EXEC sp_DeletePengumuman ?";
+                    try (Connection conn = connection.conn;
+                         PreparedStatement stmt = conn.prepareStatement(query)) {
+                        stmt.setString(1, txtIDPengumuman.getText());
+                        stmt.executeUpdate();
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setContentText("Data Berhasil dihapus!");
+                        alert.showAndWait();
+                        clear();
+                        loadData("");
+                    }
+                } catch (SQLException e) {
+                    System.out.println("Data gagal dihapus " + e.getMessage());
+                    e.printStackTrace();
+                }
             }
-        } catch (SQLException e) {
-            System.out.println("Data gagal dihapus " + e.getMessage());
-            e.printStackTrace();
-        }
+        });
     }
+
     public void clear() {
         txtnmPengumuman.clear();
         tglPengumuman.setValue(null);
