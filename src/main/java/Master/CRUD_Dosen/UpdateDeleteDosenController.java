@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
@@ -28,62 +29,19 @@ public class UpdateDeleteDosenController implements Initializable {
     DBConnect connection = new DBConnect();
 
     @FXML
-    private TextField txtPegawai;
-    @FXML
-    private TextField txtNIDN;
-    @FXML
-    private TextField txtNama;
-    @FXML
-    private TextField txtBidang;
-    @FXML
-    private TextField txtPendidikan;
+    private TextField txtPegawai, txtNIDN, txtNama, txtBidang, txtPendidikan, txtAlamat, txtEmail, txtTelepon, txtCari;
     @FXML
     private DatePicker Datelahir;
     @FXML
-    private RadioButton rbLaki;
-    @FXML
-    private RadioButton rbPerempuan;
-    @FXML
-    private TextField txtAlamat;
-    @FXML
-    private TextField txtEmail;
-    @FXML
-    private TextField txtTelepon;
-    @FXML
-    private TextField txtCari;
+    private RadioButton rbLaki, rbPerempuan;
     @FXML
     private TableView<Dosen> tableDosen;
     @FXML
-    private TableColumn<Dosen, String> noPegawai;
-    @FXML
-    private TableColumn<Dosen, String> Nidn;
-    @FXML
-    private TableColumn<Dosen, String> nama;
-    @FXML
-    private TableColumn<Dosen, String> bidang;
-    @FXML
-    private TableColumn<Dosen, String> pendidikan;
+    private TableColumn<Dosen, String> noPegawai, Nidn, nama, bidang, pendidikan, jenis, alamat, email, telepon;
     @FXML
     private TableColumn<Dosen, LocalDate> tanggal;
     @FXML
-    private TableColumn<Dosen, String> jenis;
-    @FXML
-    private TableColumn<Dosen, String> alamat;
-    @FXML
-    private TableColumn<Dosen, String> email;
-    @FXML
-    private TableColumn<Dosen, String> telepon;
-    @FXML
-    private Button btnBatal;
-    @FXML
-    private Button btnDelete;
-    @FXML
-    private Button btnUbah;
-    @FXML
-    private Button btnTambah;
-    @FXML
-    private Button btnRefresh;
-
+    private Button btnBatal, btnDelete, btnUbah, btnTambah, btnRefresh;
 
     private ObservableList<Dosen> oblist = FXCollections.observableArrayList();
 
@@ -104,45 +62,16 @@ public class UpdateDeleteDosenController implements Initializable {
             this.telepon = telepon;
         }
 
-        public String getPegawai() {
-            return pegawai;
-        }
-
-        public String getNIDN() {
-            return Nidn;
-        }
-
-        public String getNama() {
-            return nama;
-        }
-
-        public String getBidang() {
-            return bidang;
-        }
-
-        public String getPendidikan() {
-            return pendidikan;
-        }
-
-        public LocalDate getTanggal() {
-            return tanggal;
-        }
-
-        public String getJenis() {
-            return jenis;
-        }
-
-        public String getAlamat() {
-            return alamat;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public String getTelepon() {
-            return telepon;
-        }
+        public String getPegawai() { return pegawai; }
+        public String getNIDN() { return Nidn; }
+        public String getNama() { return nama; }
+        public String getBidang() { return bidang; }
+        public String getPendidikan() { return pendidikan; }
+        public LocalDate getTanggal() { return tanggal; }
+        public String getJenis() { return jenis; }
+        public String getAlamat() { return alamat; }
+        public String getEmail() { return email; }
+        public String getTelepon() { return telepon; }
     }
 
     @Override
@@ -162,26 +91,30 @@ public class UpdateDeleteDosenController implements Initializable {
 
         tableDosen.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                txtPegawai.setText(newValue.getPegawai());
-                txtPegawai.setEditable(false); // Mengatur txtPegawai menjadi read-only
-                txtNIDN.setText(newValue.getNIDN());
-                txtNama.setText(newValue.getNama());
-                txtBidang.setText(newValue.getBidang());
-                txtPendidikan.setText(newValue.getPendidikan());
-                Datelahir.setValue(newValue.getTanggal());
-                if (newValue.getJenis().equalsIgnoreCase("Laki-Laki")) {
-                    rbLaki.setSelected(true);
-                    rbPerempuan.setSelected(false);
-                } else {
-                    rbLaki.setSelected(false);
-                    rbPerempuan.setSelected(true);
-                }
-                txtAlamat.setText(newValue.getAlamat());
-                txtEmail.setText(newValue.getEmail());
-                txtTelepon.setText(newValue.getTelepon());
+                setTextFields(newValue);
             }
             txtCari.setOnKeyReleased(event -> onTxtCari());
         });
+    }
+
+    private void setTextFields(Dosen newValue) {
+        txtPegawai.setText(newValue.getPegawai());
+        txtPegawai.setEditable(false); // Set txtPegawai to read-only
+        txtNIDN.setText(newValue.getNIDN());
+        txtNama.setText(newValue.getNama());
+        txtBidang.setText(newValue.getBidang());
+        txtPendidikan.setText(newValue.getPendidikan());
+        Datelahir.setValue(newValue.getTanggal());
+        if (newValue.getJenis().equalsIgnoreCase("Laki-Laki")) {
+            rbLaki.setSelected(true);
+            rbPerempuan.setSelected(false);
+        } else {
+            rbLaki.setSelected(false);
+            rbPerempuan.setSelected(true);
+        }
+        txtAlamat.setText(newValue.getAlamat());
+        txtEmail.setText(newValue.getEmail());
+        txtTelepon.setText(newValue.getTelepon());
     }
 
     @FXML
@@ -191,6 +124,10 @@ public class UpdateDeleteDosenController implements Initializable {
 
     @FXML
     protected void onBtnUbah() {
+        if (!validateFields()) {
+            return;
+        }
+
         try {
             Dosen selectedDosen = tableDosen.getSelectionModel().getSelectedItem();
             if (selectedDosen != null) {
@@ -198,7 +135,7 @@ public class UpdateDeleteDosenController implements Initializable {
                 LocalDate tanggalLahir = Datelahir.getValue();
                 String query = "EXEC sp_UpdateDosen ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
                 connection.pstat = connection.conn.prepareStatement(query);
-                connection.pstat.setString(1, (selectedDosen.getPegawai()));
+                connection.pstat.setString(1, selectedDosen.getPegawai());
                 connection.pstat.setString(2, txtNIDN.getText());
                 connection.pstat.setString(3, txtNama.getText());
                 connection.pstat.setString(4, txtBidang.getText());
@@ -211,34 +148,82 @@ public class UpdateDeleteDosenController implements Initializable {
 
                 connection.pstat.executeUpdate();
 
-                // Update item di ObservableList
-                int index = oblist.indexOf(selectedDosen);
-                oblist.set(index, new Dosen(
-                        selectedDosen.getPegawai(),
-                        txtNIDN.getText(),
-                        txtNama.getText(),
-                        txtBidang.getText(),
-                        txtPendidikan.getText(),
-                        tanggalLahir,
-                        jenisKelamin,
-                        txtAlamat.getText(),
-                        txtEmail.getText(),
-                        txtTelepon.getText()
-                ));
+                updateObservableList(selectedDosen, tanggalLahir, jenisKelamin);
                 tableDosen.refresh();
                 JOptionPane.showMessageDialog(null, "Update data Dosen berhasil!");
                 clearFields();
             }
         } catch (SQLException ex) {
-            System.out.println("Terjadi error saat mengupdate data dosen" + ex);
+            System.out.println("Terjadi error saat mengupdate data dosen: " + ex);
         }
     }
 
+    private void updateObservableList(Dosen selectedDosen, LocalDate tanggalLahir, String jenisKelamin) {
+        int index = oblist.indexOf(selectedDosen);
+        oblist.set(index, new Dosen(
+                selectedDosen.getPegawai(),
+                txtNIDN.getText(),
+                txtNama.getText(),
+                txtBidang.getText(),
+                txtPendidikan.getText(),
+                tanggalLahir,
+                jenisKelamin,
+                txtAlamat.getText(),
+                txtEmail.getText(),
+                txtTelepon.getText()
+        ));
+    }
+
+    private boolean validateFields() {
+        if (txtNIDN.getText().isEmpty() || !txtNIDN.getText().matches("\\d+")) {
+            showAlert("NIDN harus diisi dan hanya boleh berisi angka!", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (txtNama.getText().isEmpty() || !txtNama.getText().matches("[a-zA-Z\\s]+")) {
+            showAlert("Nama harus diisi dan hanya boleh berisi huruf!", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (Datelahir.getValue() == null || Datelahir.getValue().isAfter(LocalDate.now())) {
+            showAlert("Tanggal lahir harus diisi dan tidak boleh lebih dari hari ini!", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (!txtEmail.getText().isEmpty() && !txtEmail.getText().matches("\\w+@\\w+\\.\\w+")) {
+            showAlert("Email tidak valid!", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (isDuplicate("NIDN", txtNIDN.getText()) || isDuplicate("Email", txtEmail.getText())) {
+            showAlert("NIDN atau Email sudah terdaftar!", Alert.AlertType.WARNING);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isDuplicate(String field, String value) {
+        try {
+            String checkQuery = "SELECT COUNT(*) FROM Dosen WHERE " + field + " = ? AND No_Pegawai != ?";
+            connection.pstat = connection.conn.prepareStatement(checkQuery);
+            connection.pstat.setString(1, value);
+            connection.pstat.setString(2, txtPegawai.getText());
+            ResultSet rs = connection.pstat.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            showAlert("Terjadi error saat memeriksa duplikasi " + field + ": " + ex, Alert.AlertType.ERROR);
+        }
+        return false;
+    }
+
+    private void showAlert(String message, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setContentText(message);
+        alert.show();
+    }
 
     @FXML
     protected void onBtnDelete() {
         try {
-            String query = "EXEC sp_DeleteDosen ?";
+            String query = "DELETE FROM Dosen WHERE No_Pegawai = ?";
             try (Connection conn = connection.conn;
                  PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setString(1, txtPegawai.getText());
@@ -252,6 +237,7 @@ public class UpdateDeleteDosenController implements Initializable {
             showAlert("Error: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
+
 
     @FXML
     private void onTxtCari() {
@@ -273,17 +259,8 @@ public class UpdateDeleteDosenController implements Initializable {
         txtTelepon.clear();
     }
 
-    private void showAlert(String message, Alert.AlertType alertType) {
-        Alert alert = new Alert(alertType);
-        alert.setContentText(message);
-        alert.show();
-    }
-
     private void loadTableData(String keyword) {
         try {
-            DBConnect connection = new DBConnect();
-            connection.stat = connection.conn.createStatement();
-
             String query = "SELECT * FROM Dosen WHERE Status = 'Aktif' AND (" +
                     "LOWER(No_Pegawai) LIKE ? OR " +
                     "LOWER(NIDN) LIKE ? OR " +
@@ -303,35 +280,35 @@ public class UpdateDeleteDosenController implements Initializable {
             }
 
             oblist.clear();
-            connection.result = stmt.executeQuery();
-            while (connection.result.next()) {
-                LocalDate date = connection.result.getDate("Tanggal_Lahir").toLocalDate();
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                LocalDate date = rs.getDate("Tanggal_Lahir").toLocalDate();
                 oblist.add(new Dosen(
-                        connection.result.getString("No_Pegawai"),
-                        connection.result.getString("NIDN"),
-                        connection.result.getString("Nama"),
-                        connection.result.getString("Bidang_Kompetensi"),
-                        connection.result.getString("Pendidikan_Terakhir"),
+                        rs.getString("No_Pegawai"),
+                        rs.getString("NIDN"),
+                        rs.getString("Nama"),
+                        rs.getString("Bidang_Kompetensi"),
+                        rs.getString("Pendidikan_Terakhir"),
                         date,
-                        connection.result.getString("Jenis_Kelamin"),
-                        connection.result.getString("Alamat"),
-                        connection.result.getString("Email"),
-                        connection.result.getString("Telepon")
+                        rs.getString("Jenis_Kelamin"),
+                        rs.getString("Alamat"),
+                        rs.getString("Email"),
+                        rs.getString("Telepon")
                 ));
             }
             stmt.close();
-            connection.stat.close();
-            connection.result.close();
-        } catch (Exception ex) {
-            System.out.println("Terjadi error saat load data dosen" + ex);
+        } catch (SQLException ex) {
+            System.out.println("Terjadi error saat load data dosen: " + ex);
         }
     }
 
-    public void onBtnRefreshClick(ActionEvent event) {
+    @FXML
+    protected void onBtnRefreshClick(ActionEvent event) {
         loadTableData("");
     }
 
-    public void onBtnTambahClick(ActionEvent event) {
+    @FXML
+    protected void onBtnTambahClick(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(InputDosenController.class.getResource("InputDosenApplication.fxml"));
             Parent root = fxmlLoader.load();

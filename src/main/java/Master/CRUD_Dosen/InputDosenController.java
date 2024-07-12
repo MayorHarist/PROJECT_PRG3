@@ -103,7 +103,6 @@ public class InputDosenController {
     }
 
     public void clear() {
-        txtPegawai.clear();
         txtNIDN.clear();
         txtNama.clear();
         txtBidang.clear();
@@ -117,25 +116,20 @@ public class InputDosenController {
 
     public void autoid() {
         try {
-            String sql = "SELECT MAX(No_Pegawai) FROM Dosen";
+            String sql = "SELECT dbo.autoIdDosen()";
             connection.pstat = connection.conn.prepareStatement(sql);
             ResultSet result = connection.pstat.executeQuery();
 
             if (result.next()) {
-                String maxId = result.getString(1);
-                if (maxId != null) {
-                    int number = Integer.parseInt(maxId.substring(3)) + 1;
-                    String formattedNumber = String.format("%03d", number);
-                    txtPegawai.setText("DOS" + formattedNumber);
-                } else {
-                    txtPegawai.setText("DOS001");
-                }
+                String newId = result.getString(1);
+                txtPegawai.setText(newId);
             }
             result.close();
         } catch (Exception ex) {
             System.out.println("Terjadi error pada No Pegawai: " + ex);
         }
     }
+
 
     private void showAlert(AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
@@ -207,10 +201,14 @@ public class InputDosenController {
     }
 
     private void addValidationListeners() {
-        txtNIDN.textProperty().addListener((observable, oldValue, newValue) -> validateNIDN(newValue));
+        txtNIDN.textProperty().addListener((observable, oldValue, newValue) -> {
+            validateNIDN(newValue);
+            checkDuplicate("NIDN", newValue);
+        });
         txtTelepon.textProperty().addListener((observable, oldValue, newValue) -> validateTelepon(newValue));
         txtNama.textProperty().addListener((observable, oldValue, newValue) -> validateNama(newValue));
         Datelahir.valueProperty().addListener((observable, oldValue, newValue) -> validateTanggalLahir(newValue));
+        txtEmail.textProperty().addListener((observable, oldValue, newValue) -> checkDuplicate("Email", newValue));
     }
 
     private void validateNIDN(String newValue) {
@@ -236,9 +234,28 @@ public class InputDosenController {
 
     private void validateTanggalLahir(LocalDate newValue) {
         LocalDate today = LocalDate.now();
-        if (newValue != null && newValue.isAfter(today)) {
+        if (newValue == null || newValue.isAfter(today)) {
             showAlert(AlertType.WARNING, "Peringatan", "Tanggal lahir tidak boleh lebih dari hari ini!");
-            Datelahir.setValue(null);
+            Datelahir.setValue(LocalDate.now());
+        }
+    }
+
+    private void checkDuplicate(String field, String value) {
+        try {
+            String checkQuery = "SELECT COUNT(*) FROM Dosen WHERE " + field + " = ?";
+            connection.pstat = connection.conn.prepareStatement(checkQuery);
+            connection.pstat.setString(1, value);
+            ResultSet rs = connection.pstat.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                showAlert(AlertType.WARNING, "Peringatan", field + " sudah terdaftar!");
+                if (field.equals("NIDN")) {
+                    txtNIDN.clear();
+                } else if (field.equals("Email")) {
+                    txtEmail.clear();
+                }
+            }
+        } catch (SQLException ex) {
+            showAlert(AlertType.ERROR, "Database Error", "Terjadi error saat memeriksa duplikasi " + field + ": " + ex);
         }
     }
 }

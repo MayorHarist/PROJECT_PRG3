@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1398.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Dosen.UpdateDeleteDosenController">
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Dosen.UpdateDeleteDosenController">
     <children>
       <TextField fx:id="txtCari" layoutX="553.0" layoutY="36.0" onKeyReleased="#onTxtCari" prefHeight="37.0" prefWidth="328.0" />
              <TextField fx:id="txtPegawai" layoutX="287.0" layoutY="523.0" prefHeight="41.0" prefWidth="325.0" />
