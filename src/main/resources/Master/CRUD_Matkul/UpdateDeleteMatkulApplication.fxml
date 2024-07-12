@@ -34,6 +34,7 @@
           <TextField fx:id="txtSKS" layoutX="1149.0" layoutY="687.0" prefHeight="25.0" prefWidth="250.0" />
           <TextField fx:id="txtJenis" layoutX="1149.0" layoutY="743.0" prefHeight="25.0" prefWidth="250.0" />
           <TextField fx:id="txtSemester" layoutX="1149.0" layoutY="799.0" prefHeight="25.0" prefWidth="250.0" />
+          <TextField fx:id="txtKelas" layoutX="551.0" layoutY="795.0" prefHeight="25.0" prefWidth="250.0" />
           <ComboBox fx:id="cbPegawai" layoutX="550.0" layoutY="746.0" prefHeight="25.0" prefWidth="250.0" />
           <ComboBox fx:id="cbProdi" layoutX="550.0" layoutY="694.0" prefHeight="25.0" prefWidth="250.0" />
              <Label layoutX="406.0" layoutY="638.0" prefHeight="26.0" prefWidth="100.0" text="ID Matkul">
@@ -72,7 +73,6 @@
          </font>
       </Label>
       <Button fx:id="btnTambah" layoutX="254.0" layoutY="105.0" mnemonicParsing="false" onAction="#onBtnTambah" prefHeight="33.0" prefWidth="117.0" text="Tambah" />
-      <TextField fx:id="txtKelas" layoutX="551.0" layoutY="795.0" prefHeight="25.0" prefWidth="250.0" />
       <Label layoutX="406.0" layoutY="798.0" prefHeight="26.0" prefWidth="100.0" text="Kelas">
          <font>
             <Font name="System Bold" size="18.0" />

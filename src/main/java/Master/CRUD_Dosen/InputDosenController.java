@@ -73,7 +73,10 @@ public class InputDosenController {
         Email = txtEmail.getText();
         Telepon = txtTelepon.getText();
 
-        // Simpan data jika validasi lolos
+        // Tampilkan konfirmasi data sebelum input
+        showDataConfirmation();
+
+        // Simpan data jika konfirmasi berhasil
         try {
             String query = "EXEC sp_InsertDosen ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
             connection.pstat = connection.conn.prepareStatement(query);
@@ -96,6 +99,42 @@ public class InputDosenController {
             showAlert(AlertType.ERROR, "Database Error", "Terjadi error saat insert data Dosen: " + ex);
         }
     }
+
+    private void showDataConfirmation() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("No Pegawai: ").append(Pegawai).append("\n");
+        sb.append("NIDN: ").append(NIDN).append("\n");
+        sb.append("Nama: ").append(Nama).append("\n");
+        sb.append("Bidang: ").append(Bidang).append("\n");
+        sb.append("Pendidikan: ").append(Pendidikan).append("\n");
+        sb.append("Tanggal Lahir: ").append(TanggalLahir.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append("\n");
+        sb.append("Jenis Kelamin: ").append(JenisKelamin).append("\n");
+        sb.append("Alamat: ").append(Alamat).append("\n");
+        sb.append("Email: ").append(Email).append("\n");
+        sb.append("Telepon: ").append(Telepon).append("\n");
+
+        Alert confirmation = new Alert(AlertType.CONFIRMATION);
+        confirmation.setTitle("Konfirmasi Data");
+        confirmation.setHeaderText("Silakan periksa data sebelum disimpan:");
+        confirmation.setContentText(sb.toString());
+
+        // Customize buttons in the confirmation dialog
+        ButtonType btnSave = new ButtonType("Simpan", ButtonBar.ButtonData.OK_DONE);
+        ButtonType btnCancel = new ButtonType("Batal", ButtonBar.ButtonData.CANCEL_CLOSE);
+        confirmation.getButtonTypes().setAll(btnSave, btnCancel);
+
+        // Show and wait for user response
+        confirmation.showAndWait().ifPresent(response -> {
+            if (response == btnSave) {
+                // User chose to save
+                System.out.println("Data disimpan.");
+            } else {
+                // User chose to cancel
+                System.out.println("Penyimpanan data dibatalkan.");
+            }
+        });
+    }
+
 
     @FXML
     protected void onBtnBatalClick() {

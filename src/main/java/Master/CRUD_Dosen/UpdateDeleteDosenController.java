@@ -22,6 +22,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class UpdateDeleteDosenController implements Initializable {
@@ -128,35 +130,55 @@ public class UpdateDeleteDosenController implements Initializable {
             return;
         }
 
-        try {
-            Dosen selectedDosen = tableDosen.getSelectionModel().getSelectedItem();
-            if (selectedDosen != null) {
-                String jenisKelamin = rbLaki.isSelected() ? "Laki-Laki" : "Perempuan";
-                LocalDate tanggalLahir = Datelahir.getValue();
-                String query = "EXEC sp_UpdateDosen ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
-                connection.pstat = connection.conn.prepareStatement(query);
-                connection.pstat.setString(1, selectedDosen.getPegawai());
-                connection.pstat.setString(2, txtNIDN.getText());
-                connection.pstat.setString(3, txtNama.getText());
-                connection.pstat.setString(4, txtBidang.getText());
-                connection.pstat.setString(5, txtPendidikan.getText());
-                connection.pstat.setDate(6, java.sql.Date.valueOf(tanggalLahir));
-                connection.pstat.setString(7, jenisKelamin);
-                connection.pstat.setString(8, txtAlamat.getText());
-                connection.pstat.setString(9, txtEmail.getText());
-                connection.pstat.setString(10, txtTelepon.getText());
+        Dosen selectedDosen = tableDosen.getSelectionModel().getSelectedItem();
+        if (selectedDosen != null) {
+            // Konfirmasi sebelum mengubah data
+            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmation.setTitle("Konfirmasi");
+            confirmation.setHeaderText("Anda yakin ingin mengubah data ini?");
+            confirmation.setContentText("No Pegawai: " + selectedDosen.getPegawai() + "\n" +
+                    "NIDN: " + txtNIDN.getText() + "\n" +
+                    "Nama: " + txtNama.getText() + "\n" +
+                    "Bidang: " + txtBidang.getText() + "\n" +
+                    "Pendidikan: " + txtPendidikan.getText() + "\n" +
+                    "Tanggal Lahir: " + Datelahir.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + "\n" +
+                    "Jenis Kelamin: " + (rbLaki.isSelected() ? "Laki-Laki" : "Perempuan") + "\n" +
+                    "Alamat: " + txtAlamat.getText() + "\n" +
+                    "Email: " + txtEmail.getText() + "\n" +
+                    "Telepon: " + txtTelepon.getText());
 
-                connection.pstat.executeUpdate();
+            Optional<ButtonType> result = confirmation.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                // Proses update data jika pengguna menekan OK
+                try {
+                    String jenisKelamin = rbLaki.isSelected() ? "Laki-Laki" : "Perempuan";
+                    LocalDate tanggalLahir = Datelahir.getValue();
+                    String query = "EXEC sp_UpdateDosen ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
+                    connection.pstat = connection.conn.prepareStatement(query);
+                    connection.pstat.setString(1, selectedDosen.getPegawai());
+                    connection.pstat.setString(2, txtNIDN.getText());
+                    connection.pstat.setString(3, txtNama.getText());
+                    connection.pstat.setString(4, txtBidang.getText());
+                    connection.pstat.setString(5, txtPendidikan.getText());
+                    connection.pstat.setDate(6, java.sql.Date.valueOf(tanggalLahir));
+                    connection.pstat.setString(7, jenisKelamin);
+                    connection.pstat.setString(8, txtAlamat.getText());
+                    connection.pstat.setString(9, txtEmail.getText());
+                    connection.pstat.setString(10, txtTelepon.getText());
 
-                updateObservableList(selectedDosen, tanggalLahir, jenisKelamin);
-                tableDosen.refresh();
-                JOptionPane.showMessageDialog(null, "Update data Dosen berhasil!");
-                clearFields();
+                    connection.pstat.executeUpdate();
+
+                    updateObservableList(selectedDosen, tanggalLahir, jenisKelamin);
+                    tableDosen.refresh();
+                    JOptionPane.showMessageDialog(null, "Update data Dosen berhasil!");
+                    clearFields();
+                } catch (SQLException ex) {
+                    System.out.println("Terjadi error saat mengupdate data dosen: " + ex);
+                }
             }
-        } catch (SQLException ex) {
-            System.out.println("Terjadi error saat mengupdate data dosen: " + ex);
         }
     }
+
 
     private void updateObservableList(Dosen selectedDosen, LocalDate tanggalLahir, String jenisKelamin) {
         int index = oblist.indexOf(selectedDosen);
@@ -222,21 +244,37 @@ public class UpdateDeleteDosenController implements Initializable {
 
     @FXML
     protected void onBtnDelete() {
-        try {
-            String query = "DELETE FROM Dosen WHERE No_Pegawai = ?";
-            try (Connection conn = connection.conn;
-                 PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setString(1, txtPegawai.getText());
-                stmt.executeUpdate();
+        Dosen selectedDosen = tableDosen.getSelectionModel().getSelectedItem();
+        if (selectedDosen != null) {
+            // Konfirmasi sebelum menghapus data
+            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmation.setTitle("Konfirmasi");
+            confirmation.setHeaderText("Anda yakin ingin menghapus data ini?");
+            confirmation.setContentText("No Pegawai: " + selectedDosen.getPegawai() + "\n" +
+                    "NIDN: " + selectedDosen.getNIDN() + "\n" +
+                    "Nama: " + selectedDosen.getNama());
 
-                showAlert("Data berhasil dihapus", Alert.AlertType.INFORMATION);
-                clearFields();
-                loadTableData(""); // Reload table data
+            Optional<ButtonType> result = confirmation.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                // Proses delete data jika pengguna menekan OK
+                try {
+                    String query = "DELETE FROM Dosen WHERE No_Pegawai = ?";
+                    try (Connection conn = connection.conn;
+                         PreparedStatement stmt = conn.prepareStatement(query)) {
+                        stmt.setString(1, selectedDosen.getPegawai());
+                        stmt.executeUpdate();
+
+                        showAlert("Data berhasil dihapus", Alert.AlertType.INFORMATION);
+                        clearFields();
+                        loadTableData(""); // Reload table data
+                    }
+                } catch (SQLException e) {
+                    showAlert("Error: " + e.getMessage(), Alert.AlertType.ERROR);
+                }
             }
-        } catch (SQLException e) {
-            showAlert("Error: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
+
 
 
     @FXML
