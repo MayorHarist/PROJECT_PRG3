@@ -19,6 +19,8 @@ import javafx.stage.Stage;
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
 public class UDPospresController implements Initializable {
@@ -34,9 +36,6 @@ public class UDPospresController implements Initializable {
     @FXML
     private TableColumn<pospres, String> deskripsi;
     @FXML
-    private TableColumn<pospres, String> status;
-
-    @FXML
     private Button btnTambah;
     @FXML
     private Button btnPerbaharui;
@@ -44,24 +43,19 @@ public class UDPospresController implements Initializable {
     private Button btnRefresh;
     @FXML
     private Button btnBatal;
-
+    @FXML
+    private Button btnHapus;
     @FXML
     private TextField txtCari;
-
     @FXML
     private TextField txtIdPosisiPrestasi;
     @FXML
     private TextField txtNama;
     @FXML
     private TextField txtDeskripsi;
-    @FXML
-    private TextField txtStatus;
-
-    private ObservableList<pospres> poplist = FXCollections.observableArrayList();
-    private ObservableList<pospres> filteredList = FXCollections.observableArrayList(); // Untuk menyimpan data hasil pencarian
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        loadData(null);
+        loadData("");
 
         // Tambahkan listener untuk TableView
         tableposisiprestasi.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -69,9 +63,22 @@ public class UDPospresController implements Initializable {
                 txtIdPosisiPrestasi.setText(newValue.getIdposisiprestasi());
                 txtIdPosisiPrestasi.setEditable(false);
                 txtNama.setText(newValue.getNama());
-                txtStatus.setText(newValue.getStatus());
+                txtDeskripsi.setText(newValue.getDeskripsi());
             }
         });
+
+        // Menambahkan listener ke TextField txtNama
+        txtNama.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[a-zA-Z\\s]*")) { // Memeriksa apakah nilai baru hanya terdiri dari huruf dan spasi
+                txtNama.setText(newValue.replaceAll("[^a-zA-Z\\s]", "")); // Hapus karakter non-huruf
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informasi");
+                alert.setHeaderText(null);
+                alert.setContentText("Nama harus diisi dengan huruf.");
+                alert.showAndWait();
+            }
+        });
+
         // Tambahkan listener untuk txtCari
         txtCari.textProperty().addListener((observable, oldValue, newValue) -> {
             cariData(newValue); // Panggil fungsi pencarian saat isi txtCari berubah
@@ -79,32 +86,31 @@ public class UDPospresController implements Initializable {
     }
 
     private void loadData(String searchQuery){
-        poplist.clear();
+        tableposisiprestasi.getItems().clear(); // Bersihkan data sebelum memuat data baru
         try {
-            connection.stat = connection.conn.createStatement();
-            String query = "SELECT * FROM PosisiPrestasi WHERE Status='Aktif'";
-            if (searchQuery != null && !searchQuery.isEmpty()) {
-                query += " AND (Id_PosisiPrestasi LIKE '%" + searchQuery + "%' OR Nama LIKE '%" + searchQuery + "%' OR Deskripsi LIKE '%" + searchQuery + "%' OR Status LIKE '%" + searchQuery + "%')";
-            }
-            connection.result = connection.stat.executeQuery(query);
+            String query = "SELECT * FROM PosisiPrestasi WHERE Status='Aktif' AND (Nama LIKE ? OR Deskripsi LIKE ?)";
+            PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
+            preparedStatement.setString(1, "%" + searchQuery + "%");
+            preparedStatement.setString(2, "%" + searchQuery + "%");
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-            while (connection.result.next()) {
-                poplist.add(new pospres(
-                        connection.result.getString("Id_PosisiPrestasi"),
-                        connection.result.getString("Nama"),
-                        connection.result.getString("Deskripsi"),
-                        connection.result.getString("Status")
-                ));
+            while (resultSet.next()) {
+                pospres jp = new pospres(
+                        resultSet.getString("Id_PosisiPrestasi"),
+                        resultSet.getString("Nama"),
+                        resultSet.getString("Deskripsi"),
+                        resultSet.getString("Status")
+                );
+                tableposisiprestasi.getItems().add(jp);
             }
-            connection.stat.close();
-            connection.result.close();
+            preparedStatement.close();
+            resultSet.close();
         } catch (Exception ex) {
             System.out.print("Terjadi error saat load data posisi prestasi: " + ex);
         }
         idposisiprestasi.setCellValueFactory(new PropertyValueFactory<>("idposisiprestasi"));
         nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
         deskripsi.setCellValueFactory(new PropertyValueFactory<>("deskripsi"));
-        tableposisiprestasi.setItems(poplist);
     }
 
 
@@ -112,7 +118,6 @@ public class UDPospresController implements Initializable {
         txtIdPosisiPrestasi.setText("");
         txtNama.setText("");
         txtDeskripsi.setText("");
-        txtStatus.setText("");
     }
 
     public void onbtnBatalClick(ActionEvent event) {
@@ -122,39 +127,46 @@ public class UDPospresController implements Initializable {
     public void onbtnPerbaharuiClick(ActionEvent event) {
         if (tableposisiprestasi.getSelectionModel().getSelectedItem() != null) {
             try {
-                pospres selectedposres = tableposisiprestasi.getSelectionModel().getSelectedItem();
-                String idposisiprestasi = selectedposres.getIdposisiprestasi();
+                pospres selectedpospres = tableposisiprestasi.getSelectionModel().getSelectedItem();
+                String idposisiprestasi = selectedpospres.getIdposisiprestasi();
                 String nama = txtNama.getText();
                 String deskripsi = txtDeskripsi.getText();
-                String status = txtStatus.getText();
 
+                // Tampilkan pesan konfirmasi
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Konfirmasi Perubahan Data");
                 alert.setHeaderText(null);
-                alert.setContentText("Anda yakin ingin memperbarui data posisi prestasi ini?");
+                alert.setContentText("Apakah Anda yakin ingin memperbarui data ini?");
 
+                // Tambahkan opsi Ya dan Tidak
                 ButtonType buttonTypeYes = new ButtonType("Ya");
                 ButtonType buttonTypeNo = new ButtonType("Tidak");
                 alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
 
+                // Tampilkan dialog dan tunggu respon pengguna
                 alert.showAndWait().ifPresent(response -> {
                     if (response == buttonTypeYes) {
+                        // Jika pengguna memilih Ya, lakukan pembaruan data
                         try {
-                            String query = "UPDATE PosisiPrestasi SET Nama=?, Deskripsi=?, Status=? WHERE Id_PosisiPrestasi=?";
-                            connection.pstat = connection.conn.prepareStatement(query);
-                            connection.pstat.setString(1, nama);
-                            connection.pstat.setString(2, deskripsi);
-                            connection.pstat.setString(3, status);
-                            connection.pstat.setString(4, idposisiprestasi);
-                            connection.pstat.executeUpdate();
-                            loadData(null);
+                            String query = "EXEC sp_UpdatePosisiPrestasi ?, ?, ?";
+                            PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
+                            preparedStatement.setString(1, idposisiprestasi);
+                            preparedStatement.setString(2, nama);
+                            preparedStatement.setString(3, deskripsi);
+                            preparedStatement.executeUpdate();
+                            loadData(""); // Panggil loadData() untuk menyegarkan tampilan TableView
                             clear();
 
-                            JOptionPane.showMessageDialog(null, "Data Posisi Prestasi berhasil diperbarui!");
+                            Alert alertSuccess = new Alert(Alert.AlertType.INFORMATION);
+                            alertSuccess.setTitle("Sukses");
+                            alertSuccess.setHeaderText(null);
+                            alertSuccess.setContentText("Data posisi Prestasi berhasil diperbarui!");
+                            alertSuccess.showAndWait();
                         } catch (Exception ex) {
                             System.out.println("Terjadi error saat memperbarui data posisi prestasi: " + ex);
                         }
                     } else {
+                        // Jika pengguna memilih Tidak, data tidak diperbarui
                         alert.close();
                     }
                 });
@@ -166,84 +178,88 @@ public class UDPospresController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Peringatan");
             alert.setHeaderText(null);
-            alert.setContentText("Silakan pilih data posisi prestasi yang ingin diperbarui!");
+            alert.setContentText("Silakan pilih data posisi prestasi yang ingin diperbarui.");
             alert.showAndWait();
         }
     }
 
     public void onbtnHapusClick(ActionEvent event) {
         if (tableposisiprestasi.getSelectionModel().getSelectedItem() != null) {
-            pospres selectedpospres = tableposisiprestasi.getSelectionModel().getSelectedItem();
-            String idposisiprestasi = selectedpospres.getIdposisiprestasi();
+            try {
+                pospres selectedpospres = tableposisiprestasi.getSelectionModel().getSelectedItem();
+                String idposisiprestasi = selectedpospres.getIdposisiprestasi();
 
-            // Tampilkan pesan konfirmasi
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Konfirmasi Penghapusan Data");
-            alert.setHeaderText(null);
-            alert.setContentText("Apakah Anda yakin ingin menghapus data posisi prestasi ini?");
+                // Tampilkan pesan konfirmasi
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Konfirmasi Penghapusan Data");
+                alert.setHeaderText(null);
+                alert.setContentText("Apakah Anda yakin ingin menghapus data ini?");
 
-            // Tambahkan opsi Ya dan Tidak
-            ButtonType buttonTypeYes = new ButtonType("Ya");
-            ButtonType buttonTypeNo = new ButtonType("Tidak");
-            alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+                // Tambahkan opsi Ya dan Tidak
+                ButtonType buttonTypeYes = new ButtonType("Ya");
+                ButtonType buttonTypeNo = new ButtonType("Tidak");
+                alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
 
-            // Tampilkan dialog dan tunggu respon pengguna
-            alert.showAndWait().ifPresent(response -> {
-                if (response == buttonTypeYes) {
-                    // Jika pengguna memilih Ya, lakukan penghapusan data
-                    try {
-                        String query = "UPDATE PosisiPrestasi SET Status='Tidak Aktif' WHERE Id_PosisiPrestasi=?";
-                        connection.pstat = connection.conn.prepareStatement(query);
-                        connection.pstat.setString(1, idposisiprestasi);
-                        connection.pstat.executeUpdate();
-                        loadData(""); // Panggil loadData() untuk menyegarkan tampilan TableView
-                        clear();
+                // Tampilkan dialog dan tunggu respon pengguna
+                alert.showAndWait().ifPresent(response -> {
+                    if (response == buttonTypeYes) {
+                        // Jika pengguna memilih Ya, lakukan penghapusan data
+                        try {
+                            String query = "DELETE FROM PosisiPrestasi WHERE Id_PosisiPrestasi = ?";
+                            PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
+                            preparedStatement.setString(1, idposisiprestasi);
+                            preparedStatement.executeUpdate();
+                            loadData(""); // Panggil loadData() untuk menyegarkan tampilan TableView
+                            clear();
 
-                        Alert alertSuccess = new Alert(Alert.AlertType.INFORMATION);
-                        alertSuccess.setTitle("Sukses");
-                        alertSuccess.setHeaderText(null);
-                        alertSuccess.setContentText("Data Posisi Prestasi berhasil dihapus (di-set sebagai tidak aktif)!");
-                        alertSuccess.showAndWait();
-                    } catch (Exception ex) {
-                        System.out.println("Terjadi error saat menghapus data posisi prestasi: " + ex);
+                            Alert alertSuccess = new Alert(Alert.AlertType.INFORMATION);
+                            alertSuccess.setTitle("Sukses");
+                            alertSuccess.setHeaderText(null);
+                            alertSuccess.setContentText("Data posisi Prestasi berhasil dihapus!");
+                            alertSuccess.showAndWait();
+                        } catch (Exception ex) {
+                            System.out.println("Terjadi error saat menghapus data posisi prestasi: " + ex);
+                        }
+                    } else {
+                        // Jika pengguna memilih Tidak, data tidak dihapus
+                        alert.close();
                     }
-                } else {
-                    // Jika pengguna memilih Tidak, data tidak dihapus
-                    alert.close();
-                }
-            });
+                });
+
+            } catch (Exception ex) {
+                System.out.println("Terjadi error saat menghapus data posisi prestasi: " + ex);
+            }
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Peringatan");
             alert.setHeaderText(null);
-            alert.setContentText("Silakan pilih data posisi prestasi yang ingin dihapus!");
+            alert.setContentText("Silakan pilih data posisi prestasi yang ingin dihapus.");
             alert.showAndWait();
         }
     }
 
 
     private void cariData(String keyword) {
-        filteredList.clear(); // Bersihkan filteredList sebelum menambahkan hasil pencarian baru
+        tableposisiprestasi.getItems().clear(); // Bersihkan data sebelum memuat hasil pencarian baru
         try {
-            connection.stat = connection.conn.createStatement();
-            String query = "SELECT * FROM PosisiPrestasi WHERE Status='Aktif' AND (Nama LIKE ? OR Deskripsi LIKE ?)";
-            connection.pstat = connection.conn.prepareStatement(query);
-            connection.pstat.setString(1, "%" + keyword + "%");
-            connection.pstat.setString(2, "%" + keyword + "%");
-            connection.result = connection.pstat.executeQuery();
+            String query = "EXEC sp_CariPospres ?";
+            PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
+            preparedStatement.setString(1, keyword.isEmpty() ? null : keyword); // Set parameter pencarian, null jika kosong
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-            while (connection.result.next()) {
-                filteredList.add(new pospres(
-                        connection.result.getString("Id_PosisiPrestasi"),
-                        connection.result.getString("Nama"),
-                        connection.result.getString("Deskripsi"),
-                        connection.result.getString("Status")
-                ));
+            while (resultSet.next()) {
+                pospres pp = new pospres(
+                        resultSet.getString("Id_PosisiPrestasi"),
+                        resultSet.getString("Nama"),
+                        resultSet.getString("Deskripsi"),
+                        resultSet.getString("Status")
+                );
+                tableposisiprestasi.getItems().add(pp);
             }
-            connection.stat.close();
-            connection.result.close();
+            preparedStatement.close();
+            resultSet.close();
 
-            if (filteredList.isEmpty()) {
+            if (tableposisiprestasi.getItems().isEmpty()) {
                 // Tampilkan pesan bahwa data tidak ditemukan
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Informasi");
@@ -254,7 +270,6 @@ public class UDPospresController implements Initializable {
         } catch (Exception ex) {
             System.out.print("Terjadi error saat mencari data posisi prestasi: " + ex);
         }
-        tableposisiprestasi.setItems(filteredList); // Set tabel dengan hasil pencarian yang baru
     }
 
     public void onbtnRefresh(ActionEvent event) {
@@ -266,7 +281,7 @@ public class UDPospresController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(InputPospresController.class.getResource("/Master/CRUD_PosisiPrestasi/InputPospres.fxml"));
             Parent root = fxmlLoader.load();
             Stage stage = new Stage();
-            stage.setTitle("Buat Jenis Prestasi");
+            stage.setTitle("Tambah Posisi Prestasi");
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {

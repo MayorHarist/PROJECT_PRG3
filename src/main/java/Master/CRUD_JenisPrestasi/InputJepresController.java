@@ -102,7 +102,7 @@ public class InputJepresController {
         }
 
         // Parsing nilai point dari teks
-        try {
+/*        try {
             point = Integer.parseInt(txtPoint.getText());
         } catch (NumberFormatException e) {
             Alert alert = new Alert(AlertType.ERROR);
@@ -111,7 +111,7 @@ public class InputJepresController {
             alert.setContentText("Point harus berupa angka.");
             alert.showAndWait();
             return;
-        }
+        }*/
 
         // Menampilkan dialog konfirmasi dengan data yang akan disimpan
         String message = "Data yang akan disimpan:\n";
@@ -146,7 +146,7 @@ public class InputJepresController {
             Alert successAlert = new Alert(AlertType.INFORMATION);
             successAlert.setTitle("Sukses");
             successAlert.setHeaderText(null);
-            successAlert.setContentText("Insert data jenis prestasi berhasil!");
+            successAlert.setContentText("Data jenis prestasi berhasil disimpan!");
             successAlert.showAndWait();
             clear();
             autoid(); // Generate a new ID for the next entry

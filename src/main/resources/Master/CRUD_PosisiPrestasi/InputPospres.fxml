@@ -28,14 +28,8 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="93.0" layoutY="279.0" text="Status">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
       <TextField fx:id="txtIdPosisiPrestasi" editable="false" layoutX="238.0" layoutY="95.0" />
       <TextField fx:id="txtNama" layoutX="238.0" layoutY="130.0" prefHeight="25.0" prefWidth="214.0" />
-      <TextField fx:id="txtStatus" layoutX="238.0" layoutY="276.0" prefHeight="25.0" prefWidth="149.0" />
       <Button fx:id="btnSimpan" layoutX="338.0" layoutY="329.0" mnemonicParsing="false" onAction="#onbtnSimpanClick" prefHeight="25.0" prefWidth="72.0" stylesheets="@../../Style.css" text="Simpan" />
       <Button fx:id="btnBatal" layoutX="202.0" layoutY="329.0" mnemonicParsing="false" onAction="#onbtnBatalClick" prefHeight="25.0" prefWidth="72.0" stylesheets="@../../Style.css" text="Batal" />
       <Button fx:id="btnKembali" layoutX="503.0" layoutY="35.0" mnemonicParsing="false" onAction="#onbtnKembaliClick" prefHeight="25.0" prefWidth="72.0" stylesheets="@../../Style.css" text="Kembali" />
