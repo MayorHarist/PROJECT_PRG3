@@ -8,10 +8,13 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class InputPengumuman {
@@ -61,11 +64,11 @@ public class InputPengumuman {
         ObservableList<TenagaKependidikan> tknData = loadDataForTKNComboBox();
         cbTKN.setItems(tknData);
 
-        // Validasi input langsung di initialize
+       /* // Validasi input langsung di initialize
         txtnmPengumuman.textProperty().addListener((obs, oldVal, newVal) -> validateNama());
         tglPengumuman.valueProperty().addListener((obs, oldVal, newVal) -> validateTanggal());
         txtDeskripsi.textProperty().addListener((obs, oldVal, newVal) -> validateDeskripsi());
-        cbTKN.valueProperty().addListener((obs, oldVal, newVal) -> validateTKN());
+        cbTKN.valueProperty().addListener((obs, oldVal, newVal) -> validateTKN());*/
     }
 
     private ObservableList<TenagaKependidikan> loadDataForTKNComboBox() {
@@ -140,32 +143,64 @@ public class InputPengumuman {
         }
 
         // Validasi data tidak boleh kosong
-        if (!validateNama() || !validateTanggal() || !validateDeskripsi() || !validateTKN()) {
-            return; // Menghentikan eksekusi jika ada data yang kosong
+        if (Id_Pengumuman.isEmpty() || Nama.isEmpty() || tanggal == null || Deskripsi.isEmpty() || Id_TKN == null) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Semua data harus diisi.");
+            alert.showAndWait();
+            return;
         }
 
-        // Simpan data ke database
-        try {
-            String query = "EXEC sp_InsertPengumuman ?,?,?,?,?";
-            connection.pstat = connection.conn.prepareStatement(query);
-            connection.pstat.setString(1, Id_Pengumuman);
-            connection.pstat.setString(2, Nama);
-            connection.pstat.setDate(3, java.sql.Date.valueOf(tanggal));
-            connection.pstat.setString(4, Deskripsi);
-            connection.pstat.setString(5, Id_TKN);
+        // Menampilkan dialog konfirmasi dengan data yang akan disimpan
+        String message = "Data yang akan disimpan:\n";
+        message += "ID Pengumuman: " + Id_Pengumuman + "\n";
+        message += "Nama: " + Nama + "\n";
+        message += "Tanggal: " + tanggal + "\n";
+        message += "Deskripsi: " + Deskripsi + "\n";
+        message += "ID Tenaga Kependidikan: " + Id_TKN + "\n";
+        message += "Apakah Anda yakin ingin menyimpan data?";
 
-            connection.pstat.executeUpdate();
-            connection.conn.commit();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText("Data Pengumuman berhasil ditambahkan!");
-            alert.showAndWait();
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Konfirmasi");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
 
-            clear();
-            autoid();
-        } catch (SQLException ex) {
-            System.out.println("Terjadi error saat menambahkan data Pengumuman: " + ex);
+        Optional<ButtonType> option = alert.showAndWait();
+        if (option.isPresent() && option.get() == ButtonType.OK) {
+            try {
+                String query = "EXEC sp_InsertPengumuman ?,?,?,?,?";
+                connection.pstat = connection.conn.prepareStatement(query);
+                connection.pstat.setString(1, Id_Pengumuman);
+                connection.pstat.setString(2, Nama);
+                connection.pstat.setDate(3, java.sql.Date.valueOf(tanggal));
+                connection.pstat.setString(4, Deskripsi);
+                connection.pstat.setString(5, Id_TKN);
+
+                connection.pstat.executeUpdate();
+                connection.pstat.close();
+                connection.conn.commit();
+
+                Alert successAlert = new Alert(AlertType.INFORMATION);
+                successAlert.setTitle("Sukses");
+                successAlert.setHeaderText(null);
+                successAlert.setContentText("Data pengumuman berhasil disimpan!");
+                successAlert.showAndWait();
+                clear();
+                autoid(); // Generate a new ID for the next entry
+            } catch (SQLException ex) {
+                System.out.println("Terjadi error saat menambahkan data pengumuman: " + ex);
+            }
+        } else {
+            Alert cancelAlert = new Alert(AlertType.INFORMATION);
+            cancelAlert.setTitle("Informasi");
+            cancelAlert.setHeaderText(null);
+            cancelAlert.setContentText("Data pengumuman tidak disimpan.");
+            cancelAlert.showAndWait();
         }
     }
+
+
 
     public void clear() {
         txtnmPengumuman.clear();
@@ -176,23 +211,17 @@ public class InputPengumuman {
 
     public void autoid() {
         try {
-            String sql = "SELECT MAX(Id_Pengumuman) FROM Pengumuman";
+            String sql = "SELECT dbo.autoIdPengumuman() AS newID";
             connection.pstat = connection.conn.prepareStatement(sql);
             ResultSet result = connection.pstat.executeQuery();
 
             if (result.next()) {
-                String maxId = result.getString(1);
-                if (maxId != null) {
-                    int number = Integer.parseInt(maxId.substring(2)) + 1;
-                    String formattedNumber = String.format("%03d", number);
-                    txtIDPengumuman.setText("PM" + formattedNumber);
-                } else {
-                    txtIDPengumuman.setText("PM001");
-                }
+                String newID = result.getString("newID");
+                txtIDPengumuman.setText(newID);
             }
             result.close();
         } catch (Exception ex) {
-            System.out.println("Terjadi error pada ID Pengumuman: " + ex);
+            System.out.println("Terjadi error pada pengumuman: " + ex);
         }
     }
 

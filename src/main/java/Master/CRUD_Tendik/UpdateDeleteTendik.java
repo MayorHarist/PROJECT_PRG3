@@ -2,6 +2,7 @@ package Master.CRUD_Tendik;
 
 import Database.DBConnect;
 import Master.CRUD_JenisPrestasi.InputJepresController;
+import Master.CRUD_JenisPrestasi.jepres;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -204,10 +205,55 @@ public class UpdateDeleteTendik implements Initializable {
                 passwordTendik.setText(newValue.getPassword());
             }
         });
+        // Tambahkan listener untuk txtCari
+        txtCari.textProperty().addListener((observable, oldValue, newValue) -> {
+            cariData(newValue); // Panggil fungsi pencarian saat isi txtCari berubah
+        });
 
         // Assign ToggleGroup to RadioButtons
         rbLaki.setToggleGroup(genderGroup);
         rbPuan.setToggleGroup(genderGroup);
+        loadData("");
+
+    }
+
+    private void cariData(String keyword) {
+        tabelViewTendik.getItems().clear(); // Clear data before loading new search results
+        try {
+            String query = "EXEC sp_CariTendik ?";
+            PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
+            preparedStatement.setString(1, keyword.isEmpty() ? null : keyword); // Set search parameter, null if empty
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                LocalDate tanggalLahir = resultSet.getDate("Tanggal_Lahir").toLocalDate(); // Convert to LocalDate
+                Tendik tk = new Tendik(
+                        resultSet.getString("Id_TKN"),
+                        resultSet.getString("Nama"),
+                        tanggalLahir, // Use LocalDate here
+                        resultSet.getString("Jenis_Kelamin"),
+                        resultSet.getString("Alamat"),
+                        resultSet.getString("Email"),
+                        resultSet.getString("Telepon"),
+                        resultSet.getString("Username"),
+                        resultSet.getString("Password")
+                );
+                tabelViewTendik.getItems().add(tk);
+            }
+            resultSet.close();
+            preparedStatement.close();
+
+            if (tabelViewTendik.getItems().isEmpty()) {
+                // Display a message that the data was not found
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informasi");
+                alert.setHeaderText(null);
+                alert.setContentText("Data tenaga kependidikan tidak ditemukan.");
+                alert.showAndWait();
+            }
+        } catch (Exception ex) {
+            System.out.println("Terjadi error saat mencari data tenaga kependidikan: " + ex);
+        }
     }
 
     @FXML
@@ -304,31 +350,51 @@ public class UpdateDeleteTendik implements Initializable {
 
     @FXML
     protected void OnBtnHapusClick() {
-        // Konfirmasi sebelum menghapus data
-        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationAlert.setTitle("Konfirmasi Penghapusan");
-        confirmationAlert.setHeaderText(null);
-        confirmationAlert.setContentText("Apakah Anda yakin ingin menghapus data ini?");
-        Optional<ButtonType> result = confirmationAlert.showAndWait();
+        Tendik selectedTendik = tabelViewTendik.getSelectionModel().getSelectedItem();
+        if (selectedTendik != null) {
+            // Tampilkan pesan konfirmasi
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Konfirmasi Penghapusan Data");
+            alert.setHeaderText(null);
+            alert.setContentText("Apakah Anda yakin ingin menghapus data ini?");
 
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            try {
-                String query = "EXEC sp_DeleteTendik ?";
-                try (Connection conn = connection.conn;
-                     PreparedStatement stmt = conn.prepareStatement(query)) {
-                    stmt.setString(1, txtIDTKN.getText());
-                    stmt.executeUpdate();
+            // Tambahkan opsi Ya dan Tidak
+            ButtonType buttonTypeYes = new ButtonType("Ya");
+            ButtonType buttonTypeNo = new ButtonType("Tidak");
+            alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
 
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setContentText("Data Berhasil dihapus!");
-                    alert.showAndWait();
-                    clear();
-                    loadData("");
+            // Tampilkan dialog dan tunggu respon pengguna
+            alert.showAndWait().ifPresent(response -> {
+                if (response == buttonTypeYes) {
+                    // Jika pengguna memilih Ya, lakukan penghapusan data
+                    try {
+                        String query = "DELETE FROM TenagaKependidikan WHERE Id_TKN = ?";
+                        PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
+                        preparedStatement.setString(1, selectedTendik.getId_TKN());
+                        preparedStatement.executeUpdate();
+
+                        loadData(""); // Panggil loadData() untuk menyegarkan tampilan TableView
+                        clear();
+
+                        Alert alertSuccess = new Alert(Alert.AlertType.INFORMATION);
+                        alertSuccess.setTitle("Sukses");
+                        alertSuccess.setHeaderText(null);
+                        alertSuccess.setContentText("Data Tenaga Kependidikan berhasil dihapus!");
+                        alertSuccess.showAndWait();
+                    } catch (SQLException ex) {
+                        System.out.println("Terjadi error saat menghapus data Tendik: " + ex.getMessage());
+                    }
+                } else {
+                    // Jika pengguna memilih Tidak, data tidak dihapus
+                    alert.close();
                 }
-            } catch (SQLException e) {
-                System.out.println("Data gagal dihapus " + e.getMessage());
-                e.printStackTrace();
-            }
+            });
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Peringatan");
+            alert.setHeaderText(null);
+            alert.setContentText("Silakan pilih data Tenaga Kependidikan yang ingin dihapus.");
+            alert.showAndWait();
         }
     }
 
@@ -383,48 +449,16 @@ public class UpdateDeleteTendik implements Initializable {
             connection.stat.close();
             connection.result.close();
             tabelViewTendik.setItems(oblist);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            /*Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Success");
             alert.setContentText("Refresh data Tenaga Kependidikan berhasil!");
-            alert.showAndWait();
+            alert.showAndWait();*/
         } catch (SQLException ex) {
             System.out.println("Terjadi error saat refresh data Tenaga Kependidikan: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
 
-    @FXML
-    private void ontxtCari() {
-        String keyword = txtCari.getText().toLowerCase();
-        loadData(keyword);
-    }
-
-    @FXML
-    protected void onBtnCariClick() {
-        loadData("");
-        try {
-            String idToSearch = JOptionPane.showInputDialog("Masukkan ID Tendik yang akan dicari:");
-            if (idToSearch != null && !idToSearch.isEmpty()) {
-                for (Tendik tendik : oblist) {
-                    if (tendik.getId_TKN().equals(idToSearch)) {
-                        tabelViewTendik.getSelectionModel().select(tendik);
-                        tabelViewTendik.scrollTo(tendik);
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Success");
-                        alert.setContentText("Data Tendik ditemukan!");
-                        alert.showAndWait();
-                        return;
-                    }
-                }
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Success");
-                alert.setContentText("Data Tendik tidak ditemukan!");
-                alert.showAndWait();
-            }
-        } catch (Exception ex) {
-            System.out.println("Terjadi error saat mencari data Tendik" + ex);
-        }
-    }
 
     public void clear() {
         txtNamaTendik.clear();
@@ -451,30 +485,17 @@ public class UpdateDeleteTendik implements Initializable {
         return telepon != null && pat.matcher(telepon).matches();
     }
 
-@FXML
+    @FXML
     protected void onBtnTambahClick() {
         try {
-            // Pastikan path ke file FXML sudah benar
-            FXMLLoader loader = new FXMLLoader(InputTendik.class.getResource("/Master/CRUD_Tendik/InputTendik.fxml"));
-            Scene scene = new Scene(loader.load(), 900, 600);
-            Stage stage = new Stage();
-            stage.setTitle("Tambah Data Tenaga Kependidikan!");
-            stage.setScene(scene);
-            // Set modality to NONE so it doesn't block other windows
-            stage.initModality(Modality.NONE);
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-/*        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(InputTendik.class.getResource("/Master/CRUD_Tendik/InputTendik.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(InputTendik.class.getResource("InputTendik.fxml"));
             Parent root = fxmlLoader.load();
-            AnchorTendik.getChildren().clear(); // Clear previous content
-            AnchorTendik.getChildren().add(root); // Add new content
+            Stage stage = new Stage();
+            stage.setTitle("Tambah Tenaga Kependidikan");
+            stage.setScene(new Scene(root));
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
     }
-
 }
