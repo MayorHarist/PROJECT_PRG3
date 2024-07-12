@@ -24,16 +24,12 @@ public class InputPospresController {
     private TextField txtNama;
     @FXML
     private TextField txtDeskripsi;
-    @FXML
-    private TextField txtStatus;
 
     String idposisiprestasi, nama, deskripsi, status;
     DBConnect connection = new DBConnect();
 
     public void initialize() {
         autoid();
-        txtStatus.setText("Aktif");
-        txtStatus.setDisable(true); // Disable the status field
         txtIdPosisiPrestasi.setEditable(false); // Disable editing the ID field
 
         // Menambahkan listener ke TextField txtNama
@@ -51,23 +47,17 @@ public class InputPospresController {
 
     public void autoid() {
         try {
-            String sql = "SELECT MAX(Id_PosisiPrestasi) FROM PosisiPrestasi";
+            String sql = "SELECT dbo.autoIdPospres() AS newID";
             connection.pstat = connection.conn.prepareStatement(sql);
             ResultSet result = connection.pstat.executeQuery();
 
             if (result.next()) {
-                String maxId = result.getString(1);
-                if (maxId != null) {
-                    int number = Integer.parseInt(maxId.substring(3)) + 1;
-                    String formattedNumber = String.format("%03d", number);
-                    txtIdPosisiPrestasi.setText("PP" + formattedNumber);
-                } else {
-                    txtIdPosisiPrestasi.setText("PP001");
-                }
+                String newID = result.getString("newID");
+                txtIdPosisiPrestasi.setText(newID);
             }
             result.close();
         } catch (Exception ex) {
-            System.out.println("Terjadi error pada posisi prestasi: " + ex);
+            System.out.println("Terjadi error pada jenis prestasi: " + ex);
         }
     }
 
@@ -75,7 +65,7 @@ public class InputPospresController {
         idposisiprestasi = txtIdPosisiPrestasi.getText();
         nama = txtNama.getText();
         deskripsi = txtDeskripsi.getText();
-        status = txtStatus.getText();
+        //status = txtStatus.getText();
 
         // Menambahkan validasi untuk memastikan semua input telah diisi
         if (idposisiprestasi.isEmpty() || nama.isEmpty() || deskripsi.isEmpty()) {
@@ -92,7 +82,6 @@ public class InputPospresController {
         message += "ID Posisi Prestasi: " + idposisiprestasi + "\n";
         message += "Nama: " + nama + "\n";
         message += "Deskripsi: " + deskripsi + "\n";
-        message += "Status: " + status + "\n\n";
         message += "Apakah Anda yakin ingin menyimpan data?";
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -103,26 +92,25 @@ public class InputPospresController {
         Optional<ButtonType> option = alert.showAndWait();
         if (option.isPresent() && option.get() == ButtonType.OK) {
             try {
-                String query = "INSERT INTO PosisiPrestasi VALUES (?,?,?,?)";
+                //String query = "INSERT INTO PosisiPrestasi VALUES (?,?,?)";
+                String query = "EXEC sp_InsertPosisiPrestasi ?, ?, ?";
                 connection.pstat = connection.conn.prepareStatement(query);
                 connection.pstat.setString(1, idposisiprestasi);
                 connection.pstat.setString(2, nama);
                 connection.pstat.setString(3, deskripsi);
-                connection.pstat.setString(4, status);
 
                 connection.pstat.executeUpdate();
                 connection.pstat.close();
-
-                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                successAlert.setTitle("Sukses");
-                successAlert.setHeaderText(null);
-                successAlert.setContentText("Simpan data posisi prestasi berhasil!");
-                successAlert.showAndWait();
-                clear();
-                autoid();
             } catch (SQLException ex) {
                 System.out.print("Terjadi error saat insert data posisi prestasi: " + ex);
             }
+            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+            successAlert.setTitle("Sukses");
+            successAlert.setHeaderText(null);
+            successAlert.setContentText("Data posisi prestasi berhasil disimpan!");
+            successAlert.showAndWait();
+            clear();
+            autoid();
         } else {
             Alert cancelAlert = new Alert(Alert.AlertType.INFORMATION);
             cancelAlert.setTitle("Informasi");

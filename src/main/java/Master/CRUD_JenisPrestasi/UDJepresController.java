@@ -83,6 +83,18 @@ public class UDJepresController implements Initializable {
             }
         });
 
+        // Menambahkan listener ke TextField txtNama
+        txtNama.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[a-zA-Z\\s]*")) { // Memeriksa apakah nilai baru hanya terdiri dari huruf dan spasi
+                txtNama.setText(newValue.replaceAll("[^a-zA-Z\\s]", "")); // Hapus karakter non-huruf
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informasi");
+                alert.setHeaderText(null);
+                alert.setContentText("Nama harus diisi dengan huruf.");
+                alert.showAndWait();
+            }
+        });
+
         // Tambahkan listener untuk txtCari
         txtCari.textProperty().addListener((observable, oldValue, newValue) -> {
             cariData(newValue); // Panggil fungsi pencarian saat isi txtCari berubah
@@ -238,7 +250,7 @@ public class UDJepresController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(InputJepresController.class.getResource("InputJepres.fxml"));
             Parent root = fxmlLoader.load();
             Stage stage = new Stage();
-            stage.setTitle("Buat Jenis Prestasi");
+            stage.setTitle("Tambah Jenis Prestasi");
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {

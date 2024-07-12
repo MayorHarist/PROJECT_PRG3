@@ -19,12 +19,10 @@ import javafx.stage.StageStyle;
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 public class UpdateDeleteTendik implements Initializable {
     @FXML
@@ -216,10 +214,46 @@ public class UpdateDeleteTendik implements Initializable {
         try {
             Tendik selectedTendik = tabelViewTendik.getSelectionModel().getSelectedItem();
             if (selectedTendik != null) {
+                // Check if username and email already exist
+                String checkQuery = "SELECT COUNT(*) FROM TenagaKependidikan WHERE (Username = ? OR Email = ?) AND Id_TKN != ?";
+                PreparedStatement checkStmt = connection.conn.prepareStatement(checkQuery);
+                checkStmt.setString(1, usernameTendik.getText());
+                checkStmt.setString(2, txtEmailTendik.getText());
+                checkStmt.setString(3, txtIDTKN.getText());
+                ResultSet rs = checkStmt.executeQuery();
+                rs.next();
+                if (rs.getInt(1) > 0) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Warning");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Username atau email sudah digunakan!");
+                    alert.showAndWait();
+                    return;
+                }
+
+                // Validate regex for email and telepon
+                if (!validateEmail(txtEmailTendik.getText())) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Warning");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Format email tidak valid!");
+                    alert.showAndWait();
+                    return;
+                }
+
+                if (!validateTelepon(txtTelpTendik.getText())) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Warning");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Format nomor telepon tidak valid!");
+                    alert.showAndWait();
+                    return;
+                }
+
                 LocalDate tanggal = tglTendik.getValue();
                 String jenisKelamin = rbLaki.isSelected() ? "Laki-Laki" : "Perempuan";
 
-                String query = "EXEC  sp_UpdateTendik ?, ?, ?, ?, ?, ?, ?, ?, ?";
+                String query = "EXEC sp_UpdateTendik ?, ?, ?, ?, ?, ?, ?, ?, ?";
                 connection.pstat = connection.conn.prepareStatement(query);
                 connection.pstat.setString(1, txtIDTKN.getText());
                 connection.pstat.setString(2, txtNamaTendik.getText());
@@ -233,7 +267,6 @@ public class UpdateDeleteTendik implements Initializable {
 
                 int rowsAffected = connection.pstat.executeUpdate();
                 if (rowsAffected > 0) {
-                    // Update item di ObservableList
                     int index = oblist.indexOf(selectedTendik);
                     oblist.set(index, new Tendik(
                             txtIDTKN.getText(),
@@ -246,7 +279,6 @@ public class UpdateDeleteTendik implements Initializable {
                             usernameTendik.getText(),
                             passwordTendik.getText()));
 
-                    // Set txtIDTKN dan txtStatus menjadi tidak dapat diubah
                     txtIDTKN.setDisable(true);
                     tabelViewTendik.refresh();
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -257,7 +289,7 @@ public class UpdateDeleteTendik implements Initializable {
                     clear();
                 } else {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Success");
+                    alert.setTitle("Error");
                     alert.setHeaderText(null);
                     alert.setContentText("Gagal melakukan update data Tendik.");
                     alert.showAndWait();
@@ -272,7 +304,7 @@ public class UpdateDeleteTendik implements Initializable {
     @FXML
     protected void OnBtnHapusClick() {
         try {
-            String query = "EXEC sp_DeleteTendik ? ?";
+            String query = "EXEC sp_DeleteTendik ?";
             try (Connection conn = connection.conn;
                  PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setString(1, txtIDTKN.getText());
@@ -393,7 +425,21 @@ public class UpdateDeleteTendik implements Initializable {
         passwordTendik.clear();
     }
 
-    @FXML
+    private boolean validateEmail(String email) {
+        // Regex for validating email
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pat = Pattern.compile(emailRegex);
+        return email != null && pat.matcher(email).matches();
+    }
+
+    private boolean validateTelepon(String telepon) {
+        // Regex for validating phone number
+        String teleponRegex = "^\\+?[0-9. ()-]{7,25}$";
+        Pattern pat = Pattern.compile(teleponRegex);
+        return telepon != null && pat.matcher(telepon).matches();
+    }
+
+@FXML
     protected void onBtnTambahClick() {
         try {
             // Pastikan path ke file FXML sudah benar
@@ -408,6 +454,7 @@ public class UpdateDeleteTendik implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 /*        try {
             FXMLLoader fxmlLoader = new FXMLLoader(InputTendik.class.getResource("/Master/CRUD_Tendik/InputTendik.fxml"));
             Parent root = fxmlLoader.load();
