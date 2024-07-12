@@ -122,7 +122,7 @@ public class UpdateDelPengumuman implements Initializable {
         // Inisialisasi txtCari
         TextField txtCari = new TextField();
 
-// Tambahkan listener untuk txtCari
+    // Tambahkan listener untuk txtCari
         txtCari.textProperty().addListener((observable, oldValue, newValue) -> {
             cariDataPengumuman(newValue); // Panggil fungsi pencarian saat isi txtCari berubah
         });
@@ -270,7 +270,6 @@ public class UpdateDelPengumuman implements Initializable {
             // Tutup koneksi dan pernyataan
             connection.stat.close();
             connection.result.close();
-
             // Set data ke TableView
             tblViewPengumuman.setItems(oblist);
         } catch (SQLException ex) {

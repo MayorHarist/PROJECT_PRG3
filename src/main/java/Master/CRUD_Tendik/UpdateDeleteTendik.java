@@ -210,13 +210,50 @@ public class UpdateDeleteTendik implements Initializable {
             cariData(newValue); // Panggil fungsi pencarian saat isi txtCari berubah
         });
 
-
         // Assign ToggleGroup to RadioButtons
         rbLaki.setToggleGroup(genderGroup);
         rbPuan.setToggleGroup(genderGroup);
         loadData("");
 
+    }
 
+    private void cariData(String keyword) {
+        tabelViewTendik.getItems().clear(); // Clear data before loading new search results
+        try {
+            String query = "EXEC sp_CariTendik ?";
+            PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
+            preparedStatement.setString(1, keyword.isEmpty() ? null : keyword); // Set search parameter, null if empty
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                LocalDate tanggalLahir = resultSet.getDate("Tanggal_Lahir").toLocalDate(); // Convert to LocalDate
+                Tendik tk = new Tendik(
+                        resultSet.getString("Id_TKN"),
+                        resultSet.getString("Nama"),
+                        tanggalLahir, // Use LocalDate here
+                        resultSet.getString("Jenis_Kelamin"),
+                        resultSet.getString("Alamat"),
+                        resultSet.getString("Email"),
+                        resultSet.getString("Telepon"),
+                        resultSet.getString("Username"),
+                        resultSet.getString("Password")
+                );
+                tabelViewTendik.getItems().add(tk);
+            }
+            resultSet.close();
+            preparedStatement.close();
+
+            if (tabelViewTendik.getItems().isEmpty()) {
+                // Display a message that the data was not found
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informasi");
+                alert.setHeaderText(null);
+                alert.setContentText("Data tenaga kependidikan tidak ditemukan.");
+                alert.showAndWait();
+            }
+        } catch (Exception ex) {
+            System.out.println("Terjadi error saat mencari data tenaga kependidikan: " + ex);
+        }
     }
 
     @FXML
@@ -362,7 +399,6 @@ public class UpdateDeleteTendik implements Initializable {
     }
 
 
-
     @FXML
     protected void OnBtnBatalClick() {
         clear();
@@ -423,50 +459,6 @@ public class UpdateDeleteTendik implements Initializable {
         }
     }
 
-    @FXML
-    private void ontxtCari() {
-        String keyword = txtCari.getText().toLowerCase();
-        loadData(keyword);
-    }
-
-    private void cariData(String keyword) {
-        tabelViewTendik.getItems().clear(); // Bersihkan data sebelum memuat hasil pencarian baru
-        try {
-            String query = "EXEC sp_CariTendik ?";
-            PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
-            preparedStatement.setString(1, keyword.isEmpty() ? null : keyword); // Set parameter pencarian, null jika kosong
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                LocalDate tanggalLahir = resultSet.getDate("Tanggal_Lahir").toLocalDate(); // Konversi ke LocalDate
-                Tendik tk = new Tendik(
-                        resultSet.getString("Id_TKN"),
-                        resultSet.getString("Nama"),
-                        tanggalLahir, // Gunakan LocalDate di sini
-                        resultSet.getString("Jenis_Kelamin"),
-                        resultSet.getString("Alamat"),
-                        resultSet.getString("Email"),
-                        resultSet.getString("Telepon"),
-                        resultSet.getString("Username"),
-                        resultSet.getString("Password")
-                );
-                tabelViewTendik.getItems().add(tk);
-            }
-            preparedStatement.close();
-            resultSet.close();
-
-            if (tabelViewTendik.getItems().isEmpty()) {
-                // Tampilkan pesan bahwa data tidak ditemukan
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Informasi");
-                alert.setHeaderText(null);
-                alert.setContentText("Data jenis prestasi tidak ditemukan.");
-                alert.showAndWait();
-            }
-        } catch (Exception ex) {
-            System.out.print("Terjadi error saat mencari data jenis prestasi: " + ex);
-        }
-    }
 
     public void clear() {
         txtNamaTendik.clear();
