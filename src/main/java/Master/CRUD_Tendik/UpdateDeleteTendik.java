@@ -11,7 +11,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -73,6 +76,10 @@ public class UpdateDeleteTendik implements Initializable {
     private Button btnUbahTendik;
     @FXML
     private Button btnHapusTendik;
+    @FXML
+    private Button btnTambah;
+    @FXML
+    private AnchorPane AnchorTendik;
 
     private ObservableList<Tendik> oblist = FXCollections.observableArrayList();
     private DBConnect connection = new DBConnect();
@@ -127,6 +134,7 @@ public class UpdateDeleteTendik implements Initializable {
         public String getPassword() {
             return Password;
         }
+
         public LocalDate getTanggal() {
             return Tanggal;
         }
@@ -340,8 +348,9 @@ public class UpdateDeleteTendik implements Initializable {
             ex.printStackTrace();
         }
     }
+
     @FXML
-    private void ontxtCari(){
+    private void ontxtCari() {
         String keyword = txtCari.getText().toLowerCase();
         loadData(keyword);
     }
@@ -383,8 +392,9 @@ public class UpdateDeleteTendik implements Initializable {
         usernameTendik.clear();
         passwordTendik.clear();
     }
+
     @FXML
-    protected void onBtnTambahClick(){
+    protected void onBtnTambahClick() {
         try {
             // Pastikan path ke file FXML sudah benar
             FXMLLoader loader = new FXMLLoader(InputTendik.class.getResource("/Master/CRUD_Tendik/InputTendik.fxml"));
@@ -392,9 +402,20 @@ public class UpdateDeleteTendik implements Initializable {
             Stage stage = new Stage();
             stage.setTitle("Tambah Data Tenaga Kependidikan!");
             stage.setScene(scene);
+            // Set modality to NONE so it doesn't block other windows
+            stage.initModality(Modality.NONE);
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
+/*        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(InputTendik.class.getResource("/Master/CRUD_Tendik/InputTendik.fxml"));
+            Parent root = fxmlLoader.load();
+            AnchorTendik.getChildren().clear(); // Clear previous content
+            AnchorTendik.getChildren().add(root); // Add new content
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
     }
+
 }

@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1416.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Tendik.UpdateDeleteTendik">
+<AnchorPane fx:id="AnchorTendik" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1416.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Tendik.UpdateDeleteTendik">
    <children>
       <ImageView pickOnBounds="true" preserveRatio="true" />
       <TableView fx:id="tabelViewTendik" layoutX="56.0" layoutY="180.0" prefHeight="322.0" prefWidth="1332.0">
@@ -93,7 +93,7 @@
       <Button fx:id="btnRefresh" layoutX="639.0" layoutY="513.0" mnemonicParsing="false" onAction="#onBtnRefreshClick" prefHeight="40.0" prefWidth="162.0" text="Refresh" />
       <Button fx:id="btnCari" layoutX="377.0" layoutY="103.0" mnemonicParsing="false" onAction="#onBtnCariClick" prefHeight="37.0" prefWidth="115.0" text="Cari" />
       <TextField fx:id="txtCari" editable="false" layoutX="508.0" layoutY="95.0" onAction="#ontxtCari" prefHeight="41.0" prefWidth="421.0" />
-      <Button fx:id="btnTambah" layoutX="57.0" layoutY="137.0" mnemonicParsing="false" onAction="#onBtnTambahClick" prefHeight="37.0" prefWidth="115.0" text="Tambah" />
+      <Button fx:id="btnTambah" layoutX="57.0" layoutY="137.0" mnemonicParsing="false" onAction="#onBtnTambahClick" onMouseClicked="#onBtnTambahClick" prefHeight="37.0" prefWidth="115.0" text="Tambah" />
       <ComboBox fx:id="cbFilter" layoutX="1178.0" layoutY="134.0" prefHeight="30.0" prefWidth="207.0" />
       <Label layoutX="1178.0" layoutY="101.0" text="Urutkan:">
          <font>
