@@ -13,10 +13,7 @@ import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -121,7 +118,16 @@ public class UpdateDelPengumuman implements Initializable {
                 Id_TKN.setText(newValue.getIdTKN());
             }
         });
+        // Contoh penggunaan dengan input dari keyboard
+        // Inisialisasi txtCari
+        TextField txtCari = new TextField();
+
+// Tambahkan listener untuk txtCari
+        txtCari.textProperty().addListener((observable, oldValue, newValue) -> {
+            cariDataPengumuman(newValue); // Panggil fungsi pencarian saat isi txtCari berubah
+        });
         loadData("");
+        
     }
     @FXML
     protected void onBtnUbahClick() {
@@ -272,35 +278,47 @@ public class UpdateDelPengumuman implements Initializable {
         }
     }
 
-
     @FXML
-    protected void onBtnCariClick() {
+    private void cariDataPengumuman(String keyword) {
+        tblViewPengumuman.getItems().clear(); // Bersihkan data sebelum memuat hasil pencarian baru
+
         try {
-            String idToSearch = JOptionPane.showInputDialog("Masukkan ID Pengumuman yang akan dicari:");
-            if (idToSearch != null && !idToSearch.isEmpty()) {
-                for (Pengumuman pengumuman : oblist) {
-                    if (pengumuman.getIdPM().equals(idToSearch)) {
-                        tblViewPengumuman.getSelectionModel().select(pengumuman);
-                        tblViewPengumuman.scrollTo(pengumuman);
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Success");
-                        alert.setHeaderText(null);
-                        alert.setContentText(" ID Data Pengumuman ditemukan.");
-                    }
-                }
+            String query = "EXEC sp_CariPengumuman ?";
+            PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
+            preparedStatement.setString(1, keyword.isEmpty() ? null : keyword); // Set parameter pencarian, null jika kosong
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Pengumuman pengumuman = new Pengumuman(
+                        resultSet.getString("Id_Pengumuman"),
+                        resultSet.getString("Nama"),
+                        resultSet.getDate("Tanggal").toLocalDate(),
+                        resultSet.getString("Deskripsi"),
+                        resultSet.getString("Id_TKN")
+                );
+                tblViewPengumuman.getItems().add(pengumuman);
+            }
+            preparedStatement.close();
+            resultSet.close();
+
+            if (tblViewPengumuman.getItems().isEmpty()) {
+                // Tampilkan pesan bahwa data tidak ditemukan
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Success");
+                alert.setTitle("Informasi");
                 alert.setHeaderText(null);
                 alert.setContentText("ID Data Pengumuman tidak ditemukan.");
+                alert.showAndWait();
             }
         } catch (Exception ex) {
-            System.out.println("Terjadi error saat mencari data Pengumuman" + ex);
+            System.out.println("Terjadi error saat mencari data Pengumuman: " + ex);
         }
     }
+
     @FXML
     protected void onBtnBatalClick() {
         clear();
     }
+    
     @FXML
     protected void onBtnTambahClick(){
         try {
