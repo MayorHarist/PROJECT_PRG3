@@ -326,6 +326,8 @@ public class UpdateDeleteMatkulController implements Initializable {
                                     ((Prodi) cbProdi.getValue()).getId()
                             ));
 
+
+
                             tableMatkul.refresh();
                             showAlert(AlertType.INFORMATION, "Informasi", "Update Data Berhasil");
                             clearFields();

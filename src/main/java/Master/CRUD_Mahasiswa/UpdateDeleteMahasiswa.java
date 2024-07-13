@@ -156,6 +156,11 @@ public class UpdateDeleteMahasiswa implements Initializable {
         });
     }
 
+    private boolean isValidEmailInput(String input) {
+        // Regex untuk memvalidasi format email
+        return input.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
+    }
+
     public void btnTambah_Click(ActionEvent actionEvent) {
         try {
             // Pastikan path ke file FXML sudah benar
@@ -360,6 +365,21 @@ public class UpdateDeleteMahasiswa implements Initializable {
         return null;
     }
 
+    private boolean isDuplicateEmail(String email) {
+        String query = "SELECT COUNT(*) AS count FROM Mahasiswa WHERE Email = ?";
+        try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt("count");
+                return count > 0;
+            }
+        } catch (SQLException e) {
+            showAlert("Error checking duplicate email: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+        return false;
+    }
+
     @FXML
     private void btnUbah_Click(ActionEvent event) {
         String nim = txtNIM.getText();
@@ -375,6 +395,18 @@ public class UpdateDeleteMahasiswa implements Initializable {
         if (nim.isEmpty() || idProdi == null || nama.isEmpty() || tanggalLahir == null || alamat.isEmpty() || email.isEmpty() || telepon.isEmpty() || txtTahunMasuk.getText().isEmpty()) {
             showAlert("Please fill in all fields.", Alert.AlertType.ERROR);
             return;
+        }
+
+        // Validasi format email
+        if (!isValidEmailInput(email)) {
+            showAlert("Format email tidak valid.", Alert.AlertType.WARNING);
+            return; // Hentikan proses simpan jika email tidak valid
+        }
+
+        // Validasi duplikat email
+        if (isDuplicateEmail(email)) {
+            showAlert("Email sudah terdaftar. Harap gunakan email lain.", Alert.AlertType.WARNING);
+            return; // Hentikan proses simpan jika ada duplikat email
         }
 
         String query = "EXEC sp_UpdateMahasiswa ?, ?, ?, ?, ?, ?, ?, ?, ?";
