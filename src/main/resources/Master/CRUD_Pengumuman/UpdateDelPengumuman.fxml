@@ -17,14 +17,14 @@
             <TableColumn fx:id="nmPengumuman" prefWidth="307.66668701171875" text="Nama" />
             <TableColumn fx:id="tanggalPM" prefWidth="198.33331298828125" text="Tanggal" />
             <TableColumn fx:id="deskripsi" prefWidth="415.0000305175781" text="Deskripsi" />
-            <TableColumn fx:id="Id_TKN" prefWidth="190.66665649414062" text="ID TKN" />
+            <TableColumn fx:id="namaTKN" prefWidth="190.66665649414062" text="NamaTKN" />
          </columns>
       </TableView>
       <Label layoutX="141.0" layoutY="594.0" text="ID Pengumuman" />
       <Label layoutX="139.0" layoutY="696.0" text="Nama" />
       <Label layoutX="718.0" layoutY="606.0" text="Tanggal " />
       <Label layoutX="720.0" layoutY="659.0" text="Deskripsi" />
-      <Label layoutX="139.0" layoutY="639.0" text="ID TKN" />
+      <Label layoutX="139.0" layoutY="639.0" text="NamaTKN" />
       <TextField fx:id="txtIDPengumuman" layoutX="266.0" layoutY="589.0" prefHeight="25.0" prefWidth="250.0" />
       <DatePicker fx:id="tglPengumuman" layoutX="843.0" layoutY="600.0" prefHeight="30.0" prefWidth="250.0" />
       <TextField fx:id="txtnmPengumuman" layoutX="264.0" layoutY="689.0" prefHeight="25.0" prefWidth="250.0" />
@@ -34,8 +34,7 @@
       <Button fx:id="btnBatal" layoutX="896.0" layoutY="721.0" mnemonicParsing="false" onAction="#onBtnBatalClick" prefHeight="30.0" prefWidth="125.0" text="Batal" />
       <Button fx:id="btnHapus" layoutX="1057.0" layoutY="720.0" mnemonicParsing="false" onAction="#onBtnHapusClick" prefHeight="30.0" prefWidth="126.0" text="Hapus" />
       <Button fx:id="btnRefresh" layoutX="621.0" layoutY="515.0" mnemonicParsing="false" onAction="#onBtnRefreshClick" prefHeight="30.0" prefWidth="141.0" text="Refresh" />
-      <Button fx:id="btnCari" layoutX="536.0" layoutY="151.0" mnemonicParsing="false" onAction="#onBtnCariClick" prefHeight="37.0" prefWidth="67.0" text="Cari" />
       <Button fx:id="btnTambah" layoutX="43.0" layoutY="193.0" mnemonicParsing="false" onAction="#onBtnTambahClick" prefHeight="37.0" prefWidth="115.0" text="Tambah" />
-      <TextField fx:id="txtCari" editable="false" layoutX="623.0" layoutY="155.0" prefHeight="30.0" prefWidth="202.0" />
+      <TextField fx:id="txtCari" editable="true" layoutX="623.0" layoutY="155.0" prefHeight="30.0" prefWidth="202.0" />
    </children>
 </AnchorPane>

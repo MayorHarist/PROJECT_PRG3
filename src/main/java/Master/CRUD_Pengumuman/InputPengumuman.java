@@ -64,6 +64,7 @@ public class InputPengumuman {
         ObservableList<TenagaKependidikan> tknData = loadDataForTKNComboBox();
         cbTKN.setItems(tknData);
 
+
        /* // Validasi input langsung di initialize
         txtnmPengumuman.textProperty().addListener((obs, oldVal, newVal) -> validateNama());
         tglPengumuman.valueProperty().addListener((obs, oldVal, newVal) -> validateTanggal());
@@ -130,6 +131,10 @@ public class InputPengumuman {
 
     @FXML
     protected void onBtnSimpanClick() {
+        // Validasi input
+        if (!validateNama() || !validateTanggal() || !validateDeskripsi() || !validateTKN()) {
+            return;
+        }
         Id_Pengumuman = txtIDPengumuman.getText();
         Nama = txtnmPengumuman.getText();
         tanggal = tglPengumuman.getValue();
@@ -171,6 +176,8 @@ public class InputPengumuman {
             try {
                 String query = "EXEC sp_InsertPengumuman ?,?,?,?,?";
                 connection.pstat = connection.conn.prepareStatement(query);
+
+                // Mengatur nilai untuk parameter
                 connection.pstat.setString(1, Id_Pengumuman);
                 connection.pstat.setString(2, Nama);
                 connection.pstat.setDate(3, java.sql.Date.valueOf(tanggal));
@@ -187,7 +194,7 @@ public class InputPengumuman {
                 successAlert.setContentText("Data pengumuman berhasil disimpan!");
                 successAlert.showAndWait();
                 clear();
-                autoid(); // Generate a new ID for the next entry
+                autoid(); // Generate ID baru untuk entri berikutnya
             } catch (SQLException ex) {
                 System.out.println("Terjadi error saat menambahkan data pengumuman: " + ex);
             }
@@ -199,8 +206,6 @@ public class InputPengumuman {
             cancelAlert.showAndWait();
         }
     }
-
-
 
     public void clear() {
         txtnmPengumuman.clear();

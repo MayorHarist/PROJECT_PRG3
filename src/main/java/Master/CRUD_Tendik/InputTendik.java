@@ -48,7 +48,6 @@ public class InputTendik {
     @FXML
     public void initialize() {
         autoid();
-
         genderGroup = new ToggleGroup();
         rbLaki.setToggleGroup(genderGroup);
         rbPuan.setToggleGroup(genderGroup);

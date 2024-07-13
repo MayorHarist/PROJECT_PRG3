@@ -207,7 +207,7 @@ public class UpdateDeleteTendik implements Initializable {
         });
         // Tambahkan listener untuk txtCari
         txtCari.textProperty().addListener((observable, oldValue, newValue) -> {
-            cariData(newValue); // Panggil fungsi pencarian saat isi txtCari berubah
+            cariTendik(newValue); // Panggil fungsi pencarian saat isi txtCari berubah
         });
 
         // Assign ToggleGroup to RadioButtons
@@ -217,7 +217,7 @@ public class UpdateDeleteTendik implements Initializable {
 
     }
 
-    private void cariData(String keyword) {
+    private void cariTendik(String keyword) {
         tabelViewTendik.getItems().clear(); // Clear data before loading new search results
         try {
             String query = "EXEC sp_CariTendik ?";
@@ -258,6 +258,17 @@ public class UpdateDeleteTendik implements Initializable {
 
     @FXML
     protected void onBtnUbahClick() {
+        // Tambahkan validasi untuk memeriksa apakah ada data yang dipilih
+        if (tabelViewTendik.getSelectionModel().getSelectedItem() == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Peringatan");
+            alert.setHeaderText(null);
+            alert.setContentText("Silakan pilih data tendik yang ingin diubah.");
+            alert.showAndWait();
+            return; // Keluar dari metode jika tidak ada data yang dipilih
+        }
+
+
         try {
             Tendik selectedTendik = tabelViewTendik.getSelectionModel().getSelectedItem();
             if (selectedTendik != null) {
@@ -461,6 +472,7 @@ public class UpdateDeleteTendik implements Initializable {
 
 
     public void clear() {
+        txtIDTKN.clear();
         txtNamaTendik.clear();
         tglTendik.setValue(null);
         genderGroup.selectToggle(null); // Menghapus pilihan dari ToggleGroup
