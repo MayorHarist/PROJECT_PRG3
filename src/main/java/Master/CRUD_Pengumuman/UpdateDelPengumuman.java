@@ -23,6 +23,8 @@ public class UpdateDelPengumuman implements Initializable {
     @FXML
     private TextField txtnmPengumuman;
     @FXML
+    private TextField txtCari;
+    @FXML
     private DatePicker tglPengumuman;
     @FXML
     private TextField txtDeskripsi;
@@ -115,22 +117,34 @@ public class UpdateDelPengumuman implements Initializable {
                 txtnmPengumuman.setText(newValue.getNamaPengumuman());
                 tglPengumuman.setValue(newValue.getTanggal());
                 txtDeskripsi.setText(newValue.getDeskripsi());
-                Id_TKN.setText(newValue.getIdTKN());
+                cbTKN.setValue(newValue.getIdTKN());
             }
         });
-        // Contoh penggunaan dengan input dari keyboard
+/*        // Contoh penggunaan dengan input dari keyboard
         // Inisialisasi txtCari
-        TextField txtCari = new TextField();
+        TextField txtCari = new TextField();*/
 
-    // Tambahkan listener untuk txtCari
+        // Tambahkan listener untuk txtCari
         txtCari.textProperty().addListener((observable, oldValue, newValue) -> {
             cariDataPengumuman(newValue); // Panggil fungsi pencarian saat isi txtCari berubah
         });
+
         loadData("");
         
     }
     @FXML
     protected void onBtnUbahClick() {
+        // Tambahkan validasi untuk memeriksa apakah ada data yang dipilih
+        if (tblViewPengumuman.getSelectionModel().getSelectedItem() == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Peringatan");
+            alert.setHeaderText(null);
+            alert.setContentText("Silakan pilih data pengumuman yang ingin diubah.");
+            alert.showAndWait();
+            return; // Keluar dari metode jika tidak ada data yang dipilih
+        }
+
+
         try {
             Pengumuman selectedPengumuman = tblViewPengumuman.getSelectionModel().getSelectedItem();
             if (selectedPengumuman != null) {
