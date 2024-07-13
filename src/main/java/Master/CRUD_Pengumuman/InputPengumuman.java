@@ -33,7 +33,7 @@ public class InputPengumuman {
     String Id_Pengumuman, Nama, Deskripsi, Id_TKN;
     LocalDate tanggal;
 
-    public class TenagaKependidikan {
+    public static class TenagaKependidikan {
         private String id;
         private String nama;
 
@@ -63,7 +63,6 @@ public class InputPengumuman {
         // Memuat data untuk ComboBox
         ObservableList<TenagaKependidikan> tknData = loadDataForTKNComboBox();
         cbTKN.setItems(tknData);
-
 
        /* // Validasi input langsung di initialize
         txtnmPengumuman.textProperty().addListener((obs, oldVal, newVal) -> validateNama());

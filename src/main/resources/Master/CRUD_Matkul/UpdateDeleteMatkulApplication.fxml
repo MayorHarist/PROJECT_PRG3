@@ -19,8 +19,8 @@
                 <TableColumn fx:id="jenis" prefWidth="78.66668701171875" text="Jenis" />
                 <TableColumn fx:id="semester" prefWidth="99.3333740234375" text="Semester" />
             <TableColumn fx:id="kelas" prefWidth="75.0" text="Kelas" />
-                <TableColumn fx:id="pegawai" prefWidth="81.3333740234375" text="No Pegawai" />
-                <TableColumn fx:id="prodi" prefWidth="93.33331298828125" text="ID Prodi" />
+                <TableColumn fx:id="pegawai" prefWidth="81.3333740234375" text="Dosen" />
+                <TableColumn fx:id="prodi" prefWidth="93.33331298828125" text="Program Studi" />
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

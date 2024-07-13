@@ -1,5 +1,7 @@
 package Master.CRUD_Matkul;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -190,8 +192,32 @@ public class UpdateDeleteMatkulController implements Initializable {
         jenis.setCellValueFactory(new PropertyValueFactory<>("jenis"));
         semester.setCellValueFactory(new PropertyValueFactory<>("semester"));
         kelas.setCellValueFactory(new PropertyValueFactory<>("kelas"));
-        pegawai.setCellValueFactory(new PropertyValueFactory<>("pegawai"));
-        prodi.setCellValueFactory(new PropertyValueFactory<>("prodi"));
+
+        // Menampilkan nama Pegawai
+        pegawai.setCellValueFactory(cellData -> {
+            StringProperty namaPegawai = new SimpleStringProperty();
+            MataKuliah mataKuliah = cellData.getValue();
+            for (Pegawai pegawai : cbPegawai.getItems()) {
+                if (pegawai.getId().equals(mataKuliah.getPegawai())) {
+                    namaPegawai.set(pegawai.getNama());
+                    break;
+                }
+            }
+            return namaPegawai;
+        });
+
+        // Menampilkan nama Prodi
+        prodi.setCellValueFactory(cellData -> {
+            StringProperty namaProdi = new SimpleStringProperty();
+            MataKuliah mataKuliah = cellData.getValue();
+            for (Prodi prodi : cbProdi.getItems()) {
+                if (prodi.getId().equals(mataKuliah.getProdi())) {
+                    namaProdi.set(prodi.getNama());
+                    break;
+                }
+            }
+            return namaProdi;
+        });
 
         // Memuat data ke dalam tabel
         tableMatkul.setItems(oblist);
@@ -393,6 +419,11 @@ public class UpdateDeleteMatkulController implements Initializable {
 
         if (!sks.matches("\\d+")) {
             showAlert(Alert.AlertType.WARNING, "Peringatan", "Jumlah SKS harus berupa angka.");
+            return false;
+        }
+
+        if (!semester.matches("\\d+")) {
+            showAlert(Alert.AlertType.WARNING, "Peringatan", "Semester harus berupa angka.");
             return false;
         }
 
