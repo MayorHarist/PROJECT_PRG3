@@ -15,6 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
@@ -59,7 +60,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
     @FXML
     private TableColumn<Mahasiswa, String> NIM;
     @FXML
-    private TableColumn<Mahasiswa, String> IdProdi;
+    private TableColumn<Mahasiswa, String> NamaProdi;
     @FXML
     private TableColumn<Mahasiswa, String> Nama;
     @FXML
@@ -74,10 +75,87 @@ public class UpdateDeleteMahasiswa implements Initializable {
     private TableColumn<Mahasiswa, String> Telepon;
     @FXML
     private TableColumn<Mahasiswa, Integer> TahunMasuk;
+    @FXML
+    private TableColumn<Mahasiswa, Integer> PointKRPP;
 
+    @FXML
+    private TableColumn<Mahasiswa, BigDecimal> IPK;
     private ObservableList<Mahasiswa> oblist = FXCollections.observableArrayList();
 
     private DBConnect connection = new DBConnect();
+
+    public static class Mahasiswa {
+        private String nim;
+        private String idProdi;
+        private String nama;
+        private LocalDate tanggalLahir;
+        private String jenisKelamin;
+        private String alamat;
+        private String email;
+        private String telepon;
+        private int tahunMasuk;
+        private int pointKRPP;
+        private BigDecimal ipk;
+
+        public Mahasiswa(String nim, String idProdi, String nama, LocalDate tanggalLahir, String jenisKelamin, String alamat, String email, String telepon, int tahunMasuk,int pointKRPP, BigDecimal ipk) {
+            this.nim = nim;
+            this.idProdi = idProdi;
+            this.nama = nama;
+            this.tanggalLahir = tanggalLahir;
+            this.jenisKelamin = jenisKelamin;
+            this.alamat = alamat;
+            this.email = email;
+            this.telepon = telepon;
+            this.tahunMasuk = tahunMasuk;
+            this.pointKRPP = pointKRPP;
+            this.ipk = ipk;
+        }
+
+        public String getNim() {
+            return nim;
+        }
+
+        public String getIdProdi() {
+            return idProdi;
+        }
+
+        public String getNama() {
+            return nama;
+        }
+
+        public LocalDate getTanggalLahir() {
+            return tanggalLahir;
+        }
+
+        public String getJenisKelamin() {
+            return jenisKelamin;
+        }
+
+        public String getAlamat() {
+            return alamat;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public String getTelepon() {
+            return telepon;
+        }
+
+        public int getTahunMasuk() {
+            return tahunMasuk;
+        }
+
+        public int getPointKRPP() {
+            return pointKRPP;
+        }
+
+        public BigDecimal getIpk() {
+            return ipk;
+        }
+    }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -87,6 +165,14 @@ public class UpdateDeleteMahasiswa implements Initializable {
 
         loadProdi();
         loadTable();
+
+        tableMahasiswa.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                populateFields(newValue);
+                // Set ComboBox cbProdi based on Mahasiswa's Id_Prodi
+                cbProdi.setValue(getProdiNameById(newValue.getIdProdi()));
+            }
+        });
 
         // Add listener to txtCari for search functionality
         txtCari.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -184,59 +270,6 @@ public class UpdateDeleteMahasiswa implements Initializable {
     }
 
 
-    public static class Mahasiswa {
-        String nim, idProdi, nama, jenisKelamin, alamat, email, telepon;
-        LocalDate tanggalLahir;
-        int tahunMasuk;
-
-        public Mahasiswa(String nim, String idProdi, String nama, LocalDate tanggalLahir, String jenisKelamin, String alamat, String email, String telepon, int tahunMasuk) {
-            this.nim = nim;
-            this.idProdi = idProdi;
-            this.nama = nama;
-            this.tanggalLahir = tanggalLahir;
-            this.jenisKelamin = jenisKelamin;
-            this.alamat = alamat;
-            this.email = email;
-            this.telepon = telepon;
-            this.tahunMasuk = tahunMasuk;
-        }
-
-        public String getNim() {
-            return nim;
-        }
-
-        public String getIdProdi() {
-            return idProdi;
-        }
-
-        public String getNama() {
-            return nama;
-        }
-
-        public LocalDate getTanggalLahir() {
-            return tanggalLahir;
-        }
-
-        public String getJenisKelamin() {
-            return jenisKelamin;
-        }
-
-        public String getAlamat() {
-            return alamat;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public String getTelepon() {
-            return telepon;
-        }
-
-        public int getTahunMasuk() {
-            return tahunMasuk;
-        }
-    }
 
     private void loadProdi() {
         ObservableList<String> prodiList = FXCollections.observableArrayList();
@@ -271,14 +304,18 @@ public class UpdateDeleteMahasiswa implements Initializable {
 
     private void loadTable() {
         oblist.clear();
-        String query = "SELECT * FROM Mahasiswa WHERE Status = 'Aktif'";
+        String query = "SELECT m.NIM, p.Nama AS Nama_Prodi, m.Nama, m.Tanggal_Lahir, m.Jenis_Kelamin, m.Alamat, m.Email, " +
+                "m.Telepon, m.Tahun_Masuk, m.Point_KRPP, m.IPK " +
+                "FROM Mahasiswa m " +
+                "JOIN ProgramStudi p ON m.Id_Prodi = p.Id_Prodi " +
+                "WHERE m.Status = 'Aktif'";
 
         try (PreparedStatement stmt = connection.conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 String nim = rs.getString("NIM");
-                String idProdi = rs.getString("Id_Prodi");
+                String idProdi = rs.getString("Nama_Prodi");
                 String nama = rs.getString("Nama");
                 LocalDate tanggalLahir = rs.getDate("Tanggal_Lahir").toLocalDate();
                 String jenisKelamin = rs.getString("Jenis_Kelamin");
@@ -286,15 +323,17 @@ public class UpdateDeleteMahasiswa implements Initializable {
                 String email = rs.getString("Email");
                 String telepon = rs.getString("Telepon");
                 int tahunMasuk = rs.getInt("Tahun_Masuk");
+                int pointKRPP = rs.getInt("Point_KRPP");
+                BigDecimal ipk = rs.getBigDecimal("IPK");
 
-                oblist.add(new Mahasiswa(nim, idProdi, nama, tanggalLahir, jenisKelamin, alamat, email, telepon, tahunMasuk));
+                oblist.add(new Mahasiswa(nim, idProdi, nama, tanggalLahir, jenisKelamin, alamat, email, telepon, tahunMasuk, pointKRPP, ipk));
             }
         } catch (SQLException e) {
             showAlert("Error loading Mahasiswa: " + e.getMessage(), Alert.AlertType.ERROR);
         }
 
         NIM.setCellValueFactory(new PropertyValueFactory<>("nim"));
-        IdProdi.setCellValueFactory(new PropertyValueFactory<>("idProdi"));
+        NamaProdi.setCellValueFactory(new PropertyValueFactory<>("idProdi"));
         Nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
         TanggalLahir.setCellValueFactory(new PropertyValueFactory<>("tanggalLahir"));
         JenisKelamin.setCellValueFactory(new PropertyValueFactory<>("jenisKelamin"));
@@ -302,16 +341,19 @@ public class UpdateDeleteMahasiswa implements Initializable {
         Email.setCellValueFactory(new PropertyValueFactory<>("email"));
         Telepon.setCellValueFactory(new PropertyValueFactory<>("telepon"));
         TahunMasuk.setCellValueFactory(new PropertyValueFactory<>("tahunMasuk"));
+        PointKRPP.setCellValueFactory(new PropertyValueFactory<>("pointKRPP"));
+        IPK.setCellValueFactory(new PropertyValueFactory<>("ipk"));
 
         tableMahasiswa.setItems(oblist);
     }
+
 
     private void cariDataMahasiswa(String keyword) {
         oblist.clear();
         String query = "EXEC sp_CariMahasiswa ?";
 
         try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
-            stmt.setString(1, keyword.isEmpty() ? null : keyword);
+            stmt.setString(1, keyword.isEmpty() ? null : "%" + keyword + "%");
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -324,8 +366,11 @@ public class UpdateDeleteMahasiswa implements Initializable {
                 String email = rs.getString("Email");
                 String telepon = rs.getString("Telepon");
                 int tahunMasuk = rs.getInt("Tahun_Masuk");
+                int pointKRPP = rs.getInt("Point_KRPP");
+                BigDecimal ipk = rs.getBigDecimal("IPK");
 
-                oblist.add(new Mahasiswa(nim, idProdi, nama, tanggalLahir, jenisKelamin, alamat, email, telepon, tahunMasuk));
+                String namaProdi = getProdiNameById(idProdi); // Menggunakan fungsi getProdiNameById untuk mendapatkan Nama Prodi
+                oblist.add(new Mahasiswa(nim, idProdi, nama, tanggalLahir, jenisKelamin, alamat, email, telepon, tahunMasuk, pointKRPP, ipk));
             }
         } catch (SQLException e) {
             showAlert("Error searching Mahasiswa: " + e.getMessage(), Alert.AlertType.ERROR);
@@ -333,6 +378,10 @@ public class UpdateDeleteMahasiswa implements Initializable {
 
         tableMahasiswa.setItems(oblist);
     }
+
+
+
+
 
     private void populateFields(Mahasiswa mahasiswa) {
         txtNIM.setText(mahasiswa.getNim());
@@ -365,20 +414,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
         return null;
     }
 
-    private boolean isDuplicateEmail(String email) {
-        String query = "SELECT COUNT(*) AS count FROM Mahasiswa WHERE Email = ?";
-        try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
-            stmt.setString(1, email);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                int count = rs.getInt("count");
-                return count > 0;
-            }
-        } catch (SQLException e) {
-            showAlert("Error checking duplicate email: " + e.getMessage(), Alert.AlertType.ERROR);
-        }
-        return false;
-    }
+
 
     @FXML
     private void btnUbah_Click(ActionEvent event) {
@@ -401,12 +437,6 @@ public class UpdateDeleteMahasiswa implements Initializable {
         if (!isValidEmailInput(email)) {
             showAlert("Format email tidak valid.", Alert.AlertType.WARNING);
             return; // Hentikan proses simpan jika email tidak valid
-        }
-
-        // Validasi duplikat email
-        if (isDuplicateEmail(email)) {
-            showAlert("Email sudah terdaftar. Harap gunakan email lain.", Alert.AlertType.WARNING);
-            return; // Hentikan proses simpan jika ada duplikat email
         }
 
         String query = "EXEC sp_UpdateMahasiswa ?, ?, ?, ?, ?, ?, ?, ?, ?";

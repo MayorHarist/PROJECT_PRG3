@@ -14,29 +14,27 @@
       <font>
          <Font name="System Bold" size="20.0" />
       </font></Label>
-    <TextField fx:id="txtIdProdi" layoutX="295.0" layoutY="595.0" prefHeight="39.0" prefWidth="257.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+    <TextField fx:id="txtIdProdi" editable="false" layoutX="295.0" layoutY="595.0" prefHeight="39.0" prefWidth="257.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
     <Label layoutX="195.0" layoutY="668.0" text="Nama" GridPane.rowIndex="1">
       <font>
          <Font name="System Bold" size="20.0" />
       </font></Label>
-    <TextField fx:id="txtNama" disable="true" layoutX="295.0" layoutY="666.0" prefHeight="39.0" prefWidth="257.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+    <TextField fx:id="txtNama" layoutX="295.0" layoutY="666.0" prefHeight="39.0" prefWidth="257.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
     <Label layoutX="680.0" layoutY="599.0" text="Jenjang Pendidikan" GridPane.rowIndex="2">
       <font>
          <Font name="System Bold" size="20.0" />
       </font></Label>
-    <TextField fx:id="txtJenjangPendidikan" disable="true" layoutX="891.0" layoutY="595.0" prefHeight="39.0" prefWidth="257.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+    <TextField fx:id="txtJenjangPendidikan" layoutX="891.0" layoutY="595.0" prefHeight="39.0" prefWidth="257.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
     <Label layoutX="676.0" layoutY="671.0" text="Akreditasi" GridPane.rowIndex="3">
       <font>
          <Font name="System Bold" size="20.0" />
       </font></Label>
-    <TextField fx:id="txtAkreditasi" disable="true" layoutX="891.0" layoutY="664.0" prefHeight="39.0" prefWidth="257.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-
-    <Button fx:id="btnCari" layoutX="495.0" layoutY="81.0" onMouseClicked="#btnCari_Click" prefHeight="30.0" prefWidth="138.0" text="Cari" GridPane.rowIndex="4" />
-    <Button fx:id="btnUbah" layoutX="900.0" layoutY="754.0" onMouseClicked="#btnUbah_Click" prefHeight="29.0" prefWidth="138.0" text="Perbaharui" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-    <Button fx:id="btnHapus" layoutX="1054.0" layoutY="751.0" onMouseClicked="#btnHapus_Click" prefHeight="30.0" prefWidth="138.0" text="Hapus" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+    <TextField fx:id="txtAkreditasi" layoutX="891.0" layoutY="664.0" prefHeight="39.0" prefWidth="257.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+    <Button fx:id="btnUbah" layoutX="938.0" layoutY="754.0" onAction="#btnUbah_Click" onMouseClicked="#btnUbah_Click" prefHeight="30.0" prefWidth="100.0" text="Ubah" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+    <Button fx:id="btnHapus" layoutX="1054.0" layoutY="751.0" onAction="#btnHapus_Click" onMouseClicked="#btnHapus_Click" prefHeight="30.0" prefWidth="138.0" text="Hapus" GridPane.columnIndex="2" GridPane.rowIndex="4" />
    <TableView fx:id="tableProdi" layoutX="42.0" layoutY="172.0" prefHeight="331.0" prefWidth="1317.0">
      <columns>
        <TableColumn fx:id="IdProdi" prefWidth="252.33334350585938" text="ID Prodi" />
@@ -45,6 +43,8 @@
          <TableColumn fx:id="Akreditasi" prefWidth="212.99996948242188" text="Akreditasi" />
      </columns>
    </TableView>
-   <Button fx:id="btnUbah1" layoutX="43.0" layoutY="526.0" onMouseClicked="#btnUbah_Click" prefHeight="29.0" prefWidth="138.0" text="Tambah" />
-   <Button fx:id="btnHapus1" layoutX="747.0" layoutY="754.0" onMouseClicked="#btnHapus_Click" prefHeight="30.0" prefWidth="138.0" text="Batal" />
+   <TextField fx:id="txtCari" disable="false" layoutX="572.0" layoutY="72.0" prefHeight="39.0" prefWidth="257.0" />
+   <Button fx:id="btnBatal" layoutX="814.0" layoutY="754.0" mnemonicParsing="false" onAction="#onBtnBatalClick" prefHeight="44.0" prefWidth="100.0" text="Batal" />
+   <Button fx:id="btnTambah" layoutX="42.0" layoutY="126.0" mnemonicParsing="false" onAction="#onBtnTambah" prefHeight="33.0" prefWidth="117.0" text="Tambah" />
+   <Button fx:id="btnRefresh" layoutX="651.0" layoutY="511.0" mnemonicParsing="false" onAction="#onBtnRefreshClick" prefHeight="44.0" prefWidth="100.0" text="Refresh" />
 </AnchorPane>

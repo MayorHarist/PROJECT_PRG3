@@ -41,7 +41,7 @@
     <TableView fx:id="tableMahasiswa" layoutX="71.0" layoutY="134.0" prefHeight="358.0" prefWidth="1257.0">
         <columns>
             <TableColumn fx:id="NIM" prefWidth="75.0" text="NIM" />
-            <TableColumn fx:id="IdProdi" prefWidth="93.66665649414062" text="Id Prodi" />
+            <TableColumn fx:id="NamaProdi" prefWidth="93.66665649414062" text="Nama Prodi" />
             <TableColumn fx:id="Nama" prefWidth="131.33334350585938" text="Nama" />
             <TableColumn fx:id="TanggalLahir" prefWidth="118.6666259765625" text="Tanggal Lahir" />
             <TableColumn fx:id="JenisKelamin" prefWidth="118.3333740234375" text="Jenis Kelamin" />
