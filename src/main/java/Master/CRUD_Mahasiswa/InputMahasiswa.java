@@ -292,7 +292,7 @@ public class InputMahasiswa implements Initializable {
 
     private void insertMahasiswa(String NIM, String idProdi, String nama, String tanggalLahir, String jenisKelamin,
                                  String alamat, String email, String telepon, int tahunMasuk) throws SQLException {
-        String query = "EXEC sp_InsertMahasiswa ?, ?, ?, ?, ?, ?, ?, ?";
+        String query = "EXEC sp_InsertMahasiswa ?, ?, ?, ?, ?, ?, ?, ?, ?";
         try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
             stmt.setString(1, NIM);
             stmt.setString(2, idProdi);
@@ -310,12 +310,12 @@ public class InputMahasiswa implements Initializable {
 
     private void autoid() {
         try {
-            String sql = "SELECT dbo.autoIdMahasiswa()";
+            String sql = "SELECT dbo.autoIdMahasiswa() AS newID";
             connection.pstat = connection.conn.prepareStatement(sql);
             ResultSet result = connection.pstat.executeQuery();
 
             if (result.next()) {
-                String newId = result.getString(1);
+                String newId = result.getString("newID");
                 txtNIM.setText(newId);
             }
             result.close();

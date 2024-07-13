@@ -1,6 +1,7 @@
 package Master.CRUD_Mahasiswa;
 
 import Database.DBConnect;
+import Master.CRUD_Pengumuman.InputPengumuman;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -42,59 +43,97 @@ public class UpdateDeleteMahasiswa implements Initializable {
     @FXML
     private TextField txtTahunMasuk;
     @FXML
-    private Button btnCari;
+    private TextField txtCari;
     @FXML
     private Button btnUbah;
     @FXML
     private Button btnHapus;
     @FXML
-    private TableView<UpdateDeleteMahasiswa.Mahasiswa> tableMahasiswa;
+    private Button btnRefresh;
     @FXML
-    private TableColumn<UpdateDeleteMahasiswa.Mahasiswa, String> NIM;
+    private Button btnTambah;
     @FXML
-    private TableColumn<UpdateDeleteMahasiswa.Mahasiswa, String> IdProdi;
+    private Button btnBatal;
     @FXML
-    private TableColumn<UpdateDeleteMahasiswa.Mahasiswa, String> Nama;
+    private TableView<Mahasiswa> tableMahasiswa;
     @FXML
-    private TableColumn<UpdateDeleteMahasiswa.Mahasiswa, LocalDate> TanggalLahir;
+    private TableColumn<Mahasiswa, String> NIM;
     @FXML
-    private TableColumn<UpdateDeleteMahasiswa.Mahasiswa, String> JenisKelamin;
+    private TableColumn<Mahasiswa, String> IdProdi;
     @FXML
-    private TableColumn<UpdateDeleteMahasiswa.Mahasiswa, String> Alamat;
+    private TableColumn<Mahasiswa, String> Nama;
     @FXML
-    private TableColumn<UpdateDeleteMahasiswa.Mahasiswa, String> Email;
+    private TableColumn<Mahasiswa, LocalDate> TanggalLahir;
     @FXML
-    private TableColumn<UpdateDeleteMahasiswa.Mahasiswa, String> Telepon;
+    private TableColumn<Mahasiswa, String> JenisKelamin;
     @FXML
-    private TableColumn<UpdateDeleteMahasiswa.Mahasiswa, Integer> TahunMasuk;
+    private TableColumn<Mahasiswa, String> Alamat;
     @FXML
-    private TableColumn<UpdateDeleteMahasiswa.Mahasiswa, Integer> PointKRPP;
+    private TableColumn<Mahasiswa, String> Email;
     @FXML
-    private TableColumn<UpdateDeleteMahasiswa.Mahasiswa, Integer> IPK;
+    private TableColumn<Mahasiswa, String> Telepon;
+    @FXML
+    private TableColumn<Mahasiswa, Integer> TahunMasuk;
 
-    private ObservableList<UpdateDeleteMahasiswa.Mahasiswa> oblist = FXCollections.observableArrayList();
+    private ObservableList<Mahasiswa> oblist = FXCollections.observableArrayList();
 
     private DBConnect connection = new DBConnect();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Initialize radio button group
         ToggleGroup toggleGroupJenisKelamin = new ToggleGroup();
         rbLaki.setToggleGroup(toggleGroupJenisKelamin);
         rbPerempuan.setToggleGroup(toggleGroupJenisKelamin);
 
-        // Load data to ComboBox and TableView
         loadProdi();
+        loadTable();
+
+        // Add listener to txtCari for search functionality
+        txtCari.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                cariDataMahasiswa(newValue);
+            } else {
+                loadTable();
+            }
+        });
+
+        // Add listener to tableMahasiswa for row selection
+        tableMahasiswa.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                populateFields(newValue);
+            }
+        });
+    }
+
+    public void btnTambah_Click(ActionEvent actionEvent) {
+        try {
+            // Pastikan path ke file FXML sudah benar
+            FXMLLoader loader = new FXMLLoader(InputMahasiswa.class.getResource("/Master/CRUD_Mahasiswa/InputMahasiswa.fxml"));
+            Scene scene = new Scene(loader.load(), 600, 757);
+            Stage stage = new Stage();
+            stage.setTitle("Tambah Data Mahasiswa!");
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void btnBatalClick(ActionEvent actionEvent) {
+        clearFields();
+    }
+
+    public void btnRefreshClick(ActionEvent actionEvent) {
         loadTable();
     }
 
-    // Mahasiswa class definition
+
     public static class Mahasiswa {
         String nim, idProdi, nama, jenisKelamin, alamat, email, telepon;
         LocalDate tanggalLahir;
         int tahunMasuk;
 
-        public Mahasiswa(String nim, String idProdi, String nama, LocalDate tanggalLahir, String jenisKelamin, String alamat, String email, String telepon, int tahunMasuk, int pointKrpp, String ipk) {
+        public Mahasiswa(String nim, String idProdi, String nama, LocalDate tanggalLahir, String jenisKelamin, String alamat, String email, String telepon, int tahunMasuk) {
             this.nim = nim;
             this.idProdi = idProdi;
             this.nama = nama;
@@ -143,7 +182,6 @@ public class UpdateDeleteMahasiswa implements Initializable {
         }
     }
 
-    // Load data to ComboBox from ProgramStudi table
     private void loadProdi() {
         ObservableList<String> prodiList = FXCollections.observableArrayList();
         String query = "SELECT Nama FROM ProgramStudi WHERE Status='Aktif'";
@@ -160,7 +198,6 @@ public class UpdateDeleteMahasiswa implements Initializable {
         }
     }
 
-    // Get ProgramStudi Id_Prodi by Nama
     private String getProdiIdByName(String namaProdi) {
         String query = "SELECT Id_Prodi FROM ProgramStudi WHERE Nama = ?";
 
@@ -176,7 +213,6 @@ public class UpdateDeleteMahasiswa implements Initializable {
         return null;
     }
 
-    // Load Mahasiswa data to TableView
     private void loadTable() {
         oblist.clear();
         String query = "SELECT * FROM Mahasiswa WHERE Status = 'Aktif'";
@@ -194,10 +230,8 @@ public class UpdateDeleteMahasiswa implements Initializable {
                 String email = rs.getString("Email");
                 String telepon = rs.getString("Telepon");
                 int tahunMasuk = rs.getInt("Tahun_Masuk");
-                int pointKrpp = rs.getInt("Point_KRPP");
-                String ipk = rs.getString("IPK");
 
-                oblist.add(new Mahasiswa(nim, idProdi, nama, tanggalLahir, jenisKelamin, alamat, email, telepon, tahunMasuk, pointKrpp,ipk));
+                oblist.add(new Mahasiswa(nim, idProdi, nama, tanggalLahir, jenisKelamin, alamat, email, telepon, tahunMasuk));
             }
         } catch (SQLException e) {
             showAlert("Error loading Mahasiswa: " + e.getMessage(), Alert.AlertType.ERROR);
@@ -216,40 +250,12 @@ public class UpdateDeleteMahasiswa implements Initializable {
         tableMahasiswa.setItems(oblist);
     }
 
-    // Button actions
-
-    @FXML
-    private void btnTambah_Click(ActionEvent event) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Master/CRUD_Mahasiswa/InputMahasiswa.fxml"));
-            Parent root = fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Tambah Mahasiswa");
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void btnBatalClick(ActionEvent event) {
-        clearFields();
-    }
-
-    @FXML
-    private void btnRefreshClick(ActionEvent event) {
-        loadTable();
-    }
-
-    @FXML
-    private void btnCari_Click(ActionEvent event) {
+    private void cariDataMahasiswa(String keyword) {
         oblist.clear();
-        String cari = txtNIM.getText(); // Ambil teks dari txtNIM untuk melakukan pencarian
-        String query = "EXEC sp_CariMahasiswa ?"; // Perhatikan bahwa parameter diwakili oleh tanda tanya '?'
+        String query = "EXEC sp_CariMahasiswa ?";
 
-        try (CallableStatement stmt = connection.conn.prepareCall(query)) {
-            stmt.setString(1, cari); // Set nilai parameter
+        try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
+            stmt.setString(1, keyword.isEmpty() ? null : keyword);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -263,36 +269,31 @@ public class UpdateDeleteMahasiswa implements Initializable {
                 String telepon = rs.getString("Telepon");
                 int tahunMasuk = rs.getInt("Tahun_Masuk");
 
-                // Set nilai ke elemen JavaFX
-                txtNIM.setText(nim);
-                cbProdi.setValue(getProdiNameById(idProdi)); // Anda perlu membuat method untuk mengambil nama prodi berdasarkan idProdi
-                txtNama.setText(nama);
-                txtTanggalLahir.setText(tanggalLahir.toString());
-                if (jenisKelamin.equals("Laki-laki")) {
-                    rbLaki.setSelected(true);
-                    rbPerempuan.setSelected(false);
-                } else if (jenisKelamin.equals("Perempuan")) {
-                    rbLaki.setSelected(false);
-                    rbPerempuan.setSelected(true);
-                }
-                txtAlamat.setText(alamat);
-                txtEmail.setText(email);
-                txtTelepon.setText(telepon);
-                txtTahunMasuk.setText(Integer.toString(tahunMasuk));
-
-                // Anda mungkin perlu mengatur ulang pilihan ComboBox dan ToggleGroup di sini
-            }
-
-            // Jika rs.next() tidak pernah dijalankan, artinya tidak ada data yang ditemukan
-            if (!rs.next()) {
-                showAlert("Mahasiswa tidak ditemukan.", Alert.AlertType.INFORMATION);
+                oblist.add(new Mahasiswa(nim, idProdi, nama, tanggalLahir, jenisKelamin, alamat, email, telepon, tahunMasuk));
             }
         } catch (SQLException e) {
             showAlert("Error searching Mahasiswa: " + e.getMessage(), Alert.AlertType.ERROR);
         }
+
+        tableMahasiswa.setItems(oblist);
     }
 
-    // Method untuk mendapatkan nama Program Studi berdasarkan Id_Prodi
+    private void populateFields(Mahasiswa mahasiswa) {
+        txtNIM.setText(mahasiswa.getNim());
+        cbProdi.setValue(getProdiNameById(mahasiswa.getIdProdi()));
+        txtNama.setText(mahasiswa.getNama());
+        txtTanggalLahir.setText(mahasiswa.getTanggalLahir().toString());
+        if (mahasiswa.getJenisKelamin().equals("Laki-Laki")) {
+            rbLaki.setSelected(true);
+        } else {
+            rbPerempuan.setSelected(true);
+        }
+        txtAlamat.setText(mahasiswa.getAlamat());
+        txtEmail.setText(mahasiswa.getEmail());
+        txtTelepon.setText(mahasiswa.getTelepon());
+        txtTahunMasuk.setText(String.valueOf(mahasiswa.getTahunMasuk()));
+    }
+
     private String getProdiNameById(String idProdi) {
         String query = "SELECT Nama FROM ProgramStudi WHERE Id_Prodi = ?";
 
@@ -303,7 +304,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
                 return rs.getString("Nama");
             }
         } catch (SQLException e) {
-            showAlert("Error getting Prodi Name: " + e.getMessage(), Alert.AlertType.ERROR);
+            showAlert("Error getting Nama Prodi: " + e.getMessage(), Alert.AlertType.ERROR);
         }
         return null;
     }
@@ -313,30 +314,21 @@ public class UpdateDeleteMahasiswa implements Initializable {
         String nim = txtNIM.getText();
         String idProdi = getProdiIdByName(cbProdi.getValue());
         String nama = txtNama.getText();
-        LocalDate tanggalLahir = LocalDate.parse(txtTanggalLahir.getText()); // Assuming txtTanggalLahir is formatted correctly
-        String jenisKelamin = rbLaki.isSelected() ? "Laki-laki" : "Perempuan";
+        LocalDate tanggalLahir = LocalDate.parse(txtTanggalLahir.getText());
+        String jenisKelamin = rbLaki.isSelected() ? "Laki-Laki" : "Perempuan";
         String alamat = txtAlamat.getText();
         String email = txtEmail.getText();
         String telepon = txtTelepon.getText();
         int tahunMasuk = Integer.parseInt(txtTahunMasuk.getText());
 
-        updateMahasiswa(nim, idProdi, nama, tanggalLahir, jenisKelamin, alamat, email, telepon, tahunMasuk);
-        loadTable();
-    }
+        if (nim.isEmpty() || idProdi == null || nama.isEmpty() || tanggalLahir == null || alamat.isEmpty() || email.isEmpty() || telepon.isEmpty() || txtTahunMasuk.getText().isEmpty()) {
+            showAlert("Please fill in all fields.", Alert.AlertType.ERROR);
+            return;
+        }
 
-    @FXML
-    private void btnHapus_Click(ActionEvent event) {
-        String nim = txtNIM.getText();
-        deleteMahasiswa(nim);
-        loadTable();
-    }
+        String query = "EXEC sp_UpdateMahasiswa ?, ?, ?, ?, ?, ?, ?, ?, ?";
 
-    // Methods
-
-    private void updateMahasiswa(String nim, String idProdi, String nama, LocalDate tanggalLahir, String jenisKelamin, String alamat, String email, String telepon, int tahunMasuk) {
-        String query = "CALL sp_UpdateMahasiswa(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        try (CallableStatement stmt = connection.conn.prepareCall(query)) {
+        try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
             stmt.setString(1, nim);
             stmt.setString(2, idProdi);
             stmt.setString(3, nama);
@@ -346,37 +338,42 @@ public class UpdateDeleteMahasiswa implements Initializable {
             stmt.setString(7, email);
             stmt.setString(8, telepon);
             stmt.setInt(9, tahunMasuk);
-
             stmt.executeUpdate();
+
+            showAlert("Data Mahasiswa updated successfully.", Alert.AlertType.INFORMATION);
+            loadTable();
+            clearFields();
         } catch (SQLException e) {
             showAlert("Error updating Mahasiswa: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
-    private void deleteMahasiswa(String nim) {
+    @FXML
+    private void btnHapus_Click(ActionEvent event) {
+        String nim = txtNIM.getText();
+
+        if (nim.isEmpty()) {
+            showAlert("Please enter NIM.", Alert.AlertType.ERROR);
+            return;
+        }
+
         String query = "DELETE FROM Mahasiswa WHERE NIM = ?";
 
         try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
             stmt.setString(1, nim);
             stmt.executeUpdate();
+
+            showAlert("Data Mahasiswa deleted successfully.", Alert.AlertType.INFORMATION);
+            clearFields();
         } catch (SQLException e) {
             showAlert("Error deleting Mahasiswa: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
-    private void showMahasiswa(String cari) {
-
-    }
-
-    private void showAlert(String message, Alert.AlertType type) {
-        Alert alert = new Alert(type);
-        alert.setContentText(message);
-        alert.show();
-    }
 
     private void clearFields() {
         txtNIM.clear();
-        cbProdi.getSelectionModel().clearSelection();
+        cbProdi.setValue(null);
         txtNama.clear();
         txtTanggalLahir.clear();
         rbLaki.setSelected(false);
@@ -385,5 +382,13 @@ public class UpdateDeleteMahasiswa implements Initializable {
         txtEmail.clear();
         txtTelepon.clear();
         txtTahunMasuk.clear();
+    }
+
+    private void showAlert(String message, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(alertType == Alert.AlertType.ERROR ? "Error" : "Information");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
