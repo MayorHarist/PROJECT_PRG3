@@ -64,6 +64,7 @@ public class InputPengumuman {
         ObservableList<TenagaKependidikan> tknData = loadDataForTKNComboBox();
         cbTKN.setItems(tknData);
 
+
        /* // Validasi input langsung di initialize
         txtnmPengumuman.textProperty().addListener((obs, oldVal, newVal) -> validateNama());
         tglPengumuman.valueProperty().addListener((obs, oldVal, newVal) -> validateTanggal());
@@ -130,6 +131,10 @@ public class InputPengumuman {
 
     @FXML
     protected void onBtnSimpanClick() {
+        // Validate inputs
+        if (!validateNama() || !validateTanggal() || !validateDeskripsi() || !validateTKN()) {
+            return;
+        }
         Id_Pengumuman = txtIDPengumuman.getText();
         Nama = txtnmPengumuman.getText();
         tanggal = tglPengumuman.getValue();
