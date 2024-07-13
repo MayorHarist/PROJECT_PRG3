@@ -169,7 +169,7 @@ public class InputProdiController implements Initializable {
 
     private void autoid() {
         try {
-            String sql = "SELECT dbo.autoIdProdi() AS newID";
+            String sql = "SELECT dbo.autoIdProdi()";
             connection.pstat = connection.conn.prepareStatement(sql);
             ResultSet result = connection.pstat.executeQuery();
 
