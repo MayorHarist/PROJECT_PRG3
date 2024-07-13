@@ -15,9 +15,9 @@
       <font>
          <Font name="System Bold" size="14.0" />
       </font></Label>
-    <TextField fx:id="txtNIM" layoutX="261.0" layoutY="80.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+    <TextField fx:id="txtNIM" disable="true" editable="false" layoutX="261.0" layoutY="80.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-    <Label alignment="CENTER" layoutX="154.0" layoutY="140.0" text="Id Prodi" GridPane.rowIndex="1">
+    <Label alignment="CENTER" layoutX="154.0" layoutY="140.0" text="Program Studi" GridPane.rowIndex="1">
       <font>
          <Font name="System Bold" size="14.0" />
       </font></Label>
@@ -63,20 +63,8 @@
       </font></Label>
     <TextField fx:id="txtTahunMasuk" layoutX="265.0" layoutY="515.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
 
-    <Label alignment="CENTER" layoutX="156.0" layoutY="568.0" text="Username" GridPane.rowIndex="9">
-      <font>
-         <Font name="System Bold" size="14.0" />
-      </font></Label>
-    <TextField fx:id="txtUsername" layoutX="266.0" layoutY="564.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-
-    <Label alignment="CENTER" layoutX="158.0" layoutY="619.0" text="Password" GridPane.rowIndex="10">
-      <font>
-         <Font name="System Bold" size="14.0" />
-      </font></Label>
-    <TextField fx:id="txtPassword" layoutX="267.0" layoutY="615.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-
-    <Button fx:id="btnSimpan" layoutX="331.0" layoutY="682.0" onAction="#btnSimpan_Click" text="Simpan" GridPane.rowIndex="11" />
-    <Button fx:id="btnBatal" layoutX="226.0" layoutY="682.0" onAction="#btnBatal_Click" text="Batal" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+    <Button fx:id="btnSimpan" layoutX="293.0" layoutY="682.0" onAction="#btnSimpan_Click" text="Simpan" GridPane.rowIndex="11" />
+    <Button fx:id="btnBatal" layoutX="199.0" layoutY="682.0" onAction="#btnBatal_Click" text="Batal" GridPane.columnIndex="1" GridPane.rowIndex="11" />
    <RadioButton fx:id="rbLaki" layoutX="266.0" layoutY="286.0" mnemonicParsing="false" text="Laki - laki">
       <font>
          <Font name="System Bold" size="14.0" />
@@ -86,9 +74,10 @@
          <Font name="System Bold" size="14.0" />
       </font></RadioButton>
    <ComboBox fx:id="cbProdi" layoutX="261.0" layoutY="138.0" prefHeight="25.0" prefWidth="179.0" />
-   <Label layoutX="205.0" layoutY="26.0" text="Form Program Studi">
+   <Label layoutX="249.0" layoutY="26.0" text="Form Mahasiswa">
       <font>
          <Font name="System Bold" size="20.0" />
       </font>
    </Label>
+   <Button fx:id="btnKembali" contentDisplay="RIGHT" layoutX="388.0" layoutY="682.0" mnemonicParsing="false" onAction="#btnKembali_Click" prefHeight="30.0" prefWidth="81.0" text="Kembali" />
 </AnchorPane>

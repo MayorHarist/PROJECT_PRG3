@@ -1,20 +1,27 @@
 package Master.CRUD_Mahasiswa;
 
 import Database.DBConnect;
+import Master.CRUD_Pengumuman.InputPengumuman;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class UpdateDeleteMahasiswa implements Initializable {
+
     @FXML
     private TextField txtNIM;
     @FXML
@@ -36,15 +43,17 @@ public class UpdateDeleteMahasiswa implements Initializable {
     @FXML
     private TextField txtTahunMasuk;
     @FXML
-    private TextField txtUsername;
-    @FXML
-    private TextField txtPassword;
-    @FXML
-    private Button btnCari;
+    private TextField txtCari;
     @FXML
     private Button btnUbah;
     @FXML
     private Button btnHapus;
+    @FXML
+    private Button btnRefresh;
+    @FXML
+    private Button btnTambah;
+    @FXML
+    private Button btnBatal;
     @FXML
     private TableView<Mahasiswa> tableMahasiswa;
     @FXML
@@ -65,22 +74,122 @@ public class UpdateDeleteMahasiswa implements Initializable {
     private TableColumn<Mahasiswa, String> Telepon;
     @FXML
     private TableColumn<Mahasiswa, Integer> TahunMasuk;
-    @FXML
-    private TableColumn<Mahasiswa, String> Username;
-    @FXML
-    private TableColumn<Mahasiswa, String> Password;
 
-    private ToggleGroup toggleGroupJenisKelamin;
-    private DBConnect connection = new DBConnect();
     private ObservableList<Mahasiswa> oblist = FXCollections.observableArrayList();
-    private ObservableList<String> prodiList = FXCollections.observableArrayList();
 
-    public class Mahasiswa {
-        String nim, idProdi, nama, jenisKelamin, alamat, email, telepon, username, password;
+    private DBConnect connection = new DBConnect();
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ToggleGroup toggleGroupJenisKelamin = new ToggleGroup();
+        rbLaki.setToggleGroup(toggleGroupJenisKelamin);
+        rbPerempuan.setToggleGroup(toggleGroupJenisKelamin);
+
+        loadProdi();
+        loadTable();
+
+        // Add listener to txtCari for search functionality
+        txtCari.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                cariDataMahasiswa(newValue);
+            } else {
+                loadTable();
+            }
+        });
+
+        // Add listener to tableMahasiswa for row selection
+        tableMahasiswa.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                populateFields(newValue);
+            }
+        });
+        // Menambahkan listener ke TextField txtNama
+        txtNama.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[a-zA-Z\\s]*")) { // Memeriksa apakah nilai baru hanya terdiri dari huruf dan spasi
+                txtNama.setText(newValue.replaceAll("[^a-zA-Z\\s]", "")); // Hapus karakter non-huruf
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informasi");
+                alert.setHeaderText(null);
+                alert.setContentText("Nama harus diisi dengan huruf.");
+                alert.showAndWait();
+            }
+        });
+
+        // Menambahkan listener ke TextField txtPoint
+        txtTelepon.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) { // Memeriksa apakah nilai baru hanya terdiri dari digit
+                txtTelepon.setText(newValue.replaceAll("[^\\d]", "")); // Hapus karakter non-digit
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informasi");
+                alert.setHeaderText(null);
+                alert.setContentText("Harus diisi dengan angka.");
+                alert.showAndWait();
+            }
+        });
+
+        // Event handler untuk membatasi panjang maksimal telepon
+        txtTelepon.setOnKeyReleased(event -> {
+            if (txtTelepon.getText().length() > 13) {
+                showAlert("Nomor telepon maksimal 13 digit.", Alert.AlertType.WARNING);
+                txtTelepon.setText(txtTelepon.getText().substring(0, 13)); // Hapus karakter melebihi 13 digit
+            }
+        });
+
+        // Menambahkan listener ke TextField txtPoint
+        txtTahunMasuk.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) { // Memeriksa apakah nilai baru hanya terdiri dari digit
+                txtTahunMasuk.setText(newValue.replaceAll("[^\\d]", "")); // Hapus karakter non-digit
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informasi");
+                alert.setHeaderText(null);
+                alert.setContentText("Harus diisi dengan angka.");
+                alert.showAndWait();
+            }
+        });
+
+        // Event handler untuk membatasi panjang maksimal tahun masuk
+        txtTahunMasuk.setOnKeyReleased(event -> {
+            if (txtTahunMasuk.getText().length() > 4) {
+                showAlert("Tahun masuk hanya boleh maksimal 4 digit.", Alert.AlertType.WARNING);
+                txtTahunMasuk.setText(txtTahunMasuk.getText().substring(0, 4)); // Hapus karakter melebihi 4 digit
+            }
+        });
+    }
+
+    private boolean isValidEmailInput(String input) {
+        // Regex untuk memvalidasi format email
+        return input.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
+    }
+
+    public void btnTambah_Click(ActionEvent actionEvent) {
+        try {
+            // Pastikan path ke file FXML sudah benar
+            FXMLLoader loader = new FXMLLoader(InputMahasiswa.class.getResource("/Master/CRUD_Mahasiswa/InputMahasiswa.fxml"));
+            Scene scene = new Scene(loader.load(), 600, 757);
+            Stage stage = new Stage();
+            stage.setTitle("Tambah Data Mahasiswa!");
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void btnBatalClick(ActionEvent actionEvent) {
+        clearFields();
+    }
+
+    public void btnRefreshClick(ActionEvent actionEvent) {
+        loadTable();
+    }
+
+
+    public static class Mahasiswa {
+        String nim, idProdi, nama, jenisKelamin, alamat, email, telepon;
         LocalDate tanggalLahir;
         int tahunMasuk;
 
-        public Mahasiswa(String nim, String idProdi, String nama, LocalDate tanggalLahir, String jenisKelamin, String alamat, String email, String telepon, int tahunMasuk, String username, String password) {
+        public Mahasiswa(String nim, String idProdi, String nama, LocalDate tanggalLahir, String jenisKelamin, String alamat, String email, String telepon, int tahunMasuk) {
             this.nim = nim;
             this.idProdi = idProdi;
             this.nama = nama;
@@ -90,8 +199,6 @@ public class UpdateDeleteMahasiswa implements Initializable {
             this.email = email;
             this.telepon = telepon;
             this.tahunMasuk = tahunMasuk;
-            this.username = username;
-            this.password = password;
         }
 
         public String getNim() {
@@ -129,25 +236,6 @@ public class UpdateDeleteMahasiswa implements Initializable {
         public int getTahunMasuk() {
             return tahunMasuk;
         }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        toggleGroupJenisKelamin = new ToggleGroup();
-        this.rbLaki.setToggleGroup(toggleGroupJenisKelamin);
-        this.rbPerempuan.setToggleGroup(toggleGroupJenisKelamin);
-        setFieldsEditable(false);
-        loadProdi();
-        loadTable();
-
     }
 
     private void loadProdi() {
@@ -165,23 +253,106 @@ public class UpdateDeleteMahasiswa implements Initializable {
             showAlert("Error loading Prodi: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
-    private void setFieldsEditable(boolean editable) {
-        txtNama.setEditable(editable);
-        txtTanggalLahir.setEditable(editable);
-        rbLaki.setDisable(!editable);
-        rbPerempuan.setDisable(!editable);
-        txtAlamat.setEditable(editable);
-        txtEmail.setEditable(editable);
-        txtTelepon.setEditable(editable);
-        txtTahunMasuk.setEditable(editable);
-        txtUsername.setEditable(editable);
-        txtPassword.setEditable(editable);
-        cbProdi.setDisable(!editable);
-        btnUbah.setDisable(!editable);
-        btnHapus.setDisable(!editable);
+
+    private String getProdiIdByName(String namaProdi) {
+        String query = "SELECT Id_Prodi FROM ProgramStudi WHERE Nama = ?";
+
+        try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
+            stmt.setString(1, namaProdi);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("Id_Prodi");
+            }
+        } catch (SQLException e) {
+            showAlert("Error getting Id_Prodi: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+        return null;
     }
+
+    private void loadTable() {
+        oblist.clear();
+        String query = "SELECT * FROM Mahasiswa WHERE Status = 'Aktif'";
+
+        try (PreparedStatement stmt = connection.conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String nim = rs.getString("NIM");
+                String idProdi = rs.getString("Id_Prodi");
+                String nama = rs.getString("Nama");
+                LocalDate tanggalLahir = rs.getDate("Tanggal_Lahir").toLocalDate();
+                String jenisKelamin = rs.getString("Jenis_Kelamin");
+                String alamat = rs.getString("Alamat");
+                String email = rs.getString("Email");
+                String telepon = rs.getString("Telepon");
+                int tahunMasuk = rs.getInt("Tahun_Masuk");
+
+                oblist.add(new Mahasiswa(nim, idProdi, nama, tanggalLahir, jenisKelamin, alamat, email, telepon, tahunMasuk));
+            }
+        } catch (SQLException e) {
+            showAlert("Error loading Mahasiswa: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+
+        NIM.setCellValueFactory(new PropertyValueFactory<>("nim"));
+        IdProdi.setCellValueFactory(new PropertyValueFactory<>("idProdi"));
+        Nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
+        TanggalLahir.setCellValueFactory(new PropertyValueFactory<>("tanggalLahir"));
+        JenisKelamin.setCellValueFactory(new PropertyValueFactory<>("jenisKelamin"));
+        Alamat.setCellValueFactory(new PropertyValueFactory<>("alamat"));
+        Email.setCellValueFactory(new PropertyValueFactory<>("email"));
+        Telepon.setCellValueFactory(new PropertyValueFactory<>("telepon"));
+        TahunMasuk.setCellValueFactory(new PropertyValueFactory<>("tahunMasuk"));
+
+        tableMahasiswa.setItems(oblist);
+    }
+
+    private void cariDataMahasiswa(String keyword) {
+        oblist.clear();
+        String query = "EXEC sp_CariMahasiswa ?";
+
+        try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
+            stmt.setString(1, keyword.isEmpty() ? null : keyword);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String nim = rs.getString("NIM");
+                String idProdi = rs.getString("Id_Prodi");
+                String nama = rs.getString("Nama");
+                LocalDate tanggalLahir = rs.getDate("Tanggal_Lahir").toLocalDate();
+                String jenisKelamin = rs.getString("Jenis_Kelamin");
+                String alamat = rs.getString("Alamat");
+                String email = rs.getString("Email");
+                String telepon = rs.getString("Telepon");
+                int tahunMasuk = rs.getInt("Tahun_Masuk");
+
+                oblist.add(new Mahasiswa(nim, idProdi, nama, tanggalLahir, jenisKelamin, alamat, email, telepon, tahunMasuk));
+            }
+        } catch (SQLException e) {
+            showAlert("Error searching Mahasiswa: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+
+        tableMahasiswa.setItems(oblist);
+    }
+
+    private void populateFields(Mahasiswa mahasiswa) {
+        txtNIM.setText(mahasiswa.getNim());
+        cbProdi.setValue(getProdiNameById(mahasiswa.getIdProdi()));
+        txtNama.setText(mahasiswa.getNama());
+        txtTanggalLahir.setText(mahasiswa.getTanggalLahir().toString());
+        if (mahasiswa.getJenisKelamin().equals("Laki-Laki")) {
+            rbLaki.setSelected(true);
+        } else {
+            rbPerempuan.setSelected(true);
+        }
+        txtAlamat.setText(mahasiswa.getAlamat());
+        txtEmail.setText(mahasiswa.getEmail());
+        txtTelepon.setText(mahasiswa.getTelepon());
+        txtTahunMasuk.setText(String.valueOf(mahasiswa.getTahunMasuk()));
+    }
+
     private String getProdiNameById(String idProdi) {
         String query = "SELECT Nama FROM ProgramStudi WHERE Id_Prodi = ?";
+
         try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
             stmt.setString(1, idProdi);
             ResultSet rs = stmt.executeQuery();
@@ -189,143 +360,103 @@ public class UpdateDeleteMahasiswa implements Initializable {
                 return rs.getString("Nama");
             }
         } catch (SQLException e) {
-            showAlert("Error getting Prodi name: " + e.getMessage(), Alert.AlertType.ERROR);
+            showAlert("Error getting Nama Prodi: " + e.getMessage(), Alert.AlertType.ERROR);
         }
         return null;
     }
+
+    private boolean isDuplicateEmail(String email) {
+        String query = "SELECT COUNT(*) AS count FROM Mahasiswa WHERE Email = ?";
+        try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt("count");
+                return count > 0;
+            }
+        } catch (SQLException e) {
+            showAlert("Error checking duplicate email: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+        return false;
+    }
+
     @FXML
-    private void btnCari_Click(MouseEvent event) {
+    private void btnUbah_Click(ActionEvent event) {
         String nim = txtNIM.getText();
-        Connection con = connection.conn;
-        if (con != null) {
-            String query = "SELECT * FROM Mahasiswa WHERE NIM = ?";
-            try {
-                PreparedStatement preparedStatement = con.prepareStatement(query);
-                preparedStatement.setString(1, nim);
-                ResultSet resultSet = preparedStatement.executeQuery();
-                if (resultSet.next()) {
-                    String nama = resultSet.getString("Nama");
-                    LocalDate tanggalLahir = resultSet.getDate("Tanggal_Lahir").toLocalDate();
-                    String jenisKelamin = resultSet.getString("Jenis_Kelamin");
-                    String alamat = resultSet.getString("Alamat");
-                    String email = resultSet.getString("Email");
-                    String telepon = resultSet.getString("Telepon");
-                    int tahunMasuk = resultSet.getInt("Tahun_Masuk");
-                    String username = resultSet.getString("Username");
-                    String password = resultSet.getString("Password");
-                    String idProdi = resultSet.getString("Id_Prodi");
+        String idProdi = getProdiIdByName(cbProdi.getValue());
+        String nama = txtNama.getText();
+        LocalDate tanggalLahir = LocalDate.parse(txtTanggalLahir.getText());
+        String jenisKelamin = rbLaki.isSelected() ? "Laki-Laki" : "Perempuan";
+        String alamat = txtAlamat.getText();
+        String email = txtEmail.getText();
+        String telepon = txtTelepon.getText();
+        int tahunMasuk = Integer.parseInt(txtTahunMasuk.getText());
 
-                    txtNama.setText(nama);
-                    txtTanggalLahir.setText(tanggalLahir.toString());
-                    if (jenisKelamin.equals("Laki-laki")) {
-                        rbLaki.setSelected(true);
-                    } else {
-                        rbPerempuan.setSelected(true);
-                    }
-                    txtAlamat.setText(alamat);
-                    txtEmail.setText(email);
-                    txtTelepon.setText(telepon);
-                    txtTahunMasuk.setText(String.valueOf(tahunMasuk));
-                    txtUsername.setText(username);
-                    txtPassword.setText(password);
-                    cbProdi.setValue(getProdiNameById(idProdi));
-
-                    setFieldsEditable(true);  // Set all fields to editable
-                    showMahasiswa(nim);
-                } else {
-                    showAlert("Mahasiswa not found!", Alert.AlertType.ERROR);
-                    setFieldsEditable(false);
-                    clearFields();
-                }
-            } catch (SQLException throwables) {
-                showAlert("Error: " + throwables.getMessage(), Alert.AlertType.ERROR);
-                throwables.printStackTrace();
-            }
+        if (nim.isEmpty() || idProdi == null || nama.isEmpty() || tanggalLahir == null || alamat.isEmpty() || email.isEmpty() || telepon.isEmpty() || txtTahunMasuk.getText().isEmpty()) {
+            showAlert("Please fill in all fields.", Alert.AlertType.ERROR);
+            return;
         }
-    }
 
-    private void showAlert(String message, Alert.AlertType alertType) {
-        Alert alert = new Alert(alertType);
-        alert.setContentText(message);
-        alert.show();
-    }
-    @FXML
-    private void btnUbah_Click(MouseEvent event) {
-        Connection con = connection.conn;
-        if (con != null) {
-            String selectedProdi = cbProdi.getValue();
-            String queryProdi = "SELECT Id_Prodi FROM ProgramStudi WHERE Nama = ?";
-            String idProdi = null;
+        // Validasi format email
+        if (!isValidEmailInput(email)) {
+            showAlert("Format email tidak valid.", Alert.AlertType.WARNING);
+            return; // Hentikan proses simpan jika email tidak valid
+        }
 
-            try {
-                PreparedStatement preparedStatementProdi = con.prepareStatement(queryProdi);
-                preparedStatementProdi.setString(1, selectedProdi);
-                ResultSet resultSetProdi = preparedStatementProdi.executeQuery();
-                if (resultSetProdi.next()) {
-                    idProdi = resultSetProdi.getString("Id_Prodi");
-                } else {
-                    showAlert("Program studi tidak ditemukan!", Alert.AlertType.ERROR);
-                    return;
-                }
+        // Validasi duplikat email
+        if (isDuplicateEmail(email)) {
+            showAlert("Email sudah terdaftar. Harap gunakan email lain.", Alert.AlertType.WARNING);
+            return; // Hentikan proses simpan jika ada duplikat email
+        }
 
-                String query = "EXEC sp_UpdateMahasiswa ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
-                try {
-                    PreparedStatement preparedStatement = con.prepareStatement(query);
-                    preparedStatement.setString(1, txtNIM.getText());
-                    preparedStatement.setString(2, idProdi);  // Menggunakan Id_Prodi yang valid
-                    preparedStatement.setString(3, txtNama.getText());
-                    preparedStatement.setDate(4, Date.valueOf(txtTanggalLahir.getText()));
-                    preparedStatement.setString(5, rbLaki.isSelected() ? "Laki-laki" : "Perempuan");
-                    preparedStatement.setString(6, txtAlamat.getText());
-                    preparedStatement.setString(7, txtEmail.getText());
-                    preparedStatement.setString(8, txtTelepon.getText());
-                    preparedStatement.setInt(9, Integer.parseInt(txtTahunMasuk.getText()));
-                    preparedStatement.setString(10, txtUsername.getText());
-                    preparedStatement.setString(11, txtPassword.getText());
+        String query = "EXEC sp_UpdateMahasiswa ?, ?, ?, ?, ?, ?, ?, ?, ?";
 
-                    int affectedRows = preparedStatement.executeUpdate();
-                    if (affectedRows > 0) {
-                        showAlert("Data mahasiswa berhasil diubah", Alert.AlertType.INFORMATION);
-                        showMahasiswa(txtNIM.getText());
-                    } else {
-                        showAlert("Gagal mengubah data mahasiswa", Alert.AlertType.ERROR);
-                    }
-                } catch (SQLException throwables) {
-                    showAlert("Error: " + throwables.getMessage(), Alert.AlertType.ERROR);
-                    throwables.printStackTrace();
-                }
-            } catch (SQLException e) {
-                showAlert("Error getting Id_Prodi: " + e.getMessage(), Alert.AlertType.ERROR);
-                e.printStackTrace();
-            }
+        try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
+            stmt.setString(1, nim);
+            stmt.setString(2, idProdi);
+            stmt.setString(3, nama);
+            stmt.setDate(4, Date.valueOf(tanggalLahir));
+            stmt.setString(5, jenisKelamin);
+            stmt.setString(6, alamat);
+            stmt.setString(7, email);
+            stmt.setString(8, telepon);
+            stmt.setInt(9, tahunMasuk);
+            stmt.executeUpdate();
+
+            showAlert("Data Mahasiswa updated successfully.", Alert.AlertType.INFORMATION);
+            loadTable();
+            clearFields();
+        } catch (SQLException e) {
+            showAlert("Error updating Mahasiswa: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
     @FXML
-    private void btnHapus_Click(MouseEvent event) {
-        Connection con = connection.conn;
-        if (con != null) {
-            String query = "EXEC sp_DeleteMahasiswa ?";
-            try {
-                PreparedStatement preparedStatement = con.prepareStatement(query);
-                preparedStatement.setString(1, txtNIM.getText());
+    private void btnHapus_Click(ActionEvent event) {
+        String nim = txtNIM.getText();
 
-                int affectedRows = preparedStatement.executeUpdate();
-                if (affectedRows > 0) {
-                    showAlert("Data mahasiswa berhasil dihapus", Alert.AlertType.INFORMATION);
-                    showMahasiswa(txtNIM.getText());
-                    clearFields();
-                } else {
-                    showAlert("Gagal menghapus data mahasiswa", Alert.AlertType.ERROR);
-                }
-            } catch (SQLException throwables) {
-                showAlert("Error: " + throwables.getMessage(), Alert.AlertType.ERROR);
-                throwables.printStackTrace();
-            }
+        if (nim.isEmpty()) {
+            showAlert("Please enter NIM.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        String query = "DELETE FROM Mahasiswa WHERE NIM = ?";
+
+        try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
+            stmt.setString(1, nim);
+            stmt.executeUpdate();
+
+            showAlert("Data Mahasiswa deleted successfully.", Alert.AlertType.INFORMATION);
+            clearFields();
+        } catch (SQLException e) {
+            showAlert("Error deleting Mahasiswa: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
+
+
     private void clearFields() {
         txtNIM.clear();
+        cbProdi.setValue(null);
         txtNama.clear();
         txtTanggalLahir.clear();
         rbLaki.setSelected(false);
@@ -334,97 +465,13 @@ public class UpdateDeleteMahasiswa implements Initializable {
         txtEmail.clear();
         txtTelepon.clear();
         txtTahunMasuk.clear();
-        txtUsername.clear();
-        txtPassword.clear();
-        cbProdi.getSelectionModel().clearSelection();
     }
 
-
-    private void showMahasiswa(String nim) {
-        oblist.clear();
-        Connection con = connection.conn;
-        if (con != null) {
-            String query = "SELECT * FROM Mahasiswa WHERE NIM = ?";
-            try {
-                PreparedStatement preparedStatement = con.prepareStatement(query);
-                preparedStatement.setString(1, nim);
-                ResultSet resultSet = preparedStatement.executeQuery();
-                if (resultSet.next()) {
-                    String idProdi = resultSet.getString("Id_Prodi");
-                    String nama = resultSet.getString("Nama");
-                    LocalDate tanggalLahir = resultSet.getDate("Tanggal_Lahir").toLocalDate();
-                    String jenisKelamin = resultSet.getString("Jenis_Kelamin");
-                    String alamat = resultSet.getString("Alamat");
-                    String email = resultSet.getString("Email");
-                    String telepon = resultSet.getString("Telepon");
-                    int tahunMasuk = resultSet.getInt("Tahun_Masuk");
-                    String username = resultSet.getString("Username");
-                    String password = resultSet.getString("Password");
-
-                    oblist.add(new Mahasiswa(nim, idProdi, nama, tanggalLahir, jenisKelamin, alamat, email, telepon, tahunMasuk, username, password));
-                }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        }
-
-        NIM.setCellValueFactory(new PropertyValueFactory<>("nim"));
-        IdProdi.setCellValueFactory(new PropertyValueFactory<>("idProdi"));
-        Nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
-        TanggalLahir.setCellValueFactory(new PropertyValueFactory<>("tanggalLahir"));
-        JenisKelamin.setCellValueFactory(new PropertyValueFactory<>("jenisKelamin"));
-        Alamat.setCellValueFactory(new PropertyValueFactory<>("alamat"));
-        Email.setCellValueFactory(new PropertyValueFactory<>("email"));
-        Telepon.setCellValueFactory(new PropertyValueFactory<>("telepon"));
-        TahunMasuk.setCellValueFactory(new PropertyValueFactory<>("tahunMasuk"));
-        Username.setCellValueFactory(new PropertyValueFactory<>("username"));
-        Password.setCellValueFactory(new PropertyValueFactory<>("password"));
-
-        tableMahasiswa.setItems(oblist);
+    private void showAlert(String message, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(alertType == Alert.AlertType.ERROR ? "Error" : "Information");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
-
-    private void loadTable(){
-        oblist.clear();
-        Connection con = connection.conn;
-        if (con != null) {
-            String query = "SELECT * FROM Mahasiswa WHERE Status = 'Aktif'";
-            try {
-                PreparedStatement preparedStatement = con.prepareStatement(query);
-                ResultSet resultSet = preparedStatement.executeQuery();
-                while (resultSet.next()) {
-                    String nim = resultSet.getString("NIM");
-                    String idProdi = resultSet.getString("Id_Prodi");
-                    String nama = resultSet.getString("Nama");
-                    LocalDate tanggalLahir = resultSet.getDate("Tanggal_Lahir").toLocalDate();
-                    String jenisKelamin = resultSet.getString("Jenis_Kelamin");
-                    String alamat = resultSet.getString("Alamat");
-                    String email = resultSet.getString("Email");
-                    String telepon = resultSet.getString("Telepon");
-                    int tahunMasuk = resultSet.getInt("Tahun_Masuk");
-                    String username = resultSet.getString("Username");
-                    String password = resultSet.getString("Password");
-
-                    oblist.add(new Mahasiswa(nim, idProdi, nama, tanggalLahir, jenisKelamin, alamat, email, telepon, tahunMasuk, username, password));
-                }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        }
-
-        // Set nilai dari PropertyValueFactory untuk setiap TableColumn
-        NIM.setCellValueFactory(new PropertyValueFactory<>("nim"));
-        IdProdi.setCellValueFactory(new PropertyValueFactory<>("idProdi"));
-        Nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
-        TanggalLahir.setCellValueFactory(new PropertyValueFactory<>("tanggalLahir"));
-        JenisKelamin.setCellValueFactory(new PropertyValueFactory<>("jenisKelamin"));
-        Alamat.setCellValueFactory(new PropertyValueFactory<>("alamat"));
-        Email.setCellValueFactory(new PropertyValueFactory<>("email"));
-        Telepon.setCellValueFactory(new PropertyValueFactory<>("telepon"));
-        TahunMasuk.setCellValueFactory(new PropertyValueFactory<>("tahunMasuk"));
-        Username.setCellValueFactory(new PropertyValueFactory<>("username"));
-        Password.setCellValueFactory(new PropertyValueFactory<>("password"));
-
-        tableMahasiswa.setItems(oblist);
-    }
-
 }

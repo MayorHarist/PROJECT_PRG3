@@ -10,43 +10,35 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="1080.0" prefWidth="1398.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Mahasiswa.UpdateDeleteMahasiswa">
-    <Label layoutX="135.0" layoutY="470.0" text="NIM" />
-    <TextField fx:id="txtNIM" layoutX="250.0" layoutY="464.0" />
+    <Label layoutX="137.0" layoutY="553.0" text="NIM" />
+    <TextField fx:id="txtNIM" editable="false" layoutX="252.0" layoutY="547.0" />
 
-    <Label layoutX="135.0" layoutY="509.0" text="Id Prodi" />
-    <ComboBox fx:id="cbProdi" layoutX="249.0" layoutY="504.0" prefHeight="25.0" prefWidth="151.0" />
+    <Label layoutX="137.0" layoutY="592.0" text="Id Prodi" />
+    <ComboBox fx:id="cbProdi" layoutX="251.0" layoutY="587.0" prefHeight="25.0" prefWidth="151.0" />
 
-    <Label layoutX="140.0" layoutY="552.0" text="Nama" />
-    <TextField fx:id="txtNama" layoutX="508.0" layoutY="535.0" />
+    <Label layoutX="133.0" layoutY="635.0" text="Nama" />
+    <TextField fx:id="txtNama" layoutX="252.0" layoutY="631.0" />
 
-    <Label layoutX="345.0" layoutY="579.0" text="Tanggal Lahir" />
-    <TextField fx:id="txtTanggalLahir" layoutX="508.0" layoutY="575.0" />
+    <Label layoutX="129.0" layoutY="684.0" text="Tanggal Lahir" />
+    <TextField fx:id="txtTanggalLahir" layoutX="252.0" layoutY="680.0" />
 
-    <Label layoutX="345.0" layoutY="619.0" text="Jenis Kelamin" />
+    <Label layoutX="459.0" layoutY="553.0" text="Jenis Kelamin" />
 
-    <Label layoutX="345.0" layoutY="655.0" text="Alamat" />
-    <TextField fx:id="txtAlamat" layoutX="508.0" layoutY="655.0" />
+    <Label layoutX="459.0" layoutY="588.0" text="Alamat" />
+    <TextField fx:id="txtAlamat" layoutX="565.0" layoutY="591.0" />
 
-    <Label layoutX="345.0" layoutY="695.0" text="Email" />
-    <TextField fx:id="txtEmail" layoutX="508.0" layoutY="695.0" />
+    <Label layoutX="459.0" layoutY="628.0" text="Email" />
+    <TextField fx:id="txtEmail" editable="false" layoutX="565.0" layoutY="631.0" />
 
-    <Label layoutX="345.0" layoutY="735.0" text="Telepon" />
-    <TextField fx:id="txtTelepon" layoutX="508.0" layoutY="735.0" />
+    <Label layoutX="459.0" layoutY="682.0" text="Telepon" />
+    <TextField fx:id="txtTelepon" layoutX="565.0" layoutY="680.0" />
 
-    <Label layoutX="345.0" layoutY="775.0" text="Tahun Masuk" />
-    <TextField fx:id="txtTahunMasuk" layoutX="508.0" layoutY="775.0" />
+    <Label layoutX="803.0" layoutY="553.0" text="Tahun Masuk" />
+    <TextField fx:id="txtTahunMasuk" layoutX="966.0" layoutY="553.0" />
+    <Button fx:id="btnUbah" layoutX="919.0" layoutY="690.0" onAction="#btnUbah_Click" onMouseClicked="#btnUbah_Click" prefHeight="30.0" prefWidth="90.0" text="Ubah" />
+    <Button fx:id="btnHapus" layoutX="1048.0" layoutY="690.0" onAction="#btnHapus_Click" onMouseClicked="#btnHapus_Click" prefHeight="30.0" prefWidth="90.0" text="Hapus" />
 
-    <Label layoutX="345.0" layoutY="815.0" text="Username" />
-    <TextField fx:id="txtUsername" layoutX="508.0" layoutY="815.0" />
-
-    <Label layoutX="345.0" layoutY="855.0" text="Password" />
-    <TextField fx:id="txtPassword" layoutX="508.0" layoutY="855.0" />
-
-    <Button fx:id="btnCari" layoutX="492.0" layoutY="36.0" onMouseClicked="#btnCari_Click" text="Cari" />
-    <Button fx:id="btnUbah" layoutX="392.0" layoutY="899.0" onMouseClicked="#btnUbah_Click" text="Ubah" />
-    <Button fx:id="btnHapus" layoutX="508.0" layoutY="899.0" onMouseClicked="#btnHapus_Click" text="Hapus" />
-
-    <TableView fx:id="tableMahasiswa" layoutX="73.0" layoutY="75.0" prefHeight="358.0" prefWidth="1257.0">
+    <TableView fx:id="tableMahasiswa" layoutX="71.0" layoutY="134.0" prefHeight="358.0" prefWidth="1257.0">
         <columns>
             <TableColumn fx:id="NIM" prefWidth="75.0" text="NIM" />
             <TableColumn fx:id="IdProdi" prefWidth="93.66665649414062" text="Id Prodi" />
@@ -57,10 +49,14 @@
             <TableColumn fx:id="Email" prefWidth="132.6666259765625" text="Email" />
             <TableColumn fx:id="Telepon" prefWidth="130.3333740234375" text="Telepon" />
             <TableColumn fx:id="TahunMasuk" prefWidth="111.6666259765625" text="Tahun Masuk" />
-            <TableColumn fx:id="Username" prefWidth="100.0" text="Username" />
-            <TableColumn fx:id="Password" prefWidth="105.0" text="Password" />
+            <TableColumn fx:id="PointKRPP" prefWidth="100.0" text="Point KRPP" />
+            <TableColumn fx:id="IPK" prefWidth="105.0" text="IPK" />
         </columns>
     </TableView>
-    <RadioButton fx:id="rbLaki" layoutX="508.0" layoutY="619.0" mnemonicParsing="false" text="Laki - laki" />
-    <RadioButton fx:id="rbPerempuan" layoutX="614.0" layoutY="619.0" mnemonicParsing="false" text="Perempuan" />
+    <RadioButton fx:id="rbLaki" layoutX="565.0" layoutY="553.0" mnemonicParsing="false" text="Laki - laki" />
+    <RadioButton fx:id="rbPerempuan" layoutX="671.0" layoutY="553.0" mnemonicParsing="false" text="Perempuan" />
+   <Button fx:id="btnTambah" layoutX="71.0" layoutY="93.0" mnemonicParsing="false" onAction="#btnTambah_Click" prefHeight="25.0" prefWidth="82.0" text="Tambah" />
+   <Button fx:id="btnBatal" layoutX="776.0" layoutY="690.0" mnemonicParsing="false" onAction="#btnBatalClick" prefHeight="30.0" prefWidth="96.0" text="Batal" />
+   <Button fx:id="btnRefresh" layoutX="644.0" layoutY="507.0" mnemonicParsing="false" onAction="#btnRefreshClick" prefHeight="30.0" prefWidth="141.0" text="Refresh" />
+   <TextField fx:id="txtCari" layoutX="557.0" layoutY="34.0" prefHeight="30.0" prefWidth="202.0" />
 </AnchorPane>
