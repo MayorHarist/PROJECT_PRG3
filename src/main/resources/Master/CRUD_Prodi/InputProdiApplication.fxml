@@ -20,11 +20,12 @@
     <Label layoutX="128.0" layoutY="226.0" text="Akreditasi" GridPane.rowIndex="3" />
     <TextField fx:id="txtAkreditasi" layoutX="262.0" layoutY="222.0" prefHeight="25.0" prefWidth="53.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-    <Button fx:id="btnSimpan" layoutX="347.0" layoutY="297.0" onAction="#btnSimpan_Click" text="Simpan" GridPane.rowIndex="5" />
+    <Button fx:id="btnSimpan" layoutX="300.0" layoutY="297.0" onAction="#btnSimpan_Click" text="Simpan" GridPane.rowIndex="5" />
     <Button fx:id="btnBatal" layoutX="217.0" layoutY="296.0" onAction="#btnBatal_Click" prefHeight="26.0" prefWidth="55.0" text="Batal" GridPane.columnIndex="1" GridPane.rowIndex="5" />
     <Label alignment="CENTER" layoutX="205.0" layoutY="25.0" prefHeight="26.0" prefWidth="213.0" text="Input Data Program Studi">
         <font>
             <Font name="System Bold" size="16.0" />
         </font>
     </Label>
+   <Button fx:id="btnKembali" layoutX="382.0" layoutY="297.0" mnemonicParsing="false" onAction="#btnKembali_Click" prefHeight="25.0" prefWidth="62.0" text="Kembali" />
 </AnchorPane>

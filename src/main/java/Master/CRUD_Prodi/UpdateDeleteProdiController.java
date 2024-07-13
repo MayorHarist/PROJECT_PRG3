@@ -3,11 +3,15 @@ package Master.CRUD_Prodi;
 import Database.DBConnect;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -26,7 +30,7 @@ public class UpdateDeleteProdiController implements Initializable {
     @FXML
     private TextField txtAkreditasi;
     @FXML
-    private Button btnCari;
+    private TextField txtCari;
     @FXML
     private Button btnUbah;
     @FXML
@@ -56,11 +60,49 @@ public class UpdateDeleteProdiController implements Initializable {
         // Load data into table
         loadTableData();
 
-        // Set table selection listener
-        setupTableSelectionListener();
+        // Add listener to txtCari for search functionality
+        txtCari.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                cariDataProdi(newValue);
+            } else {
+                loadTableData();
+            }
+        });
 
         // Set initial state of form fields and buttons
         clear();
+
+        // Set up row click listener to populate fields
+        tableProdi.setRowFactory(tv -> {
+            TableRow<Prodi> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getClickCount() == 1) {
+                    Prodi clickedRow = row.getItem();
+                    populateFields(clickedRow);
+                }
+            });
+            return row;
+        });
+        txtNama.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[a-zA-Z\\s]*")) { // Memeriksa apakah nilai baru hanya terdiri dari huruf dan spasi
+                txtNama.setText(newValue.replaceAll("[^a-zA-Z\\s]", "")); // Hapus karakter non-huruf
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informasi");
+                alert.setHeaderText(null);
+                alert.setContentText("Nama harus diisi dengan huruf.");
+                alert.showAndWait();
+            }
+        });
+        txtAkreditasi.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[a-zA-Z\\s]*")) { // Memeriksa apakah nilai baru hanya terdiri dari huruf dan spasi
+                txtAkreditasi.setText(newValue.replaceAll("[^a-zA-Z\\s]", "")); // Hapus karakter non-huruf
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informasi");
+                alert.setHeaderText(null);
+                alert.setContentText("Harus diisi dengan huruf.");
+                alert.showAndWait();
+            }
+        });
     }
 
     private void loadTableData() {
@@ -89,124 +131,146 @@ public class UpdateDeleteProdiController implements Initializable {
         }
     }
 
+    private void cariDataProdi(String keyword) {
+        oblist.clear();
+        String query = "EXEC sp_CariProdi ?";
 
-    private void setupTableSelectionListener() {
-        tableProdi.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                fillFormWithSelectedProdi(newValue);
+        try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
+            stmt.setString(1, keyword.isEmpty() ? null : "%" + keyword + "%");
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String idProdi = rs.getString("Id_Prodi");
+                String nama = rs.getString("Nama");
+                String jenjangPendidikan = rs.getString("Jenjang_Pendidikan");
+                String akreditasi = rs.getString("Akreditasi");
+
+                oblist.add(new Prodi(idProdi, nama, jenjangPendidikan, akreditasi));
+            }
+        } catch (SQLException e) {
+            showAlert("Error searching ProgramStudi: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+
+        tableProdi.setItems(oblist);
+    }
+
+    @FXML
+    public void btnUbah_Click(ActionEvent actionEvent) {
+        // Check if any item is selected
+        if (txtIdProdi.getText().isEmpty()) {
+            showAlert("Pilih data yang ingin diubah terlebih dahulu", Alert.AlertType.WARNING);
+            return;
+        }
+
+        // Show confirmation dialog
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Konfirmasi Ubah Data");
+        confirmationAlert.setHeaderText(null);
+        confirmationAlert.setContentText("Apakah Anda yakin ingin mengubah data ini?");
+
+        // If the user confirms, proceed with update operation
+        confirmationAlert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    DBConnect connection = new DBConnect();
+                    String query = "EXEC sp_UpdateProdi ?, ?, ?, ?";
+                    try (Connection conn = connection.conn;
+                         PreparedStatement stmt = conn.prepareStatement(query)) {
+                        stmt.setString(1, txtIdProdi.getText());
+                        stmt.setString(2, txtNama.getText());
+                        stmt.setString(3, txtJenjangPendidikan.getText());
+                        stmt.setString(4, txtAkreditasi.getText());
+
+                        stmt.executeUpdate();
+                        showAlert("Basisdata berhasil diperbaharui", Alert.AlertType.INFORMATION);
+                        clear();
+                        loadTableData(); // Reload table data
+                    }
+                } catch (SQLException e) {
+                    showAlert("Error: " + e.getMessage(), Alert.AlertType.ERROR);
+                }
             }
         });
     }
 
-    private void fillFormWithSelectedProdi(Prodi prodi) {
-        txtIdProdi.setText(prodi.getIdprodi());
-        txtIdProdi.setEditable(false);
-        txtNama.setText(prodi.getNama());
-        txtJenjangPendidikan.setText(prodi.getJenjangpendidikan());
-        txtAkreditasi.setText(prodi.getAkreditasi());
-
-        txtNama.setDisable(false);
-        txtJenjangPendidikan.setDisable(false);
-        txtAkreditasi.setDisable(false);
-
-        btnUbah.setDisable(false);
-        btnHapus.setDisable(false);
-    }
 
     @FXML
-    private void btnCari_Click() {
-        try {
-            if (txtIdProdi.getText().isEmpty()) {
-                showAlert("Data ID harus diisi.", Alert.AlertType.WARNING);
-                return;
-            }
-            DBConnect connection = new DBConnect();
-            String query = "SELECT * FROM ProgramStudi WHERE Id_Prodi = ? AND Status = 'Aktif'";
-            try (Connection conn = connection.conn;
-                 PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setString(1, txtIdProdi.getText());
-                ResultSet rs = stmt.executeQuery();
+    public void btnHapus_Click(ActionEvent actionEvent) {
+        // Check if any item is selected
+        if (txtIdProdi.getText().isEmpty()) {
+            showAlert("Pilih data yang ingin dihapus terlebih dahulu", Alert.AlertType.WARNING);
+            return;
+        }
 
-                if (rs.next()) {
-                    txtIdProdi.setText(rs.getString("Id_Prodi"));
-                    txtNama.setText(rs.getString("Nama"));
-                    txtJenjangPendidikan.setText(rs.getString("Jenjang_Pendidikan"));
-                    txtAkreditasi.setText(rs.getString("Akreditasi"));
+        // Show confirmation dialog
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Konfirmasi Hapus Data");
+        confirmationAlert.setHeaderText(null);
+        confirmationAlert.setContentText("Apakah Anda yakin ingin menghapus data ini?");
 
-                    txtNama.setDisable(false);
-                    txtJenjangPendidikan.setDisable(false);
-                    txtAkreditasi.setDisable(false);
+        // If the user confirms, proceed with delete operation
+        confirmationAlert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    DBConnect connection = new DBConnect();
+                    String query = "DELETE FROM ProgramStudi WHERE Id_Prodi = ?";
+                    try (Connection conn = connection.conn;
+                         PreparedStatement stmt = conn.prepareStatement(query)) {
+                        stmt.setString(1, txtIdProdi.getText());
+                        stmt.executeUpdate();
 
-                    btnUbah.setDisable(false);
-                    btnHapus.setDisable(false);
-                } else {
-                    showAlert("Data tidak ditemukan atau tidak aktif.", Alert.AlertType.INFORMATION);
+                        showAlert("Data berhasil dihapus", Alert.AlertType.INFORMATION);
+                        clear();
+                        loadTableData(); // Reload table data
+                    }
+                } catch (SQLException e) {
+                    showAlert("Error: " + e.getMessage(), Alert.AlertType.ERROR);
                 }
             }
-        } catch (SQLException e) {
-            showAlert("Error: " + e.getMessage(), Alert.AlertType.ERROR);
-        }
+        });
     }
 
-    @FXML
-    private void btnUbah_Click(MouseEvent mouseEvent) {
-        try {
-            DBConnect connection = new DBConnect();
-            String query = "EXEC sp_UpdateProdi ?, ?, ?, ?";
-            try (Connection conn = connection.conn;
-                 PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setString(1, txtIdProdi.getText());
-                stmt.setString(2, txtNama.getText());
-                stmt.setString(3, txtJenjangPendidikan.getText());
-                stmt.setString(4, txtAkreditasi.getText());
-
-                stmt.executeUpdate();
-                showAlert("Basisdata berhasil diperbaharui", Alert.AlertType.INFORMATION);
-                clear();
-                loadTableData(); // Reload table data
-            }
-        } catch (SQLException e) {
-            showAlert("Error: " + e.getMessage(), Alert.AlertType.ERROR);
-        }
-    }
-
-    @FXML
-    private void btnHapus_Click(MouseEvent mouseEvent) {
-        try {
-            DBConnect connection = new DBConnect();
-            String query = "EXEC sp_DeleteProdi ?";
-            try (Connection conn = connection.conn;
-                 PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setString(1, txtIdProdi.getText());
-                stmt.executeUpdate();
-
-                showAlert("Data berhasil dihapus", Alert.AlertType.INFORMATION);
-                clear();
-                loadTableData(); // Reload table data
-            }
-        } catch (SQLException e) {
-            showAlert("Error: " + e.getMessage(), Alert.AlertType.ERROR);
-        }
-    }
 
     private void clear() {
         txtIdProdi.clear();
         txtNama.clear();
         txtJenjangPendidikan.clear();
         txtAkreditasi.clear();
-
-        txtNama.setDisable(true);
-        txtJenjangPendidikan.setDisable(true);
-        txtAkreditasi.setDisable(true);
-
-        btnUbah.setDisable(true);
-        btnHapus.setDisable(true);
     }
 
     private void showAlert(String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setContentText(message);
         alert.show();
+    }
+
+    public void onBtnBatalClick(ActionEvent actionEvent) {
+        clear();
+    }
+
+    public void onBtnTambah(ActionEvent actionEvent) {
+        try {
+            // Pastikan path ke file FXML sudah benar
+            FXMLLoader loader = new FXMLLoader(InputProdiController.class.getResource("/Master/CRUD_Prodi/InputProdiApplication.fxml"));
+            Scene scene = new Scene(loader.load(), 600, 757);
+            Stage stage = new Stage();
+            stage.setTitle("Tambah Data Program Studi!");
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void onBtnRefreshClick(ActionEvent actionEvent) {
+        loadTableData();
+    }
+
+    private void populateFields(Prodi prodi) {
+        txtIdProdi.setText(prodi.getIdprodi());
+        txtNama.setText(prodi.getNama());
+        txtJenjangPendidikan.setText(prodi.getJenjangpendidikan());
+        txtAkreditasi.setText(prodi.getAkreditasi());
     }
 
     public class Prodi {
