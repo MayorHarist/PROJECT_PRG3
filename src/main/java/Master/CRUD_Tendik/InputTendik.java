@@ -70,7 +70,7 @@ public class InputTendik {
             errorMsg.append("Email sudah terdaftar.\n");
         }
         if (isUsernameDuplicate(usernameTendik.getText())) {
-            errorMsg.append("Username dan password sudah terdaftar.\n");
+            errorMsg.append("Username sudah terdaftar.\n");
         }
         if (txtNamaTendik.getText().isEmpty() || tglTendik.getValue() == null || genderGroup.getSelectedToggle() == null ||
                 txtAlamatTendik.getText().isEmpty() || txtEmailTendik.getText().isEmpty() || txtTelpTendik.getText().isEmpty() ||
