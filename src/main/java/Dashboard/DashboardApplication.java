@@ -11,6 +11,7 @@ import Master.CRUD_JenisPrestasi.UDJepresController;
 import Master.CRUD_Mahasiswa.InputMahasiswa;
 import Master.CRUD_Mahasiswa.UpdateDeleteMahasiswa;
 import Master.CRUD_Matkul.InputMatkulController;
+import Master.CRUD_Matkul.UpdateDeleteMatkulController;
 import Master.CRUD_Pengumuman.InputPengumuman;
 import Master.CRUD_Pengumuman.UpdateDelPengumuman;
 import Master.CRUD_PosisiPrestasi.InputPospresController;
@@ -36,7 +37,7 @@ public class DashboardApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(UpdateDeleteTendik.class.getResource("UpdateDeleteTendik.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(UpdateDeleteMatkulController.class.getResource("UpdateDeleteMatkulApplication.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);
         //Scene scene = new Scene(fxmlLoader.load(), 1280, 650);
         stage.setTitle("Dashboard Find Smart");
