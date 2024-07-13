@@ -177,6 +177,7 @@ public class InputProdiController implements Initializable {
                 String newId = result.getString(1);
                 txtIdProdi.setText(newId);
             }
+            result.close();
         } catch (Exception ex) {
             System.out.println("Terjadi error pada autoid: " + ex);
         }
