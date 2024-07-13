@@ -264,6 +264,10 @@ public class UpdateDeleteMatkulController implements Initializable {
     }
 
     @FXML
+    protected void onBtnRefreshClick() {
+        loadTableData("");
+    }
+    @FXML
     protected void onBtnUbah() {
         MataKuliah selectedMatkul = tableMatkul.getSelectionModel().getSelectedItem();
         if (selectedMatkul != null) {

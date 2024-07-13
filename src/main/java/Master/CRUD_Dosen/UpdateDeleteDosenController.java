@@ -205,6 +205,12 @@ public class UpdateDeleteDosenController implements Initializable {
             showAlert("Nama harus diisi dan hanya boleh berisi huruf!", Alert.AlertType.WARNING);
             return false;
         }
+        // Validasi nomor telepon harus berupa angka
+        if (!txtTelepon.getText().matches("\\d+")) {
+            showAlert("Telepon harus diisi dan hanya boleh berisi angka!", Alert.AlertType.WARNING);
+            return false;
+        }
+
         if (Datelahir.getValue() == null || Datelahir.getValue().isAfter(LocalDate.now())) {
             showAlert("Tanggal lahir harus diisi dan tidak boleh lebih dari hari ini!", Alert.AlertType.WARNING);
             return false;
@@ -344,6 +350,8 @@ public class UpdateDeleteDosenController implements Initializable {
     protected void onBtnRefreshClick(ActionEvent event) {
         loadTableData("");
     }
+
+
 
     @FXML
     protected void onBtnTambahClick(ActionEvent event) {
