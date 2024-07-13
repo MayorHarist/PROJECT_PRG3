@@ -365,7 +365,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
         return null;
     }
 
-    private boolean isDuplicateEmail(String email) {
+/*    private boolean isDuplicateEmail(String email) {
         String query = "SELECT COUNT(*) AS count FROM Mahasiswa WHERE Email = ?";
         try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
             stmt.setString(1, email);
@@ -378,7 +378,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
             showAlert("Error checking duplicate email: " + e.getMessage(), Alert.AlertType.ERROR);
         }
         return false;
-    }
+    }*/
 
     @FXML
     private void btnUbah_Click(ActionEvent event) {
@@ -403,11 +403,11 @@ public class UpdateDeleteMahasiswa implements Initializable {
             return; // Hentikan proses simpan jika email tidak valid
         }
 
-        // Validasi duplikat email
+/*        // Validasi duplikat email
         if (isDuplicateEmail(email)) {
             showAlert("Email sudah terdaftar. Harap gunakan email lain.", Alert.AlertType.WARNING);
             return; // Hentikan proses simpan jika ada duplikat email
-        }
+        }*/
 
         String query = "EXEC sp_UpdateMahasiswa ?, ?, ?, ?, ?, ?, ?, ?, ?";
 
