@@ -1,7 +1,5 @@
 package Master.CRUD_Matkul;
 
-import Master.CRUD_Dosen.InputDosenController;
-import Master.CRUD_Dosen.UpdateDeleteDosenController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,7 +20,6 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class UpdateDeleteMatkulController implements Initializable {
@@ -60,9 +57,9 @@ public class UpdateDeleteMatkulController implements Initializable {
     @FXML
     private TextField txtKelas;
     @FXML
-    private ComboBox<String> cbPegawai;
+    private ComboBox<Pegawai> cbPegawai;
     @FXML
-    private ComboBox<String> cbProdi;
+    private ComboBox<Prodi> cbProdi;
     @FXML
     private TextField txtCari;
 
@@ -87,7 +84,7 @@ public class UpdateDeleteMatkulController implements Initializable {
 
         @Override
         public String toString() {
-            return nama;
+            return nama; // Tampilkan nama di combobox
         }
     }
 
@@ -110,7 +107,7 @@ public class UpdateDeleteMatkulController implements Initializable {
 
         @Override
         public String toString() {
-            return nama;
+            return nama; // Tampilkan nama di combobox
         }
     }
 
@@ -208,12 +205,31 @@ public class UpdateDeleteMatkulController implements Initializable {
                 txtJenis.setText(newValue.getJenis());
                 txtSemester.setText(newValue.getSemester());
                 txtKelas.setText(newValue.getKelas());
-                cbPegawai.setValue(newValue.getPegawai());
-                cbProdi.setValue(newValue.getProdi());
+
+                // Ambil dan set Pegawai berdasarkan No_Pegawai
+                Pegawai selectedPegawai = null;
+                for (Pegawai pegawai : cbPegawai.getItems()) {
+                    if (pegawai.getId().equals(newValue.getPegawai())) {
+                        selectedPegawai = pegawai;
+                        break;
+                    }
+                }
+                cbPegawai.setValue(selectedPegawai);
+
+                // Ambil dan set Prodi berdasarkan Id_Prodi
+                Prodi selectedProdi = null;
+                for (Prodi prodi : cbProdi.getItems()) {
+                    if (prodi.getId().equals(newValue.getProdi())) {
+                        selectedProdi = prodi;
+                        break;
+                    }
+                }
+                cbProdi.setValue(selectedProdi);
             }
         });
 
-        ObservableList<String> pegawaiData = null;
+
+        ObservableList<Pegawai> pegawaiData = null;
         try {
             pegawaiData = loadDataForPegawaiComboBox();
         } catch (UnsupportedEncodingException e) {
@@ -221,19 +237,19 @@ public class UpdateDeleteMatkulController implements Initializable {
         }
         cbPegawai.setItems(pegawaiData);
 
-        ObservableList<String> prodiData = loadDataForProdiComboBox();
+        ObservableList<Prodi> prodiData = loadDataForProdiComboBox();
         cbProdi.setItems(prodiData);
     }
 
-    private ObservableList<String> loadDataForPegawaiComboBox() throws UnsupportedEncodingException {
-        ObservableList<String> dataList = FXCollections.observableArrayList();
+    private ObservableList<Pegawai> loadDataForPegawaiComboBox() throws UnsupportedEncodingException {
+        ObservableList<Pegawai> dataList = FXCollections.observableArrayList();
         String query = "SELECT No_Pegawai, Nama FROM Dosen WHERE Status='Aktif'";
 
         try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
             while (resultSet.next()) {
                 String noPegawai = resultSet.getString("No_Pegawai");
                 String nama = resultSet.getString("Nama");
-                dataList.add(String.valueOf(new Pegawai(noPegawai, nama)));
+                dataList.add(new Pegawai(noPegawai, nama));
             }
         } catch (SQLException ex) {
             System.out.println("Terjadi error saat mengambil data untuk ComboBox Pegawai: " + ex.getMessage());
@@ -241,15 +257,15 @@ public class UpdateDeleteMatkulController implements Initializable {
         return dataList;
     }
 
-    private ObservableList<String> loadDataForProdiComboBox() {
-        ObservableList<String> dataList = FXCollections.observableArrayList();
+    private ObservableList<Prodi> loadDataForProdiComboBox() {
+        ObservableList<Prodi> dataList = FXCollections.observableArrayList();
         String query = "SELECT Id_Prodi, Nama FROM ProgramStudi WHERE Status='Aktif'";
 
         try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
             while (resultSet.next()) {
                 String idProdi = resultSet.getString("Id_Prodi");
                 String nama = resultSet.getString("Nama");
-                dataList.add(String.valueOf(new Prodi(idProdi, nama)));
+                dataList.add(new Prodi(idProdi, nama));
             }
         } catch (SQLException ex) {
             System.out.println("Terjadi error saat mengambil data untuk ComboBox Prodi: " + ex.getMessage());
@@ -267,54 +283,60 @@ public class UpdateDeleteMatkulController implements Initializable {
     protected void onBtnRefreshClick() {
         loadTableData("");
     }
+
     @FXML
     protected void onBtnUbah() {
-        MataKuliah selectedMatkul = tableMatkul.getSelectionModel().getSelectedItem();
-        if (selectedMatkul != null) {
-            // Show confirmation dialog
-            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmation.setTitle("Konfirmasi");
-            confirmation.setHeaderText("Konfirmasi Perubahan");
-            confirmation.setContentText("Apakah Anda yakin ingin mengubah data mata kuliah ini?");
+        if (validateFields()) {
+            MataKuliah selectedMatkul = tableMatkul.getSelectionModel().getSelectedItem();
+            if (selectedMatkul != null) {
+                // Show confirmation dialog
+                Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmation.setTitle("Konfirmasi");
+                confirmation.setHeaderText("Konfirmasi Perubahan");
+                confirmation.setContentText("Apakah Anda yakin ingin mengubah data mata kuliah ini?");
 
-            // Show and wait for user response
-            confirmation.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    try {
-                        // Perform update operation
-                        String query = "UPDATE MataKuliah SET Nama = '" + txtNamaMatkul.getText() +
-                                "', Jumlah_SKS = '" + txtSKS.getText() +
-                                "', Jenis = '" + txtJenis.getText() +
-                                "', Semester = '" + txtSemester.getText() +
-                                "', Kelas = '" + txtKelas.getText() +
-                                "', No_Pegawai = '" + cbPegawai.getValue() +
-                                "', Id_Prodi = '" + cbProdi.getValue() +
-                                "' WHERE ID_Matkul = '" + selectedMatkul.getIdMatkul() + "'";
-                        connection.stat.executeUpdate(query);
+                // Show and wait for user response
+                confirmation.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        try {
+                            // Perform update operation
+                            String query = "UPDATE MataKuliah SET Nama = ?, Jumlah_SKS = ?, Jenis = ?, Semester = ?, Kelas = ?, No_Pegawai = ?, Id_Prodi = ? WHERE ID_Matkul = ?";
+                            PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
+                            preparedStatement.setString(1, txtNamaMatkul.getText());
+                            preparedStatement.setString(2, txtSKS.getText());
+                            preparedStatement.setString(3, txtJenis.getText());
+                            preparedStatement.setString(4, txtSemester.getText());
+                            preparedStatement.setString(5, txtKelas.getText());
+                            preparedStatement.setString(6, ((Pegawai) cbPegawai.getValue()).getId());
+                            preparedStatement.setString(7, ((Prodi) cbProdi.getValue()).getId());
+                            preparedStatement.setString(8, selectedMatkul.getIdMatkul());
 
-                        // Update item in ObservableList
-                        int index = oblist.indexOf(selectedMatkul);
-                        oblist.set(index, new MataKuliah(
-                                selectedMatkul.getIdMatkul(),
-                                txtNamaMatkul.getText(),
-                                txtSKS.getText(),
-                                txtJenis.getText(),
-                                txtSemester.getText(),
-                                txtKelas.getText(),
-                                cbPegawai.getValue(),
-                                cbProdi.getValue()
-                        ));
+                            preparedStatement.executeUpdate();
 
-                        tableMatkul.refresh();
-                        showAlert(AlertType.INFORMATION, "Informasi", "Update Data Berhasil");
-                        clearFields();
-                    } catch (SQLException e) {
-                        showAlert(AlertType.ERROR, "Error", "Update Data Gagal: " + e.getMessage());
+                            // Update item in ObservableList
+                            int index = oblist.indexOf(selectedMatkul);
+                            oblist.set(index, new MataKuliah(
+                                    selectedMatkul.getIdMatkul(),
+                                    txtNamaMatkul.getText(),
+                                    txtSKS.getText(),
+                                    txtJenis.getText(),
+                                    txtSemester.getText(),
+                                    txtKelas.getText(),
+                                    ((Pegawai) cbPegawai.getValue()).getId(),
+                                    ((Prodi) cbProdi.getValue()).getId()
+                            ));
+
+                            tableMatkul.refresh();
+                            showAlert(AlertType.INFORMATION, "Informasi", "Update Data Berhasil");
+                            clearFields();
+                        } catch (SQLException e) {
+                            showAlert(AlertType.ERROR, "Error", "Update Data Gagal: " + e.getMessage());
+                        }
                     }
-                }
-            });
-        } else {
-            showAlert(AlertType.WARNING, "Peringatan", "Pilih mata kuliah yang akan diubah terlebih dahulu.");
+                });
+            } else {
+                showAlert(AlertType.WARNING, "Peringatan", "Pilih mata kuliah yang akan diubah terlebih dahulu.");
+            }
         }
     }
 
@@ -333,8 +355,9 @@ public class UpdateDeleteMatkulController implements Initializable {
                 if (response == ButtonType.OK) {
                     try {
                         // Perform delete operation
-                        String query = "DELETE FROM MataKuliah WHERE ID_Matkul = '" + selectedMatkul.getIdMatkul() + "'";
+                        String query = "DELETE FROM MataKuliah WHERE Id_Matkul = ?";
                         PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
+                        preparedStatement.setString(1, selectedMatkul.getIdMatkul());
                         preparedStatement.execute();
 
                         // Remove item from ObservableList
@@ -350,6 +373,28 @@ public class UpdateDeleteMatkulController implements Initializable {
         } else {
             showAlert(AlertType.WARNING, "Peringatan", "Pilih mata kuliah yang akan dihapus terlebih dahulu.");
         }
+    }
+
+    private boolean validateFields() {
+        String nama = txtNamaMatkul.getText();
+        String sks = txtSKS.getText();
+        String jenis = txtJenis.getText();
+        String semester = txtSemester.getText();
+        String kelas = txtKelas.getText();
+        Pegawai pegawai = cbPegawai.getValue();
+        Prodi prodi = cbProdi.getValue();
+
+        if (nama.isEmpty() || sks.isEmpty() || jenis.isEmpty() || semester.isEmpty() || kelas.isEmpty() || pegawai == null || prodi == null) {
+            showAlert(Alert.AlertType.WARNING, "Peringatan", "Mohon isi semua data yang diperlukan.");
+            return false;
+        }
+
+        if (!sks.matches("\\d+")) {
+            showAlert(Alert.AlertType.WARNING, "Peringatan", "Jumlah SKS harus berupa angka.");
+            return false;
+        }
+
+        return true;
     }
 
     private void showAlert(AlertType alertType, String title, String content) {
@@ -380,7 +425,7 @@ public class UpdateDeleteMatkulController implements Initializable {
 
     private void loadTableData(String keyword) {
         try {
-            String query = "SELECT * FROM MataKuliah WHERE Status = 'Aktif' AND " +
+            String query = "SELECT * FROM MataKuliah WHERE Status = 'Aktif' AND (" +
                     "LOWER(ID_Matkul) LIKE ? OR " +
                     "LOWER(Nama) LIKE ? OR " +
                     "LOWER(Jumlah_SKS) LIKE ? OR " +
@@ -388,10 +433,10 @@ public class UpdateDeleteMatkulController implements Initializable {
                     "LOWER(Semester) LIKE ? OR " +
                     "LOWER(Kelas) LIKE ? OR " +
                     "LOWER(No_Pegawai) LIKE ? OR " +
-                    "LOWER(Id_Prodi) LIKE ?";
+                    "LOWER(Id_Prodi) LIKE ?)";
 
             PreparedStatement stmt = connection.conn.prepareStatement(query);
-            String wildcardKeyword = "%" + keyword + "%";
+            String wildcardKeyword = "%" + keyword.toLowerCase() + "%"; // Convert keyword to lowercase
             for (int i = 1; i <= 8; i++) {
                 stmt.setString(i, wildcardKeyword);
             }
@@ -415,7 +460,6 @@ public class UpdateDeleteMatkulController implements Initializable {
             System.out.println("Terjadi error saat load data mata kuliah: " + ex);
         }
     }
-
 
     @FXML
     protected void onBtnTambah(ActionEvent event) {

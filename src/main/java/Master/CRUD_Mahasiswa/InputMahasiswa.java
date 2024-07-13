@@ -60,50 +60,47 @@ public class InputMahasiswa implements Initializable {
         rbPerempuan.setToggleGroup(genderGroup);
         loadProdi();
 
-        // Event filter untuk membatasi input nama hanya huruf dan spasi
-        txtNama.addEventFilter(KeyEvent.KEY_TYPED, event -> {
-            String character = event.getCharacter();
-            if (!isValidNameInput(character)) {
-                event.consume(); // Menahan event jika karakter tidak valid
-                showAlert("Nama hanya boleh berisi huruf dan spasi.", Alert.AlertType.WARNING);
+        // Menambahkan listener ke TextField txtNama
+        txtNama.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[a-zA-Z\\s]*")) { // Memeriksa apakah nilai baru hanya terdiri dari huruf dan spasi
+                txtNama.setText(newValue.replaceAll("[^a-zA-Z\\s]", "")); // Hapus karakter non-huruf
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informasi");
+                alert.setHeaderText(null);
+                alert.setContentText("Nama harus diisi dengan huruf.");
+                alert.showAndWait();
             }
         });
 
-        // Event handler untuk mengizinkan penghapusan teks di txtNama
-        txtNama.setOnKeyReleased(event -> {
-            if (event.getCode() == KeyCode.BACK_SPACE || event.getCode() == KeyCode.DELETE) {
-                // Lakukan pengecekan validitas setiap kali ada perubahan teks
-                if (!isValidNameInput(txtNama.getText())) {
-                    showAlert("Nama hanya boleh berisi huruf dan spasi.", Alert.AlertType.WARNING);
-                    txtNama.setText(txtNama.getText().replaceAll("[^a-zA-Z\\s]", "")); // Hapus karakter yang tidak valid
-                }
-            }
-        });
-
-        // Event filter untuk membatasi input telepon hanya angka
-        txtTelepon.addEventFilter(KeyEvent.KEY_TYPED, event -> {
-            String character = event.getCharacter();
-            String text = txtTelepon.getText() + character;
-            if (!isValidPhoneNumberInput(text)) {
-                event.consume(); // Menahan event jika karakter tidak valid
-                showAlert("Nomor telepon hanya boleh berisi angka dan maksimal 13 digit.", Alert.AlertType.WARNING);
+        // Menambahkan listener ke TextField txtPoint
+        txtTelepon.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) { // Memeriksa apakah nilai baru hanya terdiri dari digit
+                txtTelepon.setText(newValue.replaceAll("[^\\d]", "")); // Hapus karakter non-digit
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informasi");
+                alert.setHeaderText(null);
+                alert.setContentText("Harus diisi dengan angka.");
+                alert.showAndWait();
             }
         });
 
         // Event handler untuk membatasi panjang maksimal telepon
         txtTelepon.setOnKeyReleased(event -> {
             if (txtTelepon.getText().length() > 13) {
-                showAlert("Nomor telepon hanya boleh maksimal 13 digit.", Alert.AlertType.WARNING);
+                showAlert("Nomor telepon maksimal 13 digit.", Alert.AlertType.WARNING);
                 txtTelepon.setText(txtTelepon.getText().substring(0, 13)); // Hapus karakter melebihi 13 digit
             }
         });
 
-        // Event filter untuk membatasi input tahun masuk hanya angka
-        txtTahunMasuk.addEventFilter(KeyEvent.KEY_TYPED, event -> {
-            String character = event.getCharacter();
-            if (!isValidYearInput(character)) {
-                event.consume(); // Menahan event jika karakter tidak valid
-                showAlert("Tahun masuk hanya boleh berisi angka.", Alert.AlertType.WARNING);
+        // Menambahkan listener ke TextField txtPoint
+        txtTahunMasuk.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) { // Memeriksa apakah nilai baru hanya terdiri dari digit
+                txtTahunMasuk.setText(newValue.replaceAll("[^\\d]", "")); // Hapus karakter non-digit
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informasi");
+                alert.setHeaderText(null);
+                alert.setContentText("Harus diisi dengan angka.");
+                alert.showAndWait();
             }
         });
 
