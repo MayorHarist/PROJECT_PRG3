@@ -171,11 +171,7 @@ public class InputPengumuman {
             try {
                 String query = "EXEC sp_InsertPengumuman ?,?,?,?,?";
                 connection.pstat = connection.conn.prepareStatement(query);
-                connection.pstat.setString(1, Id_Pengumuman);
-                connection.pstat.setString(2, Nama);
-                connection.pstat.setDate(3, java.sql.Date.valueOf(tanggal));
-                connection.pstat.setString(4, Deskripsi);
-                connection.pstat.setString(5, Id_TKN);
+
 
                 connection.pstat.executeUpdate();
                 connection.pstat.close();

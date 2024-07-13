@@ -207,7 +207,7 @@ public class UpdateDeleteTendik implements Initializable {
         });
         // Tambahkan listener untuk txtCari
         txtCari.textProperty().addListener((observable, oldValue, newValue) -> {
-            cariData(newValue); // Panggil fungsi pencarian saat isi txtCari berubah
+            cariTendik(newValue); // Panggil fungsi pencarian saat isi txtCari berubah
         });
 
         // Assign ToggleGroup to RadioButtons
@@ -217,7 +217,7 @@ public class UpdateDeleteTendik implements Initializable {
 
     }
 
-    private void cariData(String keyword) {
+    private void cariTendik(String keyword) {
         tabelViewTendik.getItems().clear(); // Clear data before loading new search results
         try {
             String query = "EXEC sp_CariTendik ?";
