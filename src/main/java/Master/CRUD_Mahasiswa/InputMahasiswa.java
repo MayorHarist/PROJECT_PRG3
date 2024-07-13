@@ -7,13 +7,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 public class InputMahasiswa implements Initializable {
     @FXML
@@ -36,14 +41,13 @@ public class InputMahasiswa implements Initializable {
     private TextField txtTelepon;
     @FXML
     private TextField txtTahunMasuk;
-    @FXML
-    private TextField txtUsername;
-    @FXML
-    private TextField txtPassword;
+
     @FXML
     private Button btnSimpan;
     @FXML
     private Button btnBatal;
+    @FXML
+    private Button btnKembali;
 
     private DBConnect connection = new DBConnect();
     private ToggleGroup genderGroup;
@@ -55,12 +59,83 @@ public class InputMahasiswa implements Initializable {
         rbLaki.setToggleGroup(genderGroup);
         rbPerempuan.setToggleGroup(genderGroup);
         loadProdi();
+
+        // Event filter untuk membatasi input nama hanya huruf dan spasi
+        txtNama.addEventFilter(KeyEvent.KEY_TYPED, event -> {
+            String character = event.getCharacter();
+            if (!isValidNameInput(character)) {
+                event.consume(); // Menahan event jika karakter tidak valid
+                showAlert("Nama hanya boleh berisi huruf dan spasi.", Alert.AlertType.WARNING);
+            }
+        });
+
+        // Event handler untuk mengizinkan penghapusan teks di txtNama
+        txtNama.setOnKeyReleased(event -> {
+            if (event.getCode() == KeyCode.BACK_SPACE || event.getCode() == KeyCode.DELETE) {
+                // Lakukan pengecekan validitas setiap kali ada perubahan teks
+                if (!isValidNameInput(txtNama.getText())) {
+                    showAlert("Nama hanya boleh berisi huruf dan spasi.", Alert.AlertType.WARNING);
+                    txtNama.setText(txtNama.getText().replaceAll("[^a-zA-Z\\s]", "")); // Hapus karakter yang tidak valid
+                }
+            }
+        });
+
+        // Event filter untuk membatasi input telepon hanya angka
+        txtTelepon.addEventFilter(KeyEvent.KEY_TYPED, event -> {
+            String character = event.getCharacter();
+            String text = txtTelepon.getText() + character;
+            if (!isValidPhoneNumberInput(text)) {
+                event.consume(); // Menahan event jika karakter tidak valid
+                showAlert("Nomor telepon hanya boleh berisi angka dan maksimal 13 digit.", Alert.AlertType.WARNING);
+            }
+        });
+
+        // Event handler untuk membatasi panjang maksimal telepon
+        txtTelepon.setOnKeyReleased(event -> {
+            if (txtTelepon.getText().length() > 13) {
+                showAlert("Nomor telepon hanya boleh maksimal 13 digit.", Alert.AlertType.WARNING);
+                txtTelepon.setText(txtTelepon.getText().substring(0, 13)); // Hapus karakter melebihi 13 digit
+            }
+        });
+
+        // Event filter untuk membatasi input tahun masuk hanya angka
+        txtTahunMasuk.addEventFilter(KeyEvent.KEY_TYPED, event -> {
+            String character = event.getCharacter();
+            if (!isValidYearInput(character)) {
+                event.consume(); // Menahan event jika karakter tidak valid
+                showAlert("Tahun masuk hanya boleh berisi angka.", Alert.AlertType.WARNING);
+            }
+        });
+
+        // Event handler untuk membatasi panjang maksimal tahun masuk
+        txtTahunMasuk.setOnKeyReleased(event -> {
+            if (txtTahunMasuk.getText().length() > 4) {
+                showAlert("Tahun masuk hanya boleh maksimal 4 digit.", Alert.AlertType.WARNING);
+                txtTahunMasuk.setText(txtTahunMasuk.getText().substring(0, 4)); // Hapus karakter melebihi 4 digit
+            }
+        });
+
+
     }
 
-    private void showAlert(String message, Alert.AlertType alertType) {
-        Alert alert = new Alert(alertType);
-        alert.setContentText(message);
-        alert.show();
+    private boolean isValidNameInput(String input) {
+        // Regex untuk membatasi hanya huruf dan spasi
+        return input.matches("[a-zA-Z\\s]*");
+    }
+
+    private boolean isValidPhoneNumberInput(String input) {
+        // Regex untuk membatasi hanya angka dan maksimal 13 digit
+        return input.matches("[0-9]{0,13}");
+    }
+
+    private boolean isValidYearInput(String input) {
+        // Regex untuk membatasi hanya angka
+        return input.matches("[0-9]*");
+    }
+
+    private boolean isValidEmailInput(String input) {
+        // Regex untuk memvalidasi format email
+        return input.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
     }
 
     private void loadProdi() {
@@ -79,38 +154,85 @@ public class InputMahasiswa implements Initializable {
         }
     }
 
+    private void showAlert(String message, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setContentText(message);
+        alert.show();
+    }
+
+    private boolean isFormValid() {
+        // Memeriksa apakah semua field telah diisi
+        if (txtNIM.getText().isEmpty() || cbProdi.getValue() == null || txtNama.getText().isEmpty() ||
+                dpTanggalLahir.getValue() == null || genderGroup.getSelectedToggle() == null ||
+                txtAlamat.getText().isEmpty() || txtEmail.getText().isEmpty() || txtTelepon.getText().isEmpty() ||
+                txtTahunMasuk.getText().isEmpty()) {
+            showAlert("Harap lengkapi semua data!", Alert.AlertType.WARNING);
+            return false;
+        }
+        return true;
+    }
+
+    @FXML
     public void btnSimpan_Click(ActionEvent actionEvent) {
+        if (!isFormValid()) {
+            return; // Hentikan proses simpan jika form tidak valid
+        }
+
         String NIM = txtNIM.getText();
         String selectedProdi = cbProdi.getValue();
-        if (selectedProdi == null) {
-            showAlert("Please select a Prodi!", Alert.AlertType.WARNING);
-            return;
-        }
         String idProdi = getIdProdiByName(selectedProdi);
         String nama = txtNama.getText();
-        String tanggalLahir = dpTanggalLahir.getValue() != null ? dpTanggalLahir.getValue().toString() : "";
+        String tanggalLahir = dpTanggalLahir.getValue().toString();
         String jenisKelamin = ((RadioButton) genderGroup.getSelectedToggle()).getText();
         String alamat = txtAlamat.getText();
         String email = txtEmail.getText();
         String telepon = txtTelepon.getText();
-        String tahunMasukStr = txtTahunMasuk.getText();
-        int tahunMasuk = tahunMasukStr.isEmpty() ? -1 : Integer.parseInt(tahunMasukStr);
-        String username = txtUsername.getText();
-        String password = txtPassword.getText();
+        int tahunMasuk = Integer.parseInt(txtTahunMasuk.getText());
 
-        if (NIM.isEmpty() || idProdi == null || idProdi.isEmpty() || nama.isEmpty() || tanggalLahir.isEmpty() || jenisKelamin.isEmpty() ||
-                alamat.isEmpty() || email.isEmpty() || telepon.isEmpty() || tahunMasukStr.isEmpty() ||
-                username.isEmpty() || password.isEmpty()) {
-            showAlert("All fields must be filled!", Alert.AlertType.WARNING);
-        } else {
+
+        // Validasi format email
+        if (!isValidEmailInput(email)) {
+            showAlert("Format email tidak valid.", Alert.AlertType.WARNING);
+            return; // Hentikan proses simpan jika email tidak valid
+        }
+
+        // Validasi duplikat email
+        if (isDuplicateEmail(email)) {
+            showAlert("Email sudah terdaftar. Harap gunakan email lain.", Alert.AlertType.WARNING);
+            return; // Hentikan proses simpan jika ada duplikat email
+        }
+
+        // Menampilkan dialog konfirmasi dengan data yang akan disimpan
+        String message = "Data yang akan disimpan:\n";
+        message += "NIM: " + NIM + "\n";
+        message += "Prodi: " + selectedProdi + "\n";
+        message += "Nama: " + nama + "\n";
+        message += "Tanggal Lahir: " + tanggalLahir + "\n";
+        message += "Jenis Kelamin: " + jenisKelamin + "\n";
+        message += "Alamat: " + alamat + "\n";
+        message += "Email: " + email + "\n";
+        message += "Telepon: " + telepon + "\n";
+        message += "Tahun Masuk: " + tahunMasuk + "\n";
+
+        message += "Apakah Anda yakin ingin menyimpan data?";
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Konfirmasi");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+
+        Optional<ButtonType> option = alert.showAndWait();
+        if (option.isPresent() && option.get() == ButtonType.OK) {
             try {
-                insertMahasiswa(NIM, idProdi, nama, tanggalLahir, jenisKelamin, alamat, email, telepon, tahunMasuk, username, password);
+                insertMahasiswa(NIM, idProdi, nama, tanggalLahir, jenisKelamin, alamat, email, telepon, tahunMasuk);
                 showAlert("Data berhasil disimpan", Alert.AlertType.INFORMATION);
                 clear();
                 autoid();
             } catch (SQLException e) {
                 showAlert("Unable to save: " + e.getMessage(), Alert.AlertType.ERROR);
             }
+        } else {
+            showAlert("Data mahasiswa tidak disimpan.", Alert.AlertType.INFORMATION);
         }
     }
 
@@ -131,6 +253,21 @@ public class InputMahasiswa implements Initializable {
         return idProdi;
     }
 
+    private boolean isDuplicateEmail(String email) {
+        String query = "SELECT COUNT(*) AS count FROM Mahasiswa WHERE Email = ?";
+        try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt("count");
+                return count > 0;
+            }
+        } catch (SQLException e) {
+            showAlert("Error checking duplicate email: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+        return false;
+    }
+
     public void btnBatal_Click(ActionEvent actionEvent) {
         clear();
     }
@@ -145,14 +282,17 @@ public class InputMahasiswa implements Initializable {
         txtEmail.clear();
         txtTelepon.clear();
         txtTahunMasuk.clear();
-        txtUsername.clear();
-        txtPassword.clear();
+
+    }
+
+    public void btnKembali_Click(ActionEvent actionEvent){
+        Stage stage = (Stage) btnBatal.getScene().getWindow();
+        stage.close();
     }
 
     private void insertMahasiswa(String NIM, String idProdi, String nama, String tanggalLahir, String jenisKelamin,
-                                 String alamat, String email, String telepon, int tahunMasuk,
-                                 String username, String password) throws SQLException {
-        String query = "EXEC sp_InsertMahasiswa ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
+                                 String alamat, String email, String telepon, int tahunMasuk) throws SQLException {
+        String query = "EXEC sp_InsertMahasiswa ?, ?, ?, ?, ?, ?, ?, ?";
         try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
             stmt.setString(1, NIM);
             stmt.setString(2, idProdi);
@@ -163,8 +303,6 @@ public class InputMahasiswa implements Initializable {
             stmt.setString(7, email);
             stmt.setString(8, telepon);
             stmt.setInt(9, tahunMasuk);
-            stmt.setString(10, username);
-            stmt.setString(11, password);
 
             stmt.executeUpdate();
         }
@@ -172,19 +310,13 @@ public class InputMahasiswa implements Initializable {
 
     private void autoid() {
         try {
-            String sql = "SELECT MAX(NIM) FROM Mahasiswa";
+            String sql = "SELECT dbo.autoIdMahasiswa()";
             connection.pstat = connection.conn.prepareStatement(sql);
             ResultSet result = connection.pstat.executeQuery();
 
             if (result.next()) {
-                String maxId = result.getString(1);
-                if (maxId != null) {
-                    int number = Integer.parseInt(maxId.substring(3)) + 1;
-                    String formattedNumber = String.format("%03d", number);
-                    txtNIM.setText("MHS" + formattedNumber);
-                } else {
-                    txtNIM.setText("MHS001");
-                }
+                String newId = result.getString(1);
+                txtNIM.setText(newId);
             }
             result.close();
         } catch (Exception ex) {
