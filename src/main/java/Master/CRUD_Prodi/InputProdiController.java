@@ -60,6 +60,7 @@ public class InputProdiController implements Initializable {
         });
     }
 
+    @FXML
     public void btnSimpan_Click(ActionEvent actionEvent) {
         // Validate form fields
         if (!isFormValid()) {
@@ -136,7 +137,7 @@ public class InputProdiController implements Initializable {
         return true;
     }
 
-
+    @FXML
     public void btnBatal_Click(ActionEvent actionEvent) {
         clear();
     }
@@ -174,16 +175,15 @@ public class InputProdiController implements Initializable {
             ResultSet result = connection.pstat.executeQuery();
 
             if (result.next()) {
-                String newId = result.getString("newID");
+                String newId = result.getString(1);
                 txtIdProdi.setText(newId);
             }
-            result.close();
         } catch (Exception ex) {
             System.out.println("Terjadi error pada autoid: " + ex);
         }
     }
 
-
+    @FXML
     public void btnKembali_Click(ActionEvent actionEvent) {
         Stage stage = (Stage) btnBatal.getScene().getWindow();
         stage.close();
