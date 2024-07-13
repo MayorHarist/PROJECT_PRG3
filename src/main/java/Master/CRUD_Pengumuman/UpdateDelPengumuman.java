@@ -77,7 +77,11 @@ public class UpdateDelPengumuman implements Initializable {
             cbTKN.getItems().clear();
             // Menambahkan pilihan ID TKN ke dalam ComboBox
             while (connection.result.next()) {
-                cbTKN.getItems().add(connection.result.getString("Id_TKN"));
+                String idTKN = connection.result.getString("Id_TKN");
+                String nama = connection.result.getString("Nama");
+                // Gabungkan Id_TKN dan Nama
+                String displayText = idTKN + " - " + nama;
+                cbTKN.getItems().add(displayText);
             }
             // Menutup statement dan result set
             connection.stat.close();
@@ -127,9 +131,23 @@ public class UpdateDelPengumuman implements Initializable {
             cariDataPengumuman(newValue); // Panggil fungsi pencarian saat isi txtCari berubah
         });
 
-        loadData("");
-
     }
+    private void loadTKNComboBox() {
+        try {
+            connection.stat = connection.conn.createStatement();
+            String query = "SELECT Id_TKN FROM TenagaKependidikan";
+            connection.result = connection.stat.executeQuery(query);
+            cbTKN.getItems().clear();
+            while (connection.result.next()) {
+                cbTKN.getItems().add(connection.result.getString("Id_TKN"));
+            }
+            connection.stat.close();
+            connection.result.close();
+        } catch (SQLException ex) {
+            System.out.println("Terjadi error saat load data ID TKN: " + ex);
+        }
+    }
+
     @FXML
     protected void onBtnUbahClick() {
         // Tambahkan validasi untuk memeriksa apakah ada data yang dipilih
