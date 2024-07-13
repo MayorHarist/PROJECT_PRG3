@@ -103,6 +103,57 @@ public class UpdateDeleteMahasiswa implements Initializable {
                 populateFields(newValue);
             }
         });
+        // Menambahkan listener ke TextField txtNama
+        txtNama.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[a-zA-Z\\s]*")) { // Memeriksa apakah nilai baru hanya terdiri dari huruf dan spasi
+                txtNama.setText(newValue.replaceAll("[^a-zA-Z\\s]", "")); // Hapus karakter non-huruf
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informasi");
+                alert.setHeaderText(null);
+                alert.setContentText("Nama harus diisi dengan huruf.");
+                alert.showAndWait();
+            }
+        });
+
+        // Menambahkan listener ke TextField txtPoint
+        txtTelepon.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) { // Memeriksa apakah nilai baru hanya terdiri dari digit
+                txtTelepon.setText(newValue.replaceAll("[^\\d]", "")); // Hapus karakter non-digit
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informasi");
+                alert.setHeaderText(null);
+                alert.setContentText("Harus diisi dengan angka.");
+                alert.showAndWait();
+            }
+        });
+
+        // Event handler untuk membatasi panjang maksimal telepon
+        txtTelepon.setOnKeyReleased(event -> {
+            if (txtTelepon.getText().length() > 13) {
+                showAlert("Nomor telepon maksimal 13 digit.", Alert.AlertType.WARNING);
+                txtTelepon.setText(txtTelepon.getText().substring(0, 13)); // Hapus karakter melebihi 13 digit
+            }
+        });
+
+        // Menambahkan listener ke TextField txtPoint
+        txtTahunMasuk.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) { // Memeriksa apakah nilai baru hanya terdiri dari digit
+                txtTahunMasuk.setText(newValue.replaceAll("[^\\d]", "")); // Hapus karakter non-digit
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informasi");
+                alert.setHeaderText(null);
+                alert.setContentText("Harus diisi dengan angka.");
+                alert.showAndWait();
+            }
+        });
+
+        // Event handler untuk membatasi panjang maksimal tahun masuk
+        txtTahunMasuk.setOnKeyReleased(event -> {
+            if (txtTahunMasuk.getText().length() > 4) {
+                showAlert("Tahun masuk hanya boleh maksimal 4 digit.", Alert.AlertType.WARNING);
+                txtTahunMasuk.setText(txtTahunMasuk.getText().substring(0, 4)); // Hapus karakter melebihi 4 digit
+            }
+        });
     }
 
     public void btnTambah_Click(ActionEvent actionEvent) {
