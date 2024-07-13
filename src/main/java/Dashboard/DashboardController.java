@@ -17,10 +17,8 @@ public class DashboardController {
 
     @FXML
     private Button btnMasuk;
-
     @FXML
     private Button btnKeluar;
-
     @FXML
     private Button btnProdi; // Add this line to reference the btnProdi button
 
