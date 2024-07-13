@@ -396,6 +396,11 @@ public class UpdateDeleteMatkulController implements Initializable {
             return false;
         }
 
+        if (!semester.matches("\\d+")) {
+            showAlert(Alert.AlertType.WARNING, "Peringatan", "Semester harus berupa angka.");
+            return false;
+        }
+
         return true;
     }
 
