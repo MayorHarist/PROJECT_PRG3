@@ -111,7 +111,6 @@ public class UpdateDeleteMatkulController implements Initializable {
         }
     }
 
-
     public class MataKuliah {
         String idMatkul, namaMatkul, sks, jenis, semester, kelas, pegawai, prodi;
 
@@ -206,10 +205,29 @@ public class UpdateDeleteMatkulController implements Initializable {
                 txtJenis.setText(newValue.getJenis());
                 txtSemester.setText(newValue.getSemester());
                 txtKelas.setText(newValue.getKelas());
-                cbPegawai.setValue(new Pegawai(newValue.getPegawai(), "")); // Set dengan objek Pegawai
-                cbProdi.setValue(new Prodi(newValue.getProdi(), "")); // Set dengan objek Prodi
+
+                // Ambil dan set Pegawai berdasarkan No_Pegawai
+                Pegawai selectedPegawai = null;
+                for (Pegawai pegawai : cbPegawai.getItems()) {
+                    if (pegawai.getId().equals(newValue.getPegawai())) {
+                        selectedPegawai = pegawai;
+                        break;
+                    }
+                }
+                cbPegawai.setValue(selectedPegawai);
+
+                // Ambil dan set Prodi berdasarkan Id_Prodi
+                Prodi selectedProdi = null;
+                for (Prodi prodi : cbProdi.getItems()) {
+                    if (prodi.getId().equals(newValue.getProdi())) {
+                        selectedProdi = prodi;
+                        break;
+                    }
+                }
+                cbProdi.setValue(selectedProdi);
             }
         });
+
 
         ObservableList<Pegawai> pegawaiData = null;
         try {
@@ -222,7 +240,6 @@ public class UpdateDeleteMatkulController implements Initializable {
         ObservableList<Prodi> prodiData = loadDataForProdiComboBox();
         cbProdi.setItems(prodiData);
     }
-
 
     private ObservableList<Pegawai> loadDataForPegawaiComboBox() throws UnsupportedEncodingException {
         ObservableList<Pegawai> dataList = FXCollections.observableArrayList();
@@ -257,7 +274,6 @@ public class UpdateDeleteMatkulController implements Initializable {
         return dataList;
     }
 
-
     @FXML
     protected void onBtnBatalClick() {
         clearFields();
@@ -267,60 +283,62 @@ public class UpdateDeleteMatkulController implements Initializable {
     protected void onBtnRefreshClick() {
         loadTableData("");
     }
+
     @FXML
     protected void onBtnUbah() {
-        MataKuliah selectedMatkul = tableMatkul.getSelectionModel().getSelectedItem();
-        if (selectedMatkul != null) {
-            // Show confirmation dialog
-            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmation.setTitle("Konfirmasi");
-            confirmation.setHeaderText("Konfirmasi Perubahan");
-            confirmation.setContentText("Apakah Anda yakin ingin mengubah data mata kuliah ini?");
+        if (validateFields()) {
+            MataKuliah selectedMatkul = tableMatkul.getSelectionModel().getSelectedItem();
+            if (selectedMatkul != null) {
+                // Show confirmation dialog
+                Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmation.setTitle("Konfirmasi");
+                confirmation.setHeaderText("Konfirmasi Perubahan");
+                confirmation.setContentText("Apakah Anda yakin ingin mengubah data mata kuliah ini?");
 
-            // Show and wait for user response
-            confirmation.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    try {
-                        // Perform update operation
-                        String query = "UPDATE MataKuliah SET Nama = ?, Jumlah_SKS = ?, Jenis = ?, Semester = ?, Kelas = ?, No_Pegawai = ?, Id_Prodi = ? WHERE ID_Matkul = ?";
-                        PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
-                        preparedStatement.setString(1, txtNamaMatkul.getText());
-                        preparedStatement.setString(2, txtSKS.getText());
-                        preparedStatement.setString(3, txtJenis.getText());
-                        preparedStatement.setString(4, txtSemester.getText());
-                        preparedStatement.setString(5, txtKelas.getText());
-                        preparedStatement.setString(6, ((Pegawai) cbPegawai.getValue()).getId());
-                        preparedStatement.setString(7, ((Prodi) cbProdi.getValue()).getId());
-                        preparedStatement.setString(8, selectedMatkul.getIdMatkul());
+                // Show and wait for user response
+                confirmation.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        try {
+                            // Perform update operation
+                            String query = "UPDATE MataKuliah SET Nama = ?, Jumlah_SKS = ?, Jenis = ?, Semester = ?, Kelas = ?, No_Pegawai = ?, Id_Prodi = ? WHERE ID_Matkul = ?";
+                            PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
+                            preparedStatement.setString(1, txtNamaMatkul.getText());
+                            preparedStatement.setString(2, txtSKS.getText());
+                            preparedStatement.setString(3, txtJenis.getText());
+                            preparedStatement.setString(4, txtSemester.getText());
+                            preparedStatement.setString(5, txtKelas.getText());
+                            preparedStatement.setString(6, ((Pegawai) cbPegawai.getValue()).getId());
+                            preparedStatement.setString(7, ((Prodi) cbProdi.getValue()).getId());
+                            preparedStatement.setString(8, selectedMatkul.getIdMatkul());
 
-                        preparedStatement.executeUpdate();
+                            preparedStatement.executeUpdate();
 
-                        // Update item in ObservableList
-                        int index = oblist.indexOf(selectedMatkul);
-                        oblist.set(index, new MataKuliah(
-                                selectedMatkul.getIdMatkul(),
-                                txtNamaMatkul.getText(),
-                                txtSKS.getText(),
-                                txtJenis.getText(),
-                                txtSemester.getText(),
-                                txtKelas.getText(),
-                                ((Pegawai) cbPegawai.getValue()).getId(),
-                                ((Prodi) cbProdi.getValue()).getId()
-                        ));
+                            // Update item in ObservableList
+                            int index = oblist.indexOf(selectedMatkul);
+                            oblist.set(index, new MataKuliah(
+                                    selectedMatkul.getIdMatkul(),
+                                    txtNamaMatkul.getText(),
+                                    txtSKS.getText(),
+                                    txtJenis.getText(),
+                                    txtSemester.getText(),
+                                    txtKelas.getText(),
+                                    ((Pegawai) cbPegawai.getValue()).getId(),
+                                    ((Prodi) cbProdi.getValue()).getId()
+                            ));
 
-                        tableMatkul.refresh();
-                        showAlert(AlertType.INFORMATION, "Informasi", "Update Data Berhasil");
-                        clearFields();
-                    } catch (SQLException e) {
-                        showAlert(AlertType.ERROR, "Error", "Update Data Gagal: " + e.getMessage());
+                            tableMatkul.refresh();
+                            showAlert(AlertType.INFORMATION, "Informasi", "Update Data Berhasil");
+                            clearFields();
+                        } catch (SQLException e) {
+                            showAlert(AlertType.ERROR, "Error", "Update Data Gagal: " + e.getMessage());
+                        }
                     }
-                }
-            });
-        } else {
-            showAlert(AlertType.WARNING, "Peringatan", "Pilih mata kuliah yang akan diubah terlebih dahulu.");
+                });
+            } else {
+                showAlert(AlertType.WARNING, "Peringatan", "Pilih mata kuliah yang akan diubah terlebih dahulu.");
+            }
         }
     }
-
 
     @FXML
     protected void onBtnHapus() {
@@ -357,6 +375,27 @@ public class UpdateDeleteMatkulController implements Initializable {
         }
     }
 
+    private boolean validateFields() {
+        String nama = txtNamaMatkul.getText();
+        String sks = txtSKS.getText();
+        String jenis = txtJenis.getText();
+        String semester = txtSemester.getText();
+        String kelas = txtKelas.getText();
+        Pegawai pegawai = cbPegawai.getValue();
+        Prodi prodi = cbProdi.getValue();
+
+        if (nama.isEmpty() || sks.isEmpty() || jenis.isEmpty() || semester.isEmpty() || kelas.isEmpty() || pegawai == null || prodi == null) {
+            showAlert(Alert.AlertType.WARNING, "Peringatan", "Mohon isi semua data yang diperlukan.");
+            return false;
+        }
+
+        if (!sks.matches("\\d+")) {
+            showAlert(Alert.AlertType.WARNING, "Peringatan", "Jumlah SKS harus berupa angka.");
+            return false;
+        }
+
+        return true;
+    }
 
     private void showAlert(AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
@@ -421,8 +460,6 @@ public class UpdateDeleteMatkulController implements Initializable {
             System.out.println("Terjadi error saat load data mata kuliah: " + ex);
         }
     }
-
-
 
     @FXML
     protected void onBtnTambah(ActionEvent event) {
