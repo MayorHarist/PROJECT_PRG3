@@ -17,14 +17,14 @@
             <TableColumn fx:id="nmPengumuman" prefWidth="307.66668701171875" text="Nama" />
             <TableColumn fx:id="tanggalPM" prefWidth="198.33331298828125" text="Tanggal" />
             <TableColumn fx:id="deskripsi" prefWidth="415.0000305175781" text="Deskripsi" />
-            <TableColumn fx:id="Id_TKN" prefWidth="190.66665649414062" text="ID TKN" />
+            <TableColumn fx:id="namaTKN" prefWidth="190.66665649414062" text="NamaTKN" />
          </columns>
       </TableView>
       <Label layoutX="141.0" layoutY="594.0" text="ID Pengumuman" />
       <Label layoutX="139.0" layoutY="696.0" text="Nama" />
       <Label layoutX="718.0" layoutY="606.0" text="Tanggal " />
       <Label layoutX="720.0" layoutY="659.0" text="Deskripsi" />
-      <Label layoutX="139.0" layoutY="639.0" text="ID TKN" />
+      <Label layoutX="139.0" layoutY="639.0" text="NamaTKN" />
       <TextField fx:id="txtIDPengumuman" layoutX="266.0" layoutY="589.0" prefHeight="25.0" prefWidth="250.0" />
       <DatePicker fx:id="tglPengumuman" layoutX="843.0" layoutY="600.0" prefHeight="30.0" prefWidth="250.0" />
       <TextField fx:id="txtnmPengumuman" layoutX="264.0" layoutY="689.0" prefHeight="25.0" prefWidth="250.0" />

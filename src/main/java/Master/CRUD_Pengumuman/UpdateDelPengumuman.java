@@ -41,29 +41,29 @@ public class UpdateDelPengumuman implements Initializable {
     @FXML
     private TableColumn<Pengumuman, String> deskripsi;
     @FXML
-    private TableColumn<Pengumuman, String> Id_TKN;
+    private TableColumn<Pengumuman, String> namaTKN;
 
     private DBConnect connection = new DBConnect();
     private ObservableList<Pengumuman> oblist = FXCollections.observableArrayList();
 
     public class Pengumuman {
-        private String IdPM, namaPengumuman, Deskripsi,IdTKN;
+        private String IdPM, namaPengumuman, Deskripsi, nmTendik;
         private LocalDate Tanggal;
 
         public Pengumuman(String IdPM, String namaPengumuman, LocalDate Tanggal,
-                          String Deskripsi, String IdTKN){
+                          String Deskripsi, String namaTKN){
             this.IdPM = IdPM;
             this.namaPengumuman = namaPengumuman;
             this.Tanggal = Tanggal;
             this.Deskripsi = Deskripsi;
-            this.IdTKN = IdTKN;
+            this.nmTendik = namaTKN;
         }
 
         public String getIdPM() { return IdPM; }
         public String getNamaPengumuman() { return namaPengumuman; }
         public LocalDate getTanggal() { return Tanggal; }
         public String getDeskripsi() { return Deskripsi; }
-        public String getIdTKN() { return IdTKN; }
+        public String getNamaTKN() { return nmTendik; }
     }
 
     @Override
@@ -107,7 +107,7 @@ public class UpdateDelPengumuman implements Initializable {
         nmPengumuman.setCellValueFactory(new PropertyValueFactory<>("namaPengumuman"));
         tanggalPM.setCellValueFactory(new PropertyValueFactory<>("Tanggal"));
         deskripsi.setCellValueFactory(new PropertyValueFactory<>("Deskripsi"));
-        Id_TKN.setCellValueFactory(new PropertyValueFactory<>("IdTKN"));
+        namaTKN.setCellValueFactory(new PropertyValueFactory<>("NamaTKN"));
 
         tblViewPengumuman.setItems(oblist);
 
@@ -117,20 +117,18 @@ public class UpdateDelPengumuman implements Initializable {
                 txtnmPengumuman.setText(newValue.getNamaPengumuman());
                 tglPengumuman.setValue(newValue.getTanggal());
                 txtDeskripsi.setText(newValue.getDeskripsi());
-                cbTKN.setValue(newValue.getIdTKN());
+                cbTKN.setValue(newValue.getNamaTKN());
             }
         });
-/*        // Contoh penggunaan dengan input dari keyboard
+        // Contoh penggunaan dengan input dari keyboard
         // Inisialisasi txtCari
-        TextField txtCari = new TextField();*/
-
         // Tambahkan listener untuk txtCari
         txtCari.textProperty().addListener((observable, oldValue, newValue) -> {
             cariDataPengumuman(newValue); // Panggil fungsi pencarian saat isi txtCari berubah
         });
 
         loadData("");
-        
+
     }
     @FXML
     protected void onBtnUbahClick() {
@@ -238,7 +236,6 @@ public class UpdateDelPengumuman implements Initializable {
         }
     }
 
-
     public void clear() {
         txtIDPengumuman.clear();
         txtnmPengumuman.clear();
@@ -246,6 +243,7 @@ public class UpdateDelPengumuman implements Initializable {
         txtDeskripsi.clear();
         cbTKN.getSelectionModel().clearSelection();
     }
+
     @FXML
     protected void onBtnRefreshClick() {
         loadData("");
@@ -255,12 +253,15 @@ public class UpdateDelPengumuman implements Initializable {
         try {
             // Buat koneksi dan pernyataan SQL
             DBConnect connection = new DBConnect();
-            String query = "SELECT * FROM Pengumuman WHERE Status = 'Aktif' AND (" +
-                    "LOWER(Id_Pengumuman) LIKE ? OR " +
-                    "LOWER(Nama) LIKE ? OR " +
-                    "LOWER(Tanggal) LIKE ? OR " +
-                    "LOWER(Deskripsi) LIKE ? OR " +
-                    "LOWER(Id_TKN) LIKE ?)";
+            String query = "SELECT p.Id_Pengumuman, p.Nama, p.Tanggal, p.Deskripsi, t.Id_TKN, t.Nama AS Nama_TKN " +
+                    "FROM Pengumuman p " +
+                    "JOIN TenagaKependidikan t ON p.Id_TKN = t.Id_TKN " +
+                    "WHERE p.Status = 'Aktif' AND (" +
+                    "LOWER(p.Id_Pengumuman) LIKE ? OR " +
+                    "LOWER(p.Nama) LIKE ? OR " +
+                    "LOWER(p.Tanggal) LIKE ? OR " +
+                    "LOWER(p.Deskripsi) LIKE ? OR " +
+                    "LOWER(t.Nama) LIKE ?)";
 
             PreparedStatement st = connection.conn.prepareStatement(query);
             String wildcardKeyword = "%" + keyword.toLowerCase() + "%";
@@ -278,7 +279,7 @@ public class UpdateDelPengumuman implements Initializable {
                         connection.result.getString("Nama"),
                         date,
                         connection.result.getString("Deskripsi"),
-                        connection.result.getString("Id_TKN")));
+                        connection.result.getString("Nama_TKN")));
             }
 
             // Tutup koneksi dan pernyataan
@@ -294,7 +295,6 @@ public class UpdateDelPengumuman implements Initializable {
     @FXML
     private void cariDataPengumuman(String keyword) {
         tblViewPengumuman.getItems().clear(); // Bersihkan data sebelum memuat hasil pencarian baru
-
         try {
             String query = "EXEC sp_CariPengumuman ?";
             PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
@@ -307,7 +307,7 @@ public class UpdateDelPengumuman implements Initializable {
                         resultSet.getString("Nama"),
                         resultSet.getDate("Tanggal").toLocalDate(),
                         resultSet.getString("Deskripsi"),
-                        resultSet.getString("Id_TKN")
+                        resultSet.getString("Nama_TKN")
                 );
                 tblViewPengumuman.getItems().add(pengumuman);
             }
@@ -331,7 +331,7 @@ public class UpdateDelPengumuman implements Initializable {
     protected void onBtnBatalClick() {
         clear();
     }
-    
+
     @FXML
     protected void onBtnTambahClick(){
         try {
@@ -347,3 +347,4 @@ public class UpdateDelPengumuman implements Initializable {
         }
     }
 }
+

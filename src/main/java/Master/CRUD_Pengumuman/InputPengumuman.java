@@ -131,7 +131,7 @@ public class InputPengumuman {
 
     @FXML
     protected void onBtnSimpanClick() {
-        // Validate inputs
+        // Validasi input
         if (!validateNama() || !validateTanggal() || !validateDeskripsi() || !validateTKN()) {
             return;
         }
@@ -177,6 +177,12 @@ public class InputPengumuman {
                 String query = "EXEC sp_InsertPengumuman ?,?,?,?,?";
                 connection.pstat = connection.conn.prepareStatement(query);
 
+                // Mengatur nilai untuk parameter
+                connection.pstat.setString(1, Id_Pengumuman);
+                connection.pstat.setString(2, Nama);
+                connection.pstat.setDate(3, java.sql.Date.valueOf(tanggal));
+                connection.pstat.setString(4, Deskripsi);
+                connection.pstat.setString(5, Id_TKN);
 
                 connection.pstat.executeUpdate();
                 connection.pstat.close();
@@ -188,7 +194,7 @@ public class InputPengumuman {
                 successAlert.setContentText("Data pengumuman berhasil disimpan!");
                 successAlert.showAndWait();
                 clear();
-                autoid(); // Generate a new ID for the next entry
+                autoid(); // Generate ID baru untuk entri berikutnya
             } catch (SQLException ex) {
                 System.out.println("Terjadi error saat menambahkan data pengumuman: " + ex);
             }
@@ -200,8 +206,6 @@ public class InputPengumuman {
             cancelAlert.showAndWait();
         }
     }
-
-
 
     public void clear() {
         txtnmPengumuman.clear();
