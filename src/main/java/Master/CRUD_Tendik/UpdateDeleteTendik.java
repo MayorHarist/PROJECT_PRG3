@@ -268,7 +268,6 @@ public class UpdateDeleteTendik implements Initializable {
             return; // Keluar dari metode jika tidak ada data yang dipilih
         }
 
-
         try {
             Tendik selectedTendik = tabelViewTendik.getSelectionModel().getSelectedItem();
             if (selectedTendik != null) {
@@ -298,7 +297,6 @@ public class UpdateDeleteTendik implements Initializable {
                     alert.showAndWait();
                     return;
                 }
-
                 if (!validateTelepon(txtTelpTendik.getText())) {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Warning");
@@ -307,7 +305,6 @@ public class UpdateDeleteTendik implements Initializable {
                     alert.showAndWait();
                     return;
                 }
-
                 LocalDate tanggal = tglTendik.getValue();
                 String jenisKelamin = rbLaki.isSelected() ? "Laki-Laki" : "Perempuan";
 
