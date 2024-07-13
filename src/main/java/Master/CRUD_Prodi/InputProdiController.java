@@ -143,7 +143,6 @@ public class InputProdiController implements Initializable {
     }
 
     private void clear() {
-        txtIdProdi.clear();
         txtNama.clear();
         txtJenjangPendidikan.clear();
         txtAkreditasi.clear();
