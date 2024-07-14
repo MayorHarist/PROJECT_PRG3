@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.sql.ResultSet;
@@ -79,6 +80,8 @@ public class InputTendik {
         }
         if (errorMsg.length() > 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.initOwner(txtNamaTendik.getScene().getWindow());
             alert.setTitle("Error");
             alert.setHeaderText(null);
             alert.setContentText(errorMsg.toString());
@@ -87,6 +90,7 @@ public class InputTendik {
         }
         return true;
     }
+
 
     public void autoid() {
         try {

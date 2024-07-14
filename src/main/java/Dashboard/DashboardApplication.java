@@ -1,6 +1,8 @@
 package Dashboard;
 
+import Master.CRUD_Tendik.UpdateDeleteTendik;
 import Transaksi.FormKRPP;
+import Transaksi.TransaksiKRS;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -16,9 +18,10 @@ public class DashboardApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(FormKRPP.class.getResource("FormKRPP.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(DashboardController.class.getResource("DashboardApplication.fxml"));
         //Scene scene = new Scene(fxmlLoader.load(), 1000, 1000);
-        Scene scene = new Scene(fxmlLoader.load(), 1280, 650);
+        //Scene scene = new Scene(fxmlLoader.load(), 1280, 650);
+        Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);
         stage.setTitle("Dashboard Find Smart");
         stage.setScene(scene);
         stage.show();
