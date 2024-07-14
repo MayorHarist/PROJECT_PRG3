@@ -2,6 +2,7 @@ package Master.CRUD_Mahasiswa;
 
 import Master.CRUD_Matkul.InputMatkulController;
 import Master.CRUD_Matkul.UpdateDeleteMatkulController;
+import Master.CRUD_Tendik.InputTendik;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -15,7 +16,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import Database.DBConnect;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
@@ -216,7 +219,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
                         rs.getString("Email"),
                         rs.getString("Telepon"),
                         rs.getString("Tahun_Masuk"),
-                        rs.getString("Total_Point_KRPP"),
+                        rs.getString("Point_KRPP"), // Menggunakan nama kolom yang benar
                         rs.getString("IPK")
                 ));
             }
@@ -225,6 +228,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
             showAlert("Error loading data: " + ex.getMessage());
         }
     }
+
 
 
     @FXML
@@ -347,9 +351,14 @@ public class UpdateDeleteMahasiswa implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(InputMahasiswa.class.getResource("InputMahasiswa.fxml"));
             Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+
             Stage stage = new Stage();
-            stage.setTitle("Buat Data Mahasiswa");
-            stage.setScene(new Scene(root));
+            stage.setTitle("Tambah Data Mahasiswa");
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(tableMahasiswa.getScene().getWindow());
+            stage.initStyle(StageStyle.UNDECORATED);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

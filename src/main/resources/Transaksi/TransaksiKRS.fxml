@@ -121,7 +121,7 @@
       <ComboBox fx:id="cbSemester" layoutX="587.0" layoutY="276.0" prefHeight="25.0" prefWidth="210.0" />
       <ScrollPane layoutX="887.0" layoutY="534.0" prefHeight="268.0" prefWidth="679.0">
          <content>
-            <TableView fx:id="tabelDetaiIKRS" prefHeight="271.0" prefWidth="708.0">
+            <TableView fx:id="tabelDetailKRS" prefHeight="271.0" prefWidth="708.0">
                <columns>
                   <TableColumn fx:id="Matkul" prefWidth="150.0" text="Mata Kuliah" />
                   <TableColumn fx:id="Tugas" minWidth="0.0" text="Nilai Tugas" />
