@@ -5,6 +5,7 @@ module org.example.project_prg3 {
     requires com.dlsc.formsfx;
     requires java.sql;
     requires java.desktop;
+    requires jasperreports;
 
     opens Database to javafx.fxml;
     exports Database;
