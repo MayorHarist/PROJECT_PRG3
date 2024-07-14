@@ -3,6 +3,8 @@ package LoginKepala;
 import Database.DBConnect;
 import LoginTendik.LoginTendikController;
 import Sebagai.SebagaiController;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,16 +28,44 @@ public class LoginKepalaController {
     @FXML
     private TextField txtUsername;
     @FXML
-    private TextField txtPassword;
+    private TextField txtPasswordVisible;
+    private StringBuilder passwordBuilder = new StringBuilder();
 
     DBConnect connection = new DBConnect();
-    private final String useradmin = "dean";
-    private final String userpass = "dean";
+    private final String useradmin = "Kepalatendik";
+    private final String userpass = "Kepalatendik";
+
+    @FXML
+    public void initialize() {
+        txtPasswordVisible.textProperty().addListener(new ChangeListener<String>() {
+            private boolean changing = false;
+
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (changing) {
+                    return;
+                }
+                changing = true;
+
+                if (newValue.length() > oldValue.length()) {
+                    // Character added
+                    char addedChar = newValue.charAt(newValue.length() - 1);
+                    passwordBuilder.append(addedChar);
+                    txtPasswordVisible.setText(txtPasswordVisible.getText().substring(0, newValue.length() - 1) + "*");
+                } else if (newValue.length() < oldValue.length()) {
+                    // Character removed
+                    passwordBuilder.deleteCharAt(passwordBuilder.length() - 1);
+                }
+
+                changing = false;
+            }
+        });
+    }
 
     @FXML
     public void onbtnLoginClick(ActionEvent event) {
         String username = txtUsername.getText();
-        String password = txtPassword.getText();
+        String password = passwordBuilder.toString();
 
         if (username.equals(useradmin) && password.equals(userpass)) {
             // Login berhasil, tampilkan dialog pesan sukses
@@ -79,7 +109,6 @@ public class LoginKepalaController {
             alert.showAndWait();
         }
     }
-
 
     @FXML
     public void onbtnExitClick(ActionEvent event) {

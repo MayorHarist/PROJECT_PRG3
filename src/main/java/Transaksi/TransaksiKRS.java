@@ -821,7 +821,7 @@ public class TransaksiKRS {
             if (result.next()) {
                 String maxId = result.getString(1);
                 if (maxId != null) {
-                    int number = Integer.parseInt(maxId.substring(2)) + 1; // Increment number
+                    int number = Integer.parseInt(maxId.substring(3)) + 1; // Increment number
                     newId = "DET" + String.format("%03d", number); // Format new ID
                 } else {
                     newId = "DET001"; // Initial ID if no records exist
