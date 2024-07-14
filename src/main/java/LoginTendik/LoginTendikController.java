@@ -1,8 +1,8 @@
 package LoginTendik;
 
-import Database.DBConnect;
 import Sebagai.SebagaiController;
-import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.*;
 
 public class LoginTendikController {
     @FXML
@@ -32,27 +33,61 @@ public class LoginTendikController {
     @FXML
     private TextField txtPassword;
 
-    DBConnect connection = new DBConnect();
-    private final String useradmin = "nida";
-    private final String userpass = "nida";
+    private StringBuilder passwordBuilder = new StringBuilder();
+
+    @FXML
+    public void initialize() {
+        // Menambahkan listener untuk txtPassword
+        txtPassword.textProperty().addListener(new ChangeListener<String>() {
+            private boolean changing = false;
+
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (changing) {
+                    return;
+                }
+                changing = true;
+
+                if (newValue.length() > oldValue.length()) {
+                    char addedChar = newValue.charAt(newValue.length() - 1);
+                    passwordBuilder.append(addedChar);
+                    txtPassword.setText(maskPassword(txtPassword.getText()));
+                } else if (newValue.length() < oldValue.length() && passwordBuilder.length() > 0) {
+                    passwordBuilder.deleteCharAt(passwordBuilder.length() - 1);
+                    txtPassword.setText(maskPassword(txtPassword.getText()));
+                }
+
+                changing = false;
+            }
+        });
+    }
+
+    // Method untuk mengganti karakter menjadi bintang
+    private String maskPassword(String password) {
+        StringBuilder masked = new StringBuilder();
+        for (int i = 0; i < password.length(); i++) {
+            masked.append("*");
+        }
+        return masked.toString();
+    }
 
     @FXML
     protected void onbtnLoginClick(ActionEvent event) {
-        try {
-            String username = txtUsername.getText();
-            String password = txtPassword.getText();
+        String username = txtUsername.getText();
+        String password = passwordBuilder.toString();
 
-            if (username.equals(useradmin) && password.equals(userpass)) {
-                // Login berhasil, tampilkan dialog pesan sukses
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Informasi");
-                alert.setHeaderText(null);
-                alert.setContentText("Login berhasil");
-                alert.initOwner(btnLogin.getScene().getWindow());
-                alert.showAndWait();
+        if (authenticate(username, password)) {
+            // Login berhasil, tampilkan dialog pesan sukses
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Informasi");
+            alert.setHeaderText(null);
+            alert.setContentText("Login berhasil");
+            alert.initOwner(btnLogin.getScene().getWindow());
+            alert.showAndWait();
 
-                // Pindah ke form selanjutnya
-                FXMLLoader loader = new FXMLLoader(HalamanTendikController.class.getResource("HalamanTendik.fxml"));
+            // Pindah ke form selanjutnya
+            try {
+                FXMLLoader loader = new FXMLLoader(HalamanTendikController.class.getResource("/LoginTendik/HalamanTendik.fxml"));
                 Parent root = loader.load();
 
                 Stage stage = new Stage();
@@ -65,28 +100,56 @@ public class LoginTendikController {
                 Stage previousStage = (Stage) AnchorTendik.getScene().getWindow();
                 previousStage.close();
 
-            } else {
-                // Login gagal, tampilkan dialog pesan kesalahan
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Username atau password salah");
-                alert.initOwner(btnLogin.getScene().getWindow());
-                alert.showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Failed to load HalamanTendik.fxml");
             }
-        } catch (IOException e) {
+
+        } else {
+            // Login gagal, tampilkan dialog pesan kesalahan
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Username atau password salah");
+            alert.initOwner(btnLogin.getScene().getWindow());
+            alert.showAndWait();
+        }
+    }
+
+    private boolean authenticate(String username, String password) {
+        String query = "SELECT * FROM TenagaKependidikan WHERE username = ? AND password = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            ResultSet rs = stmt.executeQuery();
+            boolean authenticated = rs.next();
+            if (authenticated) {
+                System.out.println("");
+            } else {
+                System.out.println("Authentication failed: Username or password incorrect");
+            }
+            return authenticated;
+        } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Failed to load Login Tendik");
-        } catch (NullPointerException e) {
+            return false;
+        }
+    }
+
+    private Connection getConnection() {
+        try {
+            String url = "jdbc:sqlserver://localhost;database=FINDSMART_MABRES;user=sa;password=polman";
+            return DriverManager.getConnection(url);
+        } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Resource Login Tendik not found");
+            return null;
         }
     }
 
     @FXML
     protected void onbtnExitClick() {
         try {
-            FXMLLoader loader = new FXMLLoader(SebagaiController.class.getResource("SebagaiApplication.fxml"));
+            FXMLLoader loader = new FXMLLoader(SebagaiController.class.getResource("/Sebagai/SebagaiApplication.fxml"));
             Parent root = loader.load();
 
             Stage stage = new Stage();

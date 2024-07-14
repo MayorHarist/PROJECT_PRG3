@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 import Database.DBConnect;
+import javafx.stage.Modality;
 
 public class InputMatkulController {
     @FXML
@@ -196,6 +197,7 @@ public class InputMatkulController {
             confirmationMessage.append("Program Studi: ").append(selectedProdi != null ? selectedProdi.getNama() : "Tidak ada").append("\n");
 
             Alert confirmationAlert = new Alert(AlertType.CONFIRMATION);
+            confirmationAlert.initModality(Modality.APPLICATION_MODAL);
             confirmationAlert.setTitle("Konfirmasi");
             confirmationAlert.setHeaderText(null);
             confirmationAlert.setContentText(confirmationMessage.toString());

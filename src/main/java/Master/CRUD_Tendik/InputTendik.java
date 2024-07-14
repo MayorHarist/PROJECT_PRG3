@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.sql.ResultSet;
@@ -79,6 +80,8 @@ public class InputTendik {
         }
         if (errorMsg.length() > 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.initOwner(txtNamaTendik.getScene().getWindow());
             alert.setTitle("Error");
             alert.setHeaderText(null);
             alert.setContentText(errorMsg.toString());
@@ -87,6 +90,7 @@ public class InputTendik {
         }
         return true;
     }
+
 
     public void autoid() {
         try {
@@ -133,6 +137,7 @@ public class InputTendik {
         message += "Apakah Anda yakin ingin menyimpan data?";
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initModality(Modality.APPLICATION_MODAL);
         alert.setTitle("Konfirmasi");
         alert.setHeaderText(null);
         alert.setContentText(message);
@@ -156,6 +161,7 @@ public class InputTendik {
                 connection.conn.commit();
                 if (rowsInserted > 0) {
                     Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.initModality(Modality.APPLICATION_MODAL);
                     successAlert.setTitle("Sukses");
                     successAlert.setHeaderText(null);
                     successAlert.setContentText("Data Tenaga Kependidikan berhasil ditambahkan!");
@@ -167,11 +173,13 @@ public class InputTendik {
                 System.out.println("Terjadi error saat menambahkan data Tenaga Kependidikan: " + ex);
                 ex.printStackTrace();
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                alert.initModality(Modality.APPLICATION_MODAL);
                 errorAlert.setContentText("Terjadi kesalahan saat menyimpan data. Silakan coba lagi.");
                 errorAlert.showAndWait();
             }
         } else {
             Alert cancelAlert = new Alert(Alert.AlertType.INFORMATION);
+            alert.initModality(Modality.APPLICATION_MODAL);
             cancelAlert.setTitle("Informasi");
             cancelAlert.setHeaderText(null);
             cancelAlert.setContentText("Data Tenaga Kependidikan tidak disimpan.");

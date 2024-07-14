@@ -1,5 +1,6 @@
 package Master.CRUD_Matkul;
 
+import Master.CRUD_Tendik.InputTendik;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -14,7 +15,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import Database.DBConnect;
 import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -351,9 +354,6 @@ public class UpdateDeleteMatkulController implements Initializable {
                                     ((Pegawai) cbPegawai.getValue()).getId(),
                                     ((Prodi) cbProdi.getValue()).getId()
                             ));
-
-
-
                             tableMatkul.refresh();
                             showAlert(AlertType.INFORMATION, "Informasi", "Update Data Berhasil");
                             clearFields();
@@ -499,9 +499,14 @@ public class UpdateDeleteMatkulController implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(InputMatkulController.class.getResource("InputMatkulApplication.fxml"));
             Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+
             Stage stage = new Stage();
-            stage.setTitle("Buat Data Mata Kuliah");
-            stage.setScene(new Scene(root));
+            stage.setTitle("Tambah Data Mata Kuliah");
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(tableMatkul.getScene().getWindow());
+            stage.initStyle(StageStyle.UNDECORATED);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

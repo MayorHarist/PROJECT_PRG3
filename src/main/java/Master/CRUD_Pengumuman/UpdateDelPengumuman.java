@@ -1,16 +1,21 @@
 package Master.CRUD_Pengumuman;
 
 import Database.DBConnect;
+import Master.CRUD_Tendik.InputTendik;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
@@ -330,13 +335,18 @@ public class UpdateDelPengumuman implements Initializable {
     @FXML
     protected void onBtnTambahClick() {
         try {
-            FXMLLoader loader = new FXMLLoader(InputPengumuman.class.getResource("/Master/CRUD_Pengumuman/InputPengumuman.fxml"));
-            Scene scene = new Scene(loader.load(), 600, 475);
+            FXMLLoader fxmlLoader = new FXMLLoader(InputPengumuman.class.getResource("InputPengumuman.fxml"));
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+
             Stage stage = new Stage();
-            stage.setTitle("Tambah Data Pengumuman!");
+            stage.setTitle("Tambah Data Pengumuman");
             stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(tblViewPengumuman.getScene().getWindow());
+            stage.initStyle(StageStyle.UNDECORATED);
             stage.show();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

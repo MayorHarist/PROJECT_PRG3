@@ -1,6 +1,7 @@
 package Master.CRUD_Dosen;
 
 import Master.CRUD_JenisPrestasi.InputJepresController;
+import Master.CRUD_Tendik.InputTendik;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,7 +13,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import Database.DBConnect;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -358,9 +361,14 @@ public class UpdateDeleteDosenController implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(InputDosenController.class.getResource("InputDosenApplication.fxml"));
             Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+
             Stage stage = new Stage();
-            stage.setTitle("Buat Data Dosen");
-            stage.setScene(new Scene(root));
+            stage.setTitle("Tambah Data Dosen");
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(tableDosen.getScene().getWindow());
+            stage.initStyle(StageStyle.UNDECORATED);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

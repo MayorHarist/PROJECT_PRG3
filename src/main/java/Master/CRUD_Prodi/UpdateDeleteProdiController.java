@@ -1,18 +1,23 @@
 package Master.CRUD_Prodi;
 
 import Database.DBConnect;
+import Master.CRUD_PosisiPrestasi.InputPospresController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -250,14 +255,18 @@ public class UpdateDeleteProdiController implements Initializable {
 
     public void onBtnTambah(ActionEvent actionEvent) {
         try {
-            // Pastikan path ke file FXML sudah benar
-            FXMLLoader loader = new FXMLLoader(InputProdiController.class.getResource("/Master/CRUD_Prodi/InputProdiApplication.fxml"));
-            Scene scene = new Scene(loader.load(), 600, 757);
+            FXMLLoader fxmlLoader = new FXMLLoader(InputProdiController.class.getResource("InputProdiApplication.fxml"));
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+
             Stage stage = new Stage();
-            stage.setTitle("Tambah Data Program Studi!");
+            stage.setTitle("Tambah Data Program Studi");
             stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(tableProdi.getScene().getWindow());
+            stage.initStyle(StageStyle.UNDECORATED);
             stage.show();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
