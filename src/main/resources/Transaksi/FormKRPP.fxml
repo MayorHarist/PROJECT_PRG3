@@ -34,5 +34,10 @@
             <Font name="System Bold" size="12.0" />
          </font></Label>
       <Button fx:id="btnLaporanKRPP" layoutX="156.0" layoutY="257.0" mnemonicParsing="false" onAction="#onbtnLaporanKRPPClick" text="Laporan KRPP" />
+      <Label layoutX="434.0" layoutY="115.0" text="Kartu Realisasi Pencapaian Prestasi">
+         <font>
+            <Font name="System Bold" size="35.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

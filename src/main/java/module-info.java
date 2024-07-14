@@ -51,4 +51,8 @@ module org.example.project_prg3 {
 
     opens Transaksi to javafx.fxml;
     exports Transaksi;
+
+
+    opens Laporan to javafx.fxml;
+    exports Laporan;
 }

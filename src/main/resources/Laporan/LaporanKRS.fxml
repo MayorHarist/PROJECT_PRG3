@@ -8,21 +8,24 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="1080.0" prefWidth="1398.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Laporan.LaporanKRS">
+<AnchorPane prefHeight="1080.0" prefWidth="1398.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Laporan.LaporanKRS">
    <children>
       <Label layoutX="399.0" layoutY="66.0" text="Laporan Realisasi Semester Mahasiswa">
          <font>
             <Font name="System Bold" size="35.0" />
          </font>
       </Label>
-      <TableView layoutX="34.0" layoutY="231.0" prefHeight="682.0" prefWidth="1332.0">
+      <TableView fx:id="tabellaporankrs" layoutX="34.0" layoutY="231.0" prefHeight="682.0" prefWidth="1332.0">
          <columns>
-            <TableColumn prefWidth="75.0" text="C1" />
-            <TableColumn prefWidth="75.0" text="C2" />
+            <TableColumn fx:id="nim" prefWidth="188.33333587646484" text="NIM" />
+            <TableColumn fx:id="namamahasiswa" prefWidth="294.33331298828125" text="Nama Mahasiswa" />
+            <TableColumn fx:id="jeniskelamin" prefWidth="222.66668701171875" text="Jenis Kelamin" />
+            <TableColumn fx:id="tahunmasuk" prefWidth="175.33331298828125" text="Tahun Masuk" />
+            <TableColumn fx:id="programstudi" prefWidth="311.6666259765625" text="Program Studi" />
+            <TableColumn fx:id="ipk" prefWidth="143.3333740234375" text="IPK" />
          </columns>
       </TableView>
-      <ComboBox layoutX="1048.0" layoutY="172.0" prefHeight="42.0" prefWidth="315.0" />
-      <Button layoutX="653.0" layoutY="936.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="140.0" text="Refresh" />
+      <ComboBox fx:id="cbFilter" layoutX="1048.0" layoutY="172.0" onAction="#onFilterChange" prefHeight="42.0" prefWidth="315.0" />
+      <Button fx:id="btnRefresh" layoutX="653.0" layoutY="936.0" mnemonicParsing="false" onAction="#onbtnRefreshClick" prefHeight="52.0" prefWidth="140.0" text="Refresh" />
    </children>
 </AnchorPane>

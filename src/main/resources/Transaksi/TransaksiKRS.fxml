@@ -153,5 +153,10 @@
       </Label>
       <TextField fx:id="txtIndeksNilai" layoutX="317.0" layoutY="792.0" prefHeight="25.0" prefWidth="210.0" />
       <Button fx:id="btnTambah" layoutX="545.0" layoutY="533.0" mnemonicParsing="false" onAction="#onbtnTambahClick" opacity="0.0" prefHeight="44.0" prefWidth="52.0" text="Button" />
+      <Label layoutX="476.0" layoutY="82.0" text="Kartu Realisasi Rencana Studi">
+         <font>
+            <Font name="System Bold" size="35.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
