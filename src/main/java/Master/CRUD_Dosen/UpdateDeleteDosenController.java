@@ -358,6 +358,7 @@ public class UpdateDeleteDosenController implements Initializable {
 
     @FXML
     protected void onBtnTambahClick(ActionEvent event) {
+
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(InputDosenController.class.getResource("InputDosenApplication.fxml"));
             Parent root = fxmlLoader.load();
@@ -372,6 +373,7 @@ public class UpdateDeleteDosenController implements Initializable {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+
         }
     }
 }

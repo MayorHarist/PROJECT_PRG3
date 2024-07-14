@@ -35,11 +35,11 @@
          </font>
       </Label>
       <TextField fx:id="txtNama" layoutX="424.0" layoutY="840.0" prefHeight="25.0" prefWidth="278.0" />
-      <Button fx:id="btnBatal" layoutX="573.0" layoutY="993.0" mnemonicParsing="false" onAction="#onbtnBatalClick" prefHeight="25.0" prefWidth="63.0" text="Batal" />
-      <Button fx:id="btnPerbaharui" layoutX="679.0" layoutY="994.0" mnemonicParsing="false" onAction="#onbtnPerbaharuiClick" prefHeight="25.0" prefWidth="95.0" text="Perbaharui" />
-      <Button fx:id="btnHapus" layoutX="808.0" layoutY="994.0" mnemonicParsing="false" onAction="#onbtnHapusClick" prefHeight="25.0" prefWidth="65.0" text="Hapus" />
-      <Button fx:id="btnRefresh" layoutX="1212.0" layoutY="691.0" mnemonicParsing="false" onAction="#onbtnRefresh" prefHeight="25.0" prefWidth="86.0" text="Refresh" />
-      <Button fx:id="btnTambah" layoutX="163.0" layoutY="693.0" mnemonicParsing="false" onAction="#onbtnTambahClick" prefHeight="25.0" prefWidth="95.0" text="Tambah" />
-      <TextField fx:id="txtDeskripsi" layoutX="922.0" layoutY="769.0" prefHeight="114.0" prefWidth="275.0" />
+      <Button fx:id="btnBatal" layoutX="882.0" layoutY="870.0" mnemonicParsing="false" onAction="#onbtnBatalClick" prefHeight="25.0" prefWidth="63.0" text="Batal" />
+      <Button fx:id="btnPerbaharui" layoutX="988.0" layoutY="871.0" mnemonicParsing="false" onAction="#onbtnPerbaharuiClick" prefHeight="25.0" prefWidth="95.0" text="Perbaharui" />
+      <Button fx:id="btnHapus" layoutX="1117.0" layoutY="871.0" mnemonicParsing="false" onAction="#onbtnHapusClick" prefHeight="25.0" prefWidth="65.0" text="Hapus" />
+      <Button fx:id="btnRefresh" layoutX="681.0" layoutY="689.0" mnemonicParsing="false" onAction="#onbtnRefresh" prefHeight="30.0" prefWidth="141.0" text="Refresh" />
+      <Button fx:id="btnTambah" layoutX="160.0" layoutY="162.0" mnemonicParsing="false" onAction="#onbtnTambahClick" prefHeight="25.0" prefWidth="95.0" text="Tambah" />
+      <TextField fx:id="txtDeskripsi" layoutX="922.0" layoutY="769.0" prefHeight="76.0" prefWidth="275.0" />
    </children>
 </AnchorPane>

@@ -45,7 +45,7 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="78.0" layoutY="143.0" text="NIM">
+      <Label layoutX="78.0" layoutY="143.0" text="Mahasiswa">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>

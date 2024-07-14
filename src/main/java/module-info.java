@@ -1,11 +1,11 @@
 module org.example.project_prg3 {
-    requires javafx.fxml;    requires com.dlsc.formsfx;
+    requires javafx.controls;
+    requires javafx.fxml;
 
-
+    requires com.dlsc.formsfx;
     requires java.sql;
     requires java.desktop;
-      requires  jasperreports;
-    requires javafx.controls;
+    //requires jasperreports;
 
     opens Database to javafx.fxml;
     exports Database;
@@ -51,4 +51,8 @@ module org.example.project_prg3 {
 
     opens Transaksi to javafx.fxml;
     exports Transaksi;
+
+
+    opens Laporan to javafx.fxml;
+    exports Laporan;
 }

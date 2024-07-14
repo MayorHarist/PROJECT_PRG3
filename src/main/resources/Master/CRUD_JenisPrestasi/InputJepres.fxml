@@ -4,55 +4,60 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="339.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_JenisPrestasi.InputJepresController">
    <children>
-      <Label layoutX="100.0" layoutY="78.0" text="Id Jenis Prestasi">
+      <Label layoutX="100.0" layoutY="98.0" text="Id Jenis Prestasi">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="100.0" layoutY="110.0" text="Nama">
+      <Label layoutX="100.0" layoutY="130.0" text="Nama">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="101.0" layoutY="149.0" text="Peran">
+      <Label layoutX="101.0" layoutY="169.0" text="Peran">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="100.0" layoutY="185.0" text="Penyelenggara">
+      <Label layoutX="100.0" layoutY="205.0" text="Penyelenggara">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="100.0" layoutY="221.0" text="Point">
+      <Label layoutX="100.0" layoutY="241.0" text="Point">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="txtIdJenisPrestasi" editable="false" layoutX="236.0" layoutY="76.0" />
-      <TextField fx:id="txtNama" layoutX="236.0" layoutY="108.0" prefHeight="25.0" prefWidth="209.0" />
-      <TextField fx:id="txtPeran" layoutX="236.0" layoutY="145.0" prefHeight="25.0" prefWidth="210.0" />
-      <TextField fx:id="txtPenyelenggara" layoutX="236.0" layoutY="183.0" prefHeight="25.0" prefWidth="210.0" />
-      <TextField fx:id="txtPoint" layoutX="236.0" layoutY="219.0" prefHeight="25.0" prefWidth="56.0" />
-      <Button fx:id="btnBatal" layoutX="187.0" layoutY="281.0" mnemonicParsing="false" onAction="#onbtnBatalClick" prefHeight="25.0" prefWidth="72.0" stylesheets="@../../Style.css" text="Batal">
+      <TextField fx:id="txtIdJenisPrestasi" editable="false" layoutX="236.0" layoutY="96.0" />
+      <TextField fx:id="txtNama" layoutX="236.0" layoutY="128.0" prefHeight="25.0" prefWidth="209.0" />
+      <TextField fx:id="txtPeran" layoutX="236.0" layoutY="165.0" prefHeight="25.0" prefWidth="210.0" />
+      <TextField fx:id="txtPenyelenggara" layoutX="236.0" layoutY="203.0" prefHeight="25.0" prefWidth="210.0" />
+      <TextField fx:id="txtPoint" layoutX="236.0" layoutY="239.0" prefHeight="25.0" prefWidth="56.0" />
+      <Button fx:id="btnBatal" layoutX="187.0" layoutY="290.0" mnemonicParsing="false" onAction="#onbtnBatalClick" prefHeight="25.0" prefWidth="72.0" stylesheets="@../../Style.css" text="Batal">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="btnSimpan" layoutX="327.0" layoutY="281.0" minHeight="30.0" mnemonicParsing="false" onAction="#onbtnSimpanClick" prefHeight="30.0" prefWidth="100.0" stylesheets="@../../Style.css" text="Simpan">
+      <Button fx:id="btnSimpan" layoutX="327.0" layoutY="290.0" minHeight="30.0" mnemonicParsing="false" onAction="#onbtnSimpanClick" prefHeight="30.0" prefWidth="100.0" stylesheets="@../../Style.css" text="Simpan">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="btnKembali" layoutX="493.0" layoutY="69.0" mnemonicParsing="false" onAction="#onbtnKembaliClick" prefHeight="25.0" prefWidth="72.0" stylesheets="@../../Style.css" text="Kembali" />
-      <Label layoutX="208.0" layoutY="24.0" prefHeight="30.0" prefWidth="187.0" text="Form Jenis Prestasi">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Label>
+      <Button fx:id="btnKembali" layoutX="493.0" layoutY="89.0" mnemonicParsing="false" onAction="#onbtnKembaliClick" prefHeight="25.0" prefWidth="72.0" stylesheets="@../../Style.css" text="Kembali" />
+      <Pane layoutX="-2.0" prefHeight="77.0" prefWidth="606.0" style="-fx-background-color: #004AAD;">
+         <children>
+            <Label layoutX="219.0" layoutY="23.0" prefHeight="30.0" prefWidth="187.0" text="Form Jenis Prestasi" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

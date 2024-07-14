@@ -72,5 +72,10 @@
       <Button fx:id="btnDashboardTendik" layoutX="23.0" layoutY="18.0" mnemonicParsing="false" onAction="#onbtnDashboardTendikClick" opacity="0.0" prefHeight="93.0" prefWidth="448.0" text="Button" />
       <Button fx:id="btnKembali" layoutX="63.0" layoutY="967.0" mnemonicParsing="false" onAction="#onbtnKembaliClick" opacity="0.0" prefHeight="70.0" prefWidth="383.0" text="Button" />
       <Pane fx:id="paneMain" layoutX="529.0" prefHeight="1080.0" prefWidth="1398.0" />
+      <Button fx:id="btnLaporanMabres" alignment="BASELINE_LEFT" layoutX="95.0" layoutY="873.0" mnemonicParsing="false" onAction="#onbtnLaporanMabresClick" prefHeight="37.0" prefWidth="359.0" stylesheets="@../Style.css" text="Laporan Mahasiswa Berprestasi">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

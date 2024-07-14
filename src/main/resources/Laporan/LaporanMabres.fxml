@@ -8,21 +8,25 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="1080.0" prefWidth="1398.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Laporan.LaporanMabres">
+<AnchorPane prefHeight="1080.0" prefWidth="1398.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Laporan.LaporanMabres">
    <children>
       <Label layoutX="462.0" layoutY="81.0" text="Laporan Mahasiswa Berprestasi">
          <font>
             <Font name="System Bold" size="35.0" />
          </font>
       </Label>
-      <TableView layoutX="39.0" layoutY="241.0" prefHeight="682.0" prefWidth="1332.0">
+      <TableView fx:id="tabellaporanmabres" layoutX="39.0" layoutY="241.0" prefHeight="682.0" prefWidth="1332.0">
          <columns>
-            <TableColumn prefWidth="75.0" text="C1" />
-            <TableColumn prefWidth="75.0" text="C2" />
+            <TableColumn fx:id="nim" prefWidth="147.00000762939453" text="NIM" />
+            <TableColumn fx:id="namamahasiswa" prefWidth="309.99999237060547" text="Nama Mahasiswa" />
+            <TableColumn fx:id="jeniskelamin" prefWidth="161.0" text="Jenis Kelamin" />
+            <TableColumn fx:id="tahunmasuk" prefWidth="141.33334350585938" text="Tahun Masuk" />
+            <TableColumn fx:id="programstudi" prefWidth="200.66668701171875" text="Program Studi" />
+            <TableColumn fx:id="ipk" prefWidth="204.0" text="IPK" />
+            <TableColumn fx:id="totalpointprestasi" prefWidth="168.66668701171875" text="Total Point Prestasi" />
          </columns>
       </TableView>
-      <ComboBox layoutX="1053.0" layoutY="182.0" prefHeight="42.0" prefWidth="315.0" />
-      <Button layoutX="653.0" layoutY="936.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="140.0" text="Refresh" />
+      <ComboBox fx:id="cbFilter" layoutX="1053.0" layoutY="182.0" prefHeight="42.0" prefWidth="315.0" />
+      <Button fx:id="btnRefresh" layoutX="653.0" layoutY="936.0" mnemonicParsing="false" onAction="#onbtnRefreshClick" prefHeight="52.0" prefWidth="140.0" text="Refresh" />
    </children>
 </AnchorPane>

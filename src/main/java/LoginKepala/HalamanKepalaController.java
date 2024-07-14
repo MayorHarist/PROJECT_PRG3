@@ -2,6 +2,9 @@ package LoginKepala;
 
 import Dashboard.DashboardApplication;
 import Database.DBConnect;
+import Laporan.LaporanKRPP;
+import Laporan.LaporanKRS;
+import Laporan.LaporanMabres;
 import Master.CRUD_JenisPrestasi.InputJepresController;
 import Master.CRUD_Pengumuman.UpdateDelPengumuman;
 import Master.CRUD_Tendik.UpdateDeleteTendik;
@@ -74,11 +77,25 @@ public class HalamanKepalaController {
 
 
     public void onbtnLaporanKRSClick(ActionEvent event) {
-        //masukkan form
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(LaporanKRS.class.getResource("LaporanKRS.fxml"));
+            Parent root = fxmlLoader.load();
+            paneMain.getChildren().clear(); // Clear previous content
+            paneMain.getChildren().add(root); // Add new content
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onbtnLaporanKRPPClick(ActionEvent event) {
-        //masukkan form
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(LaporanKRPP.class.getResource("LaporanKRPP.fxml"));
+            Parent root = fxmlLoader.load();
+            paneMain.getChildren().clear(); // Clear previous content
+            paneMain.getChildren().add(root); // Add new content
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onbtnKembaliClick(ActionEvent event) {
@@ -102,6 +119,17 @@ public class HalamanKepalaController {
         } catch (NullPointerException e) {
             e.printStackTrace();
             System.out.println("Not found");
+        }
+    }
+
+    public void onbtnLaporanMabresClick(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(LaporanMabres.class.getResource("LaporanMabres.fxml"));
+            Parent root = fxmlLoader.load();
+            paneMain.getChildren().clear(); // Clear previous content
+            paneMain.getChildren().add(root); // Add new content
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

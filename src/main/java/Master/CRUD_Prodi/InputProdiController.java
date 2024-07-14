@@ -176,7 +176,7 @@ public class InputProdiController implements Initializable {
                 System.out.print("Terjadi error saat insert data program studi: " + ex);
             }
             Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-            alert.initModality(Modality.APPLICATION_MODAL);
+            //alert.initModality(Modality.APPLICATION_MODAL);
             successAlert.setTitle("Sukses");
             successAlert.setHeaderText(null);
             successAlert.setContentText("Data program studi berhasil disimpan!");
@@ -185,7 +185,7 @@ public class InputProdiController implements Initializable {
             autoid(); // Generate a new ID for the next entry
         } else {
             Alert cancelAlert = new Alert(Alert.AlertType.INFORMATION);
-            alert.initModality(Modality.APPLICATION_MODAL);
+            //alert.initModality(Modality.APPLICATION_MODAL);
             cancelAlert.setTitle("Informasi");
             cancelAlert.setHeaderText(null);
             cancelAlert.setContentText("Data program studi tidak disimpan.");

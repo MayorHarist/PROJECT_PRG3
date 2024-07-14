@@ -1,6 +1,9 @@
 package LoginTendik;
 
 import Database.DBConnect;
+import Laporan.LaporanKRPP;
+import Laporan.LaporanKRS;
+import Laporan.LaporanMabres;
 import LoginKepala.HalamanKepalaController;
 import Master.CRUD_Dosen.UpdateDeleteDosenController;
 import Master.CRUD_JenisPrestasi.UDJepresController;
@@ -199,11 +202,36 @@ public class HalamanTendikController  {
     }
 
     public void onbtnLaporanKRSClick(ActionEvent event) {
-        //masukkan form
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(LaporanKRS.class.getResource("LaporanKRS.fxml"));
+            Parent root = fxmlLoader.load();
+            paneMain.getChildren().clear(); // Clear previous content
+            paneMain.getChildren().add(root); // Add new content
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onbtnLaporanKRPPClick(ActionEvent event) {
-        //masukkan form
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(LaporanKRPP.class.getResource("LaporanKRPP.fxml"));
+            Parent root = fxmlLoader.load();
+            paneMain.getChildren().clear(); // Clear previous content
+            paneMain.getChildren().add(root); // Add new content
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void onbtnLaporanMabresClick(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(LaporanMabres.class.getResource("LaporanMabres.fxml"));
+            Parent root = fxmlLoader.load();
+            paneMain.getChildren().clear(); // Clear previous content
+            paneMain.getChildren().add(root); // Add new content
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onbtnKembaliClick(ActionEvent event) {
