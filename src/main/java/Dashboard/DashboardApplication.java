@@ -21,6 +21,8 @@ import Master.CRUD_Prodi.UpdateDeleteProdiController;
 import Master.CRUD_Tendik.InputTendik;
 import Master.CRUD_Tendik.UpdateDeleteTendik;
 import Sebagai.SebagaiController;
+import Transaksi.FormKRPP;
+import Transaksi.TransaksiKRPPController;
 import Transaksi.TransaksiKRS;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -37,9 +39,9 @@ public class DashboardApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(UpdateDelPengumuman.class.getResource("UpdateDelPengumuman.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 1000);
-        //Scene scene = new Scene(fxmlLoader.load(), 1280, 650);
+        FXMLLoader fxmlLoader = new FXMLLoader(DashboardController.class.getResource("DashboardApplication.fxml"));
+        //Scene scene = new Scene(fxmlLoader.load(), 1000, 1000);
+        Scene scene = new Scene(fxmlLoader.load(), 1280, 650);
         stage.setTitle("Dashboard Find Smart");
         stage.setScene(scene);
         stage.show();
