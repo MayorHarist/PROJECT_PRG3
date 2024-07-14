@@ -18,7 +18,7 @@
          <font>
             <Font name="System Bold" size="18.0" />
          </font></TextField>
-      <TextField fx:id="txtPassword" layoutX="123.0" layoutY="489.0" prefHeight="41.0" prefWidth="499.0" promptText="Masukkan Kata Sandi" style="-fx-background-color: #004AAD; -fx-text-fill: White;">
+      <TextField fx:id="txtPasswordVisible" layoutX="123.0" layoutY="489.0" prefHeight="41.0" prefWidth="499.0" promptText="Masukkan Kata Sandi" style="-fx-background-color: #004AAD; -fx-text-fill: White;">
          <font>
             <Font name="System Bold" size="18.0" />
          </font></TextField>
