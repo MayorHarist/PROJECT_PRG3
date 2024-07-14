@@ -161,11 +161,11 @@ public class InputTendik {
                 connection.conn.commit();
                 if (rowsInserted > 0) {
                     Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.initModality(Modality.APPLICATION_MODAL);
+                    //alert.initModality(Modality.APPLICATION_MODAL);
                     successAlert.setTitle("Sukses");
                     successAlert.setHeaderText(null);
                     successAlert.setContentText("Data Tenaga Kependidikan berhasil ditambahkan!");
-                    successAlert.showAndWait();
+                    successAlert.show();
                     clear();
                     autoid();
                 }
@@ -173,17 +173,17 @@ public class InputTendik {
                 System.out.println("Terjadi error saat menambahkan data Tenaga Kependidikan: " + ex);
                 ex.printStackTrace();
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                alert.initModality(Modality.APPLICATION_MODAL);
+                //alert.initModality(Modality.APPLICATION_MODAL);
                 errorAlert.setContentText("Terjadi kesalahan saat menyimpan data. Silakan coba lagi.");
-                errorAlert.showAndWait();
+                errorAlert.show();
             }
         } else {
             Alert cancelAlert = new Alert(Alert.AlertType.INFORMATION);
-            alert.initModality(Modality.APPLICATION_MODAL);
+            //alert.initModality(Modality.APPLICATION_MODAL);
             cancelAlert.setTitle("Informasi");
             cancelAlert.setHeaderText(null);
             cancelAlert.setContentText("Data Tenaga Kependidikan tidak disimpan.");
-            cancelAlert.showAndWait();
+            cancelAlert.show();
         }
     }
 

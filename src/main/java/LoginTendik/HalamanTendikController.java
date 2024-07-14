@@ -11,6 +11,9 @@ import Master.CRUD_PosisiPrestasi.UDPospresController;
 import Master.CRUD_Prodi.UpdateDeleteProdiController;
 import Master.CRUD_Tendik.UpdateDeleteTendik;
 import Sebagai.SebagaiController;
+import Transaksi.FormKRPP;
+import Transaksi.TransaksiKRPPController;
+import Transaksi.TransaksiKRS;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -174,11 +177,25 @@ public class HalamanTendikController  {
     }
 
     public void onbtnKRSClick(ActionEvent event) {
-        //masukkan form
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(TransaksiKRS.class.getResource("TransaksiKRS.fxml"));
+            Parent root = fxmlLoader.load();
+            paneMain.getChildren().clear(); // Clear previous content
+            paneMain.getChildren().add(root); // Add new content
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onbtnKRPPClick(ActionEvent event) {
-        //masukkan form
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(FormKRPP.class.getResource("FormKRPP.fxml"));
+            Parent root = fxmlLoader.load();
+            paneMain.getChildren().clear(); // Clear previous content
+            paneMain.getChildren().add(root); // Add new content
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onbtnLaporanKRSClick(ActionEvent event) {
