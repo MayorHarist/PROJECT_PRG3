@@ -606,7 +606,7 @@ public class TransaksiKRS {
         // Insert data into DetailKRS table
         try {
             for (DetailKRS detail : detailKRSList) {
-                String query = "EXEC sp_InsertDetailMatkul ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
+                String query = "EXEC sp_InsertDetailMatkul ?, ?, ?, ?, ?, ?, ?, ?";
                 connection.pstat = connection.conn.prepareStatement(query);
                 connection.pstat.setString(1, detail.getIdDetailKRS());
                 connection.pstat.setFloat(2, detail.getTugas());
@@ -614,10 +614,10 @@ public class TransaksiKRS {
                 connection.pstat.setFloat(4, detail.getUTS());
                 connection.pstat.setFloat(5, detail.getUAS());
                 connection.pstat.setFloat(6, detail.getProjek());
-                connection.pstat.setFloat(7, detail.getAkhir());
-                connection.pstat.setString(8, detail.getIndeks());
-                connection.pstat.setString(9, detail.getIdMatkul());
-                connection.pstat.setString(10, detail.getIdKRS());
+                connection.pstat.setString(7, detail.getIdMatkul());
+                connection.pstat.setString(8, detail.getIdKRS());
+                //connection.pstat.setFloat(9, detail.getAkhir()); // Move this to 9th position
+                //connection.pstat.setString(10, detail.getIndeks()); // Move this to 10th position
 
                 connection.pstat.executeUpdate();
             }
@@ -752,11 +752,11 @@ public class TransaksiKRS {
         String indeks = txtIndeksNilai.getText();
 
         try {
-            projek = parseFloat(txtProjek.getText());
-            quiz = parseFloat(txtQuiz.getText());
-            tugas = parseFloat(txtTugas.getText());
-            uas = parseFloat(txtUAS.getText());
-            uts = parseFloat(txtUTS.getText());
+            projek = parseFloat(txtProjek.getText().replace(",", "."));
+            quiz = parseFloat(txtQuiz.getText().replace(",", "."));
+            tugas = parseFloat(txtTugas.getText().replace(",", "."));
+            uas = parseFloat(txtUAS.getText().replace(",", "."));
+            uts = parseFloat(txtUTS.getText().replace(",", "."));
         } catch (NumberFormatException e) {
             showErrorAlert("Error", "Nilai harus berupa angka!");
             return;
@@ -776,7 +776,7 @@ public class TransaksiKRS {
                     uts,
                     uas,
                     projek,
-                    parseFloat(txtAkhir.getText()),
+                    parseFloat(txtAkhir.getText().replace(",", ".")),
                     indeks,
                     selectedMatkul.getId(),
                     IdKRS
@@ -821,7 +821,7 @@ public class TransaksiKRS {
             if (result.next()) {
                 String maxId = result.getString(1);
                 if (maxId != null) {
-                    int number = Integer.parseInt(maxId.substring(2)) + 1; // Increment number
+                    int number = Integer.parseInt(maxId.substring(3)) + 1; // Increment number
                     newId = "DET" + String.format("%03d", number); // Format new ID
                 } else {
                     newId = "DET001"; // Initial ID if no records exist
