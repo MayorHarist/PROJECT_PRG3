@@ -63,9 +63,10 @@ public class UpdateDeleteProdiController implements Initializable {
         Akreditasi.setCellValueFactory(new PropertyValueFactory<>("akreditasi"));
 
         // Load data into table
-        loadTableData();
+        loadTableData();//abstract; menyembunyikan detail logika dan memberikan interface yang sederhana u/ditampilkan
 
         // Add listener to txtCari for search functionality
+        //Polymorphism;
         txtCari.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
                 cariDataProdi(newValue);

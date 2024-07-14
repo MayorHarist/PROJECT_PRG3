@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
 
 import static Master.CRUD_Pengumuman.InputPengumuman.*;
 
-public class UpdateDelPengumuman implements Initializable {
+public class UpdateDelPengumuman implements Initializable {//implementasi dari interface Initializable
     @FXML
     private TextField txtIDPengumuman;
     @FXML
@@ -54,7 +54,7 @@ public class UpdateDelPengumuman implements Initializable {
 
     public class Pengumuman {
         private String IdPM, namaPengumuman, Deskripsi, nmTendik, IdTKN;
-        private LocalDate Tanggal;
+        private LocalDate Tanggal; //constructor
 
         public Pengumuman(String IdPM, String namaPengumuman, LocalDate Tanggal, String Deskripsi, String IdTKN, String nmTendik){
             this.IdPM = IdPM;
@@ -64,7 +64,7 @@ public class UpdateDelPengumuman implements Initializable {
             this.IdTKN = IdTKN;
             this.nmTendik = nmTendik;
         }
-
+        // getter setter; bentuk Encapsulation; mengakses variable instan dg getter
         public String getIdPM() { return IdPM; }
         public String getNamaPengumuman() { return namaPengumuman; }
         public LocalDate getTanggal() { return Tanggal; }
