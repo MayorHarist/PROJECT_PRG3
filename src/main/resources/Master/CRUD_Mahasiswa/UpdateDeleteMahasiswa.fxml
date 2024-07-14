@@ -40,17 +40,17 @@
 
     <TableView fx:id="tableMahasiswa" layoutX="71.0" layoutY="134.0" prefHeight="358.0" prefWidth="1257.0">
         <columns>
-            <TableColumn fx:id="NIM" prefWidth="75.0" text="NIM" />
-            <TableColumn fx:id="NamaProdi" prefWidth="93.66665649414062" text="Nama Prodi" />
-            <TableColumn fx:id="Nama" prefWidth="131.33334350585938" text="Nama" />
-            <TableColumn fx:id="TanggalLahir" prefWidth="118.6666259765625" text="Tanggal Lahir" />
-            <TableColumn fx:id="JenisKelamin" prefWidth="118.3333740234375" text="Jenis Kelamin" />
-            <TableColumn fx:id="Alamat" prefWidth="139.33331298828125" text="Alamat" />
-            <TableColumn fx:id="Email" prefWidth="132.6666259765625" text="Email" />
-            <TableColumn fx:id="Telepon" prefWidth="130.3333740234375" text="Telepon" />
-            <TableColumn fx:id="TahunMasuk" prefWidth="111.6666259765625" text="Tahun Masuk" />
-            <TableColumn fx:id="PointKRPP" prefWidth="100.0" text="Point KRPP" />
-            <TableColumn fx:id="IPK" prefWidth="105.0" text="IPK" />
+            <TableColumn fx:id="nim" prefWidth="75.0" text="NIM" />
+            <TableColumn fx:id="namaProdi" prefWidth="93.66665649414062" text="Nama Prodi" />
+            <TableColumn fx:id="nama" prefWidth="131.33334350585938" text="Nama" />
+            <TableColumn fx:id="tanggalLahir" prefWidth="118.6666259765625" text="Tanggal Lahir" />
+            <TableColumn fx:id="jenisKelamin" prefWidth="118.3333740234375" text="Jenis Kelamin" />
+            <TableColumn fx:id="alamat" prefWidth="139.33331298828125" text="Alamat" />
+            <TableColumn fx:id="email" prefWidth="132.6666259765625" text="Email" />
+            <TableColumn fx:id="telepon" prefWidth="130.3333740234375" text="Telepon" />
+            <TableColumn fx:id="tahunMasuk" prefWidth="111.6666259765625" text="Tahun Masuk" />
+            <TableColumn fx:id="pointKRPP" prefWidth="100.0" text="Point KRPP" />
+            <TableColumn fx:id="ipk" prefWidth="105.0" text="IPK" />
         </columns>
     </TableView>
     <RadioButton fx:id="rbLaki" layoutX="565.0" layoutY="553.0" mnemonicParsing="false" text="Laki - laki" />
@@ -58,5 +58,5 @@
    <Button fx:id="btnTambah" layoutX="71.0" layoutY="93.0" mnemonicParsing="false" onAction="#btnTambah_Click" prefHeight="25.0" prefWidth="82.0" text="Tambah" />
    <Button fx:id="btnBatal" layoutX="776.0" layoutY="690.0" mnemonicParsing="false" onAction="#btnBatalClick" prefHeight="30.0" prefWidth="96.0" text="Batal" />
    <Button fx:id="btnRefresh" layoutX="644.0" layoutY="507.0" mnemonicParsing="false" onAction="#btnRefreshClick" prefHeight="30.0" prefWidth="141.0" text="Refresh" />
-   <TextField fx:id="txtCari" layoutX="557.0" layoutY="34.0" prefHeight="30.0" prefWidth="202.0" />
+   <TextField fx:id="txtCari" layoutX="557.0" layoutY="34.0" onKeyReleased="#onTxtCari" prefHeight="30.0" prefWidth="202.0" />
 </AnchorPane>

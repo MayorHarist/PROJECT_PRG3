@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
@@ -15,6 +16,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class InputProdiController implements Initializable {
@@ -33,7 +35,9 @@ public class InputProdiController implements Initializable {
     @FXML
     private Button btnBatal;
 
-    private DBConnect connection = new DBConnect();
+    String idProdi, nama, jenjangPendidikan, akreditasi;
+
+    DBConnect connection = new DBConnect();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -60,17 +64,32 @@ public class InputProdiController implements Initializable {
         });
     }
 
+    @FXML
     public void btnSimpan_Click(ActionEvent actionEvent) {
-        // Validate form fields
+        idProdi = txtIdProdi.getText();
+        nama = txtNama.getText();
+        jenjangPendidikan = txtJenjangPendidikan.getText();
+        akreditasi = txtAkreditasi.getText();
+       /* // Validate form fields
         if (!isFormValid()) {
             return; // Stop save process if form is not valid
-        }
+        }*/
 
         // Retrieve data from form fields
-        String idProdi = txtIdProdi.getText();
+        /*String idProdi = txtIdProdi.getText();
         String nama = txtNama.getText();
         String jenjangPendidikan = txtJenjangPendidikan.getText();
-        String akreditasi = txtAkreditasi.getText();
+        String akreditasi = txtAkreditasi.getText();*/
+
+        // Menambahkan validasi untuk memastikan semua input telah diisi
+        if (idProdi.isEmpty() || nama.isEmpty() || jenjangPendidikan.isEmpty() || akreditasi.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Semua data harus diisi.");
+            alert.showAndWait();
+            return;
+        }
 
         // Build confirmation message
         String message = "Data yang akan disimpan:\n";
@@ -81,12 +100,12 @@ public class InputProdiController implements Initializable {
         message += "\nApakah Anda yakin ingin menyimpan data ini?";
 
         // Show confirmation dialog
-        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationAlert.setTitle("Konfirmasi Simpan Data");
-        confirmationAlert.setHeaderText(null);
-        confirmationAlert.setContentText(message);
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Konfirmasi");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
 
-        // If the user confirms, proceed with save operation
+/*        // If the user confirms, proceed with save operation
         confirmationAlert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
@@ -101,9 +120,9 @@ public class InputProdiController implements Initializable {
                 showAlert("Data prodi tidak disimpan.", Alert.AlertType.INFORMATION);
             }
         });
-    }
+    }*/
 
-    private boolean isFormValid() {
+   /* private boolean isFormValid() {
         String idProdi = txtIdProdi.getText();
         String nama = txtNama.getText();
         String jenjangPendidikan = txtJenjangPendidikan.getText();
@@ -134,9 +153,40 @@ public class InputProdiController implements Initializable {
         }
 
         return true;
+    }*/
+
+        Optional<ButtonType> option = alert.showAndWait();
+        if (option.isPresent() && option.get() == ButtonType.OK) {
+            try {
+                String query = "EXEC sp_InsertProdi ?, ?, ?, ?";
+                connection.pstat = connection.conn.prepareStatement(query);
+                connection.pstat.setString(1, idProdi);
+                connection.pstat.setString(2, nama);
+                connection.pstat.setString(3, jenjangPendidikan);
+                connection.pstat.setString(4, akreditasi);
+
+                connection.pstat.executeUpdate();
+                connection.pstat.close();
+            } catch (SQLException ex) {
+                System.out.print("Terjadi error saat insert data program studi: " + ex);
+            }
+            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+            successAlert.setTitle("Sukses");
+            successAlert.setHeaderText(null);
+            successAlert.setContentText("Data program studi berhasil disimpan!");
+            successAlert.showAndWait();
+            clear();
+            autoid(); // Generate a new ID for the next entry
+        } else {
+            Alert cancelAlert = new Alert(Alert.AlertType.INFORMATION);
+            cancelAlert.setTitle("Informasi");
+            cancelAlert.setHeaderText(null);
+            cancelAlert.setContentText("Data program studi tidak disimpan.");
+            cancelAlert.showAndWait();
+        }
     }
 
-
+    @FXML
     public void btnBatal_Click(ActionEvent actionEvent) {
         clear();
     }
@@ -148,7 +198,7 @@ public class InputProdiController implements Initializable {
         txtAkreditasi.clear();
     }
 
-    private void showAlert(String message, Alert.AlertType alertType) {
+/*    private void showAlert(String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setContentText(message);
         alert.show();
@@ -165,25 +215,25 @@ public class InputProdiController implements Initializable {
 
             stmt.executeUpdate();
         }
-    }
+    }*/
 
-    private void autoid() {
+    public void autoid() {
         try {
             String sql = "SELECT dbo.autoIdProdi() AS newID";
             connection.pstat = connection.conn.prepareStatement(sql);
             ResultSet result = connection.pstat.executeQuery();
 
             if (result.next()) {
-                String newId = result.getString("newID");
-                txtIdProdi.setText(newId);
+                String newID = result.getString("newID");
+                txtIdProdi.setText(newID);
             }
             result.close();
         } catch (Exception ex) {
-            System.out.println("Terjadi error pada autoid: " + ex);
+            System.out.println("Terjadi error pada Program Studi: " + ex);
         }
     }
 
-
+    @FXML
     public void btnKembali_Click(ActionEvent actionEvent) {
         Stage stage = (Stage) btnBatal.getScene().getWindow();
         stage.close();
