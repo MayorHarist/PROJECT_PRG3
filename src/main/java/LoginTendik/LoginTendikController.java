@@ -37,6 +37,7 @@ public class LoginTendikController {
 
     @FXML
     public void initialize() {
+        // Menambahkan listener untuk txtPassword
         txtPassword.textProperty().addListener(new ChangeListener<String>() {
             private boolean changing = false;
 
@@ -50,14 +51,24 @@ public class LoginTendikController {
                 if (newValue.length() > oldValue.length()) {
                     char addedChar = newValue.charAt(newValue.length() - 1);
                     passwordBuilder.append(addedChar);
-                    txtPassword.setText(txtPassword.getText().substring(0, newValue.length() - 1) + "*");
+                    txtPassword.setText(maskPassword(txtPassword.getText()));
                 } else if (newValue.length() < oldValue.length() && passwordBuilder.length() > 0) {
                     passwordBuilder.deleteCharAt(passwordBuilder.length() - 1);
+                    txtPassword.setText(maskPassword(txtPassword.getText()));
                 }
 
                 changing = false;
             }
         });
+    }
+
+    // Method untuk mengganti karakter menjadi bintang
+    private String maskPassword(String password) {
+        StringBuilder masked = new StringBuilder();
+        for (int i = 0; i < password.length(); i++) {
+            masked.append("*");
+        }
+        return masked.toString();
     }
 
     @FXML
@@ -76,7 +87,7 @@ public class LoginTendikController {
 
             // Pindah ke form selanjutnya
             try {
-                FXMLLoader loader = new FXMLLoader(HalamanTendikController.class.getResource("HalamanTendik.fxml"));
+                FXMLLoader loader = new FXMLLoader(HalamanTendikController.class.getResource("/LoginTendik/HalamanTendik.fxml"));
                 Parent root = loader.load();
 
                 Stage stage = new Stage();
@@ -92,9 +103,6 @@ public class LoginTendikController {
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Failed to load HalamanTendik.fxml");
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-                System.out.println("Resource HalamanTendik.fxml not found");
             }
 
         } else {
@@ -115,7 +123,13 @@ public class LoginTendikController {
             stmt.setString(1, username);
             stmt.setString(2, password);
             ResultSet rs = stmt.executeQuery();
-            return rs.next();
+            boolean authenticated = rs.next();
+            if (authenticated) {
+                System.out.println("");
+            } else {
+                System.out.println("Authentication failed: Username or password incorrect");
+            }
+            return authenticated;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -135,7 +149,7 @@ public class LoginTendikController {
     @FXML
     protected void onbtnExitClick() {
         try {
-            FXMLLoader loader = new FXMLLoader(SebagaiController.class.getResource("SebagaiApplication.fxml"));
+            FXMLLoader loader = new FXMLLoader(SebagaiController.class.getResource("/Sebagai/SebagaiApplication.fxml"));
             Parent root = loader.load();
 
             Stage stage = new Stage();
