@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -114,6 +115,7 @@ public class InputPengumuman {
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initModality(Modality.APPLICATION_MODAL);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
@@ -141,6 +143,7 @@ public class InputPengumuman {
         // Validasi data tidak boleh kosong
         if (Id_Pengumuman.isEmpty() || Nama.isEmpty() || tanggal == null || Deskripsi.isEmpty() || Id_TKN == null) {
             Alert alert = new Alert(AlertType.ERROR);
+            alert.initModality(Modality.APPLICATION_MODAL);
             alert.setTitle("Error");
             alert.setHeaderText(null);
             alert.setContentText("Semua data harus diisi.");
@@ -158,6 +161,7 @@ public class InputPengumuman {
         message += "Apakah Anda yakin ingin menyimpan data?";
 
         Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.initModality(Modality.APPLICATION_MODAL);
         alert.setTitle("Konfirmasi");
         alert.setHeaderText(null);
         alert.setContentText(message);
@@ -180,6 +184,7 @@ public class InputPengumuman {
                 connection.conn.commit();
 
                 Alert successAlert = new Alert(AlertType.INFORMATION);
+                alert.initModality(Modality.APPLICATION_MODAL);
                 successAlert.setTitle("Sukses");
                 successAlert.setHeaderText(null);
                 successAlert.setContentText("Data pengumuman berhasil disimpan!");
@@ -191,6 +196,7 @@ public class InputPengumuman {
             }
         } else {
             Alert cancelAlert = new Alert(AlertType.INFORMATION);
+            alert.initModality(Modality.APPLICATION_MODAL);
             cancelAlert.setTitle("Informasi");
             cancelAlert.setHeaderText(null);
             cancelAlert.setContentText("Data pengumuman tidak disimpan.");

@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.sql.ResultSet;
@@ -47,6 +48,7 @@ public class InputJepresController {
             if (!newValue.matches("\\d*")) { // Memeriksa apakah nilai baru hanya terdiri dari digit
                 txtPoint.setText(newValue.replaceAll("[^\\d]", "")); // Hapus karakter non-digit
                 Alert alert = new Alert(AlertType.INFORMATION);
+                alert.initModality(Modality.APPLICATION_MODAL);
                 alert.setTitle("Informasi");
                 alert.setHeaderText(null);
                 alert.setContentText("Point harus diisi dengan angka.");
@@ -59,6 +61,7 @@ public class InputJepresController {
             if (!newValue.matches("[a-zA-Z\\s]*")) { // Memeriksa apakah nilai baru hanya terdiri dari huruf dan spasi
                 txtNama.setText(newValue.replaceAll("[^a-zA-Z\\s]", "")); // Hapus karakter non-huruf
                 Alert alert = new Alert(AlertType.INFORMATION);
+                alert.initModality(Modality.APPLICATION_MODAL);
                 alert.setTitle("Informasi");
                 alert.setHeaderText(null);
                 alert.setContentText("Nama harus diisi dengan huruf.");
@@ -94,6 +97,7 @@ public class InputJepresController {
         // Menambahkan validasi untuk memastikan semua input telah diisi
         if (idjenisprestasi.isEmpty() || nama.isEmpty() || peran.isEmpty() || penyelenggara.isEmpty() || txtPoint.getText().isEmpty()) {
             Alert alert = new Alert(AlertType.ERROR);
+            alert.initModality(Modality.APPLICATION_MODAL);
             alert.setTitle("Error");
             alert.setHeaderText(null);
             alert.setContentText("Semua data harus diisi.");
@@ -123,6 +127,7 @@ public class InputJepresController {
         message += "Apakah Anda yakin ingin menyimpan data?";
 
         Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.initModality(Modality.APPLICATION_MODAL);
         alert.setTitle("Konfirmasi");
         alert.setHeaderText(null);
         alert.setContentText(message);
@@ -144,6 +149,7 @@ public class InputJepresController {
                 System.out.print("Terjadi error saat insert data jenis prestasi: " + ex);
             }
             Alert successAlert = new Alert(AlertType.INFORMATION);
+            alert.initModality(Modality.APPLICATION_MODAL);
             successAlert.setTitle("Sukses");
             successAlert.setHeaderText(null);
             successAlert.setContentText("Data jenis prestasi berhasil disimpan!");
@@ -152,6 +158,7 @@ public class InputJepresController {
             autoid(); // Generate a new ID for the next entry
         } else {
             Alert cancelAlert = new Alert(AlertType.INFORMATION);
+            alert.initModality(Modality.APPLICATION_MODAL);
             cancelAlert.setTitle("Informasi");
             cancelAlert.setHeaderText(null);
             cancelAlert.setContentText("Data jenis prestasi tidak disimpan.");

@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -65,6 +66,7 @@ public class InputMahasiswa implements Initializable {
             if (!newValue.matches("[a-zA-Z\\s]*")) { // Memeriksa apakah nilai baru hanya terdiri dari huruf dan spasi
                 txtNama.setText(newValue.replaceAll("[^a-zA-Z\\s]", "")); // Hapus karakter non-huruf
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.initModality(Modality.APPLICATION_MODAL);
                 alert.setTitle("Informasi");
                 alert.setHeaderText(null);
                 alert.setContentText("Nama harus diisi dengan huruf.");
@@ -77,6 +79,7 @@ public class InputMahasiswa implements Initializable {
             if (!newValue.matches("\\d*")) { // Memeriksa apakah nilai baru hanya terdiri dari digit
                 txtTelepon.setText(newValue.replaceAll("[^\\d]", "")); // Hapus karakter non-digit
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.initModality(Modality.APPLICATION_MODAL);
                 alert.setTitle("Informasi");
                 alert.setHeaderText(null);
                 alert.setContentText("Harus diisi dengan angka.");
@@ -97,6 +100,7 @@ public class InputMahasiswa implements Initializable {
             if (!newValue.matches("\\d*")) { // Memeriksa apakah nilai baru hanya terdiri dari digit
                 txtTahunMasuk.setText(newValue.replaceAll("[^\\d]", "")); // Hapus karakter non-digit
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.initModality(Modality.APPLICATION_MODAL);
                 alert.setTitle("Informasi");
                 alert.setHeaderText(null);
                 alert.setContentText("Harus diisi dengan angka.");
@@ -214,6 +218,7 @@ public class InputMahasiswa implements Initializable {
         message += "Apakah Anda yakin ingin menyimpan data?";
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initModality(Modality.APPLICATION_MODAL);
         alert.setTitle("Konfirmasi");
         alert.setHeaderText(null);
         alert.setContentText(message);
