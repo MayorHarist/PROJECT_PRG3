@@ -47,7 +47,7 @@ public class InputProdiController implements Initializable {
             if (!newValue.matches("[a-zA-Z\\s]*")) { // Memeriksa apakah nilai baru hanya terdiri dari huruf dan spasi
                 txtNama.setText(newValue.replaceAll("[^a-zA-Z\\s]", "")); // Hapus karakter non-huruf
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.initModality(Modality.APPLICATION_MODAL);
+                //alert.initModality(Modality.APPLICATION_MODAL);
                 alert.setTitle("Informasi");
                 alert.setHeaderText(null);
                 alert.setContentText("Nama harus diisi dengan huruf.");
@@ -58,7 +58,7 @@ public class InputProdiController implements Initializable {
             if (!newValue.matches("[a-zA-Z\\s]*")) { // Memeriksa apakah nilai baru hanya terdiri dari huruf dan spasi
                 txtAkreditasi.setText(newValue.replaceAll("[^a-zA-Z\\s]", "")); // Hapus karakter non-huruf
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.initModality(Modality.APPLICATION_MODAL);
+                //alert.initModality(Modality.APPLICATION_MODAL);
                 alert.setTitle("Informasi");
                 alert.setHeaderText(null);
                 alert.setContentText("Harus diisi dengan huruf.");
@@ -87,7 +87,7 @@ public class InputProdiController implements Initializable {
         // Menambahkan validasi untuk memastikan semua input telah diisi
         if (idProdi.isEmpty() || nama.isEmpty() || jenjangPendidikan.isEmpty() || akreditasi.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.initModality(Modality.APPLICATION_MODAL);
+            //alert.initModality(Modality.APPLICATION_MODAL);
             alert.setTitle("Error");
             alert.setHeaderText(null);
             alert.setContentText("Semua data harus diisi.");
@@ -105,7 +105,7 @@ public class InputProdiController implements Initializable {
 
         // Show confirmation dialog
         Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.initModality(Modality.APPLICATION_MODAL);
+        //alert.initModality(Modality.APPLICATION_MODAL);
         alert.setTitle("Konfirmasi");
         alert.setHeaderText(null);
         alert.setContentText(message);

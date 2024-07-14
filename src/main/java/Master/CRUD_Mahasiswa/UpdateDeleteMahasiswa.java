@@ -1,5 +1,6 @@
 package Master.CRUD_Mahasiswa;
 
+import Master.CRUD_JenisPrestasi.InputJepresController;
 import Master.CRUD_Matkul.InputMatkulController;
 import Master.CRUD_Matkul.UpdateDeleteMatkulController;
 import Master.CRUD_Tendik.InputTendik;
@@ -351,6 +352,16 @@ public class UpdateDeleteMahasiswa implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(InputMahasiswa.class.getResource("InputMahasiswa.fxml"));
             Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Tambah Data Mahasiswa");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /*try {
+            FXMLLoader fxmlLoader = new FXMLLoader(InputMahasiswa.class.getResource("InputMahasiswa.fxml"));
+            Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
 
             Stage stage = new Stage();
@@ -362,7 +373,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @FXML

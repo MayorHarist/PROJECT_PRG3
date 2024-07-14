@@ -47,7 +47,7 @@ public class InputMatkulController {
     public void onbtnKembaliClick(ActionEvent event) {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
-        stage.close(); //menutup form saat ini
+        stage.close(); //menutup form saat iniw
     }
 
     public class Pegawai {
@@ -206,7 +206,7 @@ public class InputMatkulController {
             confirmationMessage.append("Program Studi: ").append(selectedProdi != null ? selectedProdi.getNama() : "Tidak ada").append("\n");
 
             Alert confirmationAlert = new Alert(AlertType.CONFIRMATION);
-            confirmationAlert.initModality(Modality.APPLICATION_MODAL);
+            //confirmationAlert.initModality(Modality.APPLICATION_MODAL);
             confirmationAlert.setTitle("Konfirmasi");
             confirmationAlert.setHeaderText(null);
             confirmationAlert.setContentText(confirmationMessage.toString());
