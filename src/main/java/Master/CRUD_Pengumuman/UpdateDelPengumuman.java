@@ -116,11 +116,12 @@ public class UpdateDelPengumuman implements Initializable {
             String query = "SELECT p.Id_Pengumuman, p.Nama, p.Tanggal, p.Deskripsi, t.Id_TKN, t.Nama AS Nama_TKN " +
                     "FROM Pengumuman p " +
                     "JOIN TenagaKependidikan t ON p.Id_TKN = t.Id_TKN " +
-                    "WHERE p.Id_Pengumuman LIKE ? OR " +
+                    "WHERE (LOWER(p.Id_Pengumuman) LIKE ? OR " +
                     "LOWER(p.Nama) LIKE ? OR " +
-                    "LOWER(p.Tanggal) LIKE ? OR " +
+                    "CAST(p.Tanggal AS VARCHAR) LIKE ? OR " +
                     "LOWER(p.Deskripsi) LIKE ? OR " +
-                    "LOWER(t.Nama) LIKE ?";
+                    "LOWER(t.Nama) LIKE ?) AND " +
+                    "p.Status = 'Aktif'";
 
             PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
             String wildcardKeyword = "%" + keyword.toLowerCase() + "%";
