@@ -257,6 +257,16 @@ public class UpdateDeleteProdiController implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(InputProdiController.class.getResource("InputProdiApplication.fxml"));
             Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Tambah Data Program Studi");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /*try {
+            FXMLLoader fxmlLoader = new FXMLLoader(InputProdiController.class.getResource("InputProdiApplication.fxml"));
+            Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
 
             Stage stage = new Stage();
@@ -268,7 +278,7 @@ public class UpdateDeleteProdiController implements Initializable {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public void onBtnRefreshClick(ActionEvent actionEvent) {

@@ -127,7 +127,7 @@ public class InputJepresController {
         message += "Apakah Anda yakin ingin menyimpan data?";
 
         Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.initModality(Modality.APPLICATION_MODAL);
+        //alert.initModality(Modality.APPLICATION_MODAL);
         alert.setTitle("Konfirmasi");
         alert.setHeaderText(null);
         alert.setContentText(message);

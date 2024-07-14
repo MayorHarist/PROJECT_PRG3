@@ -2,6 +2,7 @@ package Master.CRUD_Dosen;
 
 import Master.CRUD_JenisPrestasi.InputJepresController;
 import Master.CRUD_Tendik.InputTendik;
+import Transaksi.TransaksiKRPPController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -358,8 +359,18 @@ public class UpdateDeleteDosenController implements Initializable {
 
     @FXML
     protected void onBtnTambahClick(ActionEvent event) {
-
         try {
+            FXMLLoader fxmlLoader = new FXMLLoader(InputDosenController.class.getResource("InputDosenApplication.fxml"));
+            Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Tambah Data Dosen");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        /*try {
             FXMLLoader fxmlLoader = new FXMLLoader(InputDosenController.class.getResource("InputDosenApplication.fxml"));
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
@@ -374,6 +385,6 @@ public class UpdateDeleteDosenController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
 
-        }
+        }*/
     }
 }

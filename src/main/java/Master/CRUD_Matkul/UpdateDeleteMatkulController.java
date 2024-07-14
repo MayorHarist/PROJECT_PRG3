@@ -1,5 +1,6 @@
 package Master.CRUD_Matkul;
 
+import Master.CRUD_Mahasiswa.InputMahasiswa;
 import Master.CRUD_Tendik.InputTendik;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -499,6 +500,16 @@ public class UpdateDeleteMatkulController implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(InputMatkulController.class.getResource("InputMatkulApplication.fxml"));
             Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Tambah Data Mata Kuliah");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /*try {
+            FXMLLoader fxmlLoader = new FXMLLoader(InputMatkulController.class.getResource("InputMatkulApplication.fxml"));
+            Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
 
             Stage stage = new Stage();
@@ -510,6 +521,6 @@ public class UpdateDeleteMatkulController implements Initializable {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

@@ -3,6 +3,7 @@ package Master.CRUD_PosisiPrestasi;
 import Database.DBConnect;
 import Master.CRUD_JenisPrestasi.InputJepresController;
 import Master.CRUD_JenisPrestasi.jepres;
+import Master.CRUD_Pengumuman.InputPengumuman;
 import Master.CRUD_Tendik.InputTendik;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -283,6 +284,16 @@ public class UDPospresController implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(InputPospresController.class.getResource("InputPospres.fxml"));
             Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Tambah Posisi Prestasi");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /*try {
+            FXMLLoader fxmlLoader = new FXMLLoader(InputPospresController.class.getResource("InputPospres.fxml"));
+            Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
 
             Stage stage = new Stage();
@@ -294,6 +305,6 @@ public class UDPospresController implements Initializable {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

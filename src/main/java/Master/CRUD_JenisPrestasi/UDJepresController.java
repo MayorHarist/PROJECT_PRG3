@@ -1,6 +1,7 @@
 package Master.CRUD_JenisPrestasi;
 
 import Database.DBConnect;
+import Master.CRUD_Dosen.InputDosenController;
 import Master.CRUD_Tendik.InputTendik;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -252,6 +253,17 @@ public class UDJepresController implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(InputJepresController.class.getResource("InputJepres.fxml"));
             Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Tambah Jenis Prestasi");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        /*try {
+            FXMLLoader fxmlLoader = new FXMLLoader(InputJepresController.class.getResource("InputJepres.fxml"));
+            Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
 
             Stage stage = new Stage();
@@ -263,7 +275,7 @@ public class UDJepresController implements Initializable {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
 

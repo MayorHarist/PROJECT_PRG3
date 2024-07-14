@@ -3,6 +3,7 @@ package Master.CRUD_Tendik;
 import Database.DBConnect;
 import Master.CRUD_JenisPrestasi.InputJepresController;
 import Master.CRUD_JenisPrestasi.jepres;
+import Master.CRUD_Prodi.InputProdiController;
 import Transaksi.TransaksiKRPPController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -497,8 +498,17 @@ public class UpdateDeleteTendik implements Initializable {
 
     @FXML
     protected void onBtnTambahClick() {
-
         try {
+            FXMLLoader fxmlLoader = new FXMLLoader(InputTendik.class.getResource("InputTendik.fxml"));
+            Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Tambah Tenaga Kependidikan");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /*try {
             FXMLLoader fxmlLoader = new FXMLLoader(InputTendik.class.getResource("InputTendik.fxml"));
             Parent root = fxmlLoader.load();
             Stage stage = new Stage();
@@ -509,7 +519,7 @@ public class UpdateDeleteTendik implements Initializable {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
         /*try {
             FXMLLoader fxmlLoader = new FXMLLoader(InputTendik.class.getResource("InputTendik.fxml"));
             Parent root = fxmlLoader.load();
