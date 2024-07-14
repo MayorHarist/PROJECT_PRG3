@@ -1,5 +1,6 @@
 package Dashboard;
 
+import Master.CRUD_Dosen.UpdateDeleteDosenController;
 import Master.CRUD_Tendik.UpdateDeleteTendik;
 import Transaksi.FormKRPP;
 import Transaksi.TransaksiKRS;
@@ -18,7 +19,7 @@ public class DashboardApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(DashboardController.class.getResource("DashboardApplication.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(UpdateDeleteDosenController.class.getResource("UpdateDeleteDosenController.fxml"));
         //Scene scene = new Scene(fxmlLoader.load(), 1000, 1000);
         //Scene scene = new Scene(fxmlLoader.load(), 1280, 650);
         Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);
