@@ -290,18 +290,18 @@ public class UpdateDeleteMahasiswa implements Initializable {
             int totalPointKRPP = 0; // Atur sesuai kebutuhan
             double ipk = 0.0; // Atur sesuai kebutuhan
 
-            String query = "EXEC sp_UpdateMahasiswa ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
+            String query = "EXEC sp_UpdateMahasiswa ?, ?, ?, ?, ?, ?, ?, ?, ?";
             try (PreparedStatement preparedStatement = connection.conn.prepareStatement(query)) {
                 preparedStatement.setString(1, nim);
-                preparedStatement.setString(2, nama);
-                preparedStatement.setDate(3, java.sql.Date.valueOf(tanggalLahir)); // Menggunakan java.sql.Date
-                preparedStatement.setString(4, jenisKelamin);
-                preparedStatement.setString(5, alamat);
-                preparedStatement.setString(6, email);
-                preparedStatement.setString(7, telepon);
-                preparedStatement.setInt(8, Integer.parseInt(tahunMasuk));
-                preparedStatement.setInt(9, totalPointKRPP); // Mengisi totalPointKRPP
-                preparedStatement.setDouble(10, ipk); // Mengisi IPK
+                preparedStatement.setString(2, idProdi);
+                preparedStatement.setString(3, nama);
+                preparedStatement.setDate(4, java.sql.Date.valueOf(tanggalLahir)); // Menggunakan java.sql.Date
+                preparedStatement.setString(5, jenisKelamin);
+                preparedStatement.setString(6, alamat);
+                preparedStatement.setString(7, email);
+                preparedStatement.setString(8, telepon);
+                preparedStatement.setInt(9, Integer.parseInt(tahunMasuk));
+
 
                 preparedStatement.executeUpdate();
 
