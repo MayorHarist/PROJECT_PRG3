@@ -2,7 +2,9 @@ package Master.CRUD_Matkul;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -17,6 +19,7 @@ import java.util.regex.Pattern;
 
 import Database.DBConnect;
 import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class InputMatkulController {
     @FXML
@@ -40,6 +43,12 @@ public class InputMatkulController {
 
     String IdMatkul, nama, sks, Jenis, semester, kelas, No_Pegawai, Id_Prodi;
     DBConnect connection = new DBConnect();
+
+    public void onbtnKembaliClick(ActionEvent event) {
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close(); //menutup form saat ini
+    }
 
     public class Pegawai {
         private String id;

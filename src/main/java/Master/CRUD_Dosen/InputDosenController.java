@@ -2,7 +2,9 @@ package Master.CRUD_Dosen;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Alert.AlertType;
@@ -10,6 +12,8 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import Database.DBConnect;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class InputDosenController {
     @FXML
@@ -113,7 +117,7 @@ public class InputDosenController {
         sb.append("Email: ").append(Email).append("\n");
         sb.append("Telepon: ").append(Telepon).append("\n");
 
-        Alert confirmation = new Alert(AlertType.CONFIRMATION);
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
         confirmation.setTitle("Konfirmasi Data");
         confirmation.setHeaderText("Silakan periksa data sebelum disimpan:");
         confirmation.setContentText(sb.toString());
@@ -122,6 +126,12 @@ public class InputDosenController {
         ButtonType btnSave = new ButtonType("Simpan", ButtonBar.ButtonData.OK_DONE);
         ButtonType btnCancel = new ButtonType("Batal", ButtonBar.ButtonData.CANCEL_CLOSE);
         confirmation.getButtonTypes().setAll(btnSave, btnCancel);
+
+        // Set modality to APPLICATION_MODAL
+        confirmation.initModality(Modality.APPLICATION_MODAL);
+
+        // Set owner to null to ensure it appears in front of main stage
+        confirmation.initOwner(null);
 
         // Show and wait for user response
         confirmation.showAndWait().ifPresent(response -> {
@@ -134,6 +144,8 @@ public class InputDosenController {
             }
         });
     }
+
+
 
 
     @FXML
@@ -296,5 +308,11 @@ public class InputDosenController {
         } catch (SQLException ex) {
             showAlert(AlertType.ERROR, "Database Error", "Terjadi error saat memeriksa duplikasi " + field + ": " + ex);
         }
+    }
+
+    public void onbtnKembaliClick(ActionEvent event) {
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close(); //menutup form saat ini
     }
 }

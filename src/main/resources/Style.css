@@ -21,6 +21,25 @@ Button {
     -fx-background-color: #0096C9; /* Warna latar belakang untuk btnSimpan */
 }
 
+/* Gaya khusus untuk tombol dengan ID "btnSimpan" */
+#btnBatalPengumuman {
+    -fx-min-width: 70px; /* Lebar minimum untuk btnSimpan */
+    -fx-min-height: 30px; /* Tinggi minimum untuk btnSimpan */
+    -fx-max-width: 300px; /* Lebar maksimum untuk btnSimpan */
+    -fx-max-height: 30px; /* Tinggi maksimum untuk btnSimpan */
+    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnSimpan */
+}
+
+
+    /* Gaya khusus untuk tombol dengan ID "btnSimpan" */
+#btnSimpanPengumuman {
+    -fx-min-width: 70px; /* Lebar minimum untuk btnSimpan */
+    -fx-min-height: 30px; /* Tinggi minimum untuk btnSimpan */
+    -fx-max-width: 300px; /* Lebar maksimum untuk btnSimpan */
+    -fx-max-height: 30px; /* Tinggi maksimum untuk btnSimpan */
+    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnSimpan */
+}
+
 /* Gaya khusus untuk tombol dengan ID "btnBatal" */
 #btnBatal {
     -fx-min-width: 70px; /* Lebar minimum untuk btnSimpan */

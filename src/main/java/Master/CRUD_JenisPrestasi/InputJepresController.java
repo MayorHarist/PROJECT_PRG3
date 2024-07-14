@@ -149,7 +149,7 @@ public class InputJepresController {
                 System.out.print("Terjadi error saat insert data jenis prestasi: " + ex);
             }
             Alert successAlert = new Alert(AlertType.INFORMATION);
-            alert.initModality(Modality.APPLICATION_MODAL);
+            //alert.initModality(Modality.APPLICATION_MODAL);
             successAlert.setTitle("Sukses");
             successAlert.setHeaderText(null);
             successAlert.setContentText("Data jenis prestasi berhasil disimpan!");
@@ -158,7 +158,7 @@ public class InputJepresController {
             autoid(); // Generate a new ID for the next entry
         } else {
             Alert cancelAlert = new Alert(AlertType.INFORMATION);
-            alert.initModality(Modality.APPLICATION_MODAL);
+            //alert.initModality(Modality.APPLICATION_MODAL);
             cancelAlert.setTitle("Informasi");
             cancelAlert.setHeaderText(null);
             cancelAlert.setContentText("Data jenis prestasi tidak disimpan.");

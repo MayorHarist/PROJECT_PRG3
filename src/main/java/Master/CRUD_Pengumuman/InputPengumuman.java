@@ -184,7 +184,7 @@ public class InputPengumuman {
                 connection.conn.commit();
 
                 Alert successAlert = new Alert(AlertType.INFORMATION);
-                alert.initModality(Modality.APPLICATION_MODAL);
+                //alert.initModality(Modality.APPLICATION_MODAL);
                 successAlert.setTitle("Sukses");
                 successAlert.setHeaderText(null);
                 successAlert.setContentText("Data pengumuman berhasil disimpan!");
@@ -196,7 +196,7 @@ public class InputPengumuman {
             }
         } else {
             Alert cancelAlert = new Alert(AlertType.INFORMATION);
-            alert.initModality(Modality.APPLICATION_MODAL);
+            //alert.initModality(Modality.APPLICATION_MODAL);
             cancelAlert.setTitle("Informasi");
             cancelAlert.setHeaderText(null);
             cancelAlert.setContentText("Data pengumuman tidak disimpan.");
