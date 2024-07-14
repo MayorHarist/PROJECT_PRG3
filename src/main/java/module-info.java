@@ -4,7 +4,7 @@ module org.example.project_prg3 {
 
     requires java.sql;
     requires java.desktop;
-      requires jasperreports;
+      requires  jasperreports;
     requires javafx.controls;
 
     opens Database to javafx.fxml;
