@@ -5,8 +5,6 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -42,11 +40,6 @@
       <Button fx:id="btnHapus" layoutX="808.0" layoutY="994.0" mnemonicParsing="false" onAction="#onbtnHapusClick" prefHeight="25.0" prefWidth="65.0" text="Hapus" />
       <Button fx:id="btnRefresh" layoutX="1212.0" layoutY="691.0" mnemonicParsing="false" onAction="#onbtnRefresh" prefHeight="25.0" prefWidth="86.0" text="Refresh" />
       <Button fx:id="btnTambah" layoutX="163.0" layoutY="693.0" mnemonicParsing="false" onAction="#onbtnTambahClick" prefHeight="25.0" prefWidth="95.0" text="Tambah" />
-      <ImageView fitHeight="39.0" fitWidth="63.0" layoutX="525.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../../../../Users/acer/Downloads/magnifying-glass_10977492.png" />
-         </image>
-      </ImageView>
       <TextField fx:id="txtDeskripsi" layoutX="922.0" layoutY="769.0" prefHeight="114.0" prefWidth="275.0" />
    </children>
 </AnchorPane>
