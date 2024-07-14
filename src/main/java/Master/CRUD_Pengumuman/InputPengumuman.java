@@ -61,12 +61,6 @@ public class InputPengumuman {
         // Memuat data untuk ComboBox
         ObservableList<TenagaKependidikan> tknData = loadDataForTKNComboBox();
         cbTKN.setItems(tknData);
-
-       /* // Validasi input langsung di initialize
-        txtnmPengumuman.textProperty().addListener((obs, oldVal, newVal) -> validateNama());
-        tglPengumuman.valueProperty().addListener((obs, oldVal, newVal) -> validateTanggal());
-        txtDeskripsi.textProperty().addListener((obs, oldVal, newVal) -> validateDeskripsi());
-        cbTKN.valueProperty().addListener((obs, oldVal, newVal) -> validateTKN());*/
     }
 
     private ObservableList<TenagaKependidikan> loadDataForTKNComboBox() {
