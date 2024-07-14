@@ -7,7 +7,6 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane prefHeight="1080.0" prefWidth="1398.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Transaksi.FormKRPP">
    <children>
       <TableView fx:id="tablekrpp" layoutX="12.0" layoutY="293.0" prefHeight="581.0" prefWidth="1373.0">
@@ -30,5 +29,6 @@
       <Button fx:id="btnRefresh" layoutX="655.0" layoutY="888.0" mnemonicParsing="false" onAction="#onbtnRefreshClick" prefHeight="25.0" prefWidth="133.0" text="Refresh" />
       <TextField fx:id="txtCari" layoutX="1194.0" layoutY="254.0" prefHeight="25.0" prefWidth="189.0" />
       <Label layoutX="1165.0" layoutY="257.0" text="Cari" />
+      <Button fx:id="btnLaporanKRPP" layoutX="122.0" layoutY="254.0" mnemonicParsing="false" onAction="#onbtnLaporanKRPPClick" text="Laporan KRPP" />
    </children>
 </AnchorPane>

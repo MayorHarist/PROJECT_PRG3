@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LaporanKRPP" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="77ebe482-f165-414f-8d51-075c77d19700">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="KRPP.jrdax"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT * FROM dbo."LaporanMahasiswaKRPP"]]>
+	</queryString>
+	<field name="NIM" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NIM"/>
+		<property name="com.jaspersoft.studio.field.label" value="NIM"/>
+	</field>
+	<field name="Nama_Mahasiswa" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Nama_Mahasiswa"/>
+		<property name="com.jaspersoft.studio.field.label" value="Nama_Mahasiswa"/>
+	</field>
+	<field name="Jenis_Kelamin" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Jenis_Kelamin"/>
+		<property name="com.jaspersoft.studio.field.label" value="Jenis_Kelamin"/>
+	</field>
+	<field name="Tahun_Masuk" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="Tahun_Masuk"/>
+		<property name="com.jaspersoft.studio.field.label" value="Tahun_Masuk"/>
+	</field>
+	<field name="Nama_Prodi" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Nama_Prodi"/>
+		<property name="com.jaspersoft.studio.field.label" value="Nama_Prodi"/>
+	</field>
+	<field name="Total_Point_KRPP" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="Total_Point_KRPP"/>
+		<property name="com.jaspersoft.studio.field.label" value="Total_Point_KRPP"/>
+	</field>
+	<group name="NIM">
+		<groupExpression><![CDATA[$F{NIM}]]></groupExpression>
+	</group>
+	<group name="Nama_Mahasiswa">
+		<groupExpression><![CDATA[$F{Nama_Mahasiswa}]]></groupExpression>
+	</group>
+	<group name="Jenis_Kelamin">
+		<groupExpression><![CDATA[$F{Jenis_Kelamin}]]></groupExpression>
+	</group>
+	<group name="Tahun_Masuk">
+		<groupExpression><![CDATA[$F{Tahun_Masuk}]]></groupExpression>
+	</group>
+	<group name="Nama_Prodi">
+		<groupExpression><![CDATA[$F{Nama_Prodi}]]></groupExpression>
+	</group>
+	<group name="Total_Point_KRPP">
+		<groupExpression><![CDATA[$F{Total_Point_KRPP}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="137" height="30" backcolor="#004AAD" uuid="4e0781bd-5ccd-47a6-b33b-2da3fb4d629f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7691ee27-6661-422f-9135-2bf324b715a3"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NIM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="137" y="0" width="133" height="30" backcolor="#004AAD" uuid="d8fee422-31a8-4304-bce6-a5e1a3af7549">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cf9b8a4a-14e5-44c8-ad3f-0834e70c48c4"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Nama_Mahasiswa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="0" width="133" height="30" backcolor="#004AAD" uuid="984e7ced-5fe0-456d-9514-5691c0b0c9af">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="623d749b-5bfc-432a-9e8b-96c14e692951"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Jenis_Kelamin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="403" y="0" width="133" height="30" backcolor="#004AAD" uuid="40fcb686-96b3-4927-ae72-cccb0bf74132">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="38ba0fa4-3cf5-4114-9ff6-8efab78bd878"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Tahun_Masuk]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="536" y="0" width="133" height="30" backcolor="#004AAD" uuid="7b6467a0-2e5b-4a71-93f9-2c16090f5c2b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bf83afeb-cf4b-4118-8668-eec15c739bf5"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Nama_Prodi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="669" y="0" width="133" height="30" backcolor="#004AAD" uuid="96b51161-c667-4643-a6be-efa8a8bd029d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="420aa885-5f58-4ec9-9fbd-bde0f2111a2d"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Total_Point_KRPP]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="137" height="30" uuid="7222ab34-afa5-4487-9ce1-e8eeef997c40">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7691ee27-6661-422f-9135-2bf324b715a3"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{NIM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="137" y="0" width="133" height="30" uuid="834788ad-eaca-4d41-941c-17bec921dcc0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cf9b8a4a-14e5-44c8-ad3f-0834e70c48c4"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Nama_Mahasiswa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="0" width="133" height="30" uuid="af465683-22f2-44a5-978a-5f6383974b31">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="623d749b-5bfc-432a-9e8b-96c14e692951"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Jenis_Kelamin}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="403" y="0" width="133" height="30" uuid="06014877-a4f1-4375-9a6a-dcccdc857061">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="38ba0fa4-3cf5-4114-9ff6-8efab78bd878"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Tahun_Masuk}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="536" y="0" width="133" height="30" uuid="4c171c5d-35a9-4bde-95b9-387f341ca80f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bf83afeb-cf4b-4118-8668-eec15c739bf5"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Nama_Prodi}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="669" y="0" width="133" height="30" uuid="f2fa199b-514e-43a3-97d3-ccf01eafcab4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="420aa885-5f58-4ec9-9fbd-bde0f2111a2d"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Total_Point_KRPP}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
