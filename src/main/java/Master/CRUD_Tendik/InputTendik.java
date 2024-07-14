@@ -59,30 +59,24 @@ public class InputTendik {
         if (!txtNamaTendik.getText().matches("[a-zA-Z\\s]+")) {
             errorMsg.append("Nama hanya boleh mengandung huruf dan spasi.\n");
         }
-
         String emailPattern = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         if (!Pattern.matches(emailPattern, txtEmailTendik.getText())) {
             errorMsg.append("Format email tidak valid.\n");
         }
-
         if (!txtTelpTendik.getText().matches("\\d+")) {
             errorMsg.append("Nomor telepon hanya boleh mengandung angka.\n");
         }
-
         if (isEmailDuplicate(txtEmailTendik.getText())) {
             errorMsg.append("Email sudah terdaftar.\n");
         }
-
         if (isUsernameDuplicate(usernameTendik.getText())) {
-            errorMsg.append("Username dan password sudah terdaftar.\n");
+            errorMsg.append("Username sudah terdaftar.\n");
         }
-
         if (txtNamaTendik.getText().isEmpty() || tglTendik.getValue() == null || genderGroup.getSelectedToggle() == null ||
                 txtAlamatTendik.getText().isEmpty() || txtEmailTendik.getText().isEmpty() || txtTelpTendik.getText().isEmpty() ||
                 usernameTendik.getText().isEmpty() || passwordTendik.getText().isEmpty()) {
             errorMsg.append("Harap lengkapi semua kolom.\n");
         }
-
         if (errorMsg.length() > 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -92,6 +86,22 @@ public class InputTendik {
             return false;
         }
         return true;
+    }
+
+    public void autoid() {
+        try {
+            String sql = "SELECT dbo.autoIdTendik() AS newID";
+            connection.pstat = connection.conn.prepareStatement(sql);
+            ResultSet result = connection.pstat.executeQuery();
+
+            if (result.next()) {
+                String newID = result.getString("newID");
+                txtIDTKN.setText(newID);
+            }
+            result.close();
+        } catch (Exception ex) {
+            System.out.println("Terjadi error pada tenaga kependidikan: " + ex);
+        }
     }
 
     @FXML
@@ -169,8 +179,6 @@ public class InputTendik {
         }
     }
 
-
-
     @FXML
     protected void OnBtnBatalClick() {
         clear();
@@ -185,22 +193,6 @@ public class InputTendik {
         txtTelpTendik.clear();
         usernameTendik.clear();
         passwordTendik.clear();
-    }
-
-    public void autoid() {
-        try {
-            String sql = "SELECT dbo.autoIdTendik() AS newID";
-            connection.pstat = connection.conn.prepareStatement(sql);
-            ResultSet result = connection.pstat.executeQuery();
-
-            if (result.next()) {
-                String newID = result.getString("newID");
-                txtIDTKN.setText(newID);
-            }
-            result.close();
-        } catch (Exception ex) {
-            System.out.println("Terjadi error pada tenaga kependidikan: " + ex);
-        }
     }
 
     private boolean isEmailDuplicate(String email) {

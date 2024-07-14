@@ -16,6 +16,8 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
+import static Master.CRUD_Pengumuman.InputPengumuman.*;
+
 public class UpdateDelPengumuman implements Initializable {
     @FXML
     private TextField txtIDPengumuman;
@@ -28,7 +30,7 @@ public class UpdateDelPengumuman implements Initializable {
     @FXML
     private TextField txtDeskripsi;
     @FXML
-    private ComboBox<InputPengumuman.TenagaKependidikan> cbTKN;
+    private ComboBox<TenagaKependidikan> cbTKN;
     @FXML
     private TableView<Pengumuman> tblViewPengumuman;
     @FXML
@@ -46,15 +48,15 @@ public class UpdateDelPengumuman implements Initializable {
     private ObservableList<Pengumuman> oblist = FXCollections.observableArrayList();
 
     public class Pengumuman {
-        private String IdPM, namaPengumuman, Deskripsi, nmTendik;
+        private String IdPM, namaPengumuman, Deskripsi, nmTendik, IdTKN;
         private LocalDate Tanggal;
 
-        public Pengumuman(String IdPM, String namaPengumuman, LocalDate Tanggal,
-                          String Deskripsi, String nmTendik){
+        public Pengumuman(String IdPM, String namaPengumuman, LocalDate Tanggal, String Deskripsi, String IdTKN, String nmTendik){
             this.IdPM = IdPM;
             this.namaPengumuman = namaPengumuman;
             this.Tanggal = Tanggal;
             this.Deskripsi = Deskripsi;
+            this.IdTKN = IdTKN;
             this.nmTendik = nmTendik;
         }
 
@@ -63,12 +65,13 @@ public class UpdateDelPengumuman implements Initializable {
         public LocalDate getTanggal() { return Tanggal; }
         public String getDeskripsi() { return Deskripsi; }
         public String getNmTendik() { return nmTendik; }
+        public String getIdTKN() { return IdTKN; }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Memuat data untuk ComboBox
-        ObservableList<InputPengumuman.TenagaKependidikan> tknData = loadDataForTKNComboBox();
+        ObservableList<TenagaKependidikan> tknData = loadDataForTKNComboBox();
         cbTKN.setItems(tknData);
 
         // Mengisi TableView dengan data Pengumuman
@@ -90,7 +93,13 @@ public class UpdateDelPengumuman implements Initializable {
                 txtnmPengumuman.setText(newValue.getNamaPengumuman());
                 tglPengumuman.setValue(newValue.getTanggal());
                 txtDeskripsi.setText(newValue.getDeskripsi());
-                cbTKN.setValue(new InputPengumuman.TenagaKependidikan(newValue.getIdPM(), newValue.getNmTendik()));
+                // Cari TenagaKependidikan yang sesuai dan set di ComboBox
+                for (TenagaKependidikan tk : cbTKN.getItems()) {
+                    if (tk.getId().equals(newValue.getIdTKN())) {
+                        cbTKN.setValue(tk);
+                        break;
+                    }
+                }
             }
         });
 
@@ -100,15 +109,64 @@ public class UpdateDelPengumuman implements Initializable {
         });
     }
 
-    private ObservableList<InputPengumuman.TenagaKependidikan> loadDataForTKNComboBox() {
-        ObservableList<InputPengumuman.TenagaKependidikan> dataList = FXCollections.observableArrayList();
+    @FXML
+    private void cariDataPengumuman(String keyword) {
+        tblViewPengumuman.getItems().clear();
+        try {
+            String query = "SELECT p.Id_Pengumuman, p.Nama, p.Tanggal, p.Deskripsi, t.Id_TKN, t.Nama AS Nama_TKN " +
+                    "FROM Pengumuman p " +
+                    "JOIN TenagaKependidikan t ON p.Id_TKN = t.Id_TKN " +
+                    "WHERE p.Id_Pengumuman LIKE ? OR " +
+                    "LOWER(p.Nama) LIKE ? OR " +
+                    "LOWER(p.Tanggal) LIKE ? OR " +
+                    "LOWER(p.Deskripsi) LIKE ? OR " +
+                    "LOWER(t.Nama) LIKE ?";
+
+            PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
+            String wildcardKeyword = "%" + keyword.toLowerCase() + "%";
+            preparedStatement.setString(1, wildcardKeyword);
+            preparedStatement.setString(2, wildcardKeyword);
+            preparedStatement.setString(3, wildcardKeyword);
+            preparedStatement.setString(4, wildcardKeyword);
+            preparedStatement.setString(5, wildcardKeyword);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                String idPengumuman = resultSet.getString("Id_Pengumuman");
+                String nama = resultSet.getString("Nama");
+                LocalDate tanggal = resultSet.getDate("Tanggal").toLocalDate();
+                String deskripsi = resultSet.getString("Deskripsi");
+                String idTKN = resultSet.getString("Id_TKN");
+                String namaTKN = resultSet.getString("Nama_TKN");
+
+                Pengumuman pengumuman = new Pengumuman(idPengumuman, nama, tanggal, deskripsi, idTKN, namaTKN);
+                tblViewPengumuman.getItems().add(pengumuman);
+            }
+            preparedStatement.close();
+            resultSet.close();
+
+            if (tblViewPengumuman.getItems().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informasi");
+                alert.setHeaderText(null);
+                alert.setContentText("ID Data Pengumuman tidak ditemukan.");
+                alert.showAndWait();
+            }
+        } catch (Exception ex) {
+            System.out.println("Terjadi error saat mencari data Pengumuman: " + ex);
+        }
+    }
+
+    private ObservableList<TenagaKependidikan> loadDataForTKNComboBox() {
+        ObservableList<TenagaKependidikan> dataList = FXCollections.observableArrayList();
         String query = "SELECT Id_TKN, Nama FROM TenagaKependidikan";
 
         try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
             while (resultSet.next()) {
                 String idTKN = resultSet.getString("Id_TKN");
                 String nama = resultSet.getString("Nama");
-                dataList.add(new InputPengumuman.TenagaKependidikan(idTKN, nama));
+                dataList.add(new TenagaKependidikan(idTKN, nama));
             }
         } catch (SQLException ex) {
             System.out.println("Terjadi error saat mengambil data untuk ComboBox TKN: " + ex.getMessage());
@@ -132,13 +190,13 @@ public class UpdateDelPengumuman implements Initializable {
             Pengumuman selectedPengumuman = tblViewPengumuman.getSelectionModel().getSelectedItem();
             if (selectedPengumuman != null) {
                 LocalDate tanggal = tglPengumuman.getValue();
-                String query = "EXEC  sp_UpdatePengumuman ?, ?, ?, ?, ?";
+                String query = "EXEC sp_UpdatePengumuman ?, ?, ?, ?, ?";
                 PreparedStatement ps = connection.conn.prepareStatement(query);
                 ps.setString(1, txtIDPengumuman.getText());
                 ps.setString(2, txtnmPengumuman.getText());
                 ps.setDate(3, Date.valueOf(tanggal));
                 ps.setString(4, txtDeskripsi.getText());
-                ps.setString(5, ((InputPengumuman.TenagaKependidikan) cbTKN.getValue()).getId());
+                ps.setString(5, ((TenagaKependidikan) cbTKN.getValue()).getId());
 
                 ps.executeUpdate();
 
@@ -148,7 +206,9 @@ public class UpdateDelPengumuman implements Initializable {
                         txtnmPengumuman.getText(),
                         tanggal,
                         txtDeskripsi.getText(),
-                        ((InputPengumuman.TenagaKependidikan) cbTKN.getValue()).getNama()));
+                        ((TenagaKependidikan) cbTKN.getValue()).getId(),
+                        ((TenagaKependidikan) cbTKN.getValue()).getNama()
+                ));
 
                 tblViewPengumuman.refresh();
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -223,14 +283,15 @@ public class UpdateDelPengumuman implements Initializable {
 
     private void loadData(String keyword) {
         try {
-            String query = "SELECT p.Id_Pengumuman, p.Nama, p.Tanggal, p.Deskripsi, t.Nama AS Nama_TKN " +
+            String query = "SELECT p.Id_Pengumuman, p.Nama, p.Tanggal, p.Deskripsi, t.Id_TKN, t.Nama AS Nama_TKN " +
                     "FROM Pengumuman p " +
                     "JOIN TenagaKependidikan t ON p.Id_TKN = t.Id_TKN " +
-                    "WHERE LOWER(p.Id_Pengumuman) LIKE ? OR " +
+                    "WHERE p.Status = 'Aktif' AND (" +
+                    "LOWER(p.Id_Pengumuman) LIKE ? OR " +
                     "LOWER(p.Nama) LIKE ? OR " +
                     "LOWER(p.Tanggal) LIKE ? OR " +
                     "LOWER(p.Deskripsi) LIKE ? OR " +
-                    "LOWER(t.Nama) LIKE ?";
+                    "LOWER(t.Nama) LIKE ?)";
 
             PreparedStatement st = connection.conn.prepareStatement(query);
             String wildcardKeyword = "%" + keyword.toLowerCase() + "%";
@@ -247,6 +308,7 @@ public class UpdateDelPengumuman implements Initializable {
                         connection.result.getString("Nama"),
                         date,
                         connection.result.getString("Deskripsi"),
+                        connection.result.getString("Id_TKN"),
                         connection.result.getString("Nama_TKN")));
             }
 
@@ -258,39 +320,6 @@ public class UpdateDelPengumuman implements Initializable {
         }
     }
 
-    @FXML
-    private void cariDataPengumuman(String keyword) {
-        tblViewPengumuman.getItems().clear();
-        try {
-            String query = "EXEC sp_CariPengumuman ?";
-            PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
-            preparedStatement.setString(1, keyword.isEmpty() ? null : keyword);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                Pengumuman pengumuman = new Pengumuman(
-                        resultSet.getString("Id_Pengumuman"),
-                        resultSet.getString("Nama"),
-                        resultSet.getDate("Tanggal").toLocalDate(),
-                        resultSet.getString("Deskripsi"),
-                        resultSet.getString("Nama_TKN")
-                );
-                tblViewPengumuman.getItems().add(pengumuman);
-            }
-            preparedStatement.close();
-            resultSet.close();
-
-            if (tblViewPengumuman.getItems().isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Informasi");
-                alert.setHeaderText(null);
-                alert.setContentText("ID Data Pengumuman tidak ditemukan.");
-                alert.showAndWait();
-            }
-        } catch (Exception ex) {
-            System.out.println("Terjadi error saat mencari data Pengumuman: " + ex);
-        }
-    }
 
     @FXML
     protected void onBtnBatalClick() {
@@ -298,7 +327,7 @@ public class UpdateDelPengumuman implements Initializable {
     }
 
     @FXML
-    protected void onBtnTambahClick(){
+    protected void onBtnTambahClick() {
         try {
             FXMLLoader loader = new FXMLLoader(InputPengumuman.class.getResource("/Master/CRUD_Pengumuman/InputPengumuman.fxml"));
             Scene scene = new Scene(loader.load(), 600, 475);
