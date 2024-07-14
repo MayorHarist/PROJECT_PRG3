@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,7 +11,7 @@
    <children>
       <ImageView pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Download/Halaman Tendik.png" />
+            <Image url="@../Download/dbTendik.png" />
          </image>
       </ImageView>
       <Button fx:id="btnProdi" alignment="BASELINE_LEFT" layoutX="94.0" layoutY="224.0" mnemonicParsing="false" onAction="#onbtnProdiClick" prefHeight="37.0" prefWidth="359.0" stylesheets="@../Style.css" text="Program Studi">
@@ -73,58 +71,6 @@
       </Button>
       <Button fx:id="btnDashboardTendik" layoutX="23.0" layoutY="18.0" mnemonicParsing="false" onAction="#onbtnDashboardTendikClick" opacity="0.0" prefHeight="93.0" prefWidth="448.0" text="Button" />
       <Button fx:id="btnKembali" layoutX="63.0" layoutY="967.0" mnemonicParsing="false" onAction="#onbtnKembaliClick" opacity="0.0" prefHeight="70.0" prefWidth="383.0" text="Button" />
-      <Label layoutX="1512.0" layoutY="44.0" prefHeight="44.0" prefWidth="364.0" text="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="816.0" layoutY="515.0" text="ID Tendik">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Label>
-      <Label layoutX="817.0" layoutY="628.0" text="Nama">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Label>
-      <Label layoutX="818.0" layoutY="742.0" text="Tanggal Lahir">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Label>
-      <Label layoutX="823.0" layoutY="867.0" text="Jenis Kelamin">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Label>
-      <Label layoutX="1315.0" layoutY="514.0" text="Alamat">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Label>
-      <Label layoutX="1316.0" layoutY="672.0" text="Email">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Label>
-      <Label layoutX="1316.0" layoutY="796.0" text="Telepon">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Label>
-      <TextField layoutX="818.0" layoutY="546.0" prefHeight="60.0" prefWidth="287.0" stylesheets="@../Style.css" />
-      <TextField layoutX="818.0" layoutY="660.0" prefHeight="60.0" prefWidth="395.0" stylesheets="@../Style.css" />
-      <TextField layoutX="818.0" layoutY="779.0" prefHeight="60.0" prefWidth="320.0" stylesheets="@../Style.css" />
-      <TextField layoutX="817.0" layoutY="900.0" prefHeight="60.0" prefWidth="287.0" stylesheets="@../Style.css" />
-      <TextField layoutX="1318.0" layoutY="543.0" prefHeight="102.0" prefWidth="355.0" stylesheets="@../Style.css" />
-      <TextField layoutX="1317.0" layoutY="707.0" prefHeight="60.0" prefWidth="359.0" stylesheets="@../Style.css" />
-      <TextField layoutX="1316.0" layoutY="831.0" prefHeight="60.0" prefWidth="269.0" stylesheets="@../Style.css" />
-      <Label alignment="CENTER_RIGHT" layoutX="1585.0" layoutY="67.0" prefHeight="44.0" prefWidth="275.0" text="XXXXXXXXXXXXXXXXXXXXX">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      <Pane fx:id="paneMain" layoutX="519.0" prefHeight="1080.0" prefWidth="1398.0" />
+      <Pane fx:id="paneMain" layoutX="529.0" prefHeight="1080.0" prefWidth="1398.0" />
    </children>
 </AnchorPane>

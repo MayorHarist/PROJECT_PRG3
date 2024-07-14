@@ -13,11 +13,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import net.sf.jasperreports.engine.*;
+/*import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
-/*import net.sf.jasperreports.engine.*;
+*//*import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;*/
@@ -86,7 +86,7 @@ public class FormKRPP  implements Initializable {
         });
     }
 
-    public void onbtnLaporanKRPPClick(ActionEvent event) {
+/*    public void onbtnLaporanKRPPClick(ActionEvent event) {
         try {
             //JasperDesign design = JRXmlLoader.load("C:\\PROJECT SEMESETER 2\\[3] Pemrograman 3 Java FX\\PROJECT_PRG3\\src\\jasper\\LaporanKRPP.jrxml");
             JasperDesign design = JRXmlLoader.load("LaporanKRPP.jrxml");
@@ -97,7 +97,7 @@ public class FormKRPP  implements Initializable {
             e.printStackTrace();
             showAlert("Gagal mencetak laporan: " + e.getMessage(), Alert.AlertType.ERROR);
         }
-    }
+    }*/
 
     private void showAlert(String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
@@ -105,6 +105,9 @@ public class FormKRPP  implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public void onbtnLaporanKRPPClick(ActionEvent event) {
     }
 
     public class KRPP {
