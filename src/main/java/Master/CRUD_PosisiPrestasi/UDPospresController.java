@@ -3,6 +3,7 @@ package Master.CRUD_PosisiPrestasi;
 import Database.DBConnect;
 import Master.CRUD_JenisPrestasi.InputJepresController;
 import Master.CRUD_JenisPrestasi.jepres;
+import Master.CRUD_Tendik.InputTendik;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +15,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -278,11 +281,16 @@ public class UDPospresController implements Initializable {
 
     public void onbtnTambahClick(ActionEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(InputPospresController.class.getResource("/Master/CRUD_PosisiPrestasi/InputPospres.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(InputPospresController.class.getResource("InputPospres.fxml"));
             Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+
             Stage stage = new Stage();
             stage.setTitle("Tambah Posisi Prestasi");
-            stage.setScene(new Scene(root));
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(tableposisiprestasi.getScene().getWindow());
+            stage.initStyle(StageStyle.UNDECORATED);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

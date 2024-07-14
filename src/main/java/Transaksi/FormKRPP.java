@@ -10,10 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -52,6 +49,8 @@ public class FormKRPP  implements Initializable {
     @FXML
     private TableColumn<KRPP, LocalDate> tanggalprestasi;
     @FXML
+    private TextField txtCari;
+    @FXML
     private Button btnTambah;
     @FXML
     private Button btnRefresh;
@@ -72,6 +71,11 @@ public class FormKRPP  implements Initializable {
         tanggalpengisian.setCellValueFactory(new PropertyValueFactory<>("tanggalpengisian"));
         tanggalprestasi.setCellValueFactory(new PropertyValueFactory<>("tanggalprestasi"));
         loadData("");
+
+        // Tambahkan listener untuk txtCari
+        txtCari.textProperty().addListener((observable, oldValue, newValue) -> {
+            cariData(newValue); // Panggil fungsi pencarian saat isi txtCari berubah
+        });
     }
 
     public class KRPP {
@@ -228,6 +232,48 @@ public class FormKRPP  implements Initializable {
             System.out.print("Terjadi error saat load data KRPP: " + ex);
         }
     }
+
+    private void cariData(String keyword) {
+        tablekrpp.getItems().clear(); // Bersihkan data sebelum memuat hasil pencarian baru
+        try {
+            String query = "EXEC sp_CariKRPP ?";
+            PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
+            preparedStatement.setString(1, keyword.isEmpty() ? null : keyword); // Set parameter pencarian, null jika kosong
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                KRPP krpp = new KRPP(
+                        resultSet.getString("Id_TransKRPP"),
+                        resultSet.getString("NIM"),
+                        resultSet.getString("Id_Prodi"),
+                        resultSet.getString("Nama_Prestasi"),
+                        resultSet.getString("Uraian_Singkat"),
+                        resultSet.getString("Id_PosisiPrestasi"),
+                        resultSet.getString("Lembaga_Pelaksana"),
+                        resultSet.getString("Id_JenisPrestasi"),
+                        resultSet.getInt("Point"),
+                        resultSet.getDate("Tanggal_Pengisian").toLocalDate(),
+                        resultSet.getDate("Tanggal_Prestasi").toLocalDate()
+                        //resultSet.getString("Status")
+                );
+                tablekrpp.getItems().add(krpp);
+            }
+            preparedStatement.close();
+            resultSet.close();
+
+            if (tablekrpp.getItems().isEmpty()) {
+                // Tampilkan pesan bahwa data tidak ditemukan
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informasi");
+                alert.setHeaderText(null);
+                alert.setContentText("Data KRPP tidak ditemukan.");
+                alert.showAndWait();
+            }
+        } catch (Exception ex) {
+            System.out.print("Terjadi error saat mencari data KRPP: " + ex);
+        }
+    }
+
 
 
 
