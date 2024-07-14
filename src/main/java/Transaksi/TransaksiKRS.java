@@ -2,6 +2,7 @@ package Transaksi;
 
 import Sebagai.SebagaiController;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -81,23 +82,26 @@ public class TransaksiKRS {
     @FXML
     private TableColumn<KRSData, String> Tendik;
     @FXML
-    private TableColumn<DetData, String> Matkul;
+    private TableView<DetailKRS> tabelDetailKRS;
     @FXML
-    private TableColumn<DetData, Float> Tugas;
+    private TableColumn<DetailKRS, String> Matkul;
     @FXML
-    private TableColumn<DetData, String> Quiz;
+    private TableColumn<DetailKRS, Float> Tugas;
     @FXML
-    private TableColumn<DetData, String> UTS;
+    private TableColumn<DetailKRS, Float> Quiz;
     @FXML
-    private TableColumn<DetData, String> UAS;
+    private TableColumn<DetailKRS, Float> UTS;
     @FXML
-    private TableColumn<DetData, String> Projek;
+    private TableColumn<DetailKRS, Float> UAS;
     @FXML
-    private TableColumn<DetData, String> Akhir;
+    private TableColumn<DetailKRS, Float> Projek;
     @FXML
-    private TableColumn<DetData, String> Indeks;
+    private TableColumn<DetailKRS, Float> Akhir;
+    @FXML
+    private TableColumn<DetailKRS, String> Indeks;
 
-    String IdKRS, matkul, nim, tendik, tglPengisian;
+
+    String IdKRS, matkul, nim, tendik, tglPengisian,ip;
     float projek, quiz, tugas, uas, uts;
     DBConnect connection = new DBConnect();
     private String selectedSemester;
@@ -236,8 +240,8 @@ public class TransaksiKRS {
         public void setIdTKN(String idTKN) { this.idTKN = idTKN; }
     }
 
-    public static class DetData {
-        private String idKRS;
+    public class DetailKRS {
+        private String idDetailKRS;
         private float tugas;
         private float quiz;
         private float uts;
@@ -245,13 +249,11 @@ public class TransaksiKRS {
         private float projek;
         private float akhir;
         private String indeks;
-        private String tglPengisian;
-        private String nim;
-        private String matkul;
-        private String tendik;
+        private String idMatkul;
+        private String idKRS;
 
-        public DetData(String idKRS, float tugas, float quiz, float uts, float uas, float projek, float akhir, String indeks, String tglPengisian, String nim, String matkul, String tendik) {
-            this.idKRS = idKRS;
+        public DetailKRS(String idDetailKRS, float tugas, float quiz, float uts, float uas, float projek, float akhir, String indeks, String idMatkul, String idKRS) {
+            this.idDetailKRS = idDetailKRS;
             this.tugas = tugas;
             this.quiz = quiz;
             this.uts = uts;
@@ -259,12 +261,92 @@ public class TransaksiKRS {
             this.projek = projek;
             this.akhir = akhir;
             this.indeks = indeks;
-            this.tglPengisian = tglPengisian;
-            this.nim = nim;
-            this.matkul = matkul;
-            this.tendik = tendik;
+            this.idMatkul = idMatkul;
+            this.idKRS = idKRS;
+        }
+
+        public String getIdDetailKRS() {
+            return idDetailKRS;
+        }
+
+        public void setIdDetailKRS(String idDetailKRS) {
+            this.idDetailKRS = idDetailKRS;
+        }
+
+        public float getTugas() {
+            return tugas;
+        }
+
+        public void setTugas(float tugas) {
+            this.tugas = tugas;
+        }
+
+        public float getQuiz() {
+            return quiz;
+        }
+
+        public void setQuiz(float quiz) {
+            this.quiz = quiz;
+        }
+
+        public float getUTS() {
+            return uts;
+        }
+
+        public void setUTS(float uts) {
+            this.uts = uts;
+        }
+
+        public float getUAS() {
+            return uas;
+        }
+
+        public void setUAS(float uas) {
+            this.uas = uas;
+        }
+
+        public float getProjek() {
+            return projek;
+        }
+
+        public void setProjek(float projek) {
+            this.projek = projek;
+        }
+
+        public float getAkhir() {
+            return akhir;
+        }
+
+        public void setAkhir(float akhir) {
+            this.akhir = akhir;
+        }
+
+        public String getIndeks() {
+            return indeks;
+        }
+
+        public void setIndeks(String indeks) {
+            this.indeks = indeks;
+        }
+
+        public String getIdMatkul() {
+            return idMatkul;
+        }
+
+        public void setIdMatkul(String idMatkul) {
+            this.idMatkul = idMatkul;
+        }
+
+        public String getIdKRS() {
+            return idKRS;
+        }
+
+        public void setIdKRS(String idKRS) {
+            this.idKRS = idKRS;
         }
     }
+
+    private ObservableList<DetailKRS> detailKRSList = FXCollections.observableArrayList();
 
 
     @FXML
@@ -312,6 +394,19 @@ public class TransaksiKRS {
 
         loadKRSData();
 
+        // Initialize the TableView columns
+        Matkul.setCellValueFactory(new PropertyValueFactory<>("idMatkul"));
+        Tugas.setCellValueFactory(new PropertyValueFactory<>("tugas"));
+        Quiz.setCellValueFactory(new PropertyValueFactory<>("quiz"));
+        UTS.setCellValueFactory(new PropertyValueFactory<>("UTS"));
+        UAS.setCellValueFactory(new PropertyValueFactory<>("UAS"));
+        Projek.setCellValueFactory(new PropertyValueFactory<>("projek"));
+        Akhir.setCellValueFactory(new PropertyValueFactory<>("akhir"));
+        Indeks.setCellValueFactory(new PropertyValueFactory<>("indeks"));
+
+        // Set the TableView's items
+        tabelDetailKRS.setItems(detailKRSList);
+
         txtProjek.textProperty().addListener((observable, oldValue, newValue) -> {
             updateAkhirAndIndeks(
                     parseFloat(txtTugas.getText()),
@@ -320,6 +415,10 @@ public class TransaksiKRS {
                     parseFloat(txtUAS.getText()),
                     parseFloat(newValue) // Use the new value of projek
             );
+        });
+
+        tabelDetailKRS.getItems().addListener((ListChangeListener<DetailKRS>) change -> {
+            calculateAndDisplayIP();
         });
     }
 
@@ -447,9 +546,10 @@ public class TransaksiKRS {
         Tendik selectedTendik = cbTendik.getValue();
         Prodi selectedProdi = cbProdi.getValue();
         tglPengisian = TglPengisian.getValue().toString();
+        ip = IP.getText();
 
         // Validate and parse float values
-        try {
+        /*try {
             projek = parseFloat(txtProjek.getText());
             quiz = parseFloat(txtQuiz.getText());
             tugas = parseFloat(txtTugas.getText());
@@ -458,7 +558,7 @@ public class TransaksiKRS {
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Nilai harus berupa angka!");
             return;
-        }
+        }*/
 
         if (selectedMatkul != null) {
             matkul = selectedMatkul.getId();
@@ -478,10 +578,7 @@ public class TransaksiKRS {
             tendik = null;
         }
 
-        /*if (validasi(projek, quiz, tugas, uas, uts)) {
-
-        }*/
-
+        // Insert data into TransaksiKRS table
         try {
             // Hitung IP berdasarkan nilai detail
             float ip = calculateIP(selectedNIM.getNIM(), IdKRS);
@@ -492,7 +589,7 @@ public class TransaksiKRS {
             connection.pstat.setString(1, IdKRS);
             connection.pstat.setInt(2, selectedSemester); // Menggunakan nilai semester yang dipilih
             connection.pstat.setString(3, tglPengisian);
-            connection.pstat.setFloat(4, ip); // Masukkan nilai IP
+            connection.pstat.setFloat(4, Float.parseFloat(txtIP.getText())); // Masukkan nilai IP
             connection.pstat.setString(5, selectedProdi.getId()); // ID Prodi
             connection.pstat.setString(6, selectedNIM.getNIM());
             connection.pstat.setString(7, selectedTendik.getId());
@@ -505,7 +602,35 @@ public class TransaksiKRS {
         } catch (SQLException ex) {
             System.out.println("Terjadi error saat insert data Transaksi KRS: " + ex);
         }
+
+        // Insert data into DetailKRS table
+        try {
+            for (DetailKRS detail : detailKRSList) {
+                String query = "EXEC sp_InsertDetailMatkul ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
+                connection.pstat = connection.conn.prepareStatement(query);
+                connection.pstat.setString(1, detail.getIdDetailKRS());
+                connection.pstat.setFloat(2, detail.getTugas());
+                connection.pstat.setFloat(3, detail.getQuiz());
+                connection.pstat.setFloat(4, detail.getUTS());
+                connection.pstat.setFloat(5, detail.getUAS());
+                connection.pstat.setFloat(6, detail.getProjek());
+                connection.pstat.setFloat(7, detail.getAkhir());
+                connection.pstat.setString(8, detail.getIndeks());
+                connection.pstat.setString(9, detail.getIdMatkul());
+                connection.pstat.setString(10, detail.getIdKRS());
+
+                connection.pstat.executeUpdate();
+            }
+            JOptionPane.showMessageDialog(null, "Semua data Detail KRS berhasil disimpan ke database!");
+
+            // Clear the temporary storage list
+            detailKRSList.clear();
+            loadKRSData();
+        } catch (SQLException ex) {
+            System.out.println("Terjadi error saat menyimpan data Detail KRS ke database: " + ex);
+        }
     }
+
 
     // Metode untuk menghitung IP berdasarkan detail nilai
     private float calculateIP(String nim, String idKRS) {
@@ -586,6 +711,7 @@ public class TransaksiKRS {
 
     private void clear() {
         txtIdKRS.clear();
+        txtIP.clear();
         txtProjek.clear();
         txtQuiz.clear();
         txtTugas.clear();
@@ -623,7 +749,7 @@ public class TransaksiKRS {
         IdKRS = txtIdKRS.getText();
         MataKuliah selectedMatkul = cbMatkul.getValue();
         float projek, quiz, tugas, uas, uts, akhir;
-        String indeks = null;
+        String indeks = txtIndeksNilai.getText();
 
         try {
             projek = parseFloat(txtProjek.getText());
@@ -642,32 +768,29 @@ public class TransaksiKRS {
         try {
             String idDetailKRS = generateIdDetailKRS();
 
-            // Call stored procedure sp_InsertDetailMatkul
-            String query = "EXEC sp_InsertDetailMatkul ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
-            connection.pstat = connection.conn.prepareStatement(query);
-            connection.pstat.setString(1, idDetailKRS);
-            connection.pstat.setFloat(2, tugas);
-            connection.pstat.setFloat(3, quiz);
-            connection.pstat.setFloat(4, uts);
-            connection.pstat.setFloat(5, uas);
-            connection.pstat.setFloat(6, projek);
-            connection.pstat.setFloat(7, parseFloat(txtAkhir.getText())); // Use the text field value
-            connection.pstat.setString(8, indeks); // Use the text field value
-            connection.pstat.setString(9, selectedMatkul.getId());
-            connection.pstat.setString(10, IdKRS);
+            // Add data to the temporary storage list
+            detailKRSList.add(new DetailKRS(
+                    idDetailKRS,
+                    tugas,
+                    quiz,
+                    uts,
+                    uas,
+                    projek,
+                    parseFloat(txtAkhir.getText()),
+                    indeks,
+                    selectedMatkul.getId(),
+                    IdKRS
+            ));
 
-            connection.pstat.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Input data Detail KRS berhasil!");
-
-            // Calculate and display IP after insert
-            calculateAndDisplayIP();
+            JOptionPane.showMessageDialog(null, "Data berhasil ditambahkan ke tabel tampungan!");
 
             clearDetailFields();
             loadKRSData();
-        } catch (SQLException ex) {
-            System.out.println("Terjadi error saat insert data Detail KRS: " + ex);
+        } catch (Exception ex) {
+            System.out.println("Terjadi error saat menambahkan data ke tabel tampungan: " + ex);
         }
     }
+
 
     private void updateAkhirAndIndeks(float tugas, float quiz, float uts, float uas, float projek) {
         // Calculate akhir
@@ -713,64 +836,75 @@ public class TransaksiKRS {
         return newId; // Return generated ID
     }
 
+    // Metode untuk menghitung dan menampilkan IP
+    @FXML
     private void calculateAndDisplayIP() {
-        String nim = cbNIM.getSelectionModel().getSelectedItem().getNIM();
-        String semester = cbSemester.getSelectionModel().getSelectedItem();
+        BigDecimal totalNilaiSKS = BigDecimal.ZERO;
+        int totalSKS = 0;
 
-        if (nim == null || semester == null) {
-            return;
+        ObservableList<DetailKRS> data = tabelDetailKRS.getItems();
+
+        for (DetailKRS detailKRS : data) {
+            BigDecimal nilaiAkhir = BigDecimal.valueOf(detailKRS.getAkhir());
+            char indeksNilai = detailKRS.getIndeks().charAt(0);
+
+            String idMatkul = detailKRS.getIdMatkul();
+            int sks = getSKS(idMatkul);
+
+            BigDecimal nilaiBobot = getBobot(indeksNilai).multiply(BigDecimal.valueOf(sks));
+            totalNilaiSKS = totalNilaiSKS.add(nilaiBobot);
+            totalSKS += sks;
         }
 
-        String query = "SELECT mk.Jumlah_SKS, dk.Akhir FROM DetailKRS dk JOIN MataKuliah mk ON dk.Id_Matkul = mk.Id_Matkul WHERE dk.NIM = ? AND mk.Id_Semester = (SELECT Id_Semester FROM Matakuliah WHERE Semester = ?)";
+        BigDecimal ip = totalSKS > 0? totalNilaiSKS.divide(BigDecimal.valueOf(totalSKS), 2, BigDecimal.ROUND_HALF_UP) : BigDecimal.ZERO;
 
-        try (PreparedStatement statement = connection.conn.prepareStatement(query)) {
-            statement.setString(1, nim);
-            statement.setString(2, semester);
-            ResultSet resultSet = statement.executeQuery();
+        // Update the txtIP field in the TransaksiKRS table
+        txtIP.setText(ip.toString());
+    }
 
-            float totalSKS = 0;
-            float totalPoints = 0;
-
-            while (resultSet.next()) {
-                int jumlahSKS = resultSet.getInt("Jumlah_SKS");
-                float nilaiAkhir = resultSet.getFloat("Akhir");
-                float nilaiAngka;
-
-                if (nilaiAkhir >= 85) {
-                    nilaiAngka = 4.0f;
-                } else if (nilaiAkhir >= 70) {
-                    nilaiAngka = 3.0f;
-                } else if (nilaiAkhir >= 55) {
-                    nilaiAngka = 2.0f;
-                } else if (nilaiAkhir >= 40) {
-                    nilaiAngka = 1.0f;
-                } else {
-                    nilaiAngka = 0.0f;
+    // Metode untuk mendapatkan SKS berdasarkan Id_Matkul dari database
+    private int getSKS(String idMatkul) {
+        String query = "SELECT Jumlah_SKS FROM MataKuliah WHERE Id_Matkul = ?";
+        try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
+            stmt.setString(1, idMatkul);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("Jumlah_SKS");
                 }
-
-                totalSKS += jumlahSKS;
-                totalPoints += nilaiAngka * jumlahSKS;
-            }
-
-            if (totalSKS > 0) {
-                float ip = totalPoints / totalSKS;
-                BigDecimal bd = new BigDecimal(Float.toString(ip));
-                bd = bd.setScale(2, RoundingMode.HALF_UP);
-                txtIP.setText(bd.toString());
-            } else {
-                txtIP.setText("0.00");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return 0; // Mengembalikan 0 jika terjadi kesalahan atau data tidak ditemukan
+    }
+
+    // Metode untuk mendapatkan bobot nilai berdasarkan indeks dari database atau hardcoded
+    private BigDecimal getBobot(char indeksNilai) {
+        switch (indeksNilai) {
+            case 'A':
+                return BigDecimal.valueOf(4.0);
+            case 'B':
+                return BigDecimal.valueOf(3.0);
+            case 'C':
+                return BigDecimal.valueOf(2.0);
+            case 'D':
+                return BigDecimal.valueOf(1.0);
+            case 'E':
+                return BigDecimal.valueOf(0.0);
+            default:
+                return BigDecimal.valueOf(0.0);
+        }
     }
 
     private void clearDetailFields() {
+        cbMatkul.setValue(null);
         txtProjek.clear();
         txtQuiz.clear();
         txtTugas.clear();
         txtUAS.clear();
         txtUTS.clear();
+        txtAkhir.clear();
+        txtIndeksNilai.clear();
     }
 
     private boolean validateInput() {
