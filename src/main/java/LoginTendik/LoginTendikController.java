@@ -1,8 +1,6 @@
 package LoginTendik;
 
 import Sebagai.SebagaiController;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,48 +31,10 @@ public class LoginTendikController {
     @FXML
     private TextField txtPassword;
 
-    private StringBuilder passwordBuilder = new StringBuilder();
-
-    @FXML
-    public void initialize() {
-        // Menambahkan listener untuk txtPassword
-        txtPassword.textProperty().addListener(new ChangeListener<String>() {
-            private boolean changing = false;
-
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (changing) {
-                    return;
-                }
-                changing = true;
-
-                if (newValue.length() > oldValue.length()) {
-                    char addedChar = newValue.charAt(newValue.length() - 1);
-                    passwordBuilder.append(addedChar);
-                    txtPassword.setText(maskPassword(txtPassword.getText()));
-                } else if (newValue.length() < oldValue.length() && passwordBuilder.length() > 0) {
-                    passwordBuilder.deleteCharAt(passwordBuilder.length() - 1);
-                    txtPassword.setText(maskPassword(txtPassword.getText()));
-                }
-
-                changing = false;
-            }
-        });
-    }
-
-    // Method untuk mengganti karakter menjadi bintang
-    private String maskPassword(String password) {
-        StringBuilder masked = new StringBuilder();
-        for (int i = 0; i < password.length(); i++) {
-            masked.append("*");
-        }
-        return masked.toString();
-    }
-
     @FXML
     protected void onbtnLoginClick(ActionEvent event) {
         String username = txtUsername.getText();
-        String password = passwordBuilder.toString();
+        String password = txtPassword.getText(); // Get actual password from input field
 
         if (authenticate(username, password)) {
             // Login berhasil, tampilkan dialog pesan sukses
@@ -87,7 +47,7 @@ public class LoginTendikController {
 
             // Pindah ke form selanjutnya
             try {
-                FXMLLoader loader = new FXMLLoader(HalamanTendikController.class.getResource("/LoginTendik/HalamanTendik.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/LoginTendik/HalamanTendik.fxml"));
                 Parent root = loader.load();
 
                 Stage stage = new Stage();
@@ -116,7 +76,6 @@ public class LoginTendikController {
         }
     }
 
-
     private boolean authenticate(String username, String password) {
         String query = "SELECT * FROM TenagaKependidikan WHERE username = ? AND password = ?";
         try (Connection conn = getConnection();
@@ -124,13 +83,7 @@ public class LoginTendikController {
             stmt.setString(1, username);
             stmt.setString(2, password);
             ResultSet rs = stmt.executeQuery();
-            boolean authenticated = rs.next();
-            if (authenticated) {
-                System.out.println("");
-            } else {
-                System.out.println("Authentication failed: Username or password incorrect");
-            }
-            return authenticated;
+            return rs.next(); // true if authenticated, false if not
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -150,7 +103,7 @@ public class LoginTendikController {
     @FXML
     protected void onbtnExitClick() {
         try {
-            FXMLLoader loader = new FXMLLoader(SebagaiController.class.getResource("/Sebagai/SebagaiApplication.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Sebagai/SebagaiApplication.fxml"));
             Parent root = loader.load();
 
             Stage stage = new Stage();
