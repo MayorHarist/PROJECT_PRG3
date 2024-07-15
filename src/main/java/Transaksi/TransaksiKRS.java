@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 import Database.DBConnect;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import static java.lang.Float.parseFloat;
@@ -35,6 +36,8 @@ public class TransaksiKRS {
     private Button btnKembali;
     @FXML
     private Button btnSimpan;
+    @FXML
+    private Button btnTambah;
     @FXML
     private ComboBox<MataKuliah> cbMatkul;
     @FXML
@@ -241,7 +244,7 @@ public class TransaksiKRS {
     }
 
     public class DetailKRS {
-        private String idDetailKRS;
+        private String idDetailKRS = generateIdDetailKRS();
         private float tugas;
         private float quiz;
         private float uts;
@@ -251,6 +254,7 @@ public class TransaksiKRS {
         private String indeks;
         private String idMatkul;
         private String idKRS;
+
 
         public DetailKRS(String idDetailKRS, float tugas, float quiz, float uts, float uas, float projek, float akhir, String indeks, String idMatkul, String idKRS) {
             this.idDetailKRS = idDetailKRS;
@@ -548,18 +552,6 @@ public class TransaksiKRS {
         tglPengisian = TglPengisian.getValue().toString();
         ip = IP.getText();
 
-        // Validate and parse float values
-        /*try {
-            projek = parseFloat(txtProjek.getText());
-            quiz = parseFloat(txtQuiz.getText());
-            tugas = parseFloat(txtTugas.getText());
-            uas = parseFloat(txtUAS.getText());
-            uts = parseFloat(txtUTS.getText());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Nilai harus berupa angka!");
-            return;
-        }*/
-
         if (selectedMatkul != null) {
             matkul = selectedMatkul.getId();
         } else {
@@ -581,7 +573,7 @@ public class TransaksiKRS {
         // Insert data into TransaksiKRS table
         try {
             // Hitung IP berdasarkan nilai detail
-            float ip = calculateIP(selectedNIM.getNIM(), IdKRS);
+            //float ip = calculateIP(selectedNIM.getNIM(), IdKRS);
 
             // Memanggil stored procedure sp_InsertTransaksiKRS
             String query = "EXEC sp_InsertTransaksiKRS ?, ?, ?, ?, ?, ?, ?";
@@ -595,10 +587,19 @@ public class TransaksiKRS {
             connection.pstat.setString(7, selectedTendik.getId());
 
             connection.pstat.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Input data KRS berhasil!");
-            clear();            // Membersihkan semua txt setelah menyimpan data
-            autoid();           // Membuat id baru setelah menyimpan data
-            loadKRSData();      // Merefresh tabel setelah menyimpan data
+
+            // Menampilkan alert sukses
+            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+            successAlert.setTitle("Sukses");
+            successAlert.setHeaderText(null);
+            successAlert.setContentText("Data Transaksi KRS berhasil disimpan!");
+            successAlert.initModality(Modality.WINDOW_MODAL);
+            successAlert.initOwner(btnSimpan.getScene().getWindow());
+            successAlert.showAndWait();
+
+            clear();        // Membersihkan semua txt setelah menyimpan data
+            autoid();       // Membuat id baru setelah menyimpan data
+            loadKRSData();  // Merefresh tabel setelah menyimpan data
         } catch (SQLException ex) {
             System.out.println("Terjadi error saat insert data Transaksi KRS: " + ex);
         }
@@ -621,7 +622,15 @@ public class TransaksiKRS {
 
                 connection.pstat.executeUpdate();
             }
-            JOptionPane.showMessageDialog(null, "Semua data Detail KRS berhasil disimpan ke database!");
+
+            // Menampilkan alert sukses
+            Alert successDetailAlert = new Alert(Alert.AlertType.INFORMATION);
+            successDetailAlert.setTitle("Sukses");
+            successDetailAlert.setHeaderText(null);
+            successDetailAlert.setContentText("Semua data Detail KRS berhasil disimpan ke database!");
+            successDetailAlert.initModality(Modality.WINDOW_MODAL);
+            successDetailAlert.initOwner(btnSimpan.getScene().getWindow());
+            successDetailAlert.showAndWait();
 
             // Clear the temporary storage list
             detailKRSList.clear();
@@ -630,6 +639,7 @@ public class TransaksiKRS {
             System.out.println("Terjadi error saat menyimpan data Detail KRS ke database: " + ex);
         }
     }
+
 
 
     // Metode untuk menghitung IP berdasarkan detail nilai
@@ -779,13 +789,20 @@ public class TransaksiKRS {
                     uts,
                     uas,
                     projek,
-                    parseFloat(txtAkhir.getText().replace(",", ".")),
+                    Float.parseFloat(txtAkhir.getText().replace(",", ".")),
                     indeks,
                     selectedMatkul.getId(),
                     IdKRS
             ));
 
-            JOptionPane.showMessageDialog(null, "Data berhasil ditambahkan ke tabel tampungan!");
+            // Menampilkan alert sukses
+            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+            successAlert.setTitle("Sukses");
+            successAlert.setHeaderText(null);
+            successAlert.setContentText("Data berhasil ditambahkan ke tabel tampungan!");
+            successAlert.initModality(Modality.WINDOW_MODAL);
+            successAlert.initOwner(btnTambah.getScene().getWindow());
+            successAlert.showAndWait();
 
             clearDetailFields();
             loadKRSData();
@@ -793,6 +810,7 @@ public class TransaksiKRS {
             System.out.println("Terjadi error saat menambahkan data ke tabel tampungan: " + ex);
         }
     }
+
 
 
     private void updateAkhirAndIndeks(float tugas, float quiz, float uts, float uas, float projek) {
@@ -824,8 +842,8 @@ public class TransaksiKRS {
             if (result.next()) {
                 String maxId = result.getString(1);
                 if (maxId != null) {
-                    int number = Integer.parseInt(maxId.substring(3)) + 1; // Increment number
-                    newId = "DET" + String.format("%03d", number); // Format new ID
+                    int number = Integer.parseInt(maxId.replaceAll("[^0-9]","")); // Increment number
+                    newId = "DET" + String.format("%03d", number + 1); // Format new ID
                 } else {
                     newId = "DET001"; // Initial ID if no records exist
                 }
@@ -961,6 +979,8 @@ public class TransaksiKRS {
     private void showErrorAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
+        alert.initModality(Modality.WINDOW_MODAL);
+        alert.initOwner(AnchorKRS.getScene().getWindow());
         alert.setContentText(content);
         alert.showAndWait();
     }
