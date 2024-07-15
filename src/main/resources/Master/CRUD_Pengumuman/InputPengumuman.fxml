@@ -33,7 +33,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="87.0" layoutY="163.0" stylesheets="@../../Style.css" text="ID TKN">
+            <Label layoutX="87.0" layoutY="163.0" stylesheets="@../../Style.css" text="Tendik">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
