@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1398.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Mahasiswa.UpdateDeleteMahasiswa">
+<AnchorPane fx:id="AnchorMahasiswa" prefHeight="1080.0" prefWidth="1398.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Mahasiswa.UpdateDeleteMahasiswa">
     <Label layoutX="187.0" layoutY="648.0" text="NIM">
       <font>
          <Font name="System Bold" size="14.0" />

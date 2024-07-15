@@ -1,8 +1,5 @@
 package Master.CRUD_Mahasiswa;
 
-import Master.CRUD_Matkul.InputMatkulController;
-import Master.CRUD_Matkul.UpdateDeleteMatkulController;
-import Master.CRUD_Tendik.InputTendik;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -15,7 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import Database.DBConnect;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -26,6 +23,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+
+import Database.DBConnect;
 
 public class UpdateDeleteMahasiswa implements Initializable {
     DBConnect connection = new DBConnect();
@@ -77,6 +76,8 @@ public class UpdateDeleteMahasiswa implements Initializable {
     private TextField txtTahunMasuk;
     @FXML
     private TextField txtCari;
+    @FXML
+    private AnchorPane AnchorMahasiswa;
 
     private ObservableList<Mahasiswa> oblist = FXCollections.observableArrayList();
 
@@ -185,7 +186,6 @@ public class UpdateDeleteMahasiswa implements Initializable {
         });
     }
 
-
     private void loadTableData(String keyword) {
         oblist.clear();
         String query = "SELECT * FROM Mahasiswa WHERE Status='Aktif' AND (" +
@@ -228,8 +228,6 @@ public class UpdateDeleteMahasiswa implements Initializable {
             showAlert("Error loading data: " + ex.getMessage());
         }
     }
-
-
 
     @FXML
     private void onTxtCari() {
@@ -285,23 +283,26 @@ public class UpdateDeleteMahasiswa implements Initializable {
         confirmAlert.setHeaderText("Apakah Anda yakin ingin memperbarui data ini?");
         confirmAlert.setContentText("NIM: " + nim + "\nNama: " + nama);
 
+        // Mengatur stage owner dan modality untuk message box
+        Stage alertStage = (Stage) confirmAlert.getDialogPane().getScene().getWindow();
+        alertStage.initOwner(tableMahasiswa.getScene().getWindow());
+        alertStage.initModality(Modality.WINDOW_MODAL);
+
         if (confirmAlert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             String idProdi = selectedProdi.getId();
-            int totalPointKRPP = 0; // Atur sesuai kebutuhan
-            double ipk = 0.0; // Atur sesuai kebutuhan
 
-            String query = "EXEC sp_UpdateMahasiswa ?, ?, ?, ?, ?, ?, ?, ?, ?";
+            String query = "UPDATE Mahasiswa SET Nama=?, Id_Prodi=?, Tanggal_Lahir=?, Jenis_Kelamin=?, " +
+                    "Alamat=?, Email=?, Telepon=?, Tahun_Masuk=? WHERE NIM=?";
             try (PreparedStatement preparedStatement = connection.conn.prepareStatement(query)) {
-                preparedStatement.setString(1, nim);
+                preparedStatement.setString(1, nama);
                 preparedStatement.setString(2, idProdi);
-                preparedStatement.setString(3, nama);
-                preparedStatement.setDate(4, java.sql.Date.valueOf(tanggalLahir)); // Menggunakan java.sql.Date
-                preparedStatement.setString(5, jenisKelamin);
-                preparedStatement.setString(6, alamat);
-                preparedStatement.setString(7, email);
-                preparedStatement.setString(8, telepon);
-                preparedStatement.setInt(9, Integer.parseInt(tahunMasuk));
-
+                preparedStatement.setString(3, tanggalLahir);
+                preparedStatement.setString(4, jenisKelamin);
+                preparedStatement.setString(5, alamat);
+                preparedStatement.setString(6, email);
+                preparedStatement.setString(7, telepon);
+                preparedStatement.setString(8, tahunMasuk);
+                preparedStatement.setString(9, nim);
 
                 preparedStatement.executeUpdate();
 
@@ -313,7 +314,6 @@ public class UpdateDeleteMahasiswa implements Initializable {
             }
         }
     }
-
 
     @FXML
     private void btnHapus_Click(ActionEvent event) {
@@ -331,6 +331,11 @@ public class UpdateDeleteMahasiswa implements Initializable {
         confirmAlert.setHeaderText("Apakah Anda yakin ingin menghapus data ini?");
         confirmAlert.setContentText("NIM: " + nim);
 
+        // Mengatur stage owner dan modality untuk message box
+        Stage alertStage = (Stage) confirmAlert.getDialogPane().getScene().getWindow();
+        alertStage.initOwner(tableMahasiswa.getScene().getWindow());
+        alertStage.initModality(Modality.WINDOW_MODAL);
+
         if (confirmAlert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             String query = "DELETE FROM Mahasiswa WHERE NIM=?";
             try (PreparedStatement preparedStatement = connection.conn.prepareStatement(query)) {
@@ -344,7 +349,6 @@ public class UpdateDeleteMahasiswa implements Initializable {
             }
         }
     }
-
 
     @FXML
     private void btnTambah_Click(ActionEvent event) {
@@ -378,6 +382,12 @@ public class UpdateDeleteMahasiswa implements Initializable {
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(message);
+
+        // Mengatur stage owner dan modality untuk message box
+        Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+        alertStage.initOwner(AnchorMahasiswa .getScene().getWindow());
+        alertStage.initModality(Modality.WINDOW_MODAL);
+
         alert.showAndWait();
     }
 

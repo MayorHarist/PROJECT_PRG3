@@ -136,19 +136,17 @@ public class UpdateDeleteDosenController implements Initializable {
         Dosen selectedDosen = tableDosen.getSelectionModel().getSelectedItem();
         if (selectedDosen != null) {
             // Konfirmasi sebelum mengubah data
-            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmation.setTitle("Konfirmasi");
-            confirmation.setHeaderText("Anda yakin ingin mengubah data ini?");
-            confirmation.setContentText("No Pegawai: " + selectedDosen.getPegawai() + "\n" +
-                    "NIDN: " + txtNIDN.getText() + "\n" +
-                    "Nama: " + txtNama.getText() + "\n" +
-                    "Bidang: " + txtBidang.getText() + "\n" +
-                    "Pendidikan: " + txtPendidikan.getText() + "\n" +
-                    "Tanggal Lahir: " + Datelahir.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + "\n" +
-                    "Jenis Kelamin: " + (rbLaki.isSelected() ? "Laki-Laki" : "Perempuan") + "\n" +
-                    "Alamat: " + txtAlamat.getText() + "\n" +
-                    "Email: " + txtEmail.getText() + "\n" +
-                    "Telepon: " + txtTelepon.getText());
+            Alert confirmation = createAlert(Alert.AlertType.CONFIRMATION, "Konfirmasi", "Anda yakin ingin mengubah data ini?",
+                    "No Pegawai: " + selectedDosen.getPegawai() + "\n" +
+                            "NIDN: " + txtNIDN.getText() + "\n" +
+                            "Nama: " + txtNama.getText() + "\n" +
+                            "Bidang: " + txtBidang.getText() + "\n" +
+                            "Pendidikan: " + txtPendidikan.getText() + "\n" +
+                            "Tanggal Lahir: " + Datelahir.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + "\n" +
+                            "Jenis Kelamin: " + (rbLaki.isSelected() ? "Laki-Laki" : "Perempuan") + "\n" +
+                            "Alamat: " + txtAlamat.getText() + "\n" +
+                            "Email: " + txtEmail.getText() + "\n" +
+                            "Telepon: " + txtTelepon.getText());
 
             Optional<ButtonType> result = confirmation.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -173,7 +171,7 @@ public class UpdateDeleteDosenController implements Initializable {
 
                     updateObservableList(selectedDosen, tanggalLahir, jenisKelamin);
                     tableDosen.refresh();
-                    JOptionPane.showMessageDialog(null, "Update data Dosen berhasil!");
+                    showAlert("Update data Dosen berhasil!", Alert.AlertType.INFORMATION);
                     clearFields();
                 } catch (SQLException ex) {
                     System.out.println("Terjadi error saat mengupdate data dosen: " + ex);
@@ -181,7 +179,6 @@ public class UpdateDeleteDosenController implements Initializable {
             }
         }
     }
-
 
     private void updateObservableList(Dosen selectedDosen, LocalDate tanggalLahir, String jenisKelamin) {
         int index = oblist.indexOf(selectedDosen);
@@ -248,7 +245,23 @@ public class UpdateDeleteDosenController implements Initializable {
     private void showAlert(String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setContentText(message);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(tableDosen.getScene().getWindow());
+        stage.toFront();
         alert.show();
+    }
+
+    private Alert createAlert(Alert.AlertType alertType, String title, String header, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(tableDosen.getScene().getWindow());
+        stage.toFront();
+        return alert;
     }
 
     @FXML
@@ -256,12 +269,10 @@ public class UpdateDeleteDosenController implements Initializable {
         Dosen selectedDosen = tableDosen.getSelectionModel().getSelectedItem();
         if (selectedDosen != null) {
             // Konfirmasi sebelum menghapus data
-            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmation.setTitle("Konfirmasi");
-            confirmation.setHeaderText("Anda yakin ingin menghapus data ini?");
-            confirmation.setContentText("No Pegawai: " + selectedDosen.getPegawai() + "\n" +
-                    "NIDN: " + selectedDosen.getNIDN() + "\n" +
-                    "Nama: " + selectedDosen.getNama());
+            Alert confirmation = createAlert(Alert.AlertType.CONFIRMATION, "Konfirmasi", "Anda yakin ingin menghapus data ini?",
+                    "No Pegawai: " + selectedDosen.getPegawai() + "\n" +
+                            "NIDN: " + selectedDosen.getNIDN() + "\n" +
+                            "Nama: " + selectedDosen.getNama());
 
             Optional<ButtonType> result = confirmation.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -283,8 +294,6 @@ public class UpdateDeleteDosenController implements Initializable {
             }
         }
     }
-
-
 
     @FXML
     private void onTxtCari() {
@@ -354,11 +363,8 @@ public class UpdateDeleteDosenController implements Initializable {
         loadTableData("");
     }
 
-
-
     @FXML
     protected void onBtnTambahClick(ActionEvent event) {
-
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(InputDosenController.class.getResource("InputDosenApplication.fxml"));
             Parent root = fxmlLoader.load();
@@ -370,10 +376,10 @@ public class UpdateDeleteDosenController implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(tableDosen.getScene().getWindow());
             stage.initStyle(StageStyle.UNDECORATED);
+            stage.toFront();
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-
         }
     }
 }

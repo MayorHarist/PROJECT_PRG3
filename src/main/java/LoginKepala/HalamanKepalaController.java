@@ -66,7 +66,7 @@ public class HalamanKepalaController {
 
     public void onbtnTendikClick(ActionEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(UpdateDeleteTendik.class.getResource("/Master/CRUD_Tendik/UpdateDeleteTendik.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(UpdateDeleteTendik.class.getResource("UpdateDeleteTendik.fxml"));
             Parent root = fxmlLoader.load();
             paneMain.getChildren().clear(); // Clear previous content
             paneMain.getChildren().add(root); // Add new content

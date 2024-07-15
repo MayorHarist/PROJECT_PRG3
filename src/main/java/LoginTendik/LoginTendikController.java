@@ -82,7 +82,7 @@ public class LoginTendikController {
             alert.setTitle("Informasi");
             alert.setHeaderText(null);
             alert.setContentText("Login berhasil");
-            alert.initOwner(btnLogin.getScene().getWindow());
+            alert.initOwner(btnLogin.getScene().getWindow()); // Atur owner ke Stage yang sesuai
             alert.showAndWait();
 
             // Pindah ke form selanjutnya
@@ -97,7 +97,7 @@ public class LoginTendikController {
                 stage.show();
 
                 // Tutup stage sebelumnya
-                Stage previousStage = (Stage) AnchorTendik.getScene().getWindow();
+                Stage previousStage = (Stage) btnLogin.getScene().getWindow();
                 previousStage.close();
 
             } catch (IOException e) {
@@ -111,10 +111,11 @@ public class LoginTendikController {
             alert.setTitle("Error");
             alert.setHeaderText(null);
             alert.setContentText("Username atau password salah");
-            alert.initOwner(btnLogin.getScene().getWindow());
+            alert.initOwner(btnLogin.getScene().getWindow()); // Atur owner ke Stage yang sesuai
             alert.showAndWait();
         }
     }
+
 
     private boolean authenticate(String username, String password) {
         String query = "SELECT * FROM TenagaKependidikan WHERE username = ? AND password = ?";
@@ -159,7 +160,7 @@ public class LoginTendikController {
             stage.show();
 
             // Tutup stage sebelumnya
-            Stage previousStage = (Stage) AnchorTendik.getScene().getWindow();
+            Stage previousStage = (Stage) btnExit.getScene().getWindow();
             previousStage.close();
 
         } catch (IOException e) {
