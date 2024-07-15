@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
@@ -29,6 +30,10 @@ public class InputPengumuman {
     private TextField txtDeskripsi;
     @FXML
     private ComboBox<TenagaKependidikan> cbTKN;
+    @FXML
+    private AnchorPane AnchorPengumuman;
+    @FXML
+    private Button btnSimpan;
 
     DBConnect connection = new DBConnect();
     String Id_Pengumuman, Nama, Deskripsi, Id_TKN;
@@ -108,6 +113,7 @@ public class InputPengumuman {
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initOwner(AnchorPengumuman.getScene().getWindow());
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
@@ -138,6 +144,7 @@ public class InputPengumuman {
             alert.initModality(Modality.APPLICATION_MODAL);
             alert.setTitle("Error");
             alert.setHeaderText(null);
+            alert.initOwner(btnSimpan.getScene().getWindow());
             alert.setContentText("Semua data harus diisi.");
             alert.showAndWait();
             return;
@@ -154,6 +161,7 @@ public class InputPengumuman {
 
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initOwner(btnSimpan.getScene().getWindow());
         alert.setTitle("Konfirmasi");
         alert.setHeaderText(null);
         alert.setContentText(message);
@@ -180,6 +188,8 @@ public class InputPengumuman {
                 successAlert.setTitle("Sukses");
                 successAlert.setHeaderText(null);
                 successAlert.setContentText("Data pengumuman berhasil disimpan!");
+                successAlert.initModality(Modality.APPLICATION_MODAL);
+                successAlert.initOwner(btnSimpan.getScene().getWindow());
                 successAlert.showAndWait();
                 clear();
                 autoid(); // Generate ID baru untuk entri berikutnya
@@ -188,7 +198,8 @@ public class InputPengumuman {
             }
         } else {
             Alert cancelAlert = new Alert(AlertType.INFORMATION);
-            //alert.initModality(Modality.APPLICATION_MODAL);
+            cancelAlert.initModality(Modality.APPLICATION_MODAL);
+            cancelAlert.initOwner(btnSimpan.getScene().getWindow());
             cancelAlert.setTitle("Informasi");
             cancelAlert.setHeaderText(null);
             cancelAlert.setContentText("Data pengumuman tidak disimpan.");

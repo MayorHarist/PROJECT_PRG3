@@ -11,7 +11,7 @@
 
 <AnchorPane prefHeight="475.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Pengumuman.InputPengumuman">
    <children>
-      <AnchorPane layoutX="3.0" layoutY="2.0" prefHeight="461.0" prefWidth="605.0" style="-fx-background-color: #FFFFFF;">
+      <AnchorPane fx:id="AnchorPengumuman" layoutX="3.0" layoutY="2.0" prefHeight="461.0" prefWidth="605.0" style="-fx-background-color: #FFFFFF;">
          <children>
             <Label layoutX="87.0" layoutY="113.0" stylesheets="@../../Style.css" text="ID Pengumuman">
                <font>
@@ -42,7 +42,7 @@
             <DatePicker fx:id="tglPengumuman" layoutX="201.0" layoutY="263.0" prefHeight="39.0" prefWidth="250.0" stylesheets="@../../Style.css" />
             <TextField fx:id="txtnmPengumuman" layoutX="201.0" layoutY="206.0" prefHeight="21.0" prefWidth="250.0" stylesheets="@../../Style.css" />
             <TextField fx:id="txtDeskripsi" layoutX="201.0" layoutY="315.0" prefHeight="29.0" prefWidth="250.0" stylesheets="@../../Style.css" />
-            <Button fx:id="btnSimpanPengumuman" layoutX="197.0" layoutY="384.0" mnemonicParsing="false" onAction="#onBtnSimpanClick" prefHeight="29.0" prefWidth="104.0" stylesheets="@../../Style.css" text="Simpan" />
+            <Button fx:id="btnSimpan" layoutX="197.0" layoutY="384.0" mnemonicParsing="false" onAction="#onBtnSimpanClick" prefHeight="29.0" prefWidth="104.0" stylesheets="@../../Style.css" text="Simpan" />
             <Button fx:id="btnBatalPengumuman" contentDisplay="RIGHT" layoutX="330.0" layoutY="384.0" mnemonicParsing="false" onAction="#OnBtnBatalClick" prefHeight="29.0" prefWidth="105.0" stylesheets="@../../Style.css" text="Batal" />
             <ComboBox fx:id="cbTKN" layoutX="201.0" layoutY="160.0" prefHeight="25.0" prefWidth="250.0" stylesheets="@../../Style.css" />
             <Button fx:id="btnKembali" contentDisplay="RIGHT" layoutX="474.0" layoutY="106.0" mnemonicParsing="false" onAction="#OnBtnKembali" prefHeight="29.0" prefWidth="105.0" stylesheets="@../../Style.css" text="Kembali" />

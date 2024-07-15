@@ -1,11 +1,6 @@
 package Master.CRUD_PosisiPrestasi;
 
 import Database.DBConnect;
-import Master.CRUD_JenisPrestasi.InputJepresController;
-import Master.CRUD_JenisPrestasi.jepres;
-import Master.CRUD_Pengumuman.InputPengumuman;
-import Master.CRUD_Tendik.InputTendik;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,15 +11,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class UDPospresController implements Initializable {
@@ -57,254 +54,224 @@ public class UDPospresController implements Initializable {
     private TextField txtNama;
     @FXML
     private TextField txtDeskripsi;
+    @FXML
+    private AnchorPane AnchorUpdatePospres;
 
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        loadData("");
+    private ObservableList<pospres> oblist = FXCollections.observableArrayList();
 
-        // Tambahkan listener untuk TableView
-        tableposisiprestasi.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                txtIdPosisiPrestasi.setText(newValue.getIdposisiprestasi());
-                txtIdPosisiPrestasi.setEditable(false);
-                txtNama.setText(newValue.getNama());
-                txtDeskripsi.setText(newValue.getDeskripsi());
-            }
-        });
+    public class pospres {
+        String idposisiprestasi, nama, deskripsi, status;
 
-        // Menambahkan listener ke TextField txtNama
-        txtNama.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[a-zA-Z\\s]*")) { // Memeriksa apakah nilai baru hanya terdiri dari huruf dan spasi
-                txtNama.setText(newValue.replaceAll("[^a-zA-Z\\s]", "")); // Hapus karakter non-huruf
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Informasi");
-                alert.setHeaderText(null);
-                alert.setContentText("Nama harus diisi dengan huruf.");
-                alert.showAndWait();
-            }
-        });
+        public pospres(String idposisiprestasi, String nama, String deskripsi, String status) {
+            this.idposisiprestasi = idposisiprestasi;
+            this.nama = nama;
+            this.deskripsi = deskripsi;
+            this.status = status;
+        }
 
-        // Tambahkan listener untuk txtCari
-        txtCari.textProperty().addListener((observable, oldValue, newValue) -> {
-            cariData(newValue); // Panggil fungsi pencarian saat isi txtCari berubah
-        });
+        public String getIdposisiprestasi() { return idposisiprestasi; }
+        public String getNama() { return nama; }
+        public String getDeskripsi() { return deskripsi; }
+        public String getStatus() { return status; }
     }
 
-    private void loadData(String searchQuery){
-        tableposisiprestasi.getItems().clear(); // Bersihkan data sebelum memuat data baru
-        try {
-            String query = "SELECT * FROM PosisiPrestasi WHERE Status='Aktif' AND (Nama LIKE ? OR Deskripsi LIKE ?)";
-            PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
-            preparedStatement.setString(1, "%" + searchQuery + "%");
-            preparedStatement.setString(2, "%" + searchQuery + "%");
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                pospres jp = new pospres(
-                        resultSet.getString("Id_PosisiPrestasi"),
-                        resultSet.getString("Nama"),
-                        resultSet.getString("Deskripsi"),
-                        resultSet.getString("Status")
-                );
-                tableposisiprestasi.getItems().add(jp);
-            }
-            preparedStatement.close();
-            resultSet.close();
-        } catch (Exception ex) {
-            System.out.print("Terjadi error saat load data posisi prestasi: " + ex);
-        }
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         idposisiprestasi.setCellValueFactory(new PropertyValueFactory<>("idposisiprestasi"));
         nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
         deskripsi.setCellValueFactory(new PropertyValueFactory<>("deskripsi"));
+        tableposisiprestasi.setItems(oblist);
+        loadData("");
+
+        tableposisiprestasi.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                setTextFields(newValue);
+            }
+            txtCari.setOnKeyReleased(event -> onTxtCari());
+        });
+
+        txtNama.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[a-zA-Z\\s]*")) {
+                txtNama.setText(newValue.replaceAll("[^a-zA-Z\\s]", ""));
+                showAlert("Informasi", "Nama harus diisi dengan huruf.", Alert.AlertType.INFORMATION);
+            }
+        });
     }
 
-
-    private void clear(){
-        txtIdPosisiPrestasi.setText("");
-        txtNama.setText("");
-        txtDeskripsi.setText("");
+    private void setTextFields(pospres newValue) {
+        txtIdPosisiPrestasi.setText(newValue.getIdposisiprestasi());
+        txtIdPosisiPrestasi.setEditable(false);
+        txtNama.setText(newValue.getNama());
+        txtDeskripsi.setText(newValue.getDeskripsi());
     }
 
-    public void onbtnBatalClick(ActionEvent event) {
-        clear();
+    @FXML
+    protected void onbtnBatalClick() {
+        clearFields();
     }
 
-    public void onbtnPerbaharuiClick(ActionEvent event) {
-        if (tableposisiprestasi.getSelectionModel().getSelectedItem() != null) {
-            try {
-                pospres selectedpospres = tableposisiprestasi.getSelectionModel().getSelectedItem();
-                String idposisiprestasi = selectedpospres.getIdposisiprestasi();
-                String nama = txtNama.getText();
-                String deskripsi = txtDeskripsi.getText();
+    @FXML
+    protected void onbtnPerbaharuiClick() {
+        if (!validateFields()) {
+            return;
+        }
 
-                // Tampilkan pesan konfirmasi
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Konfirmasi Perubahan Data");
-                alert.setHeaderText(null);
-                alert.setContentText("Apakah Anda yakin ingin memperbarui data ini?");
+        pospres selectedpospres = tableposisiprestasi.getSelectionModel().getSelectedItem();
+        if (selectedpospres != null) {
+            Alert confirmation = createAlert(Alert.AlertType.CONFIRMATION, "Konfirmasi", "Anda yakin ingin mengubah data ini?",
+                    "ID Posisi Prestasi: " + selectedpospres.getIdposisiprestasi() + "\n" +
+                            "Nama: " + txtNama.getText() + "\n" +
+                            "Deskripsi: " + txtDeskripsi.getText());
 
-                // Tambahkan opsi Ya dan Tidak
-                ButtonType buttonTypeYes = new ButtonType("Ya");
-                ButtonType buttonTypeNo = new ButtonType("Tidak");
-                alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
-
-                // Tampilkan dialog dan tunggu respon pengguna
-                alert.showAndWait().ifPresent(response -> {
-                    if (response == buttonTypeYes) {
-                        // Jika pengguna memilih Ya, lakukan pembaruan data
-                        try {
-                            String query = "EXEC sp_UpdatePosisiPrestasi ?, ?, ?";
-                            PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
-                            preparedStatement.setString(1, idposisiprestasi);
-                            preparedStatement.setString(2, nama);
-                            preparedStatement.setString(3, deskripsi);
-                            preparedStatement.executeUpdate();
-                            loadData(""); // Panggil loadData() untuk menyegarkan tampilan TableView
-                            clear();
-
-                            Alert alertSuccess = new Alert(Alert.AlertType.INFORMATION);
-                            alertSuccess.setTitle("Sukses");
-                            alertSuccess.setHeaderText(null);
-                            alertSuccess.setContentText("Data posisi Prestasi berhasil diperbarui!");
-                            alertSuccess.showAndWait();
-                        } catch (Exception ex) {
-                            System.out.println("Terjadi error saat memperbarui data posisi prestasi: " + ex);
-                        }
-                    } else {
-                        // Jika pengguna memilih Tidak, data tidak diperbarui
-                        alert.close();
-                    }
-                });
-
-            } catch (Exception ex) {
-                System.out.println("Terjadi error saat memperbarui data posisi prestasi: " + ex);
+            Optional<ButtonType> result = confirmation.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                try {
+                    String query = "UPDATE PosisiPrestasi SET Nama = ?, Deskripsi = ? WHERE Id_PosisiPrestasi = ?";
+                    PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
+                    preparedStatement.setString(1, txtNama.getText());
+                    preparedStatement.setString(2, txtDeskripsi.getText());
+                    preparedStatement.setString(3, selectedpospres.getIdposisiprestasi());
+                    preparedStatement.executeUpdate();
+                    preparedStatement.close();
+                    loadData("");
+                    clearFields();
+                    showAlert("Sukses", "Data posisi Prestasi berhasil diperbarui!", Alert.AlertType.INFORMATION);
+                } catch (SQLException ex) {
+                    showAlert("Error", "Terjadi error saat memperbarui data posisi prestasi: " + ex, Alert.AlertType.ERROR);
+                }
             }
         } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Peringatan");
-            alert.setHeaderText(null);
-            alert.setContentText("Silakan pilih data posisi prestasi yang ingin diperbarui.");
-            alert.showAndWait();
+            showAlert("Peringatan", "Silakan pilih data posisi prestasi yang ingin diperbarui.", Alert.AlertType.WARNING);
         }
     }
 
-    public void onbtnHapusClick(ActionEvent event) {
-        if (tableposisiprestasi.getSelectionModel().getSelectedItem() != null) {
-            try {
-                pospres selectedpospres = tableposisiprestasi.getSelectionModel().getSelectedItem();
-                String idposisiprestasi = selectedpospres.getIdposisiprestasi();
+    @FXML
+    protected void onbtnHapusClick() {
+        pospres selectedpospres = tableposisiprestasi.getSelectionModel().getSelectedItem();
+        if (selectedpospres != null) {
+            Alert confirmation = createAlert(Alert.AlertType.CONFIRMATION, "Konfirmasi", "Anda yakin ingin menghapus data ini?",
+                    "ID Posisi Prestasi: " + selectedpospres.getIdposisiprestasi() + "\n" +
+                            "Nama: " + selectedpospres.getNama());
 
-                // Tampilkan pesan konfirmasi
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Konfirmasi Penghapusan Data");
-                alert.setHeaderText(null);
-                alert.setContentText("Apakah Anda yakin ingin menghapus data ini?");
-
-                // Tambahkan opsi Ya dan Tidak
-                ButtonType buttonTypeYes = new ButtonType("Ya");
-                ButtonType buttonTypeNo = new ButtonType("Tidak");
-                alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
-
-                // Tampilkan dialog dan tunggu respon pengguna
-                alert.showAndWait().ifPresent(response -> {
-                    if (response == buttonTypeYes) {
-                        // Jika pengguna memilih Ya, lakukan penghapusan data
-                        try {
-                            String query = "DELETE FROM PosisiPrestasi WHERE Id_PosisiPrestasi = ?";
-                            PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
-                            preparedStatement.setString(1, idposisiprestasi);
-                            preparedStatement.executeUpdate();
-                            loadData(""); // Panggil loadData() untuk menyegarkan tampilan TableView
-                            clear();
-
-                            Alert alertSuccess = new Alert(Alert.AlertType.INFORMATION);
-                            alertSuccess.setTitle("Sukses");
-                            alertSuccess.setHeaderText(null);
-                            alertSuccess.setContentText("Data posisi Prestasi berhasil dihapus!");
-                            alertSuccess.showAndWait();
-                        } catch (Exception ex) {
-                            System.out.println("Terjadi error saat menghapus data posisi prestasi: " + ex);
-                        }
-                    } else {
-                        // Jika pengguna memilih Tidak, data tidak dihapus
-                        alert.close();
-                    }
-                });
-
-            } catch (Exception ex) {
-                System.out.println("Terjadi error saat menghapus data posisi prestasi: " + ex);
+            Optional<ButtonType> result = confirmation.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                try {
+                    String query = "DELETE FROM PosisiPrestasi WHERE Id_PosisiPrestasi = ?";
+                    PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
+                    preparedStatement.setString(1, selectedpospres.getIdposisiprestasi());
+                    preparedStatement.executeUpdate();
+                    preparedStatement.close();
+                    loadData("");
+                    clearFields();
+                    showAlert("Sukses", "Data posisi Prestasi berhasil dihapus!", Alert.AlertType.INFORMATION);
+                } catch (SQLException ex) {
+                    showAlert("Error", "Terjadi error saat menghapus data posisi prestasi: " + ex, Alert.AlertType.ERROR);
+                }
             }
         } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Peringatan");
-            alert.setHeaderText(null);
-            alert.setContentText("Silakan pilih data posisi prestasi yang ingin dihapus.");
-            alert.showAndWait();
+            showAlert("Peringatan", "Silakan pilih data posisi prestasi yang ingin dihapus.", Alert.AlertType.WARNING);
         }
     }
 
+    @FXML
+    private void onTxtCari() {
+        String keyword = txtCari.getText().toLowerCase();
+        loadData(keyword);
+    }
 
-    private void cariData(String keyword) {
-        tableposisiprestasi.getItems().clear(); // Bersihkan data sebelum memuat hasil pencarian baru
+    private void clearFields() {
+        txtIdPosisiPrestasi.clear();
+        txtNama.clear();
+        txtDeskripsi.clear();
+    }
+
+    private void loadData(String keyword) {
         try {
-            String query = "EXEC sp_CariPospres ?";
-            PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
-            preparedStatement.setString(1, keyword.isEmpty() ? null : keyword); // Set parameter pencarian, null jika kosong
-            ResultSet resultSet = preparedStatement.executeQuery();
+            String query = "SELECT * FROM PosisiPrestasi WHERE Status='Aktif' AND (Nama LIKE ? OR Deskripsi LIKE ?)";
+            PreparedStatement stmt = connection.conn.prepareStatement(query);
+            String wildcardKeyword = "%" + keyword + "%";
+            stmt.setString(1, wildcardKeyword);
+            stmt.setString(2, wildcardKeyword);
 
-            while (resultSet.next()) {
-                pospres pp = new pospres(
-                        resultSet.getString("Id_PosisiPrestasi"),
-                        resultSet.getString("Nama"),
-                        resultSet.getString("Deskripsi"),
-                        resultSet.getString("Status")
-                );
-                tableposisiprestasi.getItems().add(pp);
+            oblist.clear();
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                oblist.add(new pospres(
+                        rs.getString("Id_PosisiPrestasi"),
+                        rs.getString("Nama"),
+                        rs.getString("Deskripsi"),
+                        rs.getString("Status")
+                ));
             }
-            preparedStatement.close();
-            resultSet.close();
+            stmt.close();
+            rs.close();
 
-            if (tableposisiprestasi.getItems().isEmpty()) {
-                // Tampilkan pesan bahwa data tidak ditemukan
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Informasi");
-                alert.setHeaderText(null);
-                alert.setContentText("Data posisi prestasi tidak ditemukan.");
-                alert.showAndWait();
+            if (oblist.isEmpty()) {
+                showAlert("Informasi", "Data posisi prestasi tidak ditemukan.", Alert.AlertType.INFORMATION);
             }
-        } catch (Exception ex) {
-            System.out.print("Terjadi error saat mencari data posisi prestasi: " + ex);
+        } catch (SQLException ex) {
+            showAlert("Error", "Terjadi error saat mencari data posisi prestasi: " + ex, Alert.AlertType.ERROR);
         }
     }
 
-    public void onbtnRefresh(ActionEvent event) {
+    @FXML
+    private void onbtnRefresh(ActionEvent event) {
         loadData("");
     }
 
-    public void onbtnTambahClick(ActionEvent event) {
+    @FXML
+    private void onbtnTambahClick(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(InputPospresController.class.getResource("InputPospres.fxml"));
             Parent root = fxmlLoader.load();
             Stage stage = new Stage();
             stage.setTitle("Tambah Posisi Prestasi");
             stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        /*try {
-            FXMLLoader fxmlLoader = new FXMLLoader(InputPospresController.class.getResource("InputPospres.fxml"));
-            Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root);
-
-            Stage stage = new Stage();
-            stage.setTitle("Tambah Posisi Prestasi");
-            stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(tableposisiprestasi.getScene().getWindow());
+            stage.initOwner(btnTambah.getScene().getWindow());
             stage.initStyle(StageStyle.UNDECORATED);
             stage.show();
         } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+            showAlert("Error", "Terjadi error saat membuka form tambah posisi prestasi: " + e, Alert.AlertType.ERROR);
+        }
+    }
+
+    private boolean validateFields() {
+        if (txtNama.getText().isEmpty() || !txtNama.getText().matches("[a-zA-Z\\s]+")) {
+            showAlert("Nama harus diisi dan hanya boleh berisi huruf!", Alert.AlertType.WARNING);
+            return false;
+        }
+        if (txtDeskripsi.getText().isEmpty()) {
+            showAlert("Deskripsi harus diisi!", Alert.AlertType.WARNING);
+            return false;
+        }
+        return true;
+    }
+
+    private Alert createAlert(Alert.AlertType alertType, String title, String header, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initOwner(AnchorUpdatePospres.getScene().getWindow());
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        return alert;
+    }
+
+    private void showAlert(String message, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initOwner(AnchorUpdatePospres.getScene().getWindow());
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showAlert(String title, String message, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initOwner(AnchorUpdatePospres.getScene().getWindow());
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

@@ -51,7 +51,7 @@ public class InputMahasiswa implements Initializable {
     @FXML
     private Button btnKembali;
     @FXML
-    private AnchorPane AnchorMahasiswa;
+    private AnchorPane AnchorInputMahasiswa;
 
     private DBConnect connection = new DBConnect();
     private ToggleGroup genderGroup;
@@ -144,12 +144,19 @@ public class InputMahasiswa implements Initializable {
 
     private void showAlert(String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
-        alert.initModality(Modality.APPLICATION_MODAL);
-        alert.setTitle("Informasi");
-        alert.setHeaderText(null);
         alert.setContentText(message);
-        alert.showAndWait();
+
+        // Mengatur stage owner dan modality untuk message box
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(AnchorInputMahasiswa.getScene().getWindow()); // Menggunakan tableMahasiswa sebagai contoh
+
+        // Memastikan alert muncul di depan window utama
+        stage.toFront();
+
+        alert.show();
     }
+
 
     private boolean isFormValid() {
         // Memeriksa apakah semua field telah diisi
@@ -208,6 +215,7 @@ public class InputMahasiswa implements Initializable {
         message += "Apakah Anda yakin ingin menyimpan data?";
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initOwner(btnSimpan.getScene().getWindow());
         alert.initModality(Modality.APPLICATION_MODAL);
         alert.setTitle("Konfirmasi");
         alert.setHeaderText(null);
@@ -265,7 +273,6 @@ public class InputMahasiswa implements Initializable {
     }
 
     private void clear() {
-        txtNIM.clear();
         cbProdi.getSelectionModel().clearSelection();
         txtNama.clear();
         dpTanggalLahir.setValue(null);
