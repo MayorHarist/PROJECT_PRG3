@@ -22,6 +22,8 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 import Database.DBConnect;
@@ -29,6 +31,8 @@ import Database.DBConnect;
 public class UpdateDeleteMahasiswa implements Initializable {
     DBConnect connection = new DBConnect();
 
+    @FXML
+    private AnchorPane AnchorMahasiswa;
     @FXML
     private TableView<Mahasiswa> tableMahasiswa;
     @FXML
@@ -61,7 +65,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
     @FXML
     private ComboBox<Prodi> cbProdi;
     @FXML
-    private TextField txtTanggalLahir;
+    private DatePicker dpTanggal; // Mengubah dari TextField ke DatePicker
     @FXML
     private RadioButton rbLaki;
     @FXML
@@ -76,8 +80,6 @@ public class UpdateDeleteMahasiswa implements Initializable {
     private TextField txtTahunMasuk;
     @FXML
     private TextField txtCari;
-    @FXML
-    private AnchorPane AnchorMahasiswa;
 
     private ObservableList<Mahasiswa> oblist = FXCollections.observableArrayList();
 
@@ -136,6 +138,17 @@ public class UpdateDeleteMahasiswa implements Initializable {
         public String getIpk() { return ipk; }
     }
 
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(message);
+
+        // Mengatur stage owner dan modality untuk message box
+        Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+        //alertStage.initOwner(AnchorMahasiswa.getScene().getWindow());
+        alertStage.initModality(Modality.WINDOW_MODAL);
+        alert.showAndWait();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadTableData("");
@@ -146,13 +159,13 @@ public class UpdateDeleteMahasiswa implements Initializable {
         // Menampilkan nama Prodi
         namaProdi.setCellValueFactory(cellData -> {
             Mahasiswa mahasiswa = cellData.getValue();
-            String prodiId = mahasiswa.getProdi(); // Get the ID
+            String prodiId = mahasiswa.getProdi();
             for (Prodi prodi : cbProdi.getItems()) {
                 if (prodi.getId().equals(prodiId)) {
-                    return new SimpleStringProperty(prodi.getNama()); // Return the name
+                    return new SimpleStringProperty(prodi.getNama());
                 }
             }
-            return new SimpleStringProperty(""); // Return empty if not found
+            return new SimpleStringProperty("");
         });
 
         nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
@@ -171,7 +184,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
                 txtNama.setText(newValue.getNama());
                 Prodi selectedProdi = getProdiById(newValue.getProdi());
                 cbProdi.setValue(selectedProdi);
-                txtTanggalLahir.setText(newValue.getTanggalLahir());
+                dpTanggal.setValue(LocalDate.parse(newValue.getTanggalLahir(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 txtAlamat.setText(newValue.getAlamat());
                 txtEmail.setText(newValue.getEmail());
                 txtTelepon.setText(newValue.getTelepon());
@@ -219,7 +232,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
                         rs.getString("Email"),
                         rs.getString("Telepon"),
                         rs.getString("Tahun_Masuk"),
-                        rs.getString("Point_KRPP"), // Menggunakan nama kolom yang benar
+                        rs.getString("Point_KRPP"),
                         rs.getString("IPK")
                 ));
             }
@@ -263,7 +276,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
         String nim = txtNIM.getText();
         String nama = txtNama.getText();
         Prodi selectedProdi = cbProdi.getValue();
-        String tanggalLahir = txtTanggalLahir.getText();
+        LocalDate tanggalLahir = dpTanggal.getValue();
         String alamat = txtAlamat.getText();
         String email = txtEmail.getText();
         String telepon = txtTelepon.getText();
@@ -271,7 +284,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
         String jenisKelamin = rbLaki.isSelected() ? "Laki-laki" : "Perempuan";
 
         // Validasi input
-        if (nim.isEmpty() || nama.isEmpty() || selectedProdi == null || tanggalLahir.isEmpty() ||
+        if (nim.isEmpty() || nama.isEmpty() || selectedProdi == null || tanggalLahir == null ||
                 alamat.isEmpty() || email.isEmpty() || telepon.isEmpty() || tahunMasuk.isEmpty()) {
             showAlert("Semua field harus diisi!");
             return;
@@ -285,7 +298,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
 
         // Mengatur stage owner dan modality untuk message box
         Stage alertStage = (Stage) confirmAlert.getDialogPane().getScene().getWindow();
-        alertStage.initOwner(tableMahasiswa.getScene().getWindow());
+        alertStage.initOwner(AnchorMahasiswa.getScene().getWindow());
         alertStage.initModality(Modality.WINDOW_MODAL);
 
         if (confirmAlert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
@@ -296,7 +309,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
             try (PreparedStatement preparedStatement = connection.conn.prepareStatement(query)) {
                 preparedStatement.setString(1, nama);
                 preparedStatement.setString(2, idProdi);
-                preparedStatement.setString(3, tanggalLahir);
+                preparedStatement.setString(3, tanggalLahir.toString());
                 preparedStatement.setString(4, jenisKelamin);
                 preparedStatement.setString(5, alamat);
                 preparedStatement.setString(6, email);
@@ -307,6 +320,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
                 preparedStatement.executeUpdate();
 
                 showAlert("Data berhasil diperbarui!");
+
                 clearFields();
                 loadTableData("");
             } catch (SQLException ex) {
@@ -379,23 +393,11 @@ public class UpdateDeleteMahasiswa implements Initializable {
         loadTableData("");
     }
 
-    private void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText(message);
-
-        // Mengatur stage owner dan modality untuk message box
-        Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
-        alertStage.initOwner(AnchorMahasiswa .getScene().getWindow());
-        alertStage.initModality(Modality.WINDOW_MODAL);
-
-        alert.showAndWait();
-    }
-
     private void clearFields() {
         txtNIM.clear();
         txtNama.clear();
         cbProdi.setValue(null);
-        txtTanggalLahir.clear();
+        dpTanggal.setValue(null);
         rbLaki.setSelected(false);
         rbPerempuan.setSelected(false);
         txtAlamat.clear();

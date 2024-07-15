@@ -49,6 +49,13 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
     private TableColumn<Pengumuman, String> deskripsi;
     @FXML
     private TableColumn<Pengumuman, String> namaTKN;
+    @FXML
+    private Button btnUbahPengumuman;
+    @FXML
+    private Button btnHapus;
+    @FXML
+    private Button btnTambah;
+
 
     private DBConnect connection = new DBConnect();
     private ObservableList<Pengumuman> oblist = FXCollections.observableArrayList();
@@ -188,6 +195,8 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Peringatan");
             alert.setHeaderText(null);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.initOwner(btnUbahPengumuman.getScene().getWindow());
             alert.setContentText("Silakan pilih data pengumuman yang ingin diubah.");
             alert.showAndWait();
             return;
@@ -222,6 +231,8 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
                 alert.setTitle("Success");
                 alert.setHeaderText(null);
                 alert.setContentText("Data Pengumuman berhasil diperbarui!");
+                alert.initModality(Modality.APPLICATION_MODAL);
+                alert.initOwner(btnUbahPengumuman.getScene().getWindow());
                 alert.showAndWait();
                 clear();
             }
@@ -238,7 +249,8 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
             alert.setTitle("Konfirmasi Penghapusan Data");
             alert.setHeaderText(null);
             alert.setContentText("Apakah Anda yakin ingin menghapus data ini?");
-
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.initOwner(btnHapus.getScene().getWindow());
             ButtonType buttonTypeYes = new ButtonType("Ya");
             ButtonType buttonTypeNo = new ButtonType("Tidak");
             alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
@@ -258,6 +270,8 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
                         alertSuccess.setTitle("Sukses");
                         alertSuccess.setHeaderText(null);
                         alertSuccess.setContentText("Data pengumuman berhasil dihapus!");
+                        alertSuccess.initModality(Modality.APPLICATION_MODAL);
+                        alertSuccess.initOwner(btnHapus.getScene().getWindow());
                         alertSuccess.showAndWait();
                     } catch (SQLException ex) {
                         System.out.println("Terjadi error saat menghapus data pengumuman: " + ex.getMessage());
@@ -271,6 +285,8 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
             alert.setTitle("Peringatan");
             alert.setHeaderText(null);
             alert.setContentText("Silakan pilih data pengumuman yang ingin dihapus.");
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.initOwner(btnHapus.getScene().getWindow());
             alert.showAndWait();
         }
     }
@@ -340,6 +356,9 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
             Parent root = fxmlLoader.load();
             Stage stage = new Stage();
             stage.setTitle("Tambah Data Pengumuman");
+            stage.initOwner(btnTambah.getScene().getWindow());
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.UNDECORATED);
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {

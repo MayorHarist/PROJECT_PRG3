@@ -374,7 +374,7 @@ public class UpdateDeleteDosenController implements Initializable {
             stage.setTitle("Tambah Data Dosen");
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(tableDosen.getScene().getWindow());
+            stage.initOwner(btnTambah.getScene().getWindow());
             stage.initStyle(StageStyle.UNDECORATED);
             stage.toFront();
             stage.show();

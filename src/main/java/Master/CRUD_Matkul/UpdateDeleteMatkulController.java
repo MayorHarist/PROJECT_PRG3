@@ -68,6 +68,12 @@ public class UpdateDeleteMatkulController implements Initializable {
     private ComboBox<Prodi> cbProdi;
     @FXML
     private TextField txtCari;
+    @FXML
+    private Button btnTambah;
+    @FXML
+    private Button btnHapus;
+    @FXML
+    private Button btnUbah;
 
     private ObservableList<MataKuliah> oblist = FXCollections.observableArrayList();
 
@@ -324,6 +330,8 @@ public class UpdateDeleteMatkulController implements Initializable {
                 confirmation.setTitle("Konfirmasi");
                 confirmation.setHeaderText("Konfirmasi Perubahan");
                 confirmation.setContentText("Apakah Anda yakin ingin mengubah data mata kuliah ini?");
+                confirmation.initModality(Modality.APPLICATION_MODAL);
+                confirmation.initOwner(btnUbah.getScene().getWindow());
 
                 // Show and wait for user response
                 confirmation.showAndWait().ifPresent(response -> {
@@ -378,6 +386,8 @@ public class UpdateDeleteMatkulController implements Initializable {
             confirmation.setTitle("Konfirmasi");
             confirmation.setHeaderText("Konfirmasi Penghapusan");
             confirmation.setContentText("Apakah Anda yakin ingin menghapus data mata kuliah ini?");
+            confirmation.initModality(Modality.APPLICATION_MODAL);
+            confirmation.initOwner(btnHapus.getScene().getWindow());
 
             // Show and wait for user response
             confirmation.showAndWait().ifPresent(response -> {
@@ -436,6 +446,8 @@ public class UpdateDeleteMatkulController implements Initializable {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(content);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initOwner(tableMatkul.getScene().getWindow());
         alert.showAndWait();
     }
 
@@ -502,6 +514,9 @@ public class UpdateDeleteMatkulController implements Initializable {
             Parent root = fxmlLoader.load();
             Stage stage = new Stage();
             stage.setTitle("Tambah Data Mata Kuliah");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(btnTambah.getScene().getWindow());
+            stage.initStyle(StageStyle.UNDECORATED);
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {

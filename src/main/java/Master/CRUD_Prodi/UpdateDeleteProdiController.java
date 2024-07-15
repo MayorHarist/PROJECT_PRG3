@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -37,6 +38,8 @@ public class UpdateDeleteProdiController implements Initializable {
     @FXML
     private TextField txtCari;
     @FXML
+    private Button btnTambah;
+    @FXML
     private Button btnUbah;
     @FXML
     private Button btnHapus;
@@ -50,7 +53,8 @@ public class UpdateDeleteProdiController implements Initializable {
     private TableColumn<Prodi, String> JenjangPendidikan;
     @FXML
     private TableColumn<Prodi, String> Akreditasi;
-
+    @FXML
+    private AnchorPane AnchorUpdateProdi;
     private DBConnect connection = new DBConnect();
     private ObservableList<Prodi> oblist = FXCollections.observableArrayList();
 
@@ -173,6 +177,8 @@ public class UpdateDeleteProdiController implements Initializable {
         confirmationAlert.setTitle("Konfirmasi Ubah Data");
         confirmationAlert.setHeaderText(null);
         confirmationAlert.setContentText("Apakah Anda yakin ingin mengubah data ini?");
+        confirmationAlert.initOwner(btnUbah.getScene().getWindow());
+        confirmationAlert.initModality(Modality.APPLICATION_MODAL);
 
         // If the user confirms, proceed with update operation
         confirmationAlert.showAndWait().ifPresent(response -> {
@@ -213,6 +219,8 @@ public class UpdateDeleteProdiController implements Initializable {
         confirmationAlert.setTitle("Konfirmasi Hapus Data");
         confirmationAlert.setHeaderText(null);
         confirmationAlert.setContentText("Apakah Anda yakin ingin menghapus data ini?");
+        confirmationAlert.initOwner(btnHapus.getScene().getWindow());
+        confirmationAlert.initModality(Modality.APPLICATION_MODAL);
 
         // If the user confirms, proceed with delete operation
         confirmationAlert.showAndWait().ifPresent(response -> {
@@ -247,6 +255,8 @@ public class UpdateDeleteProdiController implements Initializable {
     private void showAlert(String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setContentText(message);
+        alert.initOwner(AnchorUpdateProdi.getScene().getWindow());
+        alert.initModality(Modality.APPLICATION_MODAL);
         alert.show();
     }
 
@@ -260,6 +270,9 @@ public class UpdateDeleteProdiController implements Initializable {
             Parent root = fxmlLoader.load();
             Stage stage = new Stage();
             stage.setTitle("Tambah Data Program Studi");
+            stage.initOwner(btnTambah.getScene().getWindow());
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.UNDECORATED);
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
