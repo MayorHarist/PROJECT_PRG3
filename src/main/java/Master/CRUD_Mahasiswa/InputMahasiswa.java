@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -49,9 +50,12 @@ public class InputMahasiswa implements Initializable {
     private Button btnBatal;
     @FXML
     private Button btnKembali;
+    @FXML
+    private AnchorPane AnchorMahasiswa;
 
     private DBConnect connection = new DBConnect();
     private ToggleGroup genderGroup;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -65,12 +69,7 @@ public class InputMahasiswa implements Initializable {
         txtNama.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("[a-zA-Z\\s]*")) { // Memeriksa apakah nilai baru hanya terdiri dari huruf dan spasi
                 txtNama.setText(newValue.replaceAll("[^a-zA-Z\\s]", "")); // Hapus karakter non-huruf
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                //alert.initModality(Modality.APPLICATION_MODAL);
-                alert.setTitle("Informasi");
-                alert.setHeaderText(null);
-                alert.setContentText("Nama harus diisi dengan huruf.");
-                alert.showAndWait();
+                showAlert("Nama harus diisi dengan huruf.", Alert.AlertType.INFORMATION);
             }
         });
 
@@ -78,12 +77,7 @@ public class InputMahasiswa implements Initializable {
         txtTelepon.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) { // Memeriksa apakah nilai baru hanya terdiri dari digit
                 txtTelepon.setText(newValue.replaceAll("[^\\d]", "")); // Hapus karakter non-digit
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-               // alert.initModality(Modality.APPLICATION_MODAL);
-                alert.setTitle("Informasi");
-                alert.setHeaderText(null);
-                alert.setContentText("Harus diisi dengan angka.");
-                alert.showAndWait();
+                showAlert("Harus diisi dengan angka.", Alert.AlertType.INFORMATION);
             }
         });
 
@@ -99,12 +93,7 @@ public class InputMahasiswa implements Initializable {
         txtTahunMasuk.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) { // Memeriksa apakah nilai baru hanya terdiri dari digit
                 txtTahunMasuk.setText(newValue.replaceAll("[^\\d]", "")); // Hapus karakter non-digit
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                //alert.initModality(Modality.APPLICATION_MODAL);
-                alert.setTitle("Informasi");
-                alert.setHeaderText(null);
-                alert.setContentText("Harus diisi dengan angka.");
-                alert.showAndWait();
+                showAlert("Harus diisi dengan angka.", Alert.AlertType.INFORMATION);
             }
         });
 
@@ -115,8 +104,6 @@ public class InputMahasiswa implements Initializable {
                 txtTahunMasuk.setText(txtTahunMasuk.getText().substring(0, 4)); // Hapus karakter melebihi 4 digit
             }
         });
-
-
     }
 
     private boolean isValidNameInput(String input) {
@@ -157,8 +144,11 @@ public class InputMahasiswa implements Initializable {
 
     private void showAlert(String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.setTitle("Informasi");
+        alert.setHeaderText(null);
         alert.setContentText(message);
-        alert.show();
+        alert.showAndWait();
     }
 
     private boolean isFormValid() {
@@ -218,7 +208,7 @@ public class InputMahasiswa implements Initializable {
         message += "Apakah Anda yakin ingin menyimpan data?";
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        //alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initModality(Modality.APPLICATION_MODAL);
         alert.setTitle("Konfirmasi");
         alert.setHeaderText(null);
         alert.setContentText(message);
@@ -284,10 +274,9 @@ public class InputMahasiswa implements Initializable {
         txtEmail.clear();
         txtTelepon.clear();
         txtTahunMasuk.clear();
-
     }
 
-    public void btnKembali_Click(ActionEvent actionEvent){
+    public void btnKembali_Click(ActionEvent actionEvent) {
         Stage stage = (Stage) btnBatal.getScene().getWindow();
         stage.close();
     }

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="777.0" prefWidth="726.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Dosen.InputDosenController">
+<AnchorPane fx:id="AnchorInputDosen" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="777.0" prefWidth="726.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Dosen.InputDosenController">
    <children>
       <TextField fx:id="txtPegawai" editable="false" layoutX="319.0" layoutY="173.0" prefHeight="25.0" prefWidth="227.0" />
       <TextField fx:id="txtNIDN" layoutX="319.0" layoutY="224.0" prefHeight="25.0" prefWidth="227.0" />
