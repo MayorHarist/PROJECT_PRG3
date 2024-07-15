@@ -4,9 +4,11 @@ import Database.DBConnect;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.lang.ref.PhantomReference;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -25,6 +27,8 @@ public class InputPospresController {
     private TextField txtNama;
     @FXML
     private TextField txtDeskripsi;
+    @FXML
+    private AnchorPane AnchorInputPospres;
 
     String idposisiprestasi, nama, deskripsi, status;
     DBConnect connection = new DBConnect();
@@ -38,7 +42,8 @@ public class InputPospresController {
             if (!newValue.matches("[a-zA-Z\\s]*")) { // Memeriksa apakah nilai baru hanya terdiri dari huruf dan spasi
                 txtNama.setText(newValue.replaceAll("[^a-zA-Z\\s]", "")); // Hapus karakter non-huruf
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                //alert.initModality(Modality.APPLICATION_MODAL);
+                alert.initModality(Modality.APPLICATION_MODAL);
+                alert.initOwner(AnchorInputPospres.getScene().getWindow());
                 alert.setTitle("Informasi");
                 alert.setHeaderText(null);
                 alert.setContentText("Nama harus diisi dengan huruf.");
@@ -72,7 +77,8 @@ public class InputPospresController {
         // Menambahkan validasi untuk memastikan semua input telah diisi
         if (idposisiprestasi.isEmpty() || nama.isEmpty() || deskripsi.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            //alert.initModality(Modality.APPLICATION_MODAL);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.initOwner(btnSimpan.getScene().getWindow());
             alert.setTitle("Error");
             alert.setHeaderText(null);
             alert.setContentText("Semua kolom harus diisi.");
@@ -92,6 +98,8 @@ public class InputPospresController {
         alert.setTitle("Konfirmasi");
         alert.setHeaderText(null);
         alert.setContentText(message);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initOwner(btnSimpan.getScene().getWindow());
 
         Optional<ButtonType> option = alert.showAndWait();
         if (option.isPresent() && option.get() == ButtonType.OK) {
@@ -109,16 +117,18 @@ public class InputPospresController {
                 System.out.print("Terjadi error saat insert data posisi prestasi: " + ex);
             }
             Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-            //alert.initModality(Modality.APPLICATION_MODAL);
             successAlert.setTitle("Sukses");
             successAlert.setHeaderText(null);
             successAlert.setContentText("Data posisi prestasi berhasil disimpan!");
+            successAlert.initModality(Modality.APPLICATION_MODAL);
+            successAlert.initOwner(btnSimpan.getScene().getWindow());
             successAlert.showAndWait();
             clear();
             autoid();
         } else {
             Alert cancelAlert = new Alert(Alert.AlertType.INFORMATION);
-            //alert.initModality(Modality.APPLICATION_MODAL);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.initOwner(btnSimpan.getScene().getWindow());
             cancelAlert.setTitle("Informasi");
             cancelAlert.setHeaderText(null);
             cancelAlert.setContentText("Data posisi prestasi tidak disimpan.");

@@ -453,12 +453,15 @@ public class UpdateDeleteTendik implements Initializable {
     @FXML
     protected void onBtnTambahClick() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(InputTendik.class.getResource("InputTendik.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("InputTendik.fxml"));
             Parent root = fxmlLoader.load();
             Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Tambah Tenaga Kependidikan");
+            stage.initOwner(btnTambah.getScene().getWindow()); // Set owner to current stage
+            stage.initStyle(StageStyle.UNDECORATED);
             stage.setScene(new Scene(root));
-            stage.show();
+            stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }
