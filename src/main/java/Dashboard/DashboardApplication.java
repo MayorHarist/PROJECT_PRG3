@@ -17,6 +17,7 @@ import java.io.IOException;
 
 public class DashboardApplication extends Application {
 
+
     public static void main(String[] args) {
         launch(args);
     }
