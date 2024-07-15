@@ -4,169 +4,22 @@ Button {
 }
 
 /* Gaya khusus untuk tombol dengan ID "btnSimpan" */
-#btnSimpan {
-    -fx-min-width: 70px; /* Lebar minimum untuk btnSimpan */
-    -fx-min-height: 30px; /* Tinggi minimum untuk btnSimpan */
-    -fx-max-width: 300px; /* Lebar maksimum untuk btnSimpan */
-    -fx-max-height: 30px; /* Tinggi maksimum untuk btnSimpan */
-    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnSimpan */
+#btnSimpan, #btnSimpanTendik, #btnBatalPengumuman, #btnSimpanPengumuman, #btnBatal, #btnUbahPengumuman, #btnBatalTendik, #btnCari, #btnKembali, #btnHapus, #btnPerbaharui, #btnDelete, #btnRefresh, #btnTambah, #btnUbahTendik, #btnUbah, #btnHapusTendik {
+    -fx-min-width: 70px; /* Lebar minimum untuk tombol */
+    -fx-min-height: 30px; /* Tinggi minimum untuk tombol */
+    -fx-max-width: 300px; /* Lebar maksimum untuk tombol */
+    -fx-max-height: 30px; /* Tinggi maksimum untuk tombol */
+    -fx-background-color: #0096C9; /* Warna latar belakang untuk tombol */
 }
 
-/* Gaya khusus untuk tombol dengan ID "btnSimpan" */
-#btnSimpanTendik {
-    -fx-min-width: 70px; /* Lebar minimum untuk btnSimpan */
-    -fx-min-height: 30px; /* Tinggi minimum untuk btnSimpan */
-    -fx-max-width: 300px; /* Lebar maksimum untuk btnSimpan */
-    -fx-max-height: 30px; /* Tinggi maksimum untuk btnSimpan */
-    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnSimpan */
-}
-
-/* Gaya khusus untuk tombol dengan ID "btnSimpan" */
-#btnBatalPengumuman {
-    -fx-min-width: 70px; /* Lebar minimum untuk btnSimpan */
-    -fx-min-height: 30px; /* Tinggi minimum untuk btnSimpan */
-    -fx-max-width: 300px; /* Lebar maksimum untuk btnSimpan */
-    -fx-max-height: 30px; /* Tinggi maksimum untuk btnSimpan */
-    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnSimpan */
-}
-
-
-    /* Gaya khusus untuk tombol dengan ID "btnSimpan" */
-#btnSimpanPengumuman {
-    -fx-min-width: 70px; /* Lebar minimum untuk btnSimpan */
-    -fx-min-height: 30px; /* Tinggi minimum untuk btnSimpan */
-    -fx-max-width: 300px; /* Lebar maksimum untuk btnSimpan */
-    -fx-max-height: 30px; /* Tinggi maksimum untuk btnSimpan */
-    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnSimpan */
-}
-
-/* Gaya khusus untuk tombol dengan ID "btnBatal" */
-#btnBatal {
-    -fx-min-width: 70px; /* Lebar minimum untuk btnSimpan */
-    -fx-min-height: 30px; /* Tinggi minimum untuk btnSimpan */
-    -fx-max-width: 300px; /* Lebar maksimum untuk btnSimpan */
-    -fx-max-height: 30px; /* Tinggi maksimum untuk btnSimpan */
-    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnSimpan */
-}
-
-/* Gaya khusus untuk tombol dengan ID "btnSimpan" */
-#btnUbahPengumuman {
-    -fx-min-width: 70px; /* Lebar minimum untuk btnSimpan */
-    -fx-min-height: 30px; /* Tinggi minimum untuk btnSimpan */
-    -fx-max-width: 300px; /* Lebar maksimum untuk btnSimpan */
-    -fx-max-height: 30px; /* Tinggi maksimum untuk btnSimpan */
-    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnSimpan */
-}
-
-
-/* Gaya khusus untuk tombol dengan ID "btnBatal" */
-#btnBatalTendik {
-    -fx-min-width: 70px; /* Lebar minimum untuk btnBatal */
-    -fx-min-height: 30px; /* Tinggi minimum untuk btnBatal */
-    -fx-max-width: 300px; /* Lebar maksimum untuk btnBatal */
-    -fx-max-height: 30px; /* Tinggi maksimum untuk btnBatal */
-    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnBatal */
-}
-
-/* Gaya khusus untuk tombol dengan ID "btnBatal" */
-#btnCari {
-    -fx-min-width: 70px; /* Lebar minimum untuk btnBatal */
-    -fx-min-height: 30px; /* Tinggi minimum untuk btnBatal */
-    -fx-max-width: 300px; /* Lebar maksimum untuk btnBatal */
-    -fx-max-height: 30px; /* Tinggi maksimum untuk btnBatal */
-    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnBatal */
-}
-
-/* Gaya khusus untuk tombol dengan ID "btnKembali" */
-#btnKembali {
-    -fx-min-width: 70px; /* Lebar minimum untuk btnKembali */
-    -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
-    -fx-max-width: 300px; /* Lebar maksimum untuk btnKembali */
-    -fx-max-height: 30px; /* Tinggi maksimum untuk btnKembali */
-    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
-}
-
-/* Gaya khusus untuk tombol dengan ID "btnKembali" */
+/* Gaya khusus untuk tombol dengan ID "btnKembaliUD" */
 #btnKembaliUD {
     -fx-min-width: 300px; /* Lebar minimum untuk btnKembali */
     -fx-min-height: 60px; /* Tinggi minimum untuk btnKembali */
     -fx-max-width: 300px; /* Lebar maksimum untuk btnKembali */
     -fx-max-height: 60px; /* Tinggi maksimum untuk btnKembali */
-    -fx-text-fill: black; /* Warna teks umum untuk semua tombol */
-    -fx-background-color: #FFFFFF; /* Warna latar belakang untuk btnKembaliUD */
-}
-
-/* Gaya khusus untuk tombol dengan ID "btnHapus" */
-#btnHapus {
-    -fx-min-width: 70px; /* Lebar minimum untuk btnKembali */
-    -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
-    -fx-max-width: 70px; /* Lebar maksimum untuk btnKembali */
-    -fx-max-height: 30px; /* Tinggi maksimum untuk btnKembali */
-    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
-}
-
-
-/* Gaya khusus untuk tombol dengan ID "btnPerbaharui" */
-#btnPerbaharui {
-    -fx-min-width: 100px; /* Lebar minimum untuk btnKembali */
-    -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
-    -fx-max-width: 100px; /* Lebar maksimum untuk btnKembali */
-    -fx-max-height: 30px; /* Tinggi maksimum untuk btnKembali */
-    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
-}
-
-/* Gaya khusus untuk tombol dengan ID "btnPerbaharui" */
-#btnDelete {
-    -fx-min-width: 100px; /* Lebar minimum untuk btnKembali */
-    -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
-    -fx-max-width: 100px; /* Lebar maksimum untuk btnKembali */
-    -fx-max-height: 30px; /* Tinggi maksimum untuk btnKembali */
-    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
-}
-
-/* Gaya khusus untuk tombol dengan ID "btnRefresh" */
-#btnRefresh {
-    -fx-min-width: 70px; /* Lebar minimum untuk btnKembali */
-    -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
-    -fx-max-width: 300px; /* Lebar maksimum untuk btnKembali */
-    -fx-max-height: 30px; /* Tinggi maksimum untuk btnKembali */
-    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
-}
-
-/* Gaya khusus untuk tombol dengan ID "btnTambah" */
-#btnTambah {
-    -fx-min-width: 70px; /* Lebar minimum untuk btnKembali */
-    -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
-    -fx-max-width: 300px; /* Lebar maksimum untuk btnKembali */
-    -fx-max-height: 30px; /* Tinggi maksimum untuk btnKembali */
-    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
-}
-
-/* Gaya khusus untuk tombol dengan ID "btnTambah" */
-#btnUbahTendik {
-    -fx-min-width: 70px; /* Lebar minimum untuk btnKembali */
-    -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
-    -fx-max-width: 300px; /* Lebar maksimum untuk btnKembali */
-    -fx-max-height: 30px; /* Tinggi maksimum untuk btnKembali */
-    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
-}
-
-/* Gaya khusus untuk tombol dengan ID "btnTambah" */
-#btnUbah {
-    -fx-min-width: 70px; /* Lebar minimum untuk btnKembali */
-    -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
-    -fx-max-width: 300px; /* Lebar maksimum untuk btnKembali */
-    -fx-max-height: 30px; /* Tinggi maksimum untuk btnKembali */
-    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
-}
-
-/* Gaya khusus untuk tombol dengan ID "btnTambah" */
-#btnHapusTendik {
-    -fx-min-width: 70px; /* Lebar minimum untuk btnKembali */
-    -fx-min-height: 30px; /* Tinggi minimum untuk btnKembali */
-    -fx-max-width: 300px; /* Lebar maksimum untuk btnKembali */
-    -fx-max-height: 30px; /* Tinggi maksimum untuk btnKembali */
-    -fx-background-color: #0096C9; /* Warna latar belakang untuk btnKembali */
+    -fx-text-fill: black; /* Warna teks */
+    -fx-background-color: #FFFFFF; /* Warna latar belakang */
 }
 
 /* Gaya umum untuk semua TextField */
@@ -204,7 +57,7 @@ TextArea {
     -fx-font-family: 'Poppins'; /* Menggunakan font Poppins */
 }
 
-/* Gaya umum untuk semua TextArea */
+/* Gaya khusus untuk TextArea dengan ID "txtDeskripsi" */
 #txtDeskripsi {
     -fx-background-radius: 30; /* Radius besar untuk membuat sudut melengkung */
     -fx-border-radius: 30; /* Radius besar untuk membuat sudut melengkung */
@@ -217,7 +70,7 @@ TextArea {
 }
 
 .button {
-    -fx-background-color: transparant; /* Warna normal */
+    -fx-background-color: transparent; /* Warna normal */
     -fx-text-fill: white;
 }
 
@@ -228,4 +81,3 @@ TextArea {
 .button:pressed {
     -fx-background-color: #D994ED; /* Warna saat diklik */
 }
-

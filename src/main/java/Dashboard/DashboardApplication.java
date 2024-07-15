@@ -24,7 +24,7 @@ public class DashboardApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(UpdateDelPengumuman.class.getResource("UpdateDelPengumuman.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(DashboardApplication.class.getResource("DashboardApplication.fxml"));
         //Scene scene = new Scene(fxmlLoader.load(), 1000, 1000);
         //Scene scene = new Scene(fxmlLoader.load(), 1280, 650);
         Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);

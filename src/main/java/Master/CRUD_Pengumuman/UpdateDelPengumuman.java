@@ -245,7 +245,7 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
 
             alert.showAndWait().ifPresent(response -> {
                 if (response == buttonTypeYes) {
-                    try {
+                   try {
                         String query = "DELETE FROM Pengumuman WHERE Id_Pengumuman = ?";
                         PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
                         preparedStatement.setString(1, selectedPengumuman.getIdPM());
