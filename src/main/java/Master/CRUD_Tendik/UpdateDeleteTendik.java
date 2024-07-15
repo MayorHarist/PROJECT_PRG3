@@ -84,7 +84,7 @@ public class UpdateDeleteTendik implements Initializable {
     private AnchorPane AnchorTendik;
 
     private ObservableList<Tendik> oblist = FXCollections.observableArrayList();
-    private DBConnect connection = new DBConnect();
+    DBConnect connection = new DBConnect();
     private ToggleGroup genderGroup = new ToggleGroup(); // Initialize ToggleGroup
 
     public class Tendik {
@@ -153,6 +153,7 @@ public class UpdateDeleteTendik implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
+            DBConnect connection = new DBConnect();
             connection.stat = connection.conn.createStatement();
             String query = "SELECT * FROM TenagaKependidikan";
             connection.result = connection.stat.executeQuery(query);
@@ -262,11 +263,7 @@ public class UpdateDeleteTendik implements Initializable {
     protected void onBtnUbahClick() {
         // Tambahkan validasi untuk memeriksa apakah ada data yang dipilih
         if (tabelViewTendik.getSelectionModel().getSelectedItem() == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Peringatan");
-            alert.setHeaderText(null);
-            alert.setContentText("Silakan pilih data tendik yang ingin diubah.");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.WARNING, "Peringatan", "Silakan pilih data tendik yang ingin diubah.");
             return; // Keluar dari metode jika tidak ada data yang dipilih
         }
 
@@ -278,133 +275,81 @@ public class UpdateDeleteTendik implements Initializable {
                 PreparedStatement checkStmt = connection.conn.prepareStatement(checkQuery);
                 checkStmt.setString(1, usernameTendik.getText());
                 checkStmt.setString(2, txtEmailTendik.getText());
-                checkStmt.setString(3, txtIDTKN.getText());
-                ResultSet rs = checkStmt.executeQuery();
-                rs.next();
-                if (rs.getInt(1) > 0) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Warning");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Username atau email sudah digunakan!");
-                    alert.showAndWait();
+                checkStmt.setString(3, selectedTendik.getId_TKN());
+                ResultSet checkResult = checkStmt.executeQuery();
+                checkResult.next();
+                int count = checkResult.getInt(1);
+
+                if (count > 0) {
+                    showAlert(Alert.AlertType.WARNING, "Peringatan", "Username atau email sudah digunakan.");
                     return;
                 }
 
-                // Validate regex for email and telepon
-                if (!validateEmail(txtEmailTendik.getText())) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Warning");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Format email tidak valid!");
-                    alert.showAndWait();
-                    return;
-                }
-                if (!validateTelepon(txtTelpTendik.getText())) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Warning");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Format nomor telepon tidak valid!");
-                    alert.showAndWait();
-                    return;
-                }
-                LocalDate tanggal = tglTendik.getValue();
-                String jenisKelamin = rbLaki.isSelected() ? "Laki-Laki" : "Perempuan";
+                checkStmt.close();
+                checkResult.close();
 
-                String query = "EXEC sp_UpdateTendik ?, ?, ?, ?, ?, ?, ?, ?, ?";
-                connection.pstat = connection.conn.prepareStatement(query);
-                connection.pstat.setString(1, txtIDTKN.getText());
-                connection.pstat.setString(2, txtNamaTendik.getText());
-                connection.pstat.setDate(3, java.sql.Date.valueOf(tanggal));
-                connection.pstat.setString(4, jenisKelamin);
-                connection.pstat.setString(5, txtAlamatTendik.getText());
-                connection.pstat.setString(6, txtEmailTendik.getText());
-                connection.pstat.setString(7, txtTelpTendik.getText());
-                connection.pstat.setString(8, usernameTendik.getText());
-                connection.pstat.setString(9, passwordTendik.getText());
+                // Update data tendik
+                String updateQuery = "UPDATE TenagaKependidikan SET Nama = ?, Tanggal_Lahir = ?, Jenis_Kelamin = ?, Alamat = ?, Email = ?, Telepon = ?, Username = ?, Password = ? WHERE Id_TKN = ?";
+                PreparedStatement preparedStatement = connection.conn.prepareStatement(updateQuery);
+                preparedStatement.setString(1, txtNamaTendik.getText());
+                preparedStatement.setDate(2, Date.valueOf(tglTendik.getValue()));
+                preparedStatement.setString(3, rbLaki.isSelected() ? "Laki-Laki" : "Perempuan");
+                preparedStatement.setString(4, txtAlamatTendik.getText());
+                preparedStatement.setString(5, txtEmailTendik.getText());
+                preparedStatement.setString(6, txtTelpTendik.getText());
+                preparedStatement.setString(7, usernameTendik.getText());
+                preparedStatement.setString(8, passwordTendik.getText());
+                preparedStatement.setString(9, selectedTendik.getId_TKN());
 
-                int rowsAffected = connection.pstat.executeUpdate();
+                int rowsAffected = preparedStatement.executeUpdate();
+                preparedStatement.close();
+
                 if (rowsAffected > 0) {
-                    int index = oblist.indexOf(selectedTendik);
-                    oblist.set(index, new Tendik(
-                            txtIDTKN.getText(),
-                            txtNamaTendik.getText(),
-                            tanggal,
-                            jenisKelamin,
-                            txtAlamatTendik.getText(),
-                            txtEmailTendik.getText(),
-                            txtTelpTendik.getText(),
-                            usernameTendik.getText(),
-                            passwordTendik.getText()));
-
-                    txtIDTKN.setDisable(true);
-                    tabelViewTendik.refresh();
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Success");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Data Tendik berhasil diperbarui!");
-                    alert.showAndWait();
-                    clear();
+                    showAlert(Alert.AlertType.INFORMATION, "Sukses", "Data tendik berhasil diubah.");
+                    loadData("");
                 } else {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Error");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Gagal melakukan update data Tendik.");
-                    alert.showAndWait();
+                    showAlert(Alert.AlertType.ERROR, "Error", "Gagal mengubah data tendik.");
                 }
-                connection.pstat.close();
             }
         } catch (SQLException ex) {
-            System.out.println("Terjadi error saat mengupdate data Tendik" + ex);
+            showAlert(Alert.AlertType.ERROR, "Error", "Terjadi error saat mengubah data tendik: " + ex);
         }
     }
 
     @FXML
-    protected void OnBtnHapusClick() {
+    protected void onBtnHapusClick() {
         Tendik selectedTendik = tabelViewTendik.getSelectionModel().getSelectedItem();
-        if (selectedTendik != null) {
-            // Tampilkan pesan konfirmasi
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Konfirmasi Penghapusan Data");
-            alert.setHeaderText(null);
-            alert.setContentText("Apakah Anda yakin ingin menghapus data ini?");
+        if (selectedTendik == null) {
+            showAlert(Alert.AlertType.WARNING, "Peringatan", "Silakan pilih data tendik yang ingin dihapus.");
+            return;
+        }
 
-            // Tambahkan opsi Ya dan Tidak
-            ButtonType buttonTypeYes = new ButtonType("Ya");
-            ButtonType buttonTypeNo = new ButtonType("Tidak");
-            alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Konfirmasi Penghapusan");
+        confirmationAlert.setHeaderText(null);
+        confirmationAlert.setContentText("Apakah Anda yakin ingin menghapus data tendik ini?");
+        confirmationAlert.initOwner(tabelViewTendik.getScene().getWindow());
+        confirmationAlert.initModality(Modality.WINDOW_MODAL);
 
-            // Tampilkan dialog dan tunggu respon pengguna
-            alert.showAndWait().ifPresent(response -> {
-                if (response == buttonTypeYes) {
-                    // Jika pengguna memilih Ya, lakukan penghapusan data
-                    try {
-                        String query = "DELETE FROM TenagaKependidikan WHERE Id_TKN = ?";
-                        PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
-                        preparedStatement.setString(1, selectedTendik.getId_TKN());
-                        preparedStatement.executeUpdate();
+        Optional<ButtonType> result = confirmationAlert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                String deleteQuery = "DELETE FROM TenagaKependidikan WHERE Id_TKN = ?";
+                PreparedStatement preparedStatement = connection.conn.prepareStatement(deleteQuery);
+                preparedStatement.setString(1, selectedTendik.getId_TKN());
 
-                        loadData(""); // Panggil loadData() untuk menyegarkan tampilan TableView
-                        clear();
+                int rowsAffected = preparedStatement.executeUpdate();
+                preparedStatement.close();
 
-                        Alert alertSuccess = new Alert(Alert.AlertType.INFORMATION);
-                        alertSuccess.setTitle("Sukses");
-                        alertSuccess.setHeaderText(null);
-                        alertSuccess.setContentText("Data Tenaga Kependidikan berhasil dihapus!");
-                        alertSuccess.showAndWait();
-                    } catch (SQLException ex) {
-                        System.out.println("Terjadi error saat menghapus data Tendik: " + ex.getMessage());
-                    }
+                if (rowsAffected > 0) {
+                    showAlert(Alert.AlertType.INFORMATION, "Sukses", "Data tendik berhasil dihapus.");
+                    loadData("");
                 } else {
-                    // Jika pengguna memilih Tidak, data tidak dihapus
-                    alert.close();
+                    showAlert(Alert.AlertType.ERROR, "Error", "Gagal menghapus data tendik.");
                 }
-            });
-        } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Peringatan");
-            alert.setHeaderText(null);
-            alert.setContentText("Silakan pilih data Tenaga Kependidikan yang ingin dihapus.");
-            alert.showAndWait();
+            } catch (SQLException ex) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Terjadi error saat menghapus data tendik: " + ex);
+            }
         }
     }
 
@@ -496,6 +441,15 @@ public class UpdateDeleteTendik implements Initializable {
         return telepon != null && pat.matcher(telepon).matches();
     }
 
+    private void showAlert(Alert.AlertType alertType, String title, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.initOwner(tabelViewTendik.getScene().getWindow());
+        alert.initModality(Modality.WINDOW_MODAL);
+        alert.showAndWait();
+    }
     @FXML
     protected void onBtnTambahClick() {
         try {
@@ -513,8 +467,9 @@ public class UpdateDeleteTendik implements Initializable {
             Parent root = fxmlLoader.load();
             Stage stage = new Stage();
             stage.setTitle("Tambah Pengajuan KRPP");
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(tabelViewTendik.getScene().getWindow());
-            //stage.initStyle(StageStyle.UNDECORATED);
+            stage.initStyle(StageStyle.UNDECORATED);
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {

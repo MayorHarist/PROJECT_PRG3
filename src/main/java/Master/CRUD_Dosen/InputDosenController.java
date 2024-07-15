@@ -5,6 +5,8 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Alert.AlertType;
@@ -14,6 +16,9 @@ import java.time.format.DateTimeFormatter;
 import Database.DBConnect;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
+import java.io.IOException;
+import java.util.Optional;
 
 public class InputDosenController {
     @FXML
@@ -78,33 +83,35 @@ public class InputDosenController {
         Telepon = txtTelepon.getText();
 
         // Tampilkan konfirmasi data sebelum input
-        showDataConfirmation();
+        if (showDataConfirmation()) {// Simpan data jika konfirmasi berhasil
+            try {
+                String query = "EXEC sp_InsertDosen ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
+                connection.pstat = connection.conn.prepareStatement(query);
+                connection.pstat.setString(1, Pegawai);
+                connection.pstat.setString(2, NIDN);
+                connection.pstat.setString(3, Nama);
+                connection.pstat.setString(4, Bidang);
+                connection.pstat.setString(5, Pendidikan);
+                connection.pstat.setDate(6, Date.valueOf(TanggalLahir));
+                connection.pstat.setString(7, JenisKelamin);
+                connection.pstat.setString(8, Alamat);
+                connection.pstat.setString(9, Email);
+                connection.pstat.setString(10, Telepon);
 
-        // Simpan data jika konfirmasi berhasil
-        try {
-            String query = "EXEC sp_InsertDosen ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
-            connection.pstat = connection.conn.prepareStatement(query);
-            connection.pstat.setString(1, Pegawai);
-            connection.pstat.setString(2, NIDN);
-            connection.pstat.setString(3, Nama);
-            connection.pstat.setString(4, Bidang);
-            connection.pstat.setString(5, Pendidikan);
-            connection.pstat.setDate(6, java.sql.Date.valueOf(TanggalLahir));
-            connection.pstat.setString(7, JenisKelamin);
-            connection.pstat.setString(8, Alamat);
-            connection.pstat.setString(9, Email);
-            connection.pstat.setString(10, Telepon);
-
-            connection.pstat.executeUpdate();
-            showAlert(AlertType.INFORMATION, "Sukses", "Input data Dosen berhasil!");
-            clear();
-            autoid(); // Set kembali No Pegawai setelah menyimpan data
-        } catch (SQLException ex) {
-            showAlert(AlertType.ERROR, "Database Error", "Terjadi error saat insert data Dosen: " + ex);
+                connection.pstat.executeUpdate();
+                showAlert(AlertType.INFORMATION, "Sukses", "Input data Dosen berhasil!");
+                clear();
+                autoid(); // Set kembali No Pegawai setelah menyimpan data
+            } catch (SQLException ex) {
+                showAlert(AlertType.ERROR, "Database Error", "Terjadi error saat insert data Dosen: " + ex);
+            }
+        } else {
+            return; // Jika user memilih untuk batal, hentikan eksekusi
         }
+
     }
 
-    private void showDataConfirmation() {
+    private boolean showDataConfirmation() {
         StringBuilder sb = new StringBuilder();
         sb.append("No Pegawai: ").append(Pegawai).append("\n");
         sb.append("NIDN: ").append(NIDN).append("\n");
@@ -130,23 +137,14 @@ public class InputDosenController {
         // Set modality to APPLICATION_MODAL
         confirmation.initModality(Modality.APPLICATION_MODAL);
 
-        // Set owner to null to ensure it appears in front of main stage
-        confirmation.initOwner(null);
+        // Set owner to the main stage to ensure it appears in front
+        Stage mainStage = (Stage) AnchorInputDosen.getScene().getWindow();
+        confirmation.initOwner(mainStage);
 
         // Show and wait for user response
-        confirmation.showAndWait().ifPresent(response -> {
-            if (response == btnSave) {
-                // User chose to save
-                System.out.println("Data disimpan.");
-            } else {
-                // User chose to cancel
-                System.out.println("Penyimpanan data dibatalkan.");
-            }
-        });
+        Optional<ButtonType> result = confirmation.showAndWait();
+        return result.isPresent() && result.get() == btnSave;
     }
-
-
-
 
     @FXML
     protected void onBtnBatalClick() {
@@ -181,12 +179,19 @@ public class InputDosenController {
         }
     }
 
-
     private void showAlert(AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
+
+        // Set modality to APPLICATION_MODAL
+        alert.initModality(Modality.APPLICATION_MODAL);
+
+        // Set owner to the main stage to ensure it appears in front
+        Stage mainStage = (Stage) AnchorInputDosen.getScene().getWindow();
+        alert.initOwner(mainStage);
+
         alert.showAndWait();
     }
 

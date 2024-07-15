@@ -1,8 +1,6 @@
 package Master.CRUD_JenisPrestasi;
 
 import Database.DBConnect;
-import Master.CRUD_Dosen.InputDosenController;
-import Master.CRUD_Tendik.InputTendik;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +14,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.net.URL;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -79,11 +76,7 @@ public class UDJepresController implements Initializable {
         txtPoint.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) { // Memeriksa apakah nilai baru hanya terdiri dari digit
                 txtPoint.setText(newValue.replaceAll("[^\\d]", "")); // Hapus karakter non-digit
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Informasi");
-                alert.setHeaderText(null);
-                alert.setContentText("Point harus diisi dengan angka.");
-                alert.showAndWait();
+                showAlert(Alert.AlertType.INFORMATION, "Informasi", null, "Point harus diisi dengan angka.");
             }
         });
 
@@ -91,11 +84,7 @@ public class UDJepresController implements Initializable {
         txtNama.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("[a-zA-Z\\s]*")) { // Memeriksa apakah nilai baru hanya terdiri dari huruf dan spasi
                 txtNama.setText(newValue.replaceAll("[^a-zA-Z\\s]", "")); // Hapus karakter non-huruf
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Informasi");
-                alert.setHeaderText(null);
-                alert.setContentText("Nama harus diisi dengan huruf.");
-                alert.showAndWait();
+                showAlert(Alert.AlertType.INFORMATION, "Informasi", null, "Nama harus diisi dengan huruf.");
             }
         });
 
@@ -170,22 +159,31 @@ public class UDJepresController implements Initializable {
 
             if (tablejenisprestasi.getItems().isEmpty()) {
                 // Tampilkan pesan bahwa data tidak ditemukan
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Informasi");
-                alert.setHeaderText(null);
-                alert.setContentText("Data jenis prestasi tidak ditemukan.");
-                alert.showAndWait();
+                showAlert(Alert.AlertType.INFORMATION, "Informasi", null, "Data jenis prestasi tidak ditemukan.");
             }
         } catch (Exception ex) {
             System.out.print("Terjadi error saat mencari data jenis prestasi: " + ex);
         }
     }
 
+    private void showAlert(Alert.AlertType alertType, String title, String header, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(tablejenisprestasi.getScene().getWindow());
+        stage.toFront();
+        alert.showAndWait();
+    }
 
+    @FXML
     public void onbtnBatalClick(ActionEvent event) {
         clear();
     }
 
+    @FXML
     public void onbtnPerbaharuiClick(ActionEvent event) {
         if (tablejenisprestasi.getSelectionModel().getSelectedItem() != null) {
             try {
@@ -223,11 +221,8 @@ public class UDJepresController implements Initializable {
                             loadData(""); // Panggil loadData() untuk menyegarkan tampilan TableView
                             clear();
 
-                            Alert alertSuccess = new Alert(Alert.AlertType.INFORMATION);
-                            alertSuccess.setTitle("Sukses");
-                            alertSuccess.setHeaderText(null);
-                            alertSuccess.setContentText("Data Jenis Prestasi berhasil diperbarui!");
-                            alertSuccess.showAndWait();
+                            showAlert(Alert.AlertType.INFORMATION, "Sukses", null, "Data Jenis Prestasi berhasil diperbarui!");
+
                         } catch (Exception ex) {
                             System.out.println("Terjadi error saat memperbarui data jenis prestasi: " + ex);
                         }
@@ -241,28 +236,14 @@ public class UDJepresController implements Initializable {
                 System.out.println("Terjadi error saat memperbarui data jenis prestasi: " + ex);
             }
         } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Peringatan");
-            alert.setHeaderText(null);
-            alert.setContentText("Silakan pilih data jenis prestasi yang ingin diperbarui.");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.WARNING, "Peringatan", null, "Silakan pilih data jenis prestasi yang ingin diperbarui.");
         }
     }
 
+    @FXML
     public void onbtnTambahClick(ActionEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(InputJepresController.class.getResource("InputJepres.fxml"));
-            Parent root = fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Tambah Jenis Prestasi");
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        /*try {
-            FXMLLoader fxmlLoader = new FXMLLoader(InputJepresController.class.getResource("InputJepres.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("InputJepres.fxml"));
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
 
@@ -275,10 +256,10 @@ public class UDJepresController implements Initializable {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
-
+    @FXML
     public void onbtnHapusClick(ActionEvent event) {
         if (tablejenisprestasi.getSelectionModel().getSelectedItem() != null) {
             try {
@@ -308,11 +289,8 @@ public class UDJepresController implements Initializable {
                             loadData(""); // Panggil loadData() untuk menyegarkan tampilan TableView
                             clear();
 
-                            Alert alertSuccess = new Alert(Alert.AlertType.INFORMATION);
-                            alertSuccess.setTitle("Sukses");
-                            alertSuccess.setHeaderText(null);
-                            alertSuccess.setContentText("Data Jenis Prestasi berhasil dihapus!");
-                            alertSuccess.showAndWait();
+                            showAlert(Alert.AlertType.INFORMATION, "Sukses", null, "Data Jenis Prestasi berhasil dihapus!");
+
                         } catch (Exception ex) {
                             System.out.println("Terjadi error saat menghapus data jenis prestasi: " + ex);
                         }
@@ -326,15 +304,11 @@ public class UDJepresController implements Initializable {
                 System.out.println("Terjadi error saat menghapus data jenis prestasi: " + ex);
             }
         } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Peringatan");
-            alert.setHeaderText(null);
-            alert.setContentText("Silakan pilih data jenis prestasi yang ingin dihapus.");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.WARNING, "Peringatan", null, "Silakan pilih data jenis prestasi yang ingin dihapus.");
         }
     }
 
-
+    @FXML
     public void onbtnRefreshClick(ActionEvent event) {
         loadData("");
     }
