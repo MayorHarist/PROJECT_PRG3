@@ -81,14 +81,6 @@ public class InputPengumuman {
         return dataList;
     }
 
-    private boolean validateNama() {
-        boolean isValid = txtnmPengumuman.getText().matches("[a-zA-Z\\s]+");
-        if (!isValid) {
-            showAlert("Error", "Nama hanya boleh mengandung huruf dan spasi.");
-        }
-        return isValid;
-    }
-
     private boolean validateTanggal() {
         boolean isValid = tglPengumuman.getValue() != null;
         if (!isValid) {
@@ -125,7 +117,7 @@ public class InputPengumuman {
     @FXML
     protected void onBtnSimpanClick() {
         // Validasi input
-        if (!validateNama() || !validateTanggal() || !validateDeskripsi() || !validateTKN()) {
+        if (!validateTanggal() || !validateDeskripsi() || !validateTKN()) {
             return;
         }
         Id_Pengumuman = txtIDPengumuman.getText();
