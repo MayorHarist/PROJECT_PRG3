@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 import Database.DBConnect;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import static java.lang.Float.parseFloat;
@@ -549,16 +550,16 @@ public class TransaksiKRS {
         ip = IP.getText();
 
         // Validate and parse float values
-        /*try {
-            projek = parseFloat(txtProjek.getText());
-            quiz = parseFloat(txtQuiz.getText());
-            tugas = parseFloat(txtTugas.getText());
-            uas = parseFloat(txtUAS.getText());
-            uts = parseFloat(txtUTS.getText());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Nilai harus berupa angka!");
-            return;
-        }*/
+    /*try {
+        projek = parseFloat(txtProjek.getText());
+        quiz = parseFloat(txtQuiz.getText());
+        tugas = parseFloat(txtTugas.getText());
+        uas = parseFloat(txtUAS.getText());
+        uts = parseFloat(txtUTS.getText());
+    } catch (NumberFormatException e) {
+        showErrorAlert("Error", "Nilai harus berupa angka!");
+        return;
+    }*/
 
         if (selectedMatkul != null) {
             matkul = selectedMatkul.getId();
@@ -595,7 +596,7 @@ public class TransaksiKRS {
             connection.pstat.setString(7, selectedTendik.getId());
 
             connection.pstat.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Input data KRS berhasil!");
+            showAlert(Alert.AlertType.INFORMATION, "Informasi", "Input data KRS berhasil!");
             clear();            // Membersihkan semua txt setelah menyimpan data
             autoid();           // Membuat id baru setelah menyimpan data
             loadKRSData();      // Merefresh tabel setelah menyimpan data
@@ -621,7 +622,7 @@ public class TransaksiKRS {
 
                 connection.pstat.executeUpdate();
             }
-            JOptionPane.showMessageDialog(null, "Semua data Detail KRS berhasil disimpan ke database!");
+            showAlert(Alert.AlertType.INFORMATION, "Informasi", "Semua data Detail KRS berhasil disimpan ke database!");
 
             // Clear the temporary storage list
             detailKRSList.clear();
@@ -630,6 +631,16 @@ public class TransaksiKRS {
             System.out.println("Terjadi error saat menyimpan data Detail KRS ke database: " + ex);
         }
     }
+
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.showAndWait();
+    }
+
 
 
     // Metode untuk menghitung IP berdasarkan detail nilai
@@ -749,7 +760,7 @@ public class TransaksiKRS {
         if (!validateInput())
             return;
 
-        IdKRS = txtIdKRS.getText();
+        String IdKRS = txtIdKRS.getText();
         MataKuliah selectedMatkul = cbMatkul.getValue();
         float projek, quiz, tugas, uas, uts, akhir;
         String indeks = txtIndeksNilai.getText();
@@ -785,7 +796,13 @@ public class TransaksiKRS {
                     IdKRS
             ));
 
-            JOptionPane.showMessageDialog(null, "Data berhasil ditambahkan ke tabel tampungan!");
+            // Show success alert
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Informasi");
+            alert.setHeaderText(null);
+            alert.setContentText("Data berhasil ditambahkan ke tabel tampungan!");
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.showAndWait();
 
             clearDetailFields();
             loadKRSData();
@@ -793,6 +810,7 @@ public class TransaksiKRS {
             System.out.println("Terjadi error saat menambahkan data ke tabel tampungan: " + ex);
         }
     }
+
 
 
     private void updateAkhirAndIndeks(float tugas, float quiz, float uts, float uas, float projek) {

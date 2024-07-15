@@ -173,7 +173,19 @@ public class UDJepresController implements Initializable {
         alert.setContentText(content);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(tablejenisprestasi.getScene().getWindow());
+        stage.initOwner(btnPerbaharui.getScene().getWindow());
+        stage.toFront();
+        alert.showAndWait();
+    }
+
+    private void hapusAlert(Alert.AlertType alertType, String title, String header, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(btnHapus.getScene().getWindow());
         stage.toFront();
         alert.showAndWait();
     }
@@ -205,6 +217,11 @@ public class UDJepresController implements Initializable {
                 ButtonType buttonTypeNo = new ButtonType("Tidak");
                 alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
 
+                // Tampilkan dialog dan tunggu respon pengguna
+                Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.initOwner(btnPerbaharui.getScene().getWindow());
+                stage.toFront();
                 // Tampilkan dialog dan tunggu respon pengguna
                 alert.showAndWait().ifPresent(response -> {
                     if (response == buttonTypeYes) {
@@ -262,49 +279,49 @@ public class UDJepresController implements Initializable {
     @FXML
     public void onbtnHapusClick(ActionEvent event) {
         if (tablejenisprestasi.getSelectionModel().getSelectedItem() != null) {
-            try {
-                jepres selectedjepres = tablejenisprestasi.getSelectionModel().getSelectedItem();
-                String idjenisprestasi = selectedjepres.getIdjenisprestasi();
+            jepres selectedjepres = tablejenisprestasi.getSelectionModel().getSelectedItem();
+            String idjenisprestasi = selectedjepres.getIdjenisprestasi();
 
-                // Tampilkan pesan konfirmasi
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Konfirmasi Penghapusan Data");
-                alert.setHeaderText(null);
-                alert.setContentText("Apakah Anda yakin ingin menghapus data ini?");
+            // Tampilkan pesan konfirmasi
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Konfirmasi Penghapusan Data");
+            alert.setHeaderText(null);
+            alert.setContentText("Apakah Anda yakin ingin menghapus data ini?");
 
-                // Tambahkan opsi Ya dan Tidak
-                ButtonType buttonTypeYes = new ButtonType("Ya");
-                ButtonType buttonTypeNo = new ButtonType("Tidak");
-                alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+            // Tambahkan opsi Ya dan Tidak
+            ButtonType buttonTypeYes = new ButtonType("Ya");
+            ButtonType buttonTypeNo = new ButtonType("Tidak");
+            alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
 
-                // Tampilkan dialog dan tunggu respon pengguna
-                alert.showAndWait().ifPresent(response -> {
-                    if (response == buttonTypeYes) {
-                        // Jika pengguna memilih Ya, lakukan penghapusan data
-                        try {
-                            String query = "DELETE FROM JenisPrestasi WHERE Id_JenisPrestasi = ?";
-                            PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
-                            preparedStatement.setString(1, idjenisprestasi);
-                            preparedStatement.executeUpdate();
-                            loadData(""); // Panggil loadData() untuk menyegarkan tampilan TableView
-                            clear();
+            // Tampilkan dialog dan tunggu respon pengguna
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(btnHapus.getScene().getWindow());
+            stage.toFront();
+            alert.showAndWait().ifPresent(response -> {
+                if (response == buttonTypeYes) {
+                    // Jika pengguna memilih Ya, lakukan penghapusan data
+                    try {
+                        String query = "DELETE FROM JenisPrestasi WHERE Id_JenisPrestasi = ?";
+                        PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
+                        preparedStatement.setString(1, idjenisprestasi);
+                        preparedStatement.executeUpdate();
+                        loadData(""); // Panggil loadData() untuk menyegarkan tampilan TableView
+                        clear();
 
-                            showAlert(Alert.AlertType.INFORMATION, "Sukses", null, "Data Jenis Prestasi berhasil dihapus!");
+                        hapusAlert(Alert.AlertType.INFORMATION, "Sukses", null, "Data Jenis Prestasi berhasil dihapus!");
 
-                        } catch (Exception ex) {
-                            System.out.println("Terjadi error saat menghapus data jenis prestasi: " + ex);
-                        }
-                    } else {
-                        // Jika pengguna memilih Tidak, data tidak dihapus
-                        alert.close();
+                    } catch (Exception ex) {
+                        System.out.println("Terjadi error saat menghapus data jenis prestasi: " + ex);
                     }
-                });
+                } else {
+                    // Jika pengguna memilih Tidak, data tidak dihapus
+                    alert.close();
+                }
+            });
 
-            } catch (Exception ex) {
-                System.out.println("Terjadi error saat menghapus data jenis prestasi: " + ex);
-            }
         } else {
-            showAlert(Alert.AlertType.WARNING, "Peringatan", null, "Silakan pilih data jenis prestasi yang ingin dihapus.");
+            hapusAlert(Alert.AlertType.WARNING, "Peringatan", null, "Silakan pilih data jenis prestasi yang ingin dihapus.");
         }
     }
 

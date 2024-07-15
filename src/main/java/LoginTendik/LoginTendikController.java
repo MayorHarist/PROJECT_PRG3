@@ -31,10 +31,32 @@ public class LoginTendikController {
     @FXML
     private TextField txtPassword;
 
+    private String actualPassword = ""; // Variable to store actual password
+
+    @FXML
+    public void initialize() {
+        // Add listener to mask password input with asterisks
+        txtPassword.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() > oldValue.length()) {
+                // Append new character to actualPassword
+                actualPassword += newValue.substring(oldValue.length());
+            } else {
+                // Handle deletion
+                actualPassword = actualPassword.substring(0, actualPassword.length() - (oldValue.length() - newValue.length()));
+            }
+
+            // Update displayed text with asterisks
+            txtPassword.setText(newValue.replaceAll(".", "*"));
+        });
+
+        // Keep cursor at the end of the text field
+        txtPassword.setOnKeyPressed(event -> txtPassword.positionCaret(txtPassword.getText().length()));
+    }
+
     @FXML
     protected void onbtnLoginClick(ActionEvent event) {
         String username = txtUsername.getText();
-        String password = txtPassword.getText(); // Get actual password from input field
+        String password = actualPassword; // Use the actual password
 
         if (authenticate(username, password)) {
             // Login berhasil, tampilkan dialog pesan sukses
