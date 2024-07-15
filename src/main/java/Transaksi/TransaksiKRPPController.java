@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -501,6 +502,8 @@ public class TransaksiKRPPController implements Initializable {
             alert.setTitle("Error");
             alert.setHeaderText(null);
             alert.setContentText("Semua data harus diisi.");
+            alert.initModality(Modality.WINDOW_MODAL);
+            alert.initOwner(btnSimpan.getScene().getWindow());
             alert.showAndWait();
             return;
         }
@@ -524,6 +527,8 @@ public class TransaksiKRPPController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Konfirmasi");
         alert.setHeaderText(null);
+        alert.initModality(Modality.WINDOW_MODAL);
+        alert.initOwner(btnSimpan.getScene().getWindow());
         alert.setContentText(message);
 
         Optional<ButtonType> option = alert.showAndWait();
@@ -553,6 +558,8 @@ public class TransaksiKRPPController implements Initializable {
                 successAlert.setTitle("Sukses");
                 successAlert.setHeaderText(null);
                 successAlert.setContentText("Data Transaksi KRPP berhasil disimpan!");
+                successAlert.initModality(Modality.WINDOW_MODAL);
+                successAlert.initOwner(btnSimpan.getScene().getWindow());
                 successAlert.showAndWait();
 
                 // Clear input fields dan generate ID baru untuk entri selanjutnya
@@ -566,6 +573,8 @@ public class TransaksiKRPPController implements Initializable {
                 errorAlert.setTitle("Error");
                 errorAlert.setHeaderText(null);
                 errorAlert.setContentText("Terjadi error saat menyimpan data.\nError: " + ex.getMessage());
+                errorAlert.initModality(Modality.WINDOW_MODAL);
+                errorAlert.initOwner(btnSimpan.getScene().getWindow());
                 errorAlert.showAndWait();
             }
         } else {
@@ -574,6 +583,8 @@ public class TransaksiKRPPController implements Initializable {
             cancelAlert.setTitle("Informasi");
             cancelAlert.setHeaderText(null);
             cancelAlert.setContentText("Data Transaksi KRPP tidak disimpan.");
+            cancelAlert.initModality(Modality.WINDOW_MODAL);
+            cancelAlert.initOwner(btnSimpan.getScene().getWindow());
             cancelAlert.showAndWait();
         }
     }

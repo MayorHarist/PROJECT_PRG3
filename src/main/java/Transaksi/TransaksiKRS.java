@@ -37,6 +37,8 @@ public class TransaksiKRS {
     @FXML
     private Button btnSimpan;
     @FXML
+    private Button btnTambah;
+    @FXML
     private ComboBox<MataKuliah> cbMatkul;
     @FXML
     private ComboBox<Mahasiswa> cbNIM;
@@ -550,18 +552,6 @@ public class TransaksiKRS {
         tglPengisian = TglPengisian.getValue().toString();
         ip = IP.getText();
 
-        // Validate and parse float values
-    /*try {
-        projek = parseFloat(txtProjek.getText());
-        quiz = parseFloat(txtQuiz.getText());
-        tugas = parseFloat(txtTugas.getText());
-        uas = parseFloat(txtUAS.getText());
-        uts = parseFloat(txtUTS.getText());
-    } catch (NumberFormatException e) {
-        showErrorAlert("Error", "Nilai harus berupa angka!");
-        return;
-    }*/
-
         if (selectedMatkul != null) {
             matkul = selectedMatkul.getId();
         } else {
@@ -597,10 +587,19 @@ public class TransaksiKRS {
             connection.pstat.setString(7, selectedTendik.getId());
 
             connection.pstat.executeUpdate();
-            showAlert(Alert.AlertType.INFORMATION, "Informasi", "Input data KRS berhasil!");
-            clear();            // Membersihkan semua txt setelah menyimpan data
-            autoid();           // Membuat id baru setelah menyimpan data
-            loadKRSData();      // Merefresh tabel setelah menyimpan data
+
+            // Menampilkan alert sukses
+            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+            successAlert.setTitle("Sukses");
+            successAlert.setHeaderText(null);
+            successAlert.setContentText("Data Transaksi KRS berhasil disimpan!");
+            successAlert.initModality(Modality.WINDOW_MODAL);
+            successAlert.initOwner(btnSimpan.getScene().getWindow());
+            successAlert.showAndWait();
+
+            clear();        // Membersihkan semua txt setelah menyimpan data
+            autoid();       // Membuat id baru setelah menyimpan data
+            loadKRSData();  // Merefresh tabel setelah menyimpan data
         } catch (SQLException ex) {
             System.out.println("Terjadi error saat insert data Transaksi KRS: " + ex);
         }
@@ -623,7 +622,15 @@ public class TransaksiKRS {
 
                 connection.pstat.executeUpdate();
             }
-            showAlert(Alert.AlertType.INFORMATION, "Informasi", "Semua data Detail KRS berhasil disimpan ke database!");
+
+            // Menampilkan alert sukses
+            Alert successDetailAlert = new Alert(Alert.AlertType.INFORMATION);
+            successDetailAlert.setTitle("Sukses");
+            successDetailAlert.setHeaderText(null);
+            successDetailAlert.setContentText("Semua data Detail KRS berhasil disimpan ke database!");
+            successDetailAlert.initModality(Modality.WINDOW_MODAL);
+            successDetailAlert.initOwner(btnSimpan.getScene().getWindow());
+            successDetailAlert.showAndWait();
 
             // Clear the temporary storage list
             detailKRSList.clear();
@@ -631,15 +638,6 @@ public class TransaksiKRS {
         } catch (SQLException ex) {
             System.out.println("Terjadi error saat menyimpan data Detail KRS ke database: " + ex);
         }
-    }
-
-    private void showAlert(Alert.AlertType type, String title, String message) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.initModality(Modality.APPLICATION_MODAL);
-        alert.showAndWait();
     }
 
 
@@ -761,7 +759,7 @@ public class TransaksiKRS {
         if (!validateInput())
             return;
 
-        String IdKRS = txtIdKRS.getText();
+        IdKRS = txtIdKRS.getText();
         MataKuliah selectedMatkul = cbMatkul.getValue();
         float projek, quiz, tugas, uas, uts, akhir;
         String indeks = txtIndeksNilai.getText();
@@ -791,19 +789,20 @@ public class TransaksiKRS {
                     uts,
                     uas,
                     projek,
-                    parseFloat(txtAkhir.getText().replace(",", ".")),
+                    Float.parseFloat(txtAkhir.getText().replace(",", ".")),
                     indeks,
                     selectedMatkul.getId(),
                     IdKRS
             ));
 
-            // Show success alert
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Informasi");
-            alert.setHeaderText(null);
-            alert.setContentText("Data berhasil ditambahkan ke tabel tampungan!");
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.showAndWait();
+            // Menampilkan alert sukses
+            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+            successAlert.setTitle("Sukses");
+            successAlert.setHeaderText(null);
+            successAlert.setContentText("Data berhasil ditambahkan ke tabel tampungan!");
+            successAlert.initModality(Modality.WINDOW_MODAL);
+            successAlert.initOwner(btnTambah.getScene().getWindow());
+            successAlert.showAndWait();
 
             clearDetailFields();
             loadKRSData();
@@ -980,6 +979,8 @@ public class TransaksiKRS {
     private void showErrorAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
+        alert.initModality(Modality.WINDOW_MODAL);
+        alert.initOwner(AnchorKRS.getScene().getWindow());
         alert.setContentText(content);
         alert.showAndWait();
     }

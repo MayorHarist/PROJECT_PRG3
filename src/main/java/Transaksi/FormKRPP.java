@@ -12,7 +12,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 /*import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
@@ -298,6 +300,8 @@ public class FormKRPP  implements Initializable {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Informasi");
                 alert.setHeaderText(null);
+                alert.initModality(Modality.WINDOW_MODAL);
+                alert.initOwner(txtCari.getScene().getWindow());
                 alert.setContentText("Data KRPP tidak ditemukan.");
                 alert.showAndWait();
             }
@@ -315,6 +319,9 @@ public class FormKRPP  implements Initializable {
             Parent root = fxmlLoader.load();
             Stage stage = new Stage();
             stage.setTitle("Tambah Pengajuan KRPP");
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(btnTambah.getScene().getWindow());
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
