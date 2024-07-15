@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="438.0" prefWidth="671.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Mahasiswa.InputMahasiswa">
+<AnchorPane fx:id="AnchorMahasiswa" prefHeight="438.0" prefWidth="671.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Master.CRUD_Mahasiswa.InputMahasiswa">
     <Label alignment="CENTER" layoutX="23.0" layoutY="125.0" text="NIM">
       <font>
          <Font name="System Bold" size="14.0" />

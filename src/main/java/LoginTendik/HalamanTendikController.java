@@ -23,14 +23,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
-public class HalamanTendikController  {
+public class HalamanTendikController {
     DBConnect connection = new DBConnect();
     @FXML
     private AnchorPane AnchorHalamanTendik;
@@ -77,6 +79,15 @@ public class HalamanTendikController  {
     @FXML
     private Pane paneMain;
 
+    private void showAlert(Stage owner, AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initOwner(owner);
+        alert.showAndWait();
+    }
 
     public void onbtnDashboardTendikClick(ActionEvent event) {
         try {
@@ -95,10 +106,10 @@ public class HalamanTendikController  {
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Failed");
+            showAlert((Stage) AnchorHalamanTendik.getScene().getWindow(), AlertType.ERROR, "Error", "Failed to load the dashboard");
         } catch (NullPointerException e) {
             e.printStackTrace();
-            System.out.println("Not found");
+            showAlert((Stage) AnchorHalamanTendik.getScene().getWindow(), AlertType.ERROR, "Error", "Not found");
         }
     }
 
@@ -110,6 +121,7 @@ public class HalamanTendikController  {
             paneMain.getChildren().add(root); // Add new content
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert((Stage) paneMain.getScene().getWindow(), AlertType.ERROR, "Error", "Failed to load Prodi");
         }
     }
 
@@ -121,6 +133,7 @@ public class HalamanTendikController  {
             paneMain.getChildren().add(root); // Add new content
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert((Stage) paneMain.getScene().getWindow(), AlertType.ERROR, "Error", "Failed to load Dosen");
         }
     }
 
@@ -132,6 +145,7 @@ public class HalamanTendikController  {
             paneMain.getChildren().add(root); // Add new content
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert((Stage) paneMain.getScene().getWindow(), AlertType.ERROR, "Error", "Failed to load Matkul");
         }
     }
 
@@ -143,6 +157,7 @@ public class HalamanTendikController  {
             paneMain.getChildren().add(root); // Add new content
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert((Stage) paneMain.getScene().getWindow(), AlertType.ERROR, "Error", "Failed to load Mahasiswa");
         }
     }
 
@@ -154,6 +169,7 @@ public class HalamanTendikController  {
             paneMain.getChildren().add(root); // Add new content
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert((Stage) paneMain.getScene().getWindow(), AlertType.ERROR, "Error", "Failed to load Jenis Prestasi");
         }
     }
 
@@ -165,6 +181,7 @@ public class HalamanTendikController  {
             paneMain.getChildren().add(root); // Add new content
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert((Stage) paneMain.getScene().getWindow(), AlertType.ERROR, "Error", "Failed to load Posisi Prestasi");
         }
     }
 
@@ -176,6 +193,7 @@ public class HalamanTendikController  {
             paneMain.getChildren().add(root); // Add new content
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert((Stage) paneMain.getScene().getWindow(), AlertType.ERROR, "Error", "Failed to load Pengumuman");
         }
     }
 
@@ -187,6 +205,7 @@ public class HalamanTendikController  {
             paneMain.getChildren().add(root); // Add new content
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert((Stage) paneMain.getScene().getWindow(), AlertType.ERROR, "Error", "Failed to load KRS");
         }
     }
 
@@ -198,6 +217,7 @@ public class HalamanTendikController  {
             paneMain.getChildren().add(root); // Add new content
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert((Stage) paneMain.getScene().getWindow(), AlertType.ERROR, "Error", "Failed to load KRPP");
         }
     }
 
@@ -209,6 +229,7 @@ public class HalamanTendikController  {
             paneMain.getChildren().add(root); // Add new content
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert((Stage) paneMain.getScene().getWindow(), AlertType.ERROR, "Error", "Failed to load Laporan KRS");
         }
     }
 
@@ -220,6 +241,7 @@ public class HalamanTendikController  {
             paneMain.getChildren().add(root); // Add new content
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert((Stage) paneMain.getScene().getWindow(), AlertType.ERROR, "Error", "Failed to load Laporan KRPP");
         }
     }
 
@@ -231,6 +253,7 @@ public class HalamanTendikController  {
             paneMain.getChildren().add(root); // Add new content
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert((Stage) paneMain.getScene().getWindow(), AlertType.ERROR, "Error", "Failed to load Laporan Mabres");
         }
     }
 
@@ -251,10 +274,10 @@ public class HalamanTendikController  {
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Failed");
+            showAlert((Stage) AnchorHalamanTendik.getScene().getWindow(), AlertType.ERROR, "Error", "Failed to load previous page");
         } catch (NullPointerException e) {
             e.printStackTrace();
-            System.out.println("Not found");
+            showAlert((Stage) AnchorHalamanTendik.getScene().getWindow(), AlertType.ERROR, "Error", "Not found");
         }
     }
 }

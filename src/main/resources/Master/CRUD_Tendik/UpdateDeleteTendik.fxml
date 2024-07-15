@@ -87,7 +87,7 @@
       <TextField fx:id="passwordTendik" layoutX="946.0" layoutY="714.0" prefHeight="41.0" prefWidth="289.0" />
       <Button fx:id="btnUbahTendik" layoutX="950.0" layoutY="852.0" mnemonicParsing="false" onAction="#onBtnUbahClick" prefHeight="38.0" prefWidth="129.0" text="Perbaharui" />
       <Button fx:id="btnBatalTendik" layoutX="809.0" layoutY="852.0" mnemonicParsing="false" onAction="#OnBtnBatalClick" prefHeight="38.0" prefWidth="119.0" text="Batal" />
-      <Button fx:id="btnHapusTendik" layoutX="1099.0" layoutY="851.0" mnemonicParsing="false" onAction="#OnBtnHapusClick" prefHeight="40.0" prefWidth="134.0" text="Hapus" />
+      <Button fx:id="btnHapusTendik" layoutX="1099.0" layoutY="851.0" mnemonicParsing="false" onAction="#onBtnHapusClick" prefHeight="40.0" prefWidth="134.0" text="Hapus" />
       <TextField fx:id="txtNamaTendik" layoutX="373.0" layoutY="658.0" prefHeight="41.0" prefWidth="291.0" />
       <Button fx:id="btnRefresh" layoutX="639.0" layoutY="513.0" mnemonicParsing="false" onAction="#onBtnRefreshClick" prefHeight="40.0" prefWidth="162.0" text="Refresh" />
       <TextField fx:id="txtCari" editable="true" layoutX="550.0" layoutY="95.0" prefHeight="25.0" prefWidth="347.0" />

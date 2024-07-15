@@ -728,10 +728,12 @@ public class TransaksiKRS {
 
     @FXML
     void onbtnKembaliClick(ActionEvent event) {
+/*        Stage stage = (Stage) btnKembali.getScene().getWindow();
+        stage.close();*/
         Stage stage = (Stage) btnKembali.getScene().getWindow();
         stage.close();
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Sebagai/Sebagai.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Sebagai.fxml"));
             Parent root = loader.load();
             SebagaiController sebagaiController = loader.getController();
             Scene scene = new Scene(root);
@@ -745,7 +747,8 @@ public class TransaksiKRS {
 
     @FXML
     private void onbtnTambahClick(ActionEvent event) {
-        if (!validateInput()) return;
+        if (!validateInput())
+            return;
 
         IdKRS = txtIdKRS.getText();
         MataKuliah selectedMatkul = cbMatkul.getValue();
