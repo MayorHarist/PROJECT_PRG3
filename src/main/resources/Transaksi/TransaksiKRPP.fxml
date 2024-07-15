@@ -6,89 +6,94 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="546.0" prefWidth="915.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Transaksi.TransaksiKRPPController">
+<AnchorPane prefHeight="546.0" prefWidth="915.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Transaksi.TransaksiKRPPController">
    <children>
-      <Label layoutX="293.0" layoutY="28.0" text="Kartu Realisasi Pencapaian Prestasi">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Label>
-      <Label layoutX="78.0" layoutY="96.0" text="ID KRPP">
+      <Label layoutX="78.0" layoutY="109.0" text="ID KRPP">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="78.0" layoutY="253.0" text="Nama Prestasi">
+      <Label layoutX="78.0" layoutY="266.0" text="Nama Prestasi">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="78.0" layoutY="337.0" text="Uraian Singkat">
+      <Label layoutX="78.0" layoutY="350.0" text="Uraian Singkat">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="492.0" layoutY="251.0" text="Lembaga Pelaksana">
+      <Label layoutX="492.0" layoutY="264.0" text="Lembaga Pelaksana">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="488.0" layoutY="337.0" text="Tanggal Prestasi">
+      <Label layoutX="488.0" layoutY="350.0" text="Tanggal Prestasi">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="493.0" layoutY="94.0" text="Tanggal Pengisian">
+      <Label layoutX="493.0" layoutY="107.0" text="Tanggal Pengisian">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="78.0" layoutY="143.0" text="Mahasiswa">
+      <Label layoutX="78.0" layoutY="156.0" text="Mahasiswa">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="493.0" layoutY="144.0" text="Tenaga Kependidikan">
+      <Label layoutX="493.0" layoutY="157.0" text="Tenaga Kependidikan">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="490.0" layoutY="383.0" text="Jenis Prestasi">
+      <Label layoutX="490.0" layoutY="396.0" text="Jenis Prestasi">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="495.0" layoutY="192.0" text="Posisi Prestasi">
+      <Label layoutX="495.0" layoutY="205.0" text="Posisi Prestasi">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="txtIdKRPP" editable="false" layoutX="233.0" layoutY="93.0" prefHeight="25.0" prefWidth="173.0" />
-      <ComboBox fx:id="cbNIM" layoutX="233.0" layoutY="141.0" prefHeight="25.0" prefWidth="173.0" />
-      <ComboBox fx:id="cbJenis" layoutX="490.0" layoutY="407.0" onAction="#onCbJenis" prefHeight="25.0" prefWidth="149.0" />
-      <TextField fx:id="txtUraian" layoutX="78.0" layoutY="364.0" prefHeight="85.0" prefWidth="329.0" />
-      <TextField fx:id="txtNamaPrestasi" layoutX="77.0" layoutY="273.0" prefHeight="37.0" prefWidth="329.0" />
-      <DatePicker fx:id="tglPrestasi" layoutX="650.0" layoutY="335.0" prefHeight="25.0" prefWidth="173.0" />
-      <DatePicker fx:id="tglPengisian" layoutX="650.0" layoutY="91.0" prefHeight="25.0" prefWidth="173.0" />
-      <ComboBox fx:id="cbPosisi" layoutX="651.0" layoutY="191.0" prefHeight="25.0" prefWidth="173.0" />
-      <Button fx:id="btnBatal" layoutX="440.0" layoutY="479.0" mnemonicParsing="false" onAction="#onbtnBatalClick" prefHeight="25.0" prefWidth="59.0" text="Batal" />
-      <Button fx:id="btnSimpan" layoutX="519.0" layoutY="479.0" mnemonicParsing="false" onAction="#onbtnSimpanClick" prefHeight="25.0" prefWidth="59.0" text="Simpan" />
-      <Button fx:id="btnKembali" layoutX="364.0" layoutY="479.0" mnemonicParsing="false" onAction="#onbtnKembaliClick" prefHeight="25.0" prefWidth="59.0" text="Kembali" />
-      <Label layoutX="677.0" layoutY="382.0" text="Point">
+      <TextField fx:id="txtIdKRPP" editable="false" layoutX="233.0" layoutY="100.0" prefHeight="25.0" prefWidth="173.0" />
+      <ComboBox fx:id="cbNIM" layoutX="233.0" layoutY="154.0" prefHeight="25.0" prefWidth="173.0" />
+      <ComboBox fx:id="cbJenis" layoutX="490.0" layoutY="420.0" onAction="#onCbJenis" prefHeight="25.0" prefWidth="149.0" />
+      <TextField fx:id="txtUraian" layoutX="78.0" layoutY="377.0" prefHeight="85.0" prefWidth="329.0" />
+      <TextField fx:id="txtNamaPrestasi" layoutX="77.0" layoutY="286.0" prefHeight="37.0" prefWidth="329.0" />
+      <DatePicker fx:id="tglPrestasi" layoutX="650.0" layoutY="348.0" prefHeight="25.0" prefWidth="173.0" />
+      <DatePicker fx:id="tglPengisian" layoutX="650.0" layoutY="104.0" prefHeight="25.0" prefWidth="173.0" />
+      <ComboBox fx:id="cbPosisi" layoutX="651.0" layoutY="204.0" prefHeight="25.0" prefWidth="173.0" />
+      <Button fx:id="btnBatal" layoutX="430.0" layoutY="492.0" mnemonicParsing="false" onAction="#onbtnBatalClick" prefHeight="25.0" prefWidth="59.0" text="Batal" />
+      <Button fx:id="btnSimpan" layoutX="509.0" layoutY="492.0" mnemonicParsing="false" onAction="#onbtnSimpanClick" prefHeight="25.0" prefWidth="59.0" text="Simpan" />
+      <Button fx:id="btnKembali" layoutX="354.0" layoutY="492.0" mnemonicParsing="false" onAction="#onbtnKembaliClick" prefHeight="25.0" prefWidth="59.0" text="Kembali" />
+      <Label layoutX="677.0" layoutY="395.0" text="Point">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="txtPoint" layoutX="677.0" layoutY="405.0" prefHeight="25.0" prefWidth="55.0" />
-      <ComboBox fx:id="cbProdi" layoutX="234.0" layoutY="191.0" prefHeight="25.0" prefWidth="173.0" />
-      <Label layoutX="79.0" layoutY="193.0" text="Program Studi">
+      <TextField fx:id="txtPoint" layoutX="677.0" layoutY="418.0" prefHeight="41.0" prefWidth="79.0" />
+      <ComboBox fx:id="cbProdi" layoutX="234.0" layoutY="204.0" prefHeight="25.0" prefWidth="173.0" />
+      <Label layoutX="79.0" layoutY="206.0" text="Program Studi">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="txtLembaga" layoutX="492.0" layoutY="273.0" prefHeight="37.0" prefWidth="329.0" />
-      <ComboBox fx:id="cbTendik" layoutX="650.0" layoutY="142.0" prefHeight="25.0" prefWidth="173.0" />
+      <TextField fx:id="txtLembaga" layoutX="492.0" layoutY="286.0" prefHeight="37.0" prefWidth="329.0" />
+      <ComboBox fx:id="cbTendik" layoutX="650.0" layoutY="155.0" prefHeight="25.0" prefWidth="173.0" />
+      <Pane prefHeight="77.0" prefWidth="915.0" style="-fx-background-color: #004AAD;">
+         <children>
+            <Label layoutX="296.0" layoutY="24.0" text="Kartu Realisasi Pencapaian Prestasi" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
