@@ -67,6 +67,18 @@ public class InputPengumuman {
         // Memuat data untuk ComboBox
         ObservableList<TenagaKependidikan> tknData = loadDataForTKNComboBox();
         cbTKN.setItems(tknData);
+
+        // Set nilai awal DatePicker ke tanggal hari ini
+        tglPengumuman.setValue(LocalDate.now());
+
+        // Batasi DatePicker untuk hanya menerima tanggal hari ini
+        tglPengumuman.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                setDisable(empty || !date.equals(LocalDate.now()));
+            }
+        });
     }
 
     private ObservableList<TenagaKependidikan> loadDataForTKNComboBox() {

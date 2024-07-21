@@ -77,11 +77,12 @@ public class UDPospresController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        loadData("");
         idposisiprestasi.setCellValueFactory(new PropertyValueFactory<>("idposisiprestasi"));
         nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
         deskripsi.setCellValueFactory(new PropertyValueFactory<>("deskripsi"));
         tableposisiprestasi.setItems(oblist);
-        loadData("");
+
 
         tableposisiprestasi.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -252,7 +253,7 @@ public class UDPospresController implements Initializable {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.initModality(Modality.APPLICATION_MODAL);
-        alert.initOwner(AnchorUpdatePospres.getScene().getWindow());
+        alert.initOwner(tableposisiprestasi.getScene().getWindow());
         alert.setHeaderText(header);
         alert.setContentText(content);
         return alert;
@@ -270,7 +271,7 @@ public class UDPospresController implements Initializable {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.initModality(Modality.APPLICATION_MODAL);
-        alert.initOwner(AnchorUpdatePospres.getScene().getWindow());
+        //alert.initOwner(AnchorUpdatePospres.getScene().getWindow());
         alert.setContentText(message);
         alert.showAndWait();
     }
