@@ -37,23 +37,23 @@
          <font>
             <Font name="System Bold" size="20.0" />
          </font></Label>
-      <TextField fx:id="txtIDPengumuman" layoutX="421.0" layoutY="726.0" prefHeight="25.0" prefWidth="278.0" />
-      <DatePicker fx:id="tglPengumuman" layoutX="864.0" layoutY="727.0" prefHeight="25.0" prefWidth="278.0" />
+      <TextField fx:id="txtIDPengumuman" disable="true" editable="false" layoutX="421.0" layoutY="726.0" prefHeight="25.0" prefWidth="278.0" />
+      <DatePicker fx:id="tglPengumuman" disable="true" editable="false" layoutX="872.0" layoutY="726.0" prefHeight="25.0" prefWidth="278.0" />
       <TextField fx:id="txtnmPengumuman" layoutX="421.0" layoutY="850.0" prefHeight="25.0" prefWidth="278.0" />
       <TextField fx:id="txtDeskripsi" layoutX="864.0" layoutY="784.0" prefHeight="68.0" prefWidth="278.0" />
-      <ComboBox fx:id="cbTKN" layoutX="417.0" layoutY="791.0" prefHeight="25.0" prefWidth="278.0" />
+      <ComboBox fx:id="cbTKN" disable="true" layoutX="417.0" layoutY="791.0" prefHeight="25.0" prefWidth="278.0" />
       <Button fx:id="btnUbahPengumuman" layoutX="948.0" layoutY="895.0" mnemonicParsing="false" onAction="#onBtnUbahClick" prefHeight="30.0" prefWidth="107.0" text="Perbaharui" />
       <Button fx:id="btnBatal" layoutX="836.0" layoutY="895.0" mnemonicParsing="false" onAction="#onBtnBatalClick" prefHeight="30.0" prefWidth="95.0" text="Batal" />
       <Button fx:id="btnHapus" layoutX="1072.0" layoutY="893.0" maxWidth="95.0" mnemonicParsing="false" onAction="#onBtnHapusClick" prefHeight="30.0" prefWidth="95.0" text="Hapus" />
       <Button fx:id="btnRefresh" layoutX="642.0" layoutY="627.0" mnemonicParsing="false" onAction="#onBtnRefreshClick" prefHeight="30.0" prefWidth="189.0" text="Refresh" />
-      <Button fx:id="btnTambah" layoutX="40.0" layoutY="116.0" mnemonicParsing="false" onAction="#onBtnTambahClick" prefHeight="23.0" prefWidth="95.0" text="Tambah" />
+      <Button fx:id="btnTambah" layoutX="534.0" layoutY="127.0" mnemonicParsing="false" onAction="#onBtnTambahClick" prefHeight="23.0" prefWidth="95.0" text="Tambah" />
       <TextField fx:id="txtCari" editable="true" layoutX="536.0" layoutY="75.0" prefHeight="25.0" prefWidth="347.0" />
       <Label layoutX="211.0" layoutY="849.0" text="Pengumuman">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="txtjumlahpengumuman" layoutX="301.0" layoutY="622.0" prefHeight="25.0" prefWidth="278.0" />
+      <TextField fx:id="txtjumlahpengumuman" editable="false" layoutX="301.0" layoutY="622.0" prefHeight="25.0" prefWidth="278.0" />
       <Label layoutX="70.0" layoutY="632.0" text="Jumlah Pengumuman">
          <font>
             <Font name="System Bold" size="20.0" />
