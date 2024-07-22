@@ -1,7 +1,5 @@
 package Master.CRUD_Dosen;
 
-import Master.CRUD_JenisPrestasi.InputJepresController;
-import Master.CRUD_Tendik.InputTendik;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,7 +25,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
-import java.util.Queue;
 import java.util.ResourceBundle;
 
 public class UpdateDeleteDosenController implements Initializable {
@@ -35,7 +32,9 @@ public class UpdateDeleteDosenController implements Initializable {
     DBConnect connection = new DBConnect();
 
     @FXML
-    private TextField txtPegawai, txtNIDN, txtNama, txtBidang, txtPendidikan, txtAlamat, txtEmail, txtTelepon, txtCari;
+    private TextField txtPegawai, txtNIDN, txtNama, txtBidang, txtAlamat, txtEmail, txtTelepon, txtCari;
+    @FXML
+    private ComboBox<String> cbPendidikan; // ComboBox untuk Pendidikan
     @FXML
     private DatePicker Datelahir;
     @FXML
@@ -84,6 +83,7 @@ public class UpdateDeleteDosenController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Setup TableColumns
         noPegawai.setCellValueFactory(new PropertyValueFactory<>("pegawai"));
         Nidn.setCellValueFactory(new PropertyValueFactory<>("NIDN"));
         nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
@@ -94,6 +94,10 @@ public class UpdateDeleteDosenController implements Initializable {
         alamat.setCellValueFactory(new PropertyValueFactory<>("alamat"));
         email.setCellValueFactory(new PropertyValueFactory<>("email"));
         telepon.setCellValueFactory(new PropertyValueFactory<>("telepon"));
+
+        // Initialize ComboBox for Pendidikan
+        cbPendidikan.setItems(FXCollections.observableArrayList("S2", "S3"));
+
         tableDosen.setItems(oblist);
         loadTableData("");
 
@@ -105,7 +109,6 @@ public class UpdateDeleteDosenController implements Initializable {
         });
 
         DataDosen();
-
     }
 
     private void setTextFields(Dosen newValue) {
@@ -114,7 +117,7 @@ public class UpdateDeleteDosenController implements Initializable {
         txtNIDN.setText(newValue.getNIDN());
         txtNama.setText(newValue.getNama());
         txtBidang.setText(newValue.getBidang());
-        txtPendidikan.setText(newValue.getPendidikan());
+        cbPendidikan.setValue(newValue.getPendidikan()); // Set value for ComboBox
         Datelahir.setValue(newValue.getTanggal());
         if (newValue.getJenis().equalsIgnoreCase("Laki-Laki")) {
             rbLaki.setSelected(true);
@@ -147,7 +150,7 @@ public class UpdateDeleteDosenController implements Initializable {
                             "NIDN: " + txtNIDN.getText() + "\n" +
                             "Nama: " + txtNama.getText() + "\n" +
                             "Bidang: " + txtBidang.getText() + "\n" +
-                            "Pendidikan: " + txtPendidikan.getText() + "\n" +
+                            "Pendidikan: " + cbPendidikan.getValue() + "\n" +
                             "Tanggal Lahir: " + Datelahir.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + "\n" +
                             "Jenis Kelamin: " + (rbLaki.isSelected() ? "Laki-Laki" : "Perempuan") + "\n" +
                             "Alamat: " + txtAlamat.getText() + "\n" +
@@ -166,7 +169,7 @@ public class UpdateDeleteDosenController implements Initializable {
                     connection.pstat.setString(2, txtNIDN.getText());
                     connection.pstat.setString(3, txtNama.getText());
                     connection.pstat.setString(4, txtBidang.getText());
-                    connection.pstat.setString(5, txtPendidikan.getText());
+                    connection.pstat.setString(5, cbPendidikan.getValue()); // Use ComboBox value
                     connection.pstat.setDate(6, java.sql.Date.valueOf(tanggalLahir));
                     connection.pstat.setString(7, jenisKelamin);
                     connection.pstat.setString(8, txtAlamat.getText());
@@ -193,7 +196,7 @@ public class UpdateDeleteDosenController implements Initializable {
                 txtNIDN.getText(),
                 txtNama.getText(),
                 txtBidang.getText(),
-                txtPendidikan.getText(),
+                cbPendidikan.getValue(), // Use ComboBox value
                 tanggalLahir,
                 jenisKelamin,
                 txtAlamat.getText(),
@@ -203,30 +206,19 @@ public class UpdateDeleteDosenController implements Initializable {
     }
 
     private boolean validateFields() {
-        if (txtNIDN.getText().isEmpty() || !txtNIDN.getText().matches("\\d+")) {
-            showAlert("NIDN harus diisi dan hanya boleh berisi angka!", Alert.AlertType.WARNING);
-            return false;
-        }
-        if (txtNama.getText().isEmpty() || !txtNama.getText().matches("[a-zA-Z\\s]+")) {
-            showAlert("Nama harus diisi dan hanya boleh berisi huruf!", Alert.AlertType.WARNING);
-            return false;
-        }
-        // Validasi nomor telepon harus berupa angka
-        if (!txtTelepon.getText().matches("\\d+")) {
-            showAlert("Telepon harus diisi dan hanya boleh berisi angka!", Alert.AlertType.WARNING);
-            return false;
-        }
+        String errorMessage = "";
+        if (txtPegawai.getText().isEmpty()) errorMessage += "No Pegawai harus diisi!\n";
+        if (txtNIDN.getText().isEmpty() || !txtNIDN.getText().matches("\\d+")) errorMessage += "NIDN harus diisi dan hanya boleh berisi angka!\n";
+        if (txtNama.getText().isEmpty() || !txtNama.getText().matches("[a-zA-Z\\s]+")) errorMessage += "Nama harus diisi dan hanya boleh berisi huruf!\n";
+        if (txtBidang.getText().isEmpty()) errorMessage += "Bidang harus diisi!\n";
+        if (cbPendidikan.getValue() == null) errorMessage += "Pendidikan harus dipilih!\n";
+        if (!txtTelepon.getText().matches("\\d+")) errorMessage += "Telepon harus diisi dan hanya boleh berisi angka!\n";
+        if (Datelahir.getValue() == null || Datelahir.getValue().isAfter(LocalDate.now())) errorMessage += "Tanggal lahir harus diisi dan tidak boleh lebih dari hari ini!\n";
+        if (!txtEmail.getText().isEmpty() && !txtEmail.getText().matches("\\w+@\\w+\\.\\w+")) errorMessage += "Email tidak valid!\n";
+        if (isDuplicate("NIDN", txtNIDN.getText()) || isDuplicate("Email", txtEmail.getText())) errorMessage += "NIDN atau Email sudah terdaftar!\n";
 
-        if (Datelahir.getValue() == null || Datelahir.getValue().isAfter(LocalDate.now())) {
-            showAlert("Tanggal lahir harus diisi dan tidak boleh lebih dari hari ini!", Alert.AlertType.WARNING);
-            return false;
-        }
-        if (!txtEmail.getText().isEmpty() && !txtEmail.getText().matches("\\w+@\\w+\\.\\w+")) {
-            showAlert("Email tidak valid!", Alert.AlertType.WARNING);
-            return false;
-        }
-        if (isDuplicate("NIDN", txtNIDN.getText()) || isDuplicate("Email", txtEmail.getText())) {
-            showAlert("NIDN atau Email sudah terdaftar!", Alert.AlertType.WARNING);
+        if (!errorMessage.isEmpty()) {
+            showAlert(errorMessage, Alert.AlertType.WARNING);
             return false;
         }
         return true;
@@ -253,7 +245,7 @@ public class UpdateDeleteDosenController implements Initializable {
         alert.setContentText(message);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.initModality(Modality.APPLICATION_MODAL);
-        //stage.initOwner(tableDosen.getScene().getWindow());
+        stage.initOwner(tableDosen.getScene().getWindow());
         stage.toFront();
         alert.show();
     }
@@ -312,7 +304,7 @@ public class UpdateDeleteDosenController implements Initializable {
         txtNIDN.clear();
         txtNama.clear();
         txtBidang.clear();
-        txtPendidikan.clear();
+        cbPendidikan.setValue(null); // Clear ComboBox value
         Datelahir.getEditor().clear();
         rbLaki.setSelected(false);
         rbPerempuan.setSelected(false);
@@ -402,12 +394,9 @@ public class UpdateDeleteDosenController implements Initializable {
             }
 
             tableDosen.refresh();
-
-            showAlert("Update data Dosen berhasil!", Alert.AlertType.INFORMATION);
             clearFields();
         } catch (SQLException ex) {
             System.out.println("Terjadi error saat mengupdate data dosen: " + ex);
         }
     }
-
 }

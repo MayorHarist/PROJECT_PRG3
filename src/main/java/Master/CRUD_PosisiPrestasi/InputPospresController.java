@@ -72,7 +72,6 @@ public class InputPospresController {
         idposisiprestasi = txtIdPosisiPrestasi.getText();
         nama = txtNama.getText();
         deskripsi = txtDeskripsi.getText();
-        //status = txtStatus.getText();
 
         // Menambahkan validasi untuk memastikan semua input telah diisi
         if (idposisiprestasi.isEmpty() || nama.isEmpty() || deskripsi.isEmpty()) {
@@ -94,7 +93,6 @@ public class InputPospresController {
         message += "Apakah Anda yakin ingin menyimpan data?";
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        //alert.initModality(Modality.APPLICATION_MODAL);
         alert.setTitle("Konfirmasi");
         alert.setHeaderText(null);
         alert.setContentText(message);
@@ -104,7 +102,6 @@ public class InputPospresController {
         Optional<ButtonType> option = alert.showAndWait();
         if (option.isPresent() && option.get() == ButtonType.OK) {
             try {
-                //String query = "INSERT INTO PosisiPrestasi VALUES (?,?,?)";
                 String query = "EXEC sp_InsertPosisiPrestasi ?, ?, ?";
                 connection.pstat = connection.conn.prepareStatement(query);
                 connection.pstat.setString(1, idposisiprestasi);
@@ -113,28 +110,35 @@ public class InputPospresController {
 
                 connection.pstat.executeUpdate();
                 connection.pstat.close();
+
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Sukses");
+                successAlert.setHeaderText(null);
+                successAlert.setContentText("Data posisi prestasi berhasil disimpan!");
+                successAlert.initModality(Modality.APPLICATION_MODAL);
+                successAlert.initOwner(btnSimpan.getScene().getWindow());
+                successAlert.showAndWait();
+
+                clear();
+                autoid();
+
+                // Menutup form saat ini
+                Stage stage = (Stage) btnSimpan.getScene().getWindow();
+                stage.close();
             } catch (SQLException ex) {
                 System.out.print("Terjadi error saat insert data posisi prestasi: " + ex);
             }
-            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-            successAlert.setTitle("Sukses");
-            successAlert.setHeaderText(null);
-            successAlert.setContentText("Data posisi prestasi berhasil disimpan!");
-            successAlert.initModality(Modality.APPLICATION_MODAL);
-            successAlert.initOwner(btnSimpan.getScene().getWindow());
-            successAlert.showAndWait();
-            clear();
-            autoid();
         } else {
             Alert cancelAlert = new Alert(Alert.AlertType.INFORMATION);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.initOwner(btnSimpan.getScene().getWindow());
             cancelAlert.setTitle("Informasi");
             cancelAlert.setHeaderText(null);
             cancelAlert.setContentText("Data posisi prestasi tidak disimpan.");
+            cancelAlert.initModality(Modality.APPLICATION_MODAL);
+            cancelAlert.initOwner(btnSimpan.getScene().getWindow());
             cancelAlert.showAndWait();
         }
     }
+
 
     public void clear() {
         txtNama.setText("");

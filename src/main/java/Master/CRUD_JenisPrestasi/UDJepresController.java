@@ -97,7 +97,7 @@ public class UDJepresController implements Initializable {
             cariData(newValue); // Panggil fungsi pencarian saat isi txtCari berubah
         });
 
-        totalnilai("");
+        //totalnilai("");
     }
 
     private void loadData(String searchQuery) {
@@ -196,7 +196,7 @@ public class UDJepresController implements Initializable {
         alert.showAndWait();
     }
 
-    public void totalnilai(String newValue){
+/*    public void totalnilai(String newValue){
         try {
             String query = "SELECT COUNT(*) AS total FROM JenisPrestasi WHERE Status='Aktif'";
             PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
@@ -211,7 +211,7 @@ public class UDJepresController implements Initializable {
         } catch (Exception ex) {
             System.out.print("Terjadi error saat menghitung total data jenis prestasi: " + ex);
         }
-    }
+    }*/
 
     @FXML
     public void onbtnBatalClick(ActionEvent event) {

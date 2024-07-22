@@ -28,5 +28,6 @@
       </TableView>
       <ComboBox fx:id="cbFilter" layoutX="1053.0" layoutY="182.0" onAction="#onFilterChange" prefHeight="42.0" prefWidth="315.0" />
       <Button fx:id="btnRefresh" layoutX="653.0" layoutY="936.0" mnemonicParsing="false" onAction="#onbtnRefreshClick" prefHeight="52.0" prefWidth="140.0" text="Refresh" />
+      <Button fx:id="btnCetak" layoutX="78.0" layoutY="163.0" mnemonicParsing="false" onAction="#onbtnCetakClick" prefHeight="52.0" prefWidth="140.0" text="Cetak" />
    </children>
 </AnchorPane>

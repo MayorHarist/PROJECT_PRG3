@@ -114,6 +114,10 @@ public class InputProdiController implements Initializable {
                 showAlert("Data program studi berhasil disimpan!", Alert.AlertType.INFORMATION);
                 clear();
                 autoid(); // Generate a new ID for the next entry
+
+                // Menutup form saat ini
+                Stage stage = (Stage) btnSimpan.getScene().getWindow();
+                stage.close();
             } catch (SQLException ex) {
                 showAlert("Terjadi error saat insert data program studi: " + ex.getMessage(), Alert.AlertType.ERROR);
             }
@@ -121,6 +125,7 @@ public class InputProdiController implements Initializable {
             showAlert("Data program studi tidak disimpan.", Alert.AlertType.INFORMATION);
         }
     }
+
 
     @FXML
     public void btnBatal_Click(ActionEvent actionEvent) {

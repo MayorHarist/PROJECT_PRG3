@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -198,7 +199,6 @@ public class InputMahasiswa implements Initializable {
         String selectedProdi = cbProdi.getValue();
         String idProdi = getIdProdiByName(selectedProdi);
         String nama = txtNama.getText();
-        //String tanggalLahir = dpTanggalLahir.getValue().toString();
         LocalDate tanggalLahir = dpTanggalLahir.getValue();
         String parseTanggalLahir = tanggalLahir.toString();
         String jenisKelamin = ((RadioButton) genderGroup.getSelectedToggle()).getText();
@@ -206,7 +206,6 @@ public class InputMahasiswa implements Initializable {
         String email = txtEmail.getText();
         String telepon = txtTelepon.getText();
         int tahunMasuk = Integer.parseInt(txtTahunMasuk.getText());
-
 
         // Validasi format email
         if (!isValidEmailInput(email)) {
@@ -220,11 +219,6 @@ public class InputMahasiswa implements Initializable {
             return; // Hentikan proses simpan jika ada duplikat email
         }
 
-        //
-/*        if (!isAdult(tanggalLahir)){
-            showAlert("Umur Minimal 18 Tahun", Alert.AlertType.WARNING);
-        }*/
-
         // Menampilkan dialog konfirmasi dengan data yang akan disimpan
         String message = "Data yang akan disimpan:\n";
         message += "NIM: " + NIM + "\n";
@@ -236,7 +230,6 @@ public class InputMahasiswa implements Initializable {
         message += "Email: " + email + "\n";
         message += "Telepon: " + telepon + "\n";
         message += "Tahun Masuk: " + tahunMasuk + "\n";
-
         message += "Apakah Anda yakin ingin menyimpan data?";
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -253,6 +246,11 @@ public class InputMahasiswa implements Initializable {
                 showAlert("Data berhasil disimpan", Alert.AlertType.INFORMATION);
                 clear();
                 autoid();
+
+                // Menutup form saat ini
+                Node source = (Node) actionEvent.getSource();
+                Stage stage = (Stage) source.getScene().getWindow();
+                stage.close();
             } catch (SQLException e) {
                 showAlert("Unable to save: " + e.getMessage(), Alert.AlertType.ERROR);
             }
@@ -260,6 +258,7 @@ public class InputMahasiswa implements Initializable {
             showAlert("Data mahasiswa tidak disimpan.", Alert.AlertType.INFORMATION);
         }
     }
+
 
     private String getIdProdiByName(String prodiName) {
         String idProdi = null;

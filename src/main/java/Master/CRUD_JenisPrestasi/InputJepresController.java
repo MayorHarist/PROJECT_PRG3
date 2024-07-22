@@ -3,6 +3,7 @@ package Master.CRUD_JenisPrestasi;
 import Database.DBConnect;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -113,18 +114,26 @@ public class InputJepresController {
 
                 connection.pstat.executeUpdate();
                 connection.pstat.close();
+
+                // Tampilkan alert sukses dan tutup form
+                Alert successAlert = createAlert(Alert.AlertType.INFORMATION, "Sukses", null, "Data jenis prestasi berhasil disimpan!");
+                successAlert.showAndWait();
+                clear();
+                autoid(); // Generate a new ID for the next entry
+
+                // Menutup form saat ini
+                Node source = (Node) event.getSource();
+                Stage stage = (Stage) source.getScene().getWindow();
+                stage.close();
             } catch (SQLException ex) {
                 System.out.print("Terjadi error saat insert data jenis prestasi: " + ex);
             }
-            Alert successAlert = createAlert(Alert.AlertType.INFORMATION, "Sukses", null, "Data jenis prestasi berhasil disimpan!");
-            successAlert.showAndWait();
-            clear();
-            autoid(); // Generate a new ID for the next entry
         } else {
             Alert cancelAlert = createAlert(Alert.AlertType.INFORMATION, "Informasi", null, "Data jenis prestasi tidak disimpan.");
             cancelAlert.showAndWait();
         }
     }
+
 
     private Alert createAlert(Alert.AlertType alertType, String title, String header, String content) {
         Alert alert = new Alert(alertType);

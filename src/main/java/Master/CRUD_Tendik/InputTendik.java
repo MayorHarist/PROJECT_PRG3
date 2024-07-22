@@ -185,15 +185,21 @@ public class InputTendik {
                     successAlert.setHeaderText(null);
                     successAlert.setContentText("Data Tenaga Kependidikan berhasil ditambahkan!");
                     successAlert.initOwner(btnSimpanTendik.getScene().getWindow());
-                    successAlert.show();
+                    successAlert.showAndWait(); // Menunggu alert ditutup sebelum lanjut
+
                     clear();
                     autoid();
+
+                    // Menutup form saat ini
+                    Stage stage = (Stage) btnSimpanTendik.getScene().getWindow();
+                    stage.close();
                 }
             } catch (SQLException ex) {
                 System.out.println("Terjadi error saat menambahkan data Tenaga Kependidikan: " + ex);
                 ex.printStackTrace();
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                 errorAlert.setContentText("Terjadi kesalahan saat menyimpan data. Silakan coba lagi.");
+                errorAlert.initOwner(btnSimpanTendik.getScene().getWindow());
                 errorAlert.showAndWait(); // Menunggu alert ditutup
             }
         } else {
@@ -202,10 +208,9 @@ public class InputTendik {
             cancelAlert.setHeaderText(null);
             cancelAlert.setContentText("Data Tenaga Kependidikan tidak disimpan.");
             cancelAlert.initOwner(btnSimpanTendik.getScene().getWindow());
-            cancelAlert.show();
+            cancelAlert.showAndWait(); // Menunggu alert ditutup
         }
     }
-
 
 
     @FXML

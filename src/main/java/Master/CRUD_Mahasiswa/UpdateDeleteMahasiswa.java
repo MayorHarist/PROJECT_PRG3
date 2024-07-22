@@ -58,7 +58,10 @@ public class UpdateDeleteMahasiswa implements Initializable {
     private TableColumn<Mahasiswa, String> pointKRPP;
     @FXML
     private TableColumn<Mahasiswa, String> ipk;
-
+    @FXML
+    private Button btnUbah;
+    @FXML
+    private Button btnHapus;
     @FXML
     private TextField txtNIM;
     @FXML
@@ -145,7 +148,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
 
         // Mengatur stage owner dan modality untuk message box
         Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
-        //alertStage.initOwner(AnchorMahasiswa.getScene().getWindow());
+        alertStage.initOwner(AnchorMahasiswa.getScene().getWindow());
         alertStage.initModality(Modality.WINDOW_MODAL);
         alert.showAndWait();
     }
@@ -328,7 +331,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
 
         // Mengatur stage owner dan modality untuk message box
         Stage alertStage = (Stage) confirmAlert.getDialogPane().getScene().getWindow();
-        alertStage.initOwner(AnchorMahasiswa.getScene().getWindow());
+        alertStage.initOwner(btnUbah.getScene().getWindow());
         alertStage.initModality(Modality.WINDOW_MODAL);
 
         if (confirmAlert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
@@ -377,7 +380,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
 
         // Mengatur stage owner dan modality untuk message box
         Stage alertStage = (Stage) confirmAlert.getDialogPane().getScene().getWindow();
-        alertStage.initOwner(tableMahasiswa.getScene().getWindow());
+        alertStage.initOwner(btnHapus.getScene().getWindow());
         alertStage.initModality(Modality.WINDOW_MODAL);
 
         if (confirmAlert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {

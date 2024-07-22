@@ -19,13 +19,20 @@ import java.math.RoundingMode;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
 import Database.DBConnect;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 import static java.lang.Float.parseFloat;
+import static net.sf.jasperreports.engine.JasperCompileManager.compileReport;
+import static net.sf.jasperreports.engine.JasperFillManager.fillReport;
 
 public class TransaksiKRS {
     @FXML
@@ -742,7 +749,7 @@ public class TransaksiKRS {
         Stage stage = (Stage) btnKembali.getScene().getWindow();
         stage.close();
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Sebagai.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Sebagai/SebagaiApplication.fxml"));
             Parent root = loader.load();
             SebagaiController sebagaiController = loader.getController();
             Scene scene = new Scene(root);

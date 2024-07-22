@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LaporanKRPP" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="77ebe482-f165-414f-8d51-075c77d19700">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="KRPP.jrdax"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT * FROM dbo."LaporanMahasiswaKRPP"]]>
+	</queryString>
+	<field name="NIM" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NIM"/>
+		<property name="com.jaspersoft.studio.field.label" value="NIM"/>
+	</field>
+	<field name="Nama_Mahasiswa" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Nama_Mahasiswa"/>
+		<property name="com.jaspersoft.studio.field.label" value="Nama_Mahasiswa"/>
+	</field>
+	<field name="Jenis_Kelamin" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Jenis_Kelamin"/>
+		<property name="com.jaspersoft.studio.field.label" value="Jenis_Kelamin"/>
+	</field>
+	<field name="Tahun_Masuk" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="Tahun_Masuk"/>
+		<property name="com.jaspersoft.studio.field.label" value="Tahun_Masuk"/>
+	</field>
+	<field name="Nama_Prodi" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Nama_Prodi"/>
+		<property name="com.jaspersoft.studio.field.label" value="Nama_Prodi"/>
+	</field>
+	<field name="Total_Point_KRPP" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="Total_Point_KRPP"/>
+		<property name="com.jaspersoft.studio.field.label" value="Total_Point_KRPP"/>
+	</field>
+	<group name="NIM">
+		<groupExpression><![CDATA[$F{NIM}]]></groupExpression>
+	</group>
+	<group name="Nama_Mahasiswa">
+		<groupExpression><![CDATA[$F{Nama_Mahasiswa}]]></groupExpression>
+	</group>
+	<group name="Jenis_Kelamin">
+		<groupExpression><![CDATA[$F{Jenis_Kelamin}]]></groupExpression>
+	</group>
+	<group name="Tahun_Masuk">
+		<groupExpression><![CDATA[$F{Tahun_Masuk}]]></groupExpression>
+	</group>
+	<group name="Nama_Prodi">
+		<groupExpression><![CDATA[$F{Nama_Prodi}]]></groupExpression>
+	</group>
+	<group name="Total_Point_KRPP">
+		<groupExpression><![CDATA[$F{Total_Point_KRPP}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="124" splitType="Stretch">
+			<staticText>
+				<reportElement x="128" y="48" width="551" height="68" uuid="d1bb9674-ac6a-4487-b57e-e4e0fdf47bb3"/>
+				<textElement textAlignment="Center">
+					<font size="22"/>
+					<paragraph lineSpacingSize="1.0"/>
+				</textElement>
+				<text><![CDATA[Universitas Smart
+Jl. Gaya Motor Raya No.10, Sunter II Jakarta Utara
+]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="30" width="90" height="93" uuid="4f1a55ea-e541-48e8-a259-09d7c9b371f4"/>
+				<imageExpression><![CDATA["C:/Users/acer/Downloads/FIND SMART.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="137" height="30" uuid="aab6904c-ed31-4e56-926b-de4f60afe4de">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="30703aeb-f9f6-46e5-ba55-b4f37bad9e8a"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[NIM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="137" y="0" width="133" height="30" uuid="861edce5-66c0-4aee-9049-f6dd30eecb20">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="81612a56-bd5b-4a3c-bc7b-6b61e9dd5e2d"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Nama_Mahasiswa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="0" width="133" height="30" uuid="10f0147f-5f52-4818-b816-b258e3fa3351">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d72a790a-d389-425b-a83d-4bb8847f6204"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Jenis_Kelamin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="403" y="0" width="133" height="30" uuid="80fa40ad-b449-4db3-8f4e-5f1d7e1a470f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2e32226a-d231-422f-8100-1b33ef355a43"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Tahun_Masuk]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="536" y="0" width="133" height="30" uuid="b412e282-2eb0-446c-abf0-1043728e62a3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e53f2620-a951-4f50-a430-9d2f1459a5c2"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Nama_Prodi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="669" y="0" width="133" height="30" uuid="cc0afe2e-d8f4-49ad-9f72-b027ce891fe7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1d46ac04-0e45-4205-a8b1-ae1065a21ce9"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Total_Point_KRPP]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="-32" width="137" height="30" uuid="1a2ae0fd-9986-4521-9eee-057dee2ae192">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="30703aeb-f9f6-46e5-ba55-b4f37bad9e8a"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NIM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="137" y="-32" width="133" height="30" uuid="a0d7ebb5-58ec-4b9a-9176-677a987c5d19">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="81612a56-bd5b-4a3c-bc7b-6b61e9dd5e2d"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Nama_Mahasiswa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="-32" width="133" height="30" uuid="2d905e91-9122-408a-9530-470db89054b0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d72a790a-d389-425b-a83d-4bb8847f6204"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Jenis_Kelamin}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="403" y="-32" width="133" height="30" uuid="9d61749c-00cd-4e63-91a8-07b835d58d16">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2e32226a-d231-422f-8100-1b33ef355a43"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Tahun_Masuk}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="536" y="-32" width="133" height="30" uuid="ad6d11a9-b57d-44b8-a4c2-cb950bd95ef1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e53f2620-a951-4f50-a430-9d2f1459a5c2"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Nama_Prodi}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="669" y="-32" width="133" height="30" uuid="3c5e6acd-f316-488f-9f3d-28ae73d8af50">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1d46ac04-0e45-4205-a8b1-ae1065a21ce9"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Total_Point_KRPP}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
