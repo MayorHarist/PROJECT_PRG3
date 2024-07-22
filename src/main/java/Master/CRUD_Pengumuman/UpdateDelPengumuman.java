@@ -106,7 +106,11 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
             if (newValue != null) {
                 txtIDPengumuman.setText(newValue.getIdPM());
                 txtnmPengumuman.setText(newValue.getNamaPengumuman());
-                tglPengumuman.setValue(newValue.getTanggal());
+
+                LocalDate tanggal = newValue.getTanggal();
+                LocalDate today = LocalDate.now();
+
+                tglPengumuman.setValue(tanggal.isBefore(today) ? today : tanggal);
                 txtDeskripsi.setText(newValue.getDeskripsi());
                 // Cari TenagaKependidikan yang sesuai dan set di ComboBox
                 for (TenagaKependidikan tk : cbTKN.getItems()) {
@@ -129,7 +133,6 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
         tblViewPengumuman.getItems().clear();
 
         try {
-            LocalDate today = LocalDate.now();
 
             String query = "SELECT p.Id_Pengumuman, p.Nama, p.Tanggal, p.Deskripsi, t.Id_TKN, t.Nama AS Nama_TKN " +
                     "FROM Pengumuman p " +
@@ -144,18 +147,20 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
             PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
             String wildcardKeyword = "%" + keyword.toLowerCase() + "%";
             preparedStatement.setString(1, wildcardKeyword);
-            preparedStatement.setDate(2, java.sql.Date.valueOf(today));
+            preparedStatement.setDate(2, Date.valueOf(wildcardKeyword));
             preparedStatement.setString(3, wildcardKeyword);
             preparedStatement.setString(4, wildcardKeyword);
             preparedStatement.setString(5, wildcardKeyword);
 
             ResultSet resultSet = preparedStatement.executeQuery();
+            LocalDate today = LocalDate.now();
 
             while (resultSet.next()) {
 
                 String idPengumuman = resultSet.getString("Id_Pengumuman");
                 String nama = resultSet.getString("Nama");
-                LocalDate tanggal = resultSet.getDate("Tanggal").toLocalDate();
+                //LocalDate tanggal = resultSet.getDate("Tanggal").toLocalDate();
+                LocalDate tanggal = today;
                 String deskripsi = resultSet.getString("Deskripsi");
                 String idTKN = resultSet.getString("Id_TKN");
                 String namaTKN = resultSet.getString("Nama_TKN");
@@ -332,20 +337,22 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
             }
 
             oblist.clear();
-            connection.result = st.executeQuery();
-            while (connection.result.next()) {
-                LocalDate date = connection.result.getDate("Tanggal").toLocalDate();
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                LocalDate date = rs.getDate("Tanggal").toLocalDate();
+                // Tambahkan hari ke tanggal
+                LocalDate adjustedDate = date.plusDays(2);
                 oblist.add(new Pengumuman(
-                        connection.result.getString("Id_Pengumuman"),
-                        connection.result.getString("Nama"),
-                        date,
-                        connection.result.getString("Deskripsi"),
-                        connection.result.getString("Id_TKN"),
-                        connection.result.getString("Nama_TKN")));
+                        rs.getString("Id_Pengumuman"),
+                        rs.getString("Nama"),
+                        adjustedDate,
+                        rs.getString("Deskripsi"),
+                        rs.getString("Id_TKN"),
+                        rs.getString("Nama_TKN")));
             }
 
             st.close();
-            connection.result.close();
+            rs.close();
             tblViewPengumuman.setItems(oblist);
         } catch (SQLException ex) {
             System.out.println("Terjadi error saat refresh data Pengumuman: " + ex);
