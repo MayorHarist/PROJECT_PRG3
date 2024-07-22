@@ -1,6 +1,5 @@
 package LoginTendik;
 
-import Sebagai.SebagaiController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,32 +30,32 @@ public class LoginTendikController {
     @FXML
     private TextField txtPassword;
 
-    private String actualPassword = ""; // Variable to store actual password
+    private String actualPassword = ""; // Variabel untuk menyimpan password asli
 
     @FXML
     public void initialize() {
-        // Add listener to mask password input with asterisks
+        // Tambahkan listener untuk menyamarkan input password dengan tanda bintang
         txtPassword.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.length() > oldValue.length()) {
-                // Append new character to actualPassword
+                // Tambahkan karakter baru ke actualPassword
                 actualPassword += newValue.substring(oldValue.length());
             } else {
-                // Handle deletion
+                // Tangani penghapusan
                 actualPassword = actualPassword.substring(0, actualPassword.length() - (oldValue.length() - newValue.length()));
             }
 
-            // Update displayed text with asterisks
+            // Perbarui teks yang ditampilkan dengan tanda bintang
             txtPassword.setText(newValue.replaceAll(".", "*"));
         });
 
-        // Keep cursor at the end of the text field
+        // Pertahankan kursor di akhir text field
         txtPassword.setOnKeyPressed(event -> txtPassword.positionCaret(txtPassword.getText().length()));
     }
 
     @FXML
     protected void onbtnLoginClick(ActionEvent event) {
         String username = txtUsername.getText();
-        String password = actualPassword; // Use the actual password
+        String password = actualPassword; // Gunakan password asli
 
         if (authenticate(username, password)) {
             // Login berhasil, tampilkan dialog pesan sukses
@@ -84,7 +83,7 @@ public class LoginTendikController {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("Failed to load HalamanTendik.fxml");
+                System.out.println("Gagal memuat HalamanTendik.fxml");
             }
 
         } else {
@@ -92,20 +91,20 @@ public class LoginTendikController {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText(null);
-            alert.setContentText("Username atau password salah");
+            alert.setContentText("Username atau password salah atau akun tidak aktif");
             alert.initOwner(btnLogin.getScene().getWindow()); // Atur owner ke Stage yang sesuai
             alert.showAndWait();
         }
     }
 
     private boolean authenticate(String username, String password) {
-        String query = "SELECT * FROM TenagaKependidikan WHERE username = ? AND password = ?";
+        String query = "SELECT * FROM TenagaKependidikan WHERE username = ? AND password = ? AND status = 'Aktif'";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, username);
             stmt.setString(2, password);
             ResultSet rs = stmt.executeQuery();
-            return rs.next(); // true if authenticated, false if not
+            return rs.next(); // true jika berhasil, false jika tidak
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
