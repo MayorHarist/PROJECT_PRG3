@@ -104,7 +104,7 @@ public class UpdateDeleteDosenController implements Initializable {
             txtCari.setOnKeyReleased(event -> onTxtCari());
         });
 
-        DataDosen();
+        //DataDosen();
 
     }
 
@@ -398,7 +398,7 @@ public class UpdateDeleteDosenController implements Initializable {
 
             if (rs.next()) {
                 int count = rs.getInt(1);
-                lblDosen.setText("" + count);
+                //lblDosen.setText("" + count);
             }
 
             tableDosen.refresh();
