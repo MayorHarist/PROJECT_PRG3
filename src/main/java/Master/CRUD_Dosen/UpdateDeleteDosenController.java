@@ -253,7 +253,7 @@ public class UpdateDeleteDosenController implements Initializable {
         alert.setContentText(message);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.initModality(Modality.APPLICATION_MODAL);
-        //stage.initOwner(tableDosen.getScene().getWindow());
+        stage.initOwner(tableDosen.getScene().getWindow());
         stage.toFront();
         alert.show();
     }
@@ -402,8 +402,7 @@ public class UpdateDeleteDosenController implements Initializable {
             }
 
             tableDosen.refresh();
-
-            showAlert("Update data Dosen berhasil!", Alert.AlertType.INFORMATION);
+            //showAlert("Update data Dosen berhasil!", Alert.AlertType.INFORMATION);
             clearFields();
         } catch (SQLException ex) {
             System.out.println("Terjadi error saat mengupdate data dosen: " + ex);

@@ -1,5 +1,7 @@
 package LoginTendik;
 
+import Database.DBConnect;
+import Sebagai.SebagaiController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,32 +32,35 @@ public class LoginTendikController {
     @FXML
     private TextField txtPassword;
 
-    private String actualPassword = ""; // Variabel untuk menyimpan password asli
+    private String actualPassword = ""; // Variable to store actual password
+
+    // Create an instance of DBConnect
+    private DBConnect connection = new DBConnect();
 
     @FXML
     public void initialize() {
-        // Tambahkan listener untuk menyamarkan input password dengan tanda bintang
+        // Add listener to mask password input with asterisks
         txtPassword.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.length() > oldValue.length()) {
-                // Tambahkan karakter baru ke actualPassword
+                // Append new character to actualPassword
                 actualPassword += newValue.substring(oldValue.length());
             } else {
-                // Tangani penghapusan
+                // Handle deletion
                 actualPassword = actualPassword.substring(0, actualPassword.length() - (oldValue.length() - newValue.length()));
             }
 
-            // Perbarui teks yang ditampilkan dengan tanda bintang
+            // Update displayed text with asterisks
             txtPassword.setText(newValue.replaceAll(".", "*"));
         });
 
-        // Pertahankan kursor di akhir text field
+        // Keep cursor at the end of the text field
         txtPassword.setOnKeyPressed(event -> txtPassword.positionCaret(txtPassword.getText().length()));
     }
 
     @FXML
     protected void onbtnLoginClick(ActionEvent event) {
         String username = txtUsername.getText();
-        String password = actualPassword; // Gunakan password asli
+        String password = actualPassword; // Use the actual password
 
         if (authenticate(username, password)) {
             // Login berhasil, tampilkan dialog pesan sukses
@@ -83,7 +88,7 @@ public class LoginTendikController {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("Gagal memuat HalamanTendik.fxml");
+                System.out.println("Failed to load HalamanTendik.fxml");
             }
 
         } else {
@@ -91,33 +96,23 @@ public class LoginTendikController {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText(null);
-            alert.setContentText("Username atau password salah atau akun tidak aktif");
+            alert.setContentText("Username atau password salah");
             alert.initOwner(btnLogin.getScene().getWindow()); // Atur owner ke Stage yang sesuai
             alert.showAndWait();
         }
     }
 
     private boolean authenticate(String username, String password) {
-        String query = "SELECT * FROM TenagaKependidikan WHERE username = ? AND password = ? AND status = 'Aktif'";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, username);
-            stmt.setString(2, password);
-            ResultSet rs = stmt.executeQuery();
-            return rs.next(); // true jika berhasil, false jika tidak
+        String query = "SELECT * FROM TenagaKependidikan WHERE username = ? AND password = ?";
+        try {
+            connection.pstat = connection.conn.prepareStatement(query);
+            connection.pstat.setString(1, username);
+            connection.pstat.setString(2, password);
+            ResultSet rs = connection.pstat.executeQuery();
+            return rs.next(); // true if authenticated, false if not
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
-        }
-    }
-
-    private Connection getConnection() {
-        try {
-            String url = "jdbc:sqlserver://localhost;database=FINDSMART_MABRES;user=sa;password=polman";
-            return DriverManager.getConnection(url);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
         }
     }
 
