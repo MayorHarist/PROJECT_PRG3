@@ -6,11 +6,20 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.event.ActionEvent;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
+import javax.swing.*;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.ResourceBundle;
+
+import static net.sf.jasperreports.engine.JasperCompileManager.compileReport;
+import static net.sf.jasperreports.engine.JasperFillManager.fillReport;
 
 public class LaporanKRS implements Initializable {
     @FXML
@@ -33,6 +42,18 @@ public class LaporanKRS implements Initializable {
     private TableColumn<LaporanKRS.LaporanMahasiswa, Double> ipk;
 
     DBConnect connection = new DBConnect();
+
+    public void onbtnCetakClick(ActionEvent event) {
+        try {
+            JasperReport jasperReport = compileReport(getClass().getResourceAsStream("/report/LaporanKRS.jrxml"));
+            JasperPrint jasperPrint = fillReport(jasperReport, new HashMap<>(),connection.conn);
+            JasperViewer jasperViewer = new JasperViewer(jasperPrint,false);
+            jasperViewer.setVisible(true);
+        }catch (JRException jrException)
+        {
+            JOptionPane.showMessageDialog(null,jrException);
+        }
+    }
 
     public static class LaporanMahasiswa {
         private String nim;
