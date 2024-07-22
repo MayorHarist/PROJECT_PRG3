@@ -16,7 +16,6 @@
       <TextField fx:id="txtPegawai" editable="false" layoutX="319.0" layoutY="173.0" prefHeight="25.0" prefWidth="227.0" />
       <TextField fx:id="txtNIDN" layoutX="319.0" layoutY="224.0" prefHeight="25.0" prefWidth="227.0" />
       <TextField fx:id="txtNama" layoutX="319.0" layoutY="275.0" prefHeight="41.0" prefWidth="266.0" />
-      <ComboBox fx:id="cbPendidikan" layoutX="319.0" layoutY="380.0" prefHeight="30.0" prefWidth="110.0" />
       <TextField fx:id="txtBidang" layoutX="318.0" layoutY="325.0" prefHeight="25.0" prefWidth="227.0" />
       <DatePicker fx:id="Datelahir" layoutX="318.0" layoutY="425.0" prefHeight="25.0" prefWidth="227.0" />
       <TextField fx:id="txtAlamat" layoutX="319.0" layoutY="509.0" prefHeight="55.0" prefWidth="266.0" />
@@ -80,5 +79,6 @@
             </Label>
          </children>
       </Pane>
+      <ComboBox fx:id="cbPendidikan" layoutX="319.0" layoutY="380.0" prefHeight="30.0" prefWidth="110.0" />
    </children>
 </AnchorPane>
