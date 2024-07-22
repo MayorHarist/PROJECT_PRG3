@@ -38,7 +38,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="txtIDPengumuman" layoutX="201.0" layoutY="107.0" prefHeight="15.0" prefWidth="250.0" stylesheets="@../../Style.css" />
+            <TextField fx:id="txtIDPengumuman" editable="false" layoutX="201.0" layoutY="107.0" prefHeight="15.0" prefWidth="250.0" stylesheets="@../../Style.css" />
             <DatePicker fx:id="tglPengumuman" layoutX="201.0" layoutY="263.0" prefHeight="39.0" prefWidth="250.0" stylesheets="@../../Style.css" />
             <TextField fx:id="txtnmPengumuman" layoutX="201.0" layoutY="206.0" prefHeight="21.0" prefWidth="250.0" stylesheets="@../../Style.css" />
             <TextField fx:id="txtDeskripsi" layoutX="201.0" layoutY="315.0" prefHeight="29.0" prefWidth="250.0" stylesheets="@../../Style.css" />

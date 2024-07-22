@@ -127,7 +127,10 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
     @FXML
     private void cariDataPengumuman(String keyword) {
         tblViewPengumuman.getItems().clear();
+
         try {
+            LocalDate today = LocalDate.now();
+
             String query = "SELECT p.Id_Pengumuman, p.Nama, p.Tanggal, p.Deskripsi, t.Id_TKN, t.Nama AS Nama_TKN " +
                     "FROM Pengumuman p " +
                     "JOIN TenagaKependidikan t ON p.Id_TKN = t.Id_TKN " +
@@ -141,7 +144,7 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
             PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
             String wildcardKeyword = "%" + keyword.toLowerCase() + "%";
             preparedStatement.setString(1, wildcardKeyword);
-            preparedStatement.setString(2, wildcardKeyword);
+            preparedStatement.setDate(2, java.sql.Date.valueOf(today));
             preparedStatement.setString(3, wildcardKeyword);
             preparedStatement.setString(4, wildcardKeyword);
             preparedStatement.setString(5, wildcardKeyword);
@@ -149,6 +152,7 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
+
                 String idPengumuman = resultSet.getString("Id_Pengumuman");
                 String nama = resultSet.getString("Nama");
                 LocalDate tanggal = resultSet.getDate("Tanggal").toLocalDate();
