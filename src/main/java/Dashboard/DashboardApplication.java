@@ -6,6 +6,7 @@ import LoginTendik.HalamanTendikController;
 import Master.CRUD_Mahasiswa.InputMahasiswa;
 import Master.CRUD_Mahasiswa.UpdateDeleteMahasiswa;
 import Master.CRUD_Pengumuman.UpdateDelPengumuman;
+import Master.CRUD_Tendik.InputTendik;
 import Master.CRUD_Tendik.UpdateDeleteTendik;
 import Transaksi.FormKRPP;
 import Transaksi.TransaksiKRPPController;
