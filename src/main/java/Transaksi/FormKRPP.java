@@ -80,6 +80,8 @@ public class FormKRPP  implements Initializable {
         point.setCellValueFactory(new PropertyValueFactory<>("point"));
         tanggalpengisian.setCellValueFactory(new PropertyValueFactory<>("tanggalpengisian"));
         tanggalprestasi.setCellValueFactory(new PropertyValueFactory<>("tanggalprestasi"));
+        tablekrpp.getItems().clear();
+
         loadData("");
 
         // Tambahkan listener untuk txtCari
@@ -268,11 +270,13 @@ public class FormKRPP  implements Initializable {
     }
 
     private void cariData(String keyword) {
-        tablekrpp.getItems().clear(); // Bersihkan data sebelum memuat hasil pencarian baru
+        tablekrpp.getItems().clear(); // Clear existing data
         try {
             String query = "EXEC sp_CariKRPP ?";
             PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
-            preparedStatement.setString(1, keyword.isEmpty() ? null : keyword); // Set parameter pencarian, null jika kosong
+            preparedStatement.setString(1, keyword.isEmpty() ? null : keyword); // Set parameter, null if empty
+
+            System.out.println("Executing query with keyword: " + keyword);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -288,7 +292,6 @@ public class FormKRPP  implements Initializable {
                         resultSet.getInt("Point"),
                         resultSet.getDate("Tanggal_Pengisian").toLocalDate(),
                         resultSet.getDate("Tanggal_Prestasi").toLocalDate()
-                        //resultSet.getString("Status")
                 );
                 tablekrpp.getItems().add(krpp);
             }
@@ -296,7 +299,7 @@ public class FormKRPP  implements Initializable {
             resultSet.close();
 
             if (tablekrpp.getItems().isEmpty()) {
-                // Tampilkan pesan bahwa data tidak ditemukan
+                // Show alert if no data is found
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Informasi");
                 alert.setHeaderText(null);
@@ -309,6 +312,7 @@ public class FormKRPP  implements Initializable {
             System.out.print("Terjadi error saat mencari data KRPP: " + ex);
         }
     }
+
 
 
 

@@ -83,13 +83,13 @@ public class UDPospresController implements Initializable {
         deskripsi.setCellValueFactory(new PropertyValueFactory<>("deskripsi"));
         tableposisiprestasi.setItems(oblist);
 
-
         tableposisiprestasi.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 setTextFields(newValue);
             }
-            txtCari.setOnKeyReleased(event -> onTxtCari());
         });
+
+        txtCari.setOnKeyReleased(event -> onTxtCari());
 
         txtNama.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("[a-zA-Z\\s]*")) {
@@ -98,6 +98,7 @@ public class UDPospresController implements Initializable {
             }
         });
     }
+
 
     private void setTextFields(pospres newValue) {
         txtIdPosisiPrestasi.setText(newValue.getIdposisiprestasi());
@@ -136,7 +137,9 @@ public class UDPospresController implements Initializable {
                     preparedStatement.close();
                     loadData("");
                     clearFields();
-                    showAlert("Sukses", "Data posisi Prestasi berhasil diperbarui!", Alert.AlertType.INFORMATION);
+                    createAlert(Alert.AlertType.INFORMATION, "Sukses", null, "Data posisi Prestasi berhasil diperbarui?");
+                    //Alert confirmation = createAlert(Alert.AlertType.CONFIRMATION, "Sukses", "Data posisi Prestasi berhasil diperbarui!?";
+                    //createAlert("Sukses", "Data posisi Prestasi berhasil diperbarui!", Alert.AlertType.INFORMATION);
                 } catch (SQLException ex) {
                     showAlert("Error", "Terjadi error saat memperbarui data posisi prestasi: " + ex, Alert.AlertType.ERROR);
                 }
@@ -164,7 +167,8 @@ public class UDPospresController implements Initializable {
                     preparedStatement.close();
                     loadData("");
                     clearFields();
-                    showAlert("Sukses", "Data posisi Prestasi berhasil dihapus!", Alert.AlertType.INFORMATION);
+                    createAlert(Alert.AlertType.INFORMATION, "Sukses", null, "Data posisi Prestasi berhasil dihapus?");
+                    //createAlert("Sukses", "Data posisi Prestasi berhasil dihapus!", Alert.AlertType.INFORMATION);
                 } catch (SQLException ex) {
                     showAlert("Error", "Terjadi error saat menghapus data posisi prestasi: " + ex, Alert.AlertType.ERROR);
                 }

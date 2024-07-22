@@ -133,7 +133,6 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
         tblViewPengumuman.getItems().clear();
 
         try {
-
             String query = "SELECT p.Id_Pengumuman, p.Nama, p.Tanggal, p.Deskripsi, t.Id_TKN, t.Nama AS Nama_TKN " +
                     "FROM Pengumuman p " +
                     "JOIN TenagaKependidikan t ON p.Id_TKN = t.Id_TKN " +
@@ -147,7 +146,7 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
             PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
             String wildcardKeyword = "%" + keyword.toLowerCase() + "%";
             preparedStatement.setString(1, wildcardKeyword);
-            preparedStatement.setDate(2, Date.valueOf(wildcardKeyword));
+            preparedStatement.setString(2, wildcardKeyword);
             preparedStatement.setString(3, wildcardKeyword);
             preparedStatement.setString(4, wildcardKeyword);
             preparedStatement.setString(5, wildcardKeyword);
@@ -156,11 +155,9 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
             LocalDate today = LocalDate.now();
 
             while (resultSet.next()) {
-
                 String idPengumuman = resultSet.getString("Id_Pengumuman");
                 String nama = resultSet.getString("Nama");
-                //LocalDate tanggal = resultSet.getDate("Tanggal").toLocalDate();
-                LocalDate tanggal = today;
+                LocalDate tanggal = resultSet.getDate("Tanggal").toLocalDate();
                 String deskripsi = resultSet.getString("Deskripsi");
                 String idTKN = resultSet.getString("Id_TKN");
                 String namaTKN = resultSet.getString("Nama_TKN");
@@ -182,6 +179,7 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
             System.out.println("Terjadi error saat mencari data Pengumuman: " + ex);
         }
     }
+
 
     private ObservableList<TenagaKependidikan> loadDataForTKNComboBox() {
         ObservableList<TenagaKependidikan> dataList = FXCollections.observableArrayList();
@@ -315,7 +313,7 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
     @FXML
     protected void onBtnRefreshClick() {
         loadData("");
-        updateJumlahPengumuman();
+        //updateJumlahPengumuman();
     }
 
     private void loadData(String keyword) {
@@ -361,7 +359,7 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
 
     private void updateJumlahPengumuman() {
         int jumlahPengumuman = tblViewPengumuman.getItems().size();
-        txtjumlahpengumuman.setText(String.valueOf(jumlahPengumuman));
+        //txtjumlahpengumuman.setText(String.valueOf(jumlahPengumuman));
     }
 
 

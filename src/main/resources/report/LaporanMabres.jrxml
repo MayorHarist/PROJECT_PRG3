@@ -59,7 +59,22 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch"/>
+		<band height="128" splitType="Stretch">
+			<staticText>
+				<reportElement x="128" y="48" width="551" height="68" uuid="0e19d7e4-4896-4ece-8220-b45e42f5a4c7"/>
+				<textElement textAlignment="Center">
+					<font size="22"/>
+					<paragraph lineSpacingSize="1.0"/>
+				</textElement>
+				<text><![CDATA[Universitas Smart
+Jl. Gaya Motor Raya No.10, Sunter II Jakarta Utara
+]]></text>
+			</staticText>
+			<image>
+				<reportElement x="10" y="35" width="96" height="93" uuid="526549c4-3385-455a-8e0a-4bde3559efe1"/>
+				<imageExpression><![CDATA["C:/Users/acer/Downloads/FIND SMART.png"]]></imageExpression>
+			</image>
+		</band>
 	</title>
 	<pageHeader>
 		<band height="35" splitType="Stretch"/>
@@ -162,7 +177,7 @@
 	<detail>
 		<band height="125" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="-29" width="118" height="30" uuid="5a6d339e-e60a-4027-a99c-b657ce2de8be">
+				<reportElement x="0" y="-32" width="118" height="30" uuid="5a6d339e-e60a-4027-a99c-b657ce2de8be">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f45c855b-f524-4ecd-b466-fd1b9b763e25"/>
 				</reportElement>
 				<box>
@@ -171,10 +186,11 @@
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{NIM}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="118" y="-29" width="114" height="30" uuid="f7764f64-73e5-4d46-9c28-dd09e948e194">
+				<reportElement x="118" y="-32" width="114" height="30" uuid="f7764f64-73e5-4d46-9c28-dd09e948e194">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="895ce317-1ed5-4d90-94d3-88165c4b2074"/>
 				</reportElement>
 				<box>
@@ -183,10 +199,11 @@
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{Nama_Mahasiswa}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="232" y="-29" width="114" height="30" uuid="0c06cc91-580e-4043-93e5-ee915127dbb4">
+				<reportElement x="232" y="-32" width="114" height="30" uuid="0c06cc91-580e-4043-93e5-ee915127dbb4">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a7bad4df-671d-4549-ada7-314e3af4bd79"/>
 				</reportElement>
 				<box>
@@ -195,10 +212,11 @@
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{Jenis_Kelamin}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="346" y="-29" width="114" height="30" uuid="15d9726c-7ba7-4498-98a5-235134aff354">
+				<reportElement x="346" y="-32" width="114" height="30" uuid="15d9726c-7ba7-4498-98a5-235134aff354">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a198310d-9779-4369-a66c-8b0e4d501826"/>
 				</reportElement>
 				<box>
@@ -207,10 +225,11 @@
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{Tahun_Masuk}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="460" y="-29" width="114" height="30" uuid="9219a7ec-ff50-459b-a578-b4611b4d8e54">
+				<reportElement x="460" y="-32" width="114" height="30" uuid="9219a7ec-ff50-459b-a578-b4611b4d8e54">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e31563d2-6a23-4132-874e-4d702cf5d349"/>
 				</reportElement>
 				<box>
@@ -219,10 +238,11 @@
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{Nama_Prodi}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="574" y="-29" width="114" height="30" uuid="10307f60-202b-4bf9-8767-9014af4b9ee5">
+				<reportElement x="574" y="-32" width="114" height="30" uuid="10307f60-202b-4bf9-8767-9014af4b9ee5">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ab18b9d4-610f-4fbb-84e5-5c3638e6a4b1"/>
 				</reportElement>
 				<box>
@@ -231,10 +251,11 @@
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{IPK}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="688" y="-29" width="114" height="30" uuid="bcebe262-96c6-4b53-a1e2-015930905480">
+				<reportElement x="688" y="-32" width="114" height="30" uuid="bcebe262-96c6-4b53-a1e2-015930905480">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="49340f2d-e661-45a3-9706-e0c1d2865dc1"/>
 				</reportElement>
 				<box>
@@ -243,6 +264,7 @@
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{Total_Point_KRPP}]]></textFieldExpression>
 			</textField>
 		</band>

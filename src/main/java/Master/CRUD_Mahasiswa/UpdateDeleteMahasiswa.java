@@ -244,7 +244,7 @@ public class UpdateDeleteMahasiswa implements Initializable {
                         rs.getString("Email"),
                         rs.getString("Telepon"),
                         rs.getString("Tahun_Masuk"),
-                        rs.getString("Total_Point_KRPP"),
+                        rs.getString("Point_KRPP"),
                         rs.getString("IPK")
                 ));
             }
