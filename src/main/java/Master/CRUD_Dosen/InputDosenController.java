@@ -5,8 +5,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Alert.AlertType;
@@ -16,7 +14,6 @@ import java.time.format.DateTimeFormatter;
 import Database.DBConnect;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -30,7 +27,7 @@ public class InputDosenController {
     @FXML
     private TextField txtBidang;
     @FXML
-    private TextField txtPendidikan;
+    private ComboBox<String> cbPendidikan;
     @FXML
     private DatePicker Datelahir;
     @FXML
@@ -47,10 +44,7 @@ public class InputDosenController {
     private AnchorPane AnchorInputDosen;
 
     private ToggleGroup genderGroup;
-
-    String Pegawai, NIDN, Nama, Bidang, Pendidikan, JenisKelamin, Alamat, Email, Telepon;
-    LocalDate TanggalLahir;
-    DBConnect connection = new DBConnect();
+    private DBConnect connection = new DBConnect();
 
     @FXML
     public void initialize() {
@@ -60,6 +54,9 @@ public class InputDosenController {
         genderGroup = new ToggleGroup();
         rbLaki.setToggleGroup(genderGroup);
         rbPerempuan.setToggleGroup(genderGroup);
+
+        // Inisialisasi ComboBox dengan item S2 dan S3
+        cbPendidikan.getItems().addAll("S2", "S3");
 
         // Tambahkan listener pada setiap field untuk validasi langsung
         addValidationListeners();
@@ -71,19 +68,20 @@ public class InputDosenController {
             return; // Jika validasi gagal, hentikan eksekusi
         }
 
-        Pegawai = txtPegawai.getText();
-        NIDN = txtNIDN.getText();
-        Nama = txtNama.getText();
-        Bidang = txtBidang.getText();
-        Pendidikan = txtPendidikan.getText();
-        TanggalLahir = Datelahir.getValue();
-        JenisKelamin = rbLaki.isSelected() ? "Laki-Laki" : rbPerempuan.isSelected() ? "Perempuan" : "";
-        Alamat = txtAlamat.getText();
-        Email = txtEmail.getText();
-        Telepon = txtTelepon.getText();
+        String Pegawai = txtPegawai.getText();
+        String NIDN = txtNIDN.getText();
+        String Nama = txtNama.getText();
+        String Bidang = txtBidang.getText();
+        String Pendidikan = cbPendidikan.getValue(); // Ambil nilai dari ComboBox
+        LocalDate TanggalLahir = Datelahir.getValue();
+        String JenisKelamin = rbLaki.isSelected() ? "Laki-Laki" : rbPerempuan.isSelected() ? "Perempuan" : "";
+        String Alamat = txtAlamat.getText();
+        String Email = txtEmail.getText();
+        String Telepon = txtTelepon.getText();
 
         // Tampilkan konfirmasi data sebelum input
-        if (showDataConfirmation()) {// Simpan data jika konfirmasi berhasil
+        if (showDataConfirmation()) {
+            // Simpan data jika konfirmasi berhasil
             try {
                 String query = "EXEC sp_InsertDosen ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
                 connection.pstat = connection.conn.prepareStatement(query);
@@ -108,21 +106,20 @@ public class InputDosenController {
         } else {
             return; // Jika user memilih untuk batal, hentikan eksekusi
         }
-
     }
 
     private boolean showDataConfirmation() {
         StringBuilder sb = new StringBuilder();
-        sb.append("No Pegawai: ").append(Pegawai).append("\n");
-        sb.append("NIDN: ").append(NIDN).append("\n");
-        sb.append("Nama: ").append(Nama).append("\n");
-        sb.append("Bidang: ").append(Bidang).append("\n");
-        sb.append("Pendidikan: ").append(Pendidikan).append("\n");
-        sb.append("Tanggal Lahir: ").append(TanggalLahir.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append("\n");
-        sb.append("Jenis Kelamin: ").append(JenisKelamin).append("\n");
-        sb.append("Alamat: ").append(Alamat).append("\n");
-        sb.append("Email: ").append(Email).append("\n");
-        sb.append("Telepon: ").append(Telepon).append("\n");
+        sb.append("No Pegawai: ").append(txtPegawai.getText()).append("\n");
+        sb.append("NIDN: ").append(txtNIDN.getText()).append("\n");
+        sb.append("Nama: ").append(txtNama.getText()).append("\n");
+        sb.append("Bidang: ").append(txtBidang.getText()).append("\n");
+        sb.append("Pendidikan: ").append(cbPendidikan.getValue()).append("\n");
+        sb.append("Tanggal Lahir: ").append(Datelahir.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append("\n");
+        sb.append("Jenis Kelamin: ").append(genderGroup.getSelectedToggle() != null ? ((RadioButton) genderGroup.getSelectedToggle()).getText() : "").append("\n");
+        sb.append("Alamat: ").append(txtAlamat.getText()).append("\n");
+        sb.append("Email: ").append(txtEmail.getText()).append("\n");
+        sb.append("Telepon: ").append(txtTelepon.getText()).append("\n");
 
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
         confirmation.setTitle("Konfirmasi Data");
@@ -155,7 +152,7 @@ public class InputDosenController {
         txtNIDN.clear();
         txtNama.clear();
         txtBidang.clear();
-        txtPendidikan.clear();
+        cbPendidikan.getSelectionModel().clearSelection(); // Reset pilihan ComboBox
         Datelahir.setValue(null);
         genderGroup.selectToggle(null); // Menghapus pilihan dari ToggleGroup
         txtAlamat.clear();
@@ -198,7 +195,7 @@ public class InputDosenController {
     private boolean validateForm() {
         // Validasi apakah semua field terisi
         if (txtNIDN.getText().isEmpty() || txtNama.getText().isEmpty() || txtBidang.getText().isEmpty() ||
-                txtPendidikan.getText().isEmpty() || Datelahir.getValue() == null ||
+                cbPendidikan.getValue() == null || Datelahir.getValue() == null ||
                 genderGroup.getSelectedToggle() == null || txtAlamat.getText().isEmpty() ||
                 txtEmail.getText().isEmpty() || txtTelepon.getText().isEmpty()) {
             showAlert(AlertType.WARNING, "Peringatan", "Semua field harus diisi!");
@@ -211,15 +208,15 @@ public class InputDosenController {
             return false;
         }
 
-        // Validasi nomor telepon harus berupa angka
-        if (!txtTelepon.getText().matches("\\d+")) {
-            showAlert(AlertType.WARNING, "Peringatan", "Nomor telepon harus berupa angka!");
+        // Validasi nomor telepon harus berupa angka dan tidak lebih dari 13 digit
+        if (!txtTelepon.getText().matches("\\d+") || txtTelepon.getText().length() > 13) {
+            showAlert(AlertType.WARNING, "Peringatan", "Nomor telepon harus berupa angka dan tidak lebih dari 13 digit!");
             return false;
         }
 
-        // Validasi NIDN harus berupa angka
-        if (!txtNIDN.getText().matches("\\d+")) {
-            showAlert(AlertType.WARNING, "Peringatan", "NIDN harus berupa angka!");
+        // Validasi NIDN harus berupa angka dan tidak lebih dari 10 digit
+        if (!txtNIDN.getText().matches("\\d+") || txtNIDN.getText().length() > 10) {
+            showAlert(AlertType.WARNING, "Peringatan", "NIDN harus berupa angka dan tidak lebih dari 10 digit!");
             return false;
         }
 
@@ -229,31 +226,22 @@ public class InputDosenController {
             return false;
         }
 
-        // Validasi tanggal lahir tidak boleh lebih dari hari ini dan usia harus lebih dari 23 tahun
+        // Validasi tanggal lahir tidak boleh lebih dari hari ini dan usia harus lebih dari 22 tahun
         LocalDate today = LocalDate.now();
         LocalDate selectedDate = Datelahir.getValue();
         if (selectedDate == null || selectedDate.isAfter(today)) {
             showAlert(AlertType.WARNING, "Peringatan", "Tanggal lahir tidak boleh lebih dari hari ini!");
+            Datelahir.setValue(null);
             return false;
         }
-        if (selectedDate.isAfter(today.minusYears(23))) {
-            showAlert(AlertType.WARNING, "Peringatan", "Usia harus lebih dari 23 tahun!");
+        if (selectedDate.isAfter(today.minusYears(22))) {
+            showAlert(AlertType.WARNING, "Peringatan", "Usia harus lebih dari 22 tahun!");
+            Datelahir.setValue(null);
             return false;
         }
 
         // Validasi Lanjutan: Cek duplikasi NIDN dan Email
-        try {
-            String checkQuery = "SELECT COUNT(*) FROM Dosen WHERE NIDN = ? OR Email = ?";
-            connection.pstat = connection.conn.prepareStatement(checkQuery);
-            connection.pstat.setString(1, txtNIDN.getText());
-            connection.pstat.setString(2, txtEmail.getText());
-            ResultSet rs = connection.pstat.executeQuery();
-            if (rs.next() && rs.getInt(1) > 0) {
-                showAlert(AlertType.WARNING, "Peringatan", "NIDN atau Email sudah terdaftar!");
-                return false;
-            }
-        } catch (SQLException ex) {
-            showAlert(AlertType.ERROR, "Database Error", "Terjadi error saat memeriksa duplikasi NIDN atau Email: " + ex);
+        if (!checkDuplicate("NIDN", txtNIDN.getText()) || !checkDuplicate("Email", txtEmail.getText())) {
             return false;
         }
 
@@ -262,12 +250,32 @@ public class InputDosenController {
 
     private void addValidationListeners() {
         txtNIDN.textProperty().addListener((observable, oldValue, newValue) -> {
-            validateNIDN(newValue);
-            checkDuplicate("NIDN", newValue);
+            if (newValue.length() > 10) {
+                txtNIDN.setText(oldValue); // Restore old value if new value exceeds length
+                showAlert(AlertType.WARNING, "Peringatan", "NIDN tidak boleh lebih dari 10 digit!");
+            } else {
+                validateNIDN(newValue);
+                checkDuplicate("NIDN", newValue);
+            }
         });
-        txtTelepon.textProperty().addListener((observable, oldValue, newValue) -> validateTelepon(newValue));
+
+        txtTelepon.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() > 13) {
+                txtTelepon.setText(oldValue); // Restore old value if new value exceeds length
+                showAlert(AlertType.WARNING, "Peringatan", "Nomor telepon tidak boleh lebih dari 13 digit!");
+            } else {
+                validateTelepon(newValue);
+            }
+        });
+
         txtNama.textProperty().addListener((observable, oldValue, newValue) -> validateNama(newValue));
-        Datelahir.valueProperty().addListener((observable, oldValue, newValue) -> validateTanggalLahir(newValue));
+
+        Datelahir.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                validateTanggalLahir(newValue);
+            }
+        });
+
         txtEmail.textProperty().addListener((observable, oldValue, newValue) -> checkDuplicate("Email", newValue));
     }
 
@@ -294,16 +302,16 @@ public class InputDosenController {
 
     private void validateTanggalLahir(LocalDate newValue) {
         LocalDate today = LocalDate.now();
-        if (newValue == null || newValue.isAfter(today)) {
+        if (newValue.isAfter(today)) {
             showAlert(AlertType.WARNING, "Peringatan", "Tanggal lahir tidak boleh lebih dari hari ini!");
-            Datelahir.setValue(LocalDate.now());
+            Datelahir.setValue(null);
         } else if (newValue.isAfter(today.minusYears(22))) {
             showAlert(AlertType.WARNING, "Peringatan", "Usia harus lebih dari 22 tahun!");
             Datelahir.setValue(null);
         }
     }
 
-    private void checkDuplicate(String field, String value) {
+    private boolean checkDuplicate(String field, String value) {
         try {
             String checkQuery = "SELECT COUNT(*) FROM Dosen WHERE " + field + " = ?";
             connection.pstat = connection.conn.prepareStatement(checkQuery);
@@ -316,15 +324,18 @@ public class InputDosenController {
                 } else if (field.equals("Email")) {
                     txtEmail.clear();
                 }
+                return false;
             }
         } catch (SQLException ex) {
             showAlert(AlertType.ERROR, "Database Error", "Terjadi error saat memeriksa duplikasi " + field + ": " + ex);
+            return false;
         }
+        return true;
     }
 
     public void onbtnKembaliClick(ActionEvent event) {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
-        stage.close(); //menutup form saat ini
+        stage.close(); // Menutup form saat ini
     }
 }
