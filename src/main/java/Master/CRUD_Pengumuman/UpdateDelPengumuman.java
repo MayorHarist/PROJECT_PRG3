@@ -38,6 +38,8 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
     @FXML
     private TextField txtjumlahpengumuman;
     @FXML
+    private ComboBox<TenagaKependidikan> cbTKN;
+    @FXML
     private TableView<Pengumuman> tblViewPengumuman;
     @FXML
     private TableColumn<Pengumuman, String> Id_Pengumuman;
@@ -83,7 +85,9 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        // Memuat data untuk ComboBox
+        ObservableList<TenagaKependidikan> tknData = loadDataForTKNComboBox();
+        cbTKN.setItems(tknData);
 
         // Mengisi TableView dengan data Pengumuman
         loadData("");
@@ -104,7 +108,13 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
                 txtnmPengumuman.setText(newValue.getNamaPengumuman());
                 tglPengumuman.setValue(newValue.getTanggal());
                 txtDeskripsi.setText(newValue.getDeskripsi());
-
+                // Cari TenagaKependidikan yang sesuai dan set di ComboBox
+                for (TenagaKependidikan tk : cbTKN.getItems()) {
+                    if (tk.getId().equals(newValue.getIdTKN())) {
+                        cbTKN.setValue(tk);
+                        break;
+                    }
+                }
             }
         });
 
@@ -168,7 +178,22 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
         }
     }
 
+    private ObservableList<TenagaKependidikan> loadDataForTKNComboBox() {
+        ObservableList<TenagaKependidikan> dataList = FXCollections.observableArrayList();
+        String query = "SELECT Id_TKN, Nama FROM TenagaKependidikan";
 
+        try (ResultSet resultSet = connection.conn.createStatement().executeQuery(query)) {
+            while (resultSet.next()) {
+                String idTKN = resultSet.getString("Id_TKN");
+                String nama = resultSet.getString("Nama");
+                dataList.add(new TenagaKependidikan(idTKN, nama));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Terjadi error saat mengambil data untuk ComboBox TKN: " + ex.getMessage());
+        }
+
+        return dataList;
+    }
 
     @FXML
     protected void onBtnUbahClick() {
@@ -195,19 +220,19 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
                 ps.setString(2, txtnmPengumuman.getText());
                 ps.setDate(3, Date.valueOf(tanggal));
                 ps.setString(4, txtDeskripsi.getText());
-                //ps.setString(5, ((TenagaKependidikan) cbTKN.getValue()).getId());
+                ps.setString(5, ((TenagaKependidikan) cbTKN.getValue()).getId());
 
                 ps.executeUpdate();
 
-/*                int index = oblist.indexOf(selectedPengumuman);
+                int index = oblist.indexOf(selectedPengumuman);
                 oblist.set(index, new Pengumuman(
                         txtIDPengumuman.getText(),
                         txtnmPengumuman.getText(),
                         tanggal,
-                        txtDeskripsi.getText())
+                        txtDeskripsi.getText(),
                         ((TenagaKependidikan) cbTKN.getValue()).getId(),
                         ((TenagaKependidikan) cbTKN.getValue()).getNama()
-                ));*/
+                ));
 
                 tblViewPengumuman.refresh();
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -279,7 +304,7 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
         txtnmPengumuman.clear();
         tglPengumuman.setValue(null);
         txtDeskripsi.clear();
-        //cbTKN.getSelectionModel().clearSelection();
+        cbTKN.getSelectionModel().clearSelection();
     }
 
     @FXML
@@ -354,5 +379,20 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
         } catch (IOException e) {
             e.printStackTrace();
         }
+        /*try {
+            FXMLLoader fxmlLoader = new FXMLLoader(InputPengumuman.class.getResource("InputPengumuman.fxml"));
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+
+            Stage stage = new Stage();
+            stage.setTitle("Tambah Data Pengumuman");
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(tblViewPengumuman.getScene().getWindow());
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
     }
 }
