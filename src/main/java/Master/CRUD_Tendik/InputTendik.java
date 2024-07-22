@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -82,6 +83,20 @@ public class InputTendik {
                 usernameTendik.getText().isEmpty() || passwordTendik.getText().isEmpty()) {
             errorMsg.append("Harap lengkapi semua kolom.\n");
         }
+
+        // Validasi umur minimal 22 tahun dan tanggal lahir tidak bisa hari ini atau besok
+        if (tglTendik.getValue() != null) {
+            LocalDate birthDate = tglTendik.getValue();
+            LocalDate currentDate = LocalDate.now();
+            int age = Period.between(birthDate, currentDate).getYears();
+            if (age < 22) {
+                errorMsg.append("Usia minimal adalah 22 tahun.\n");
+            }
+            if (!birthDate.isBefore(currentDate.minusDays(1))) {
+                errorMsg.append("Tanggal lahir tidak bisa hari ini atau besok.\n");
+            }
+        }
+
         if (errorMsg.length() > 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             //alert.initModality(Modality.APPLICATION_MODAL);

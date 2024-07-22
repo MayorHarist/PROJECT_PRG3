@@ -99,6 +99,7 @@ public class InputPengumuman {
     }
 
     private boolean validateTanggal() {
+
         boolean isValid = tglPengumuman.getValue() != null;
         if (!isValid) {
             showAlert("Error", "Tanggal pengumuman harus diisi.");
@@ -134,6 +135,8 @@ public class InputPengumuman {
 
     @FXML
     protected void onBtnSimpanClick() {
+        LocalDate today = LocalDate.now();
+
         // Validasi input
         if (!validateTanggal() || !validateDeskripsi() || !validateTKN()) {
             return;
@@ -221,7 +224,7 @@ public class InputPengumuman {
 
     public void clear() {
         txtnmPengumuman.clear();
-        tglPengumuman.setValue(null);
+        tglPengumuman.setValue(LocalDate.now());
         txtDeskripsi.clear();
         cbTKN.setValue(null); // Menghapus nilai ComboBox
     }
