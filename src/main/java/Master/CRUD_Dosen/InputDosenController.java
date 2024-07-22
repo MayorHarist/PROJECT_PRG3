@@ -63,7 +63,7 @@ public class InputDosenController {
     }
 
     @FXML
-    protected void onBtnSimpanClick() {
+    protected void onBtnSimpanClick(ActionEvent event) {
         if (!validateForm()) {
             return; // Jika validasi gagal, hentikan eksekusi
         }
@@ -97,16 +97,22 @@ public class InputDosenController {
                 connection.pstat.setString(10, Telepon);
 
                 connection.pstat.executeUpdate();
-                showAlert(AlertType.INFORMATION, "Sukses", "Input data Dosen berhasil!");
+                showAlert(Alert.AlertType.INFORMATION, "Sukses", "Input data Dosen berhasil!");
                 clear();
                 autoid(); // Set kembali No Pegawai setelah menyimpan data
+
+                // Menutup form saat ini
+                Node source = (Node) event.getSource();
+                Stage stage = (Stage) source.getScene().getWindow();
+                stage.close();
             } catch (SQLException ex) {
-                showAlert(AlertType.ERROR, "Database Error", "Terjadi error saat insert data Dosen: " + ex);
+                showAlert(Alert.AlertType.ERROR, "Database Error", "Terjadi error saat insert data Dosen: " + ex);
             }
         } else {
             return; // Jika user memilih untuk batal, hentikan eksekusi
         }
     }
+
 
     private boolean showDataConfirmation() {
         StringBuilder sb = new StringBuilder();

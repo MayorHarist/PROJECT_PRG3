@@ -226,12 +226,17 @@ public class InputMatkulController {
                     showAlert(Alert.AlertType.INFORMATION, "Sukses", "Input data Mata Kuliah berhasil!");
                     clear();
                     autoid();
+
+                    // Menutup form saat ini
+                    Stage stage = (Stage) AnchorInputMatkul.getScene().getWindow();
+                    stage.close();
                 } catch (SQLException ex) {
                     System.out.println("Terjadi error saat insert data Mata Kuliah: " + ex);
                 }
             }
         }
     }
+
 
     private boolean validasi() {
         if (IdMatkul.isEmpty() || nama.isEmpty() || sks.isEmpty() || Jenis.isEmpty() || semester.isEmpty() || kelas.isEmpty() || No_Pegawai == null || Id_Prodi == null) {

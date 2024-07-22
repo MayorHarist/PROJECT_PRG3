@@ -199,7 +199,6 @@ public class InputPengumuman {
                 connection.conn.commit();
 
                 Alert successAlert = new Alert(AlertType.INFORMATION);
-                //alert.initModality(Modality.APPLICATION_MODAL);
                 successAlert.setTitle("Sukses");
                 successAlert.setHeaderText(null);
                 successAlert.setContentText("Data pengumuman berhasil disimpan!");
@@ -208,6 +207,10 @@ public class InputPengumuman {
                 successAlert.showAndWait();
                 clear();
                 autoid(); // Generate ID baru untuk entri berikutnya
+
+                // Menutup form saat ini
+                Stage stage = (Stage) btnSimpan.getScene().getWindow();
+                stage.close();
             } catch (SQLException ex) {
                 System.out.println("Terjadi error saat menambahkan data pengumuman: " + ex);
             }
@@ -221,6 +224,7 @@ public class InputPengumuman {
             cancelAlert.showAndWait();
         }
     }
+
 
     public void clear() {
         txtnmPengumuman.clear();
