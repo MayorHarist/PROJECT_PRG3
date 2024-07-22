@@ -251,6 +251,8 @@ public class UpdateDeleteTendik implements Initializable {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Informasi");
                 alert.setHeaderText(null);
+                alert.initModality(Modality.WINDOW_MODAL);
+                alert.initOwner(tabelViewTendik.getScene().getWindow());
                 alert.setContentText("Data tenaga kependidikan tidak ditemukan.");
                 alert.showAndWait();
             }

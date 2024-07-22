@@ -229,11 +229,15 @@ public class InputDosenController {
             return false;
         }
 
-        // Validasi tanggal lahir tidak boleh lebih dari hari ini
+        // Validasi tanggal lahir tidak boleh lebih dari hari ini dan usia harus lebih dari 23 tahun
         LocalDate today = LocalDate.now();
         LocalDate selectedDate = Datelahir.getValue();
         if (selectedDate == null || selectedDate.isAfter(today)) {
             showAlert(AlertType.WARNING, "Peringatan", "Tanggal lahir tidak boleh lebih dari hari ini!");
+            return false;
+        }
+        if (selectedDate.isAfter(today.minusYears(23))) {
+            showAlert(AlertType.WARNING, "Peringatan", "Usia harus lebih dari 23 tahun!");
             return false;
         }
 
@@ -293,6 +297,9 @@ public class InputDosenController {
         if (newValue == null || newValue.isAfter(today)) {
             showAlert(AlertType.WARNING, "Peringatan", "Tanggal lahir tidak boleh lebih dari hari ini!");
             Datelahir.setValue(LocalDate.now());
+        } else if (newValue.isAfter(today.minusYears(22))) {
+            showAlert(AlertType.WARNING, "Peringatan", "Usia harus lebih dari 22 tahun!");
+            Datelahir.setValue(null);
         }
     }
 

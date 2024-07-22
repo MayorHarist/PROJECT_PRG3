@@ -23,6 +23,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
@@ -168,6 +169,14 @@ public class UpdateDeleteMahasiswa implements Initializable {
             return new SimpleStringProperty("");
         });
 
+        // Menambahkan listener untuk DatePicker
+        dpTanggal.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && !isAdult(newValue)) {
+                showAlert("Usia minimal 18 tahun diperlukan.", Alert.AlertType.WARNING);
+                dpTanggal.setValue(null); // Reset tanggal jika tidak valid
+            }
+        });
+
         nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
         tanggalLahir.setCellValueFactory(new PropertyValueFactory<>("tanggalLahir"));
         jenisKelamin.setCellValueFactory(new PropertyValueFactory<>("jenisKelamin"));
@@ -246,6 +255,27 @@ public class UpdateDeleteMahasiswa implements Initializable {
     private void onTxtCari() {
         String keyword = txtCari.getText().toLowerCase();
         loadTableData(keyword);
+    }
+
+    private boolean isAdult(LocalDate birthDate) {
+        LocalDate today = LocalDate.now();
+        Period period = Period.between(birthDate, today);
+        return period.getYears() > 18;
+    }
+
+    private void showAlert(String message, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setContentText(message);
+
+        // Mengatur stage owner dan modality untuk message box
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        //stage.initOwner(AnchorInputMahasiswa.getScene().getWindow()); // Menggunakan tableMahasiswa sebagai contoh
+
+        // Memastikan alert muncul di depan window utama
+        stage.toFront();
+
+        alert.show();
     }
 
     private void loadProdiComboBox() {

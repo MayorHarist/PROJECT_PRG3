@@ -27,6 +27,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+import java.util.Queue;
 import java.util.ResourceBundle;
 
 public class UpdateDeleteDosenController implements Initializable {
@@ -47,6 +48,8 @@ public class UpdateDeleteDosenController implements Initializable {
     private TableColumn<Dosen, LocalDate> tanggal;
     @FXML
     private Button btnBatal, btnDelete, btnUbah, btnTambah, btnRefresh;
+    @FXML
+    private Label lblDosen;
 
     private ObservableList<Dosen> oblist = FXCollections.observableArrayList();
 
@@ -100,6 +103,9 @@ public class UpdateDeleteDosenController implements Initializable {
             }
             txtCari.setOnKeyReleased(event -> onTxtCari());
         });
+
+        DataDosen();
+
     }
 
     private void setTextFields(Dosen newValue) {
@@ -247,7 +253,7 @@ public class UpdateDeleteDosenController implements Initializable {
         alert.setContentText(message);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(tableDosen.getScene().getWindow());
+        //stage.initOwner(tableDosen.getScene().getWindow());
         stage.toFront();
         alert.show();
     }
@@ -361,6 +367,7 @@ public class UpdateDeleteDosenController implements Initializable {
     @FXML
     protected void onBtnRefreshClick(ActionEvent event) {
         loadTableData("");
+        DataDosen();
     }
 
     @FXML
@@ -382,4 +389,25 @@ public class UpdateDeleteDosenController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    public void DataDosen() {
+        try {
+            String query = "SELECT COUNT(*) FROM Dosen WHERE Status = 'Aktif'";
+            connection.pstat = connection.conn.prepareStatement(query);
+            ResultSet rs = connection.pstat.executeQuery();
+
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                lblDosen.setText("" + count);
+            }
+
+            tableDosen.refresh();
+
+            showAlert("Update data Dosen berhasil!", Alert.AlertType.INFORMATION);
+            clearFields();
+        } catch (SQLException ex) {
+            System.out.println("Terjadi error saat mengupdate data dosen: " + ex);
+        }
+    }
+
 }

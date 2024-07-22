@@ -18,6 +18,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
@@ -104,6 +106,15 @@ public class InputMahasiswa implements Initializable {
                 txtTahunMasuk.setText(txtTahunMasuk.getText().substring(0, 4)); // Hapus karakter melebihi 4 digit
             }
         });
+
+        // Menambahkan listener untuk DatePicker
+        dpTanggalLahir.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && !isAdult(newValue)) {
+                showAlert("Usia minimal 18 tahun diperlukan.", Alert.AlertType.WARNING);
+                dpTanggalLahir.setValue(null); // Reset tanggal jika tidak valid
+            }
+        });
+
     }
 
     private boolean isValidNameInput(String input) {
@@ -141,6 +152,13 @@ public class InputMahasiswa implements Initializable {
             showAlert("Error loading Prodi: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
+
+    private boolean isAdult(LocalDate birthDate) {
+        LocalDate today = LocalDate.now();
+        Period period = Period.between(birthDate, today);
+        return period.getYears() > 18;
+    }
+
 
     private void showAlert(String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
@@ -180,7 +198,9 @@ public class InputMahasiswa implements Initializable {
         String selectedProdi = cbProdi.getValue();
         String idProdi = getIdProdiByName(selectedProdi);
         String nama = txtNama.getText();
-        String tanggalLahir = dpTanggalLahir.getValue().toString();
+        //String tanggalLahir = dpTanggalLahir.getValue().toString();
+        LocalDate tanggalLahir = dpTanggalLahir.getValue();
+        String parseTanggalLahir = tanggalLahir.toString();
         String jenisKelamin = ((RadioButton) genderGroup.getSelectedToggle()).getText();
         String alamat = txtAlamat.getText();
         String email = txtEmail.getText();
@@ -200,12 +220,17 @@ public class InputMahasiswa implements Initializable {
             return; // Hentikan proses simpan jika ada duplikat email
         }
 
+        //
+/*        if (!isAdult(tanggalLahir)){
+            showAlert("Umur Minimal 18 Tahun", Alert.AlertType.WARNING);
+        }*/
+
         // Menampilkan dialog konfirmasi dengan data yang akan disimpan
         String message = "Data yang akan disimpan:\n";
         message += "NIM: " + NIM + "\n";
         message += "Prodi: " + selectedProdi + "\n";
         message += "Nama: " + nama + "\n";
-        message += "Tanggal Lahir: " + tanggalLahir + "\n";
+        message += "Tanggal Lahir: " + parseTanggalLahir + "\n";
         message += "Jenis Kelamin: " + jenisKelamin + "\n";
         message += "Alamat: " + alamat + "\n";
         message += "Email: " + email + "\n";
@@ -224,7 +249,7 @@ public class InputMahasiswa implements Initializable {
         Optional<ButtonType> option = alert.showAndWait();
         if (option.isPresent() && option.get() == ButtonType.OK) {
             try {
-                insertMahasiswa(NIM, idProdi, nama, tanggalLahir, jenisKelamin, alamat, email, telepon, tahunMasuk);
+                insertMahasiswa(NIM, idProdi, nama, parseTanggalLahir, jenisKelamin, alamat, email, telepon, tahunMasuk);
                 showAlert("Data berhasil disimpan", Alert.AlertType.INFORMATION);
                 clear();
                 autoid();

@@ -18,8 +18,8 @@
       <TextField fx:id="txtSemester" layoutX="319.0" layoutY="322.0" prefHeight="25.0" prefWidth="227.0" />
       <TextField fx:id="txtKelas" layoutX="319.0" layoutY="373.0" prefHeight="25.0" prefWidth="227.0" />
 
-      <ComboBox fx:id="cbPegawai" layoutX="319.0" layoutY="424.0" prefHeight="25.0" prefWidth="227.0" />
-      <ComboBox fx:id="cbProdi" layoutX="319.0" layoutY="475.0" prefHeight="25.0" prefWidth="227.0" />
+      <ComboBox fx:id="cbPegawai" layoutX="319.0" layoutY="463.0" prefHeight="25.0" prefWidth="227.0" />
+      <ComboBox fx:id="cbProdi" layoutX="319.0" layoutY="426.0" prefHeight="25.0" prefWidth="227.0" />
 
       <Label layoutX="166.0" layoutY="118.0" prefHeight="17.0" prefWidth="110.0" text="Id Mata Kuliah">
          <font>
@@ -51,12 +51,12 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="166.0" layoutY="424.0" prefHeight="17.0" prefWidth="110.0" text="Dosen">
+      <Label layoutX="166.0" layoutY="463.0" prefHeight="17.0" prefWidth="110.0" text="Dosen">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="166.0" layoutY="475.0" prefHeight="17.0" prefWidth="110.0" text="Program Studi">
+      <Label layoutX="166.0" layoutY="426.0" prefHeight="17.0" prefWidth="110.0" text="Program Studi">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
