@@ -55,7 +55,8 @@ public class InputTendik {
         rbPuan.setToggleGroup(genderGroup);
 
         // Call validateInput() during initialization to show initial error messages
-        //validateInput();
+        validateInput();
+
 
     }
 
@@ -129,9 +130,9 @@ public class InputTendik {
 
     @FXML
     protected void onBtnSimpanClick(ActionEvent event) {
-        if (!validateInput()) {
-            return;
-        }
+//        if (!validateInput()) {
+//            return;
+//        }
 
         Id_TKN = txtIDTKN.getText();
         Nama = txtNamaTendik.getText();
