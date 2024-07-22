@@ -244,7 +244,7 @@ public class TransaksiKRS {
     }
 
     public class DetailKRS {
-        private String idDetailKRS;
+        private String idDetailKRS = generateIdDetailKRS();
         private float tugas;
         private float quiz;
         private float uts;
@@ -254,6 +254,7 @@ public class TransaksiKRS {
         private String indeks;
         private String idMatkul;
         private String idKRS;
+
 
         public DetailKRS(String idDetailKRS, float tugas, float quiz, float uts, float uas, float projek, float akhir, String indeks, String idMatkul, String idKRS) {
             this.idDetailKRS = idDetailKRS;
@@ -572,7 +573,7 @@ public class TransaksiKRS {
         // Insert data into TransaksiKRS table
         try {
             // Hitung IP berdasarkan nilai detail
-            float ip = calculateIP(selectedNIM.getNIM(), IdKRS);
+            //float ip = calculateIP(selectedNIM.getNIM(), IdKRS);
 
             // Memanggil stored procedure sp_InsertTransaksiKRS
             String query = "EXEC sp_InsertTransaksiKRS ?, ?, ?, ?, ?, ?, ?";
@@ -841,8 +842,8 @@ public class TransaksiKRS {
             if (result.next()) {
                 String maxId = result.getString(1);
                 if (maxId != null) {
-                    int number = Integer.parseInt(maxId.substring(3)) + 1; // Increment number
-                    newId = "DET" + String.format("%03d", number); // Format new ID
+                    int number = Integer.parseInt(maxId.replaceAll("[^0-9]","")); // Increment number
+                    newId = "DET" + String.format("%03d", number + 1); // Format new ID
                 } else {
                     newId = "DET001"; // Initial ID if no records exist
                 }

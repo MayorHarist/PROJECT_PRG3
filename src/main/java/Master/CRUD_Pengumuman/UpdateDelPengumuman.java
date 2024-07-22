@@ -36,6 +36,8 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
     @FXML
     private TextField txtDeskripsi;
     @FXML
+    private TextField txtjumlahpengumuman;
+    @FXML
     private ComboBox<TenagaKependidikan> cbTKN;
     @FXML
     private TableView<Pengumuman> tblViewPengumuman;
@@ -205,7 +207,9 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
         try {
             Pengumuman selectedPengumuman = tblViewPengumuman.getSelectionModel().getSelectedItem();
             if (selectedPengumuman != null) {
-                LocalDate tanggal = tglPengumuman.getValue();
+                LocalDate tanggal = LocalDate.now();
+                tglPengumuman.setValue(tanggal);
+
                 String query = "EXEC sp_UpdatePengumuman ?, ?, ?, ?, ?";
                 PreparedStatement ps = connection.conn.prepareStatement(query);
                 ps.setString(1, txtIDPengumuman.getText());
@@ -302,6 +306,7 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
     @FXML
     protected void onBtnRefreshClick() {
         loadData("");
+        updateJumlahPengumuman();
     }
 
     private void loadData(String keyword) {
@@ -342,6 +347,12 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
             System.out.println("Terjadi error saat refresh data Pengumuman: " + ex);
         }
     }
+
+    private void updateJumlahPengumuman() {
+        int jumlahPengumuman = tblViewPengumuman.getItems().size();
+        txtjumlahpengumuman.setText(String.valueOf(jumlahPengumuman));
+    }
+
 
 
     @FXML

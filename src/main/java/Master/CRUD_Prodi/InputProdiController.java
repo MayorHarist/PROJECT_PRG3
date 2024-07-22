@@ -12,6 +12,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -56,6 +57,20 @@ public class InputProdiController implements Initializable {
         });
     }
 
+    private boolean isNamaProdiExist(String namaProdi) {
+        boolean exists = false;
+        String query = "SELECT COUNT(*) FROM ProgramStudi WHERE Nama = ?";
+        try (PreparedStatement stmt = connection.conn.prepareStatement(query)) {
+            stmt.setString(1, namaProdi);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                exists = rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            showAlert("Terjadi error saat pengecekan nama prodi: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+        return exists;
+    }
     @FXML
     public void btnSimpan_Click(ActionEvent actionEvent) {
         idProdi = txtIdProdi.getText();
@@ -65,6 +80,11 @@ public class InputProdiController implements Initializable {
 
         if (idProdi.isEmpty() || nama.isEmpty() || jenjangPendidikan.isEmpty() || akreditasi.isEmpty()) {
             showAlert("Semua data harus diisi.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        if (isNamaProdiExist(nama)) {
+            showAlert("Nama program studi sudah ada. Silakan masukkan nama yang berbeda.", Alert.AlertType.WARNING);
             return;
         }
 

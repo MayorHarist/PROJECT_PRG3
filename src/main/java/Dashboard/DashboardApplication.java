@@ -3,9 +3,9 @@ package Dashboard;
 import Laporan.LaporanKRPP;
 import LoginKepala.HalamanKepalaController;
 import LoginTendik.HalamanTendikController;
-import Master.CRUD_JenisPrestasi.UDJepresController;
 import Master.CRUD_Mahasiswa.InputMahasiswa;
 import Master.CRUD_Mahasiswa.UpdateDeleteMahasiswa;
+import Master.CRUD_Pengumuman.UpdateDelPengumuman;
 import Master.CRUD_Tendik.UpdateDeleteTendik;
 import Transaksi.FormKRPP;
 import Transaksi.TransaksiKRPPController;
@@ -26,7 +26,7 @@ public class DashboardApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(UDJepresController.class.getResource("UDJepres.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(DashboardApplication.class.getResource("DashboardApplication.fxml"));
         //Scene scene = new Scene(fxmlLoader.load(), 1000, 1000);
         //Scene scene = new Scene(fxmlLoader.load(), 1280, 650);
         Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);
