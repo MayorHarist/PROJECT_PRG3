@@ -55,5 +55,15 @@
       <Button fx:id="btnHapus" layoutX="1164.0" layoutY="902.0" mnemonicParsing="false" onAction="#onbtnHapusClick" prefHeight="25.0" prefWidth="65.0" text="Hapus" />
       <Button fx:id="btnRefresh" layoutX="662.0" layoutY="659.0" mnemonicParsing="false" onAction="#onbtnRefreshClick" prefHeight="25.0" prefWidth="86.0" text="Refresh" />
       <Button fx:id="btnTambah" layoutX="136.0" layoutY="82.0" mnemonicParsing="false" onAction="#onbtnTambahClick" prefHeight="25.0" prefWidth="95.0" text="Tambah" />
+      <Label layoutX="1076.0" layoutY="100.0" text="Total Jenis Prestasi: ">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbltotal" layoutX="1199.0" layoutY="101.0" text="XXX">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

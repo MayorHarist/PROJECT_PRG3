@@ -55,6 +55,10 @@ public class UDJepresController implements Initializable {
     private TextField txtPenyelenggara;
     @FXML
     private TextField txtPoint;
+    @FXML
+    private Label lbltotal;
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -92,6 +96,8 @@ public class UDJepresController implements Initializable {
         txtCari.textProperty().addListener((observable, oldValue, newValue) -> {
             cariData(newValue); // Panggil fungsi pencarian saat isi txtCari berubah
         });
+
+        totalnilai("");
     }
 
     private void loadData(String searchQuery) {
@@ -188,6 +194,23 @@ public class UDJepresController implements Initializable {
         stage.initOwner(btnHapus.getScene().getWindow());
         stage.toFront();
         alert.showAndWait();
+    }
+
+    public void totalnilai(String newValue){
+        try {
+            String query = "SELECT COUNT(*) AS total FROM JenisPrestasi WHERE Status='Aktif'";
+            PreparedStatement preparedStatement = connection.conn.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int total = resultSet.getInt("total");
+                lbltotal.setText("Total Data: " + total);
+            }
+            preparedStatement.close();
+            resultSet.close();
+        } catch (Exception ex) {
+            System.out.print("Terjadi error saat menghitung total data jenis prestasi: " + ex);
+        }
     }
 
     @FXML
