@@ -53,11 +53,5 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="txtjumlahpengumuman" editable="false" layoutX="301.0" layoutY="622.0" prefHeight="25.0" prefWidth="278.0" />
-      <Label layoutX="70.0" layoutY="632.0" text="Jumlah Pengumuman">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Label>
    </children>
 </AnchorPane>

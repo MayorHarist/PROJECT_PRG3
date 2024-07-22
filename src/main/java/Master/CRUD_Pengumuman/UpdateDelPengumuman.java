@@ -386,20 +386,5 @@ public class UpdateDelPengumuman implements Initializable {//implementasi dari i
         } catch (IOException e) {
             e.printStackTrace();
         }
-        /*try {
-            FXMLLoader fxmlLoader = new FXMLLoader(InputPengumuman.class.getResource("InputPengumuman.fxml"));
-            Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root);
-
-            Stage stage = new Stage();
-            stage.setTitle("Tambah Data Pengumuman");
-            stage.setScene(scene);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(tblViewPengumuman.getScene().getWindow());
-            stage.initStyle(StageStyle.UNDECORATED);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
     }
 }

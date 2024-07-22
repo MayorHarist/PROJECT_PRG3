@@ -22,6 +22,16 @@ Button {
     -fx-background-color: #FFFFFF; /* Warna latar belakang */
 }
 
+/* Gaya khusus untuk tombol dengan ID "btnKembaliUD" */
+#btnCetak {
+    -fx-min-width: 150px; /* Lebar minimum untuk btnKembali */
+    -fx-min-height: 40px; /* Tinggi minimum untuk btnKembali */
+    -fx-max-width: 150px; /* Lebar maksimum untuk btnKembali */
+    -fx-max-height: 40px; /* Tinggi maksimum untuk btnKembali */
+    -fx-text-fill: white; /* Warna teks */
+    -fx-background-color: #0096C9; /* Warna latar belakang */
+}
+
 /* Gaya umum untuk semua TextField */
 TextField {
     -fx-background-radius: 30; /* Radius besar untuk membuat sudut melengkung */

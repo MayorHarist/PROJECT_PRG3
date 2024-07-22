@@ -27,5 +27,6 @@
          </font>
       </Label>
       <Button fx:id="btnRefresh" layoutX="643.0" layoutY="926.0" mnemonicParsing="false" onAction="#onbtnRefreshClick" prefHeight="52.0" prefWidth="140.0" text="Refresh" />
+      <Button fx:id="btnCetak" layoutX="54.0" layoutY="152.0" minHeight="49.0" minWidth="164.0" mnemonicParsing="false" onAction="#onbtnCetakClick" prefHeight="49.0" prefWidth="164.0" stylesheets="@../Style.css" text="Cetak" textFill="#f8f8f8" />
    </children>
 </AnchorPane>
